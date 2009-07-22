@@ -1,7 +1,7 @@
 classdef topsFunctionLoop < handle
-    properties
+    properties (SetObservable)
         modeList;
-        clockFcn = @cputime;
+        clockFcn = @now;
     end
     
     methods

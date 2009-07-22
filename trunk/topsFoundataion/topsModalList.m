@@ -1,5 +1,5 @@
 classdef topsModalList < handle
-    properties
+    properties (SetObservable)
         modes = struct();
     end
     

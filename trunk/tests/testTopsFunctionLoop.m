@@ -1,3 +1,5 @@
+function testTopsFunctionLoop
+
 %% should not behave like a singleton
 clear
 clc
@@ -57,8 +59,6 @@ end
 clear
 clc
 loop = topsFunctionLoop;
-tic
-loop.clockFcn = @toc;
 mathMode = 'maths';
 mathFunctions = {{@eye, 77}, {@mod, 6, 3}, {@rand}};
 for ii = 1:length(mathFunctions)
@@ -70,5 +70,22 @@ end
 [previewWhen, previewRun] = loop.previewForMode(mathMode);
 
 % should at least get same number of function calls
-assert(isequal(size(when), size(previewWhen)), 'wrong number of preview timestamps')
-assert(isequal(size(functionRun), size(previewRun)), 'wrong number of preview functions')
+assert(isequal(size(when), size(previewWhen)), 'wrong number of dummy timestamps')
+assert(isequal(size(functionRun), size(previewRun)), 'wrong number of dummy functions')
+
+%% should post event when props change
+clear
+clc
+global eventCount
+eventCount = 0;
+loop = topsFunctionLoop;
+loop.addlistener('clockFcn', 'PostSet', @hearEvent);
+for ii = 1:10
+    loop.clockFcn = @now;
+end
+assert(eventCount==ii, 'heard wrong number of set events')
+clear global eventCount
+
+function hearEvent(metaProp, event)
+global eventCount
+eventCount = eventCount + 1;

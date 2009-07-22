@@ -1,3 +1,5 @@
+function testTopsModalList
+
 %% highest precedence should be at beginning of list
 clear
 list = topsModalList;
@@ -108,3 +110,25 @@ list.mergeModesIntoNewMode({'mode_one', 'mode_two'}, 'big_mode');
 gotItems = list.getSortedItemsForMode(mergedMode);
 expectedItems = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 assert(isequal(gotItems, expectedItems), 'failed merge modes')
+
+%% should post event when modes struct changes
+clear
+global eventCount
+eventCount = 0;
+list = topsModalList;
+list.addlistener('modes', 'PostSet', @hearEvent);
+
+mode = 'postEvents';
+items = {1, 2, 3, 4, 5};
+mnemonics = {'one', 'two', 'three', 'four', 'five'};
+precedences = 1:5;
+for ii = 1:length(items)
+    list.addItemToModeWithMnemonicWithPrecedence ...
+        (items{ii}, mode, mnemonics{ii}, precedences(ii));
+end
+assert(eventCount==ii, 'heard wrong number of set events')
+clear global eventCount
+
+function hearEvent(metaProp, event)
+global eventCount
+eventCount = eventCount + 1;
