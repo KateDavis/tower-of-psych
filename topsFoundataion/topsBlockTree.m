@@ -1,5 +1,5 @@
 classdef topsBlockTree < handle
-    properties
+    properties (SetObservable)
         name = '';
         userData = [];
         
@@ -13,11 +13,12 @@ classdef topsBlockTree < handle
         blockActionFcn = {};
         blockEndFcn = {};
         
-        clockFcn = @cputime;
+        clockFcn = @now;
     end
     
     properties(Hidden = true)
         validIterationMethods = {'sequential', 'random'};
+        subBlockHint = 'sub-block';
     end
     
     methods
@@ -57,9 +58,8 @@ classdef topsBlockTree < handle
                 
                 for jj = childSequence
                     index = index+1;
-                    child = self.children(jj);
                     summary{index, 1} = feval(self.clockFcn);
-                    summary{index, 2} = 'sub-block';
+                    summary{index, 2} = self.subBlockHint;
                     summary{index, 3} = self.children(jj).run(doFeval);
                 end
             end
@@ -77,13 +77,8 @@ classdef topsBlockTree < handle
             if doFeval
                 feval(fcn{:});
             end
-            
             summary{index, 2} = sprintf('%s:%s', self.name, note);
-            if isempty(fcn)
-                summary{index, 3} = '(no function)';
-            else
-                summary{index, 3} = summarizeFcn(fcn);
-            end
+            summary{index, 3} = fcn;
         end
         
         function set.iterationMethod(self, iterationMethod)
@@ -98,7 +93,7 @@ classdef topsBlockTree < handle
         function unrolled = unrollSummary(self, summary)
             unrolled = cell(0, size(summary, 2));
             for ii = 1:size(summary, 1)
-                if iscell(summary{ii,end})
+                if strcmp(summary{ii,2}, self.subBlockHint)
                     unrolled = cat(1, unrolled, self.unrollSummary(summary{ii,end}));
                 else
                     unrolled = cat(1, unrolled, summary(ii,:));
