@@ -74,7 +74,7 @@ classdef topsBlockTree < handle
         
         function summary = fevalWithSummary(self, summary, note, fcn, doFeval, index)
             summary{index, 1} = feval(self.clockFcn);
-            if doFeval
+            if doFeval && ~isempty(fcn)
                 feval(fcn{:});
             end
             summary{index, 2} = sprintf('%s:%s', self.name, note);
