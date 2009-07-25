@@ -4,8 +4,11 @@ classdef battleTimer < handle
     
     properties
         nextFire=inf;
-        repeatInterval=0;
+        repeatInterval=inf;
         callback={};
+        
+        clockFcn = @now;
+        summary=cell(0,2);
     end
     
     methods
@@ -17,16 +20,14 @@ classdef battleTimer < handle
             self.callback = callback;
         end
         
-        function didFire = tick(self, nowTime)
+        function didFire = tick(self)
+            nowTime = feval(self.clockFcn);
             didFire = nowTime >= self.nextFire;
             
             if didFire
                 feval(self.callback{:});
-                if self.repeatInterval
-                    self.nextFire = nowTime + self.repeatInterval;
-                else
-                    self.nextFire = inf;
-                end
+                self.summary(end+1,1:2) = {nowTime, self.callback};
+                self.nextFire = nowTime + self.repeatInterval;
             end
         end
     end

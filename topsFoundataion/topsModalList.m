@@ -5,7 +5,7 @@ classdef topsModalList < handle
     
     methods
         function self = topsModalList
-
+            
         end
         
         function addItemToModeWithMnemonicWithPrecedence(self, ...
@@ -16,7 +16,7 @@ classdef topsModalList < handle
             newModeItem = self.newModeItem(item, mnemonic, precedence);
             
             if isfield(self.modes, mode)
-                % insert-sort into existing mode list
+                % insert-sort into mode list by precedence
                 %   need to do better than one-at-a time growth?
                 modeItems = self.modes.(mode);
                 for ii = length(modeItems):-1:1
@@ -36,15 +36,15 @@ classdef topsModalList < handle
             end
         end
         
-        function mergeModesIntoNewMode(self, modes, newMode)
-            for m = modes
-                modeItems = self.modes.(m{1});
-                for ii = 1:length(modeItems)
+        function mergeModesIntoMode(self, sourceModes, destinationMode)
+            for m = sourceModes
+                sourceItems = self.modes.(m{1});
+                for ii = 1:length(sourceItems)
                     self.addItemToModeWithMnemonicWithPrecedence ...
-                        (modeItems(ii).data, ...
-                        newMode, ...
-                        modeItems(ii).mnemonic, ...
-                        modeItems(ii).precedence);
+                        (sourceItems(ii).data, ...
+                        destinationMode, ...
+                        sourceItems(ii).mnemonic, ...
+                        sourceItems(ii).precedence);
                 end
             end
         end
@@ -86,14 +86,28 @@ classdef topsModalList < handle
             modeItem.precedence = precedence;
         end
         
-        function items = getSortedItemsForMode(self, mode)
-            modeItems = self.modes.(mode);
-            items = {modeItems.data};
+        function item = getItemFromModeWithMnemonic(self, mode, mnemonic);
+            if isfield(self.modes, mode)
+                modeItems = self.modes.(mode);
+                selector = strcmp({modeItems.mnemonic}, mnemonic);
+                if any(selector)
+                    item = modeItems(selector).data;
+                else
+                    item = [];
+                end
+            else
+                item = [];
+            end
         end
         
-        function items = getItemsByMnemonicForMode(self, mode)
+        function items = getAllItemsFromModeByMnemonic(self, mode)
             modeItems = self.modes.(mode);
             items = cell2struct({modeItems.data}, {modeItems.mnemonic}, 2);
+        end
+        
+        function items = getAllItemsFromModeSorted(self, mode)
+            modeItems = self.modes.(mode);
+            items = {modeItems.data};
         end
     end
 end

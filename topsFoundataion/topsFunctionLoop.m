@@ -1,6 +1,7 @@
 classdef topsFunctionLoop < handle
     properties (SetObservable)
         modeList;
+        proceed = true;
         clockFcn = @now;
     end
     
@@ -32,10 +33,11 @@ classdef topsFunctionLoop < handle
             n = length(functionLoop);
             timeStamps = cell(1, n*1e5);
             
+            self.proceed = true;
             tt = 0;
             now = feval(self.clockFcn);;
             endTime = now + duration;
-            while now <= endTime
+            while now <= endTime && self.proceed
                 whens = zeros(1,n);
                 for ii = 1:n
                     now = feval(self.clockFcn);

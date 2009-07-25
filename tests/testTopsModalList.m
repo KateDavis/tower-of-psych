@@ -11,7 +11,7 @@ for ii = 1:length(items)
     list.addItemToModeWithMnemonicWithPrecedence ...
         (items{ii}, mode, mnemonics{ii}, precedences(ii));
 end
-gotItems = list.getSortedItemsForMode(mode);
+gotItems = list.getAllItemsFromModeSorted(mode);
 expectedItems = {5, 4, 3, 2, 1};
 assert(isequal(gotItems, expectedItems), 'unexpected insert order')
 
@@ -26,7 +26,7 @@ for ii = 1:length(items)
     list.addItemToModeWithMnemonicWithPrecedence ...
         (items{ii}, mode, mnemonics{ii}, precedences(ii));
 end
-gotItems = list.getSortedItemsForMode(mode);
+gotItems = list.getAllItemsFromModeSorted(mode);
 expectedItems = {5, 4, 3, 2, 1};
 assert(isequal(gotItems, expectedItems), 'unexpected insert order')
 
@@ -41,9 +41,27 @@ for ii = 1:length(items)
     list.addItemToModeWithMnemonicWithPrecedence ...
         (items{ii}, mode, mnemonics{ii}, precedences(ii));
 end
-gotItems = list.getSortedItemsForMode(mode);
+gotItems = list.getAllItemsFromModeSorted(mode);
 expectedItems = {4, 3, 2, 1, 5};
 assert(isequal(gotItems, expectedItems), 'unexpected crazy insert order')
+
+%% should get single items
+clear
+list = topsModalList;
+mode = 'mnemonics';
+items = {@disp, 'thingy', 443, nan, struct};
+mnemonics = {'function', 'char', 'number', 'nan', 'struct'};
+for ii = 1:length(items)
+    list.addItemToModeWithMnemonicWithPrecedence ...
+        (items{ii}, mode, mnemonics{ii});
+end
+gotItems = list.getAllItemsFromModeByMnemonic(mode);
+
+for ii = 1:length(items)
+    item = list.getItemFromModeWithMnemonic(mode, mnemonics{ii});
+    assert(isequalwithequalnans(item, items{ii}), ...
+        'unexpected mnemonic structure field')
+end
 
 %% should generate mnemonic structure
 clear
@@ -55,7 +73,7 @@ for ii = 1:length(items)
     list.addItemToModeWithMnemonicWithPrecedence ...
         (items{ii}, mode, mnemonics{ii});
 end
-gotItems = list.getItemsByMnemonicForMode(mode);
+gotItems = list.getAllItemsFromModeByMnemonic(mode);
 
 for ii = 1:length(items)
     assert(isequalwithequalnans(gotItems.(mnemonics{ii}), items{ii}), ...
@@ -79,7 +97,7 @@ list.removeItemByMnemonicFromMode(mnemonics{1}, mode);
 list.removeItemByMnemonicFromMode(mnemonics{2}, mode);
 list.removeItemFromMode(items{2}, mode);
 
-gotItems = list.getSortedItemsForMode(mode);
+gotItems = list.getAllItemsFromModeSorted(mode);
 expectedItems = {5, 4, 3};
 assert(isequal(gotItems, expectedItems), 'failed remove items from mode')
 
@@ -105,9 +123,9 @@ for ii = 1:length(items)
 end
 
 mergedMode = 'big_mode';
-list.mergeModesIntoNewMode({'mode_one', 'mode_two'}, 'big_mode');
+list.mergeModesIntoMode({'mode_one', 'mode_two'}, 'big_mode');
 
-gotItems = list.getSortedItemsForMode(mergedMode);
+gotItems = list.getAllItemsFromModeSorted(mergedMode);
 expectedItems = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 assert(isequal(gotItems, expectedItems), 'failed merge modes')
 
