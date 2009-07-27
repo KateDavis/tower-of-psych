@@ -14,10 +14,20 @@ classdef battleTimer < handle
     methods
         function self = battleTimer
         end
-        
+
         function loadForTimeWithCallback(self, time, callback)
             self.nextFire = time;
             self.callback = callback;
+        end
+
+        function loadForRepeatIntervalWithCallback(self, interval, callback)
+            self.repeatInterval = interval;
+            self.callback = callback;
+        end
+        
+        function beginRepetitions(self)
+            nowTime = feval(self.clockFcn);
+            self.nextFire = nowTime + self.repeatInterval;
         end
         
         function didFire = tick(self)

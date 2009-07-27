@@ -95,6 +95,12 @@ function [gameTree, gameList] = encounter
 %   clear monster group form gui
 %   dequeue battle timer for each monster, destroy
 
+% WISH LIST
+%   would like to have blockTree preview extend to function loop
+%       global mode?  ew.  special case for function loop? ew.
+%       "previewable" superclass?  maybe.
+%   similarly, might want to pass a parameter through run method.  Or not.
+
 
 % top-level data object, add arbitrary parameters
 gameList = topsModalList;
@@ -116,13 +122,27 @@ gameTree.blockBeginFcn = {@gameSetup, gameList};
 gameTree.blockEndFcn = {@gameTearDown, gameList};
 gameList.addItemToModeWithMnemonicWithPrecedence(gameTree, 'game', 'gameTree');
 
+% low-level control loop object
+%   with functions defined below
+battleLoop = topsFunctionLoop;
+battleLoop.addFunctionToModeWithPrecedence({@drawnow}, 'battle', 10);
+battleLoop.addFunctionToModeWithPrecedence({@checkBattleStatus, gameList, battleLoop}, 'battle', 0);
+gameList.addItemToModeWithMnemonicWithPrecedence(battleLoop, 'game', 'battleLoop');
+
 % create characters, add to top-level data object
+%   create wake-up timers and add to function loop
 for ii = 1:nCharacters
     characters(ii) = battler;
     characters(ii).restoreHp;
     characters(ii).name = sprintf('nameless%d', ii);
+    ct = battleTimer;
+    charTimers(ii) = ct;
+    ct.loadForRepeatIntervalWithCallback ...
+        (characters(ii).attackInterval/(60*60*24), {@characterWakesUp, characters(ii), gameList});
+    battleLoop.addFunctionToModeWithPrecedence({@()ct.tick}, 'charTimers', 9);
 end
 gameList.addItemToModeWithMnemonicWithPrecedence(characters, 'game', 'characters');
+gameList.addItemToModeWithMnemonicWithPrecedence(charTimers, 'game', 'charTimers');
 
 % invent several types of monster
 for ii = 1:nMonsterTypes
@@ -137,11 +157,21 @@ end
 for ii = 1:nMonsterGroups
     nInGroup = ceil(rand*5);
     groupName = sprintf('baddies%d', ii);
+    loopName = sprintf('%sTimers', groupName);
     group = battler.empty;
     for jj = 1:nInGroup
         group(jj) = monsters(ceil(rand*nMonsterTypes)).copy;
+        gt = battleTimer;
+        groupTimers(jj) = gt;
+        gt.loadForRepeatIntervalWithCallback ...
+            (group(jj).attackInterval/(60*60*24), {@monsterWakesUp, group(jj), gameList});
+        battleLoop.addFunctionToModeWithPrecedence({@()gt.tick}, loopName, 8);
     end
     gameList.addItemToModeWithMnemonicWithPrecedence(group, 'monsters', groupName);
+    gameList.addItemToModeWithMnemonicWithPrecedence(groupTimers, 'monsterTimers', groupName);
+    
+    % concatenate loop modes specially for this monster group
+    battleLoop.modeList.mergeModesIntoMode({'battle', 'charTimers', loopName}, groupName);
     
     battleBlock = topsBlockTree;
     battleBlock.name = groupName;
@@ -192,7 +222,42 @@ end
 
 
 function battleGo(battleBlock, gameList)
-waitforbuttonpress
+modeName = battleBlock.name;
+
+charTimers = gameList.getItemFromModeWithMnemonic('game', 'charTimers');
+monsterTimers = gameList.getItemFromModeWithMnemonic('monsterTimers', modeName);
+for t = [charTimers, monsterTimers]
+    t.beginRepetitions;
+end
+
+battleLoop = gameList.getItemFromModeWithMnemonic('game', 'battleLoop');
+%battleLoop.previewForMode(modeName);
+battleLoop.runInModeForDuration(modeName, 5/(60*60*24));
+
+
+function characterWakesUp(character, gameList)
+%disp(sprintf('character: %s woke up', character.name));
+
+
+function monsterWakesUp(monster, gameList)
+nCharacters = gameList.getItemFromModeWithMnemonic('game', 'nCharacters');
+characters = gameList.getItemFromModeWithMnemonic('game', 'characters');
+alive = find(~[characters.isDead]);
+if ~isempty(alive)
+    victim = characters(alive(ceil(rand*length(alive))));
+    monster.attackOpponent(victim);
+    pause(.5)
+    victim.hideDamage;
+end
+
+
+function checkBattleStatus(gameList, battleLoop)
+characters = gameList.getItemFromModeWithMnemonic('game', 'characters');
+dead = [characters.isDead];
+if all(dead)
+    battleLoop.proceed = false;
+    disp('UR unhiliated!')
+end
 
 
 function battleTearDown(battleBlock, gameList)
