@@ -1,6 +1,8 @@
 function topsTests
 % run all test*.m in this folder
 
+clear classes
+
 [path, file] = fileparts(mfilename('fullpath'));
 d = dir(path);
 for ii = 1:length(d)

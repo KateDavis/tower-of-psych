@@ -16,7 +16,7 @@ classdef topsFunctionLoop < handle
         end
         
         function functionList = getFunctionListForMode(self, mode)
-            functionList = self.modeList.getSortedItemsForMode(mode);
+            functionList = self.modeList.getAllItemsFromModeSorted(mode);
         end
         
         function [when, what] = runInModeForDuration(self, mode, duration)
@@ -35,13 +35,13 @@ classdef topsFunctionLoop < handle
             
             self.proceed = true;
             tt = 0;
-            now = feval(self.clockFcn);;
-            endTime = now + duration;
-            while now <= endTime && self.proceed
+            nowTime = feval(self.clockFcn);;
+            endTime = nowTime + duration;
+            while (nowTime <= endTime) && self.proceed
                 whens = zeros(1,n);
                 for ii = 1:n
-                    now = feval(self.clockFcn);
-                    whens(ii) = now;
+                    nowTime = feval(self.clockFcn);
+                    whens(ii) = nowTime;
                     feval(functionLoop{ii}{:});
                 end
                 tt = tt+1;
