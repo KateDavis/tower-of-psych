@@ -30,6 +30,28 @@ gotItems = list.getAllItemsFromModeSorted(mode);
 expectedItems = {5, 4, 3, 2, 1};
 assert(isequal(gotItems, expectedItems), 'unexpected insert order')
 
+%% should replace items by mnemonic
+clear
+list = topsModalList;
+mode = 'replacements';
+items = {1, 2, 3, 4, 5};
+mnemonics = {'one', 'two', 'three', 'four', 'five'};
+for ii = 1:length(items)
+    list.addItemToModeWithMnemonicWithPrecedence ...
+        (items{ii}, mode, mnemonics{ii}, -ii);
+end
+gotItems = list.getAllItemsFromModeSorted(mode);
+assert(isequal(items, gotItems), 'unexpected insertions')
+
+replacements = {10, 20, 30, 40, 50};
+for ii = 1:length(items)
+    list.replaceItemInModeWithMnemonicWithPrecedence ...
+        (replacements{ii}, mode, mnemonics{ii}, -ii);
+end
+gotReplacements = list.getAllItemsFromModeSorted(mode);
+assert(isequal(replacements, gotReplacements), 'unexpected replacements')
+
+
 %% should handle nan and inf precedence
 clear
 list = topsModalList;

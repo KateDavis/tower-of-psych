@@ -11,11 +11,12 @@ classdef battler < handle
         isMonster = false;
         isDead = false;
         
-        attackInterval = 1;
+        attackInterval = 5;
         attackMean = 1;
         
         color;
         lineColor;
+        highlightColor;
         xPoints;
         yPoints;
         
@@ -37,10 +38,12 @@ classdef battler < handle
                 self.yPoints = rand(1,n);
                 self.color = [rand rand 0];
                 self.lineColor = [1 1 0]-self.color;
+                self.highlightColor = [0 1 0];
             else
                 % will create rounded rectangle for characters
                 self.color = [rand, 0, rand];
                 self.lineColor = [1 0 1]-self.color;
+                self.highlightColor = [0 0 1];
             end
         end
         
@@ -69,7 +72,7 @@ classdef battler < handle
                     'LineWidth', 1, ...
                     'ButtonDownFcn', callback, ...
                     'Selected', 'off', ...
-                    'SelectionHighlight', 'on', ...
+                    'SelectionHighlight', 'off', ...
                     'UserData', self, ...
                     'Visible', 'on');
                 
@@ -86,7 +89,7 @@ classdef battler < handle
                     'Position', inpos, ...
                     'ButtonDownFcn', callback, ...
                     'Selected', 'off', ...
-                    'SelectionHighlight', 'on', ...
+                    'SelectionHighlight', 'off', ...
                     'UserData', self, ...
                     'Visible', 'on');
             end
@@ -114,10 +117,28 @@ classdef battler < handle
                 'Visible', 'off');
         end
         
+        function showHighlight(self)
+            if ~self.isDead
+                set (self.bodyHandle, ...
+                    'FaceColor', self.highlightColor, ...
+                    'EdgeColor', self.highlightColor);
+            end
+        end
+        
+        function hideHighlight(self)
+            if ~self.isDead
+                set (self.bodyHandle, ...
+                    'FaceColor', self.color, ...
+                    'EdgeColor', self.lineColor);
+            end
+        end
+        
         function attackOpponent(self, opponent)
-            % do clipped-normal damage
-            damage = max(0, normrnd(self.attackMean, self.attackMean/2));
-            opponent.takeDamageAndShow(damage);
+            if ~self.isDead
+                % do clipped-normal damage
+                damage = max(0, normrnd(self.attackMean, self.attackMean/2));
+                opponent.takeDamageAndShow(damage);
+            end
         end
         
         function takeDamageAndShow(self, damage)

@@ -100,7 +100,16 @@ function [gameTree, gameList] = encounter
 %       global mode?  ew.  special case for function loop? ew.
 %       "previewable" superclass?  maybe.
 %   similarly, might want to pass a parameter through run method.  Or not.
-
+%   want a singleton class to manage summary/log functions.
+%       should log events as {time, mnemonic, data}
+%       should sort by time.  online or offline?
+%       should index events from same mnemonic?
+%       should magage own allocation smartly
+%       modal list with time = precedence???  Fast enough?
+%       or [table(mnemonic)](time) = data;
+%       means no duplicate times and mnemonics
+%   One problem is that once things are "concurrent" and in queues, it gets
+%   harder to debug.  Order matters.  Visualization would help?
 
 % top-level data object, add arbitrary parameters
 gameList = topsModalList;
@@ -129,6 +138,15 @@ battleLoop.addFunctionToModeWithPrecedence({@drawnow}, 'battle', 10);
 battleLoop.addFunctionToModeWithPrecedence({@checkBattleStatus, gameList, battleLoop}, 'battle', 0);
 gameList.addItemToModeWithMnemonicWithPrecedence(battleLoop, 'game', 'battleLoop');
 
+% low-level function queues for character and monster attacks
+%   add dispatch method to function queue
+monsterQueue = battleQueue;
+characterQueue = battleQueue;
+gameList.addItemToModeWithMnemonicWithPrecedence(monsterQueue, 'game', 'monsterQueue');
+gameList.addItemToModeWithMnemonicWithPrecedence(characterQueue, 'game', 'characterQueue');
+battleLoop.addFunctionToModeWithPrecedence({@()monsterQueue.dispatchNextFevalable}, 'battle', 1);
+battleLoop.addFunctionToModeWithPrecedence({@()characterQueue.dispatchNextFevalable}, 'battle', 9.5);
+
 % create characters, add to top-level data object
 %   create wake-up timers and add to function loop
 for ii = 1:nCharacters
@@ -143,6 +161,7 @@ for ii = 1:nCharacters
 end
 gameList.addItemToModeWithMnemonicWithPrecedence(characters, 'game', 'characters');
 gameList.addItemToModeWithMnemonicWithPrecedence(charTimers, 'game', 'charTimers');
+gameList.addItemToModeWithMnemonicWithPrecedence({}, 'game', 'activeCharacter');
 
 % invent several types of monster
 for ii = 1:nMonsterTypes
@@ -180,6 +199,7 @@ for ii = 1:nMonsterGroups
     battleBlock.blockEndFcn = {@battleTearDown, battleBlock, gameList};
     gameTree.addChild(battleBlock);
 end
+gameList.addItemToModeWithMnemonicWithPrecedence('', 'game', 'activeMonsterGroup');
 
 
 function gameSetup(gameList)
@@ -213,30 +233,64 @@ function battleSetup(battleBlock, gameList)
 groupName = battleBlock.name;
 monsterGroup = gameList.getItemFromModeWithMnemonic('monsters', groupName);
 nChars = gameList.getItemFromModeWithMnemonic('game', 'nCharacters');
+characters = gameList.getItemFromModeWithMnemonic('game', 'characters');
+for ii = 1:nChars
+    characters(ii).hideHighlight;
+end
+gameList.replaceItemInModeWithMnemonicWithPrecedence({}, 'game', 'activeCharacter');
+
 ax = gameList.getItemFromModeWithMnemonic('game', 'axes');
 for ii = 1:length(monsterGroup)
     monsterGroup(ii).restoreHp;
     axesPos = subposition([0 0 1 1], nChars, nChars+1, mod(ii-1, nChars)+1, ceil(ii/nChars));
-    monsterGroup(ii).makeGraphicsForAxesAtPositionWithCallback(ax, axesPos, []);
+    cb = @(source, event) characterSelectVictim(source, event, gameList);
+    monsterGroup(ii).makeGraphicsForAxesAtPositionWithCallback(ax, axesPos, cb);
 end
+gameList.replaceItemInModeWithMnemonicWithPrecedence(groupName, 'game', 'activeMonsterGroup');
 
+characterQueue = gameList.getItemFromModeWithMnemonic('game', 'characterQueue');
+characterQueue.isLocked = false;
 
 function battleGo(battleBlock, gameList)
-modeName = battleBlock.name;
+groupName = battleBlock.name;
 
 charTimers = gameList.getItemFromModeWithMnemonic('game', 'charTimers');
-monsterTimers = gameList.getItemFromModeWithMnemonic('monsterTimers', modeName);
+monsterTimers = gameList.getItemFromModeWithMnemonic('monsterTimers', groupName);
+monsterQueue = gameList.getItemFromModeWithMnemonic('game', 'monsterQueue');
+monsterQueue.flushQueue;
 for t = [charTimers, monsterTimers]
     t.beginRepetitions;
 end
 
 battleLoop = gameList.getItemFromModeWithMnemonic('game', 'battleLoop');
-%battleLoop.previewForMode(modeName);
-battleLoop.runInModeForDuration(modeName, 5/(60*60*24));
+%battleLoop.previewForMode(groupName);
+battleLoop.runInModeForDuration(groupName, 60/(60*60*24));
 
 
 function characterWakesUp(character, gameList)
-%disp(sprintf('character: %s woke up', character.name));
+% enqueue self to become active character
+characterQueue = gameList.getItemFromModeWithMnemonic('game', 'characterQueue');
+characterQueue.addFevalable({@characterBecomesTheActiveCharacter, character, gameList});
+
+
+function characterBecomesTheActiveCharacter(character, gameList)
+% freeze the queue to have one active character at a time
+characterQueue = gameList.getItemFromModeWithMnemonic('game', 'characterQueue');
+characterQueue.isLocked = true;
+character.showHighlight;
+gameList.replaceItemInModeWithMnemonicWithPrecedence(character, 'game', 'activeCharacter');
+
+
+function characterSelectVictim(monsterGraphic, event, gameList)
+% let active character, if any, attack
+activeCharacter = gameList.getItemFromModeWithMnemonic('game', 'activeCharacter');
+if ~isempty(activeCharacter)
+    battlerAttacksBattler(activeCharacter, get(monsterGraphic, 'UserData'));
+    
+    % unfreeze the queue for the next active character
+    characterQueue = gameList.getItemFromModeWithMnemonic('game', 'characterQueue');
+    characterQueue.isLocked = false;
+end
 
 
 function monsterWakesUp(monster, gameList)
@@ -245,19 +299,33 @@ characters = gameList.getItemFromModeWithMnemonic('game', 'characters');
 alive = find(~[characters.isDead]);
 if ~isempty(alive)
     victim = characters(alive(ceil(rand*length(alive))));
-    monster.attackOpponent(victim);
-    pause(.5)
-    victim.hideDamage;
+    monsterQueue = gameList.getItemFromModeWithMnemonic('game', 'monsterQueue');
+    monsterQueue.addFevalable({@battlerAttacksBattler, monster, victim});
 end
+
+
+function battlerAttacksBattler(attacker, victim)
+attacker.showHighlight;
+attacker.attackOpponent(victim);
+pause(.5)
+victim.hideDamage;
+attacker.hideHighlight;
 
 
 function checkBattleStatus(gameList, battleLoop)
 characters = gameList.getItemFromModeWithMnemonic('game', 'characters');
-dead = [characters.isDead];
-if all(dead)
+if all([characters.isDead])
     battleLoop.proceed = false;
-    disp('UR unhiliated!')
+    disp('Anihiliation!')
 end
+
+groupName = gameList.getItemFromModeWithMnemonic('game', 'activeMonsterGroup');
+monsterGroup = gameList.getItemFromModeWithMnemonic('monsters', groupName);
+if all([monsterGroup.isDead])
+    battleLoop.proceed = false;
+    disp('Victory!')
+end
+
 
 
 function battleTearDown(battleBlock, gameList)

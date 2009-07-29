@@ -36,6 +36,22 @@ classdef topsModalList < handle
             end
         end
         
+        function replaceItemInModeWithMnemonicWithPrecedence(self, ...
+                item, mode, mnemonic, precedence);
+            
+            if isfield(self.modes, mode)
+                modeItems = self.modes.(mode);
+                selector = strcmp({modeItems.mnemonic}, mnemonic);
+                if any(selector)
+                    if nargin >= 5
+                        modeItems(selector).precedence = precedence;
+                    end
+                    modeItems(selector).data = item;
+                end
+                self.modes.(mode) = modeItems;
+            end
+        end
+        
         function mergeModesIntoMode(self, sourceModes, destinationMode)
             for m = sourceModes
                 sourceItems = self.modes.(m{1});

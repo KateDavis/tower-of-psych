@@ -3,14 +3,18 @@ classdef battleQueue < handle
     %   With thought, may get promoted to topsFoundataion
     
     properties
-        fevalables={};
-        isLocked=false;
+        fevalables = {};
+        isLocked = false;
         clockFcn = @now;
         summary = cell(0,2);
     end
     
     methods
         function self = battleQueue
+        end
+        
+        function flushQueue(self)
+            self.fevalables = {};
         end
         
         function addFevalable(self, fevalable)
