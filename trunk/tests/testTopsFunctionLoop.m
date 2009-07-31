@@ -39,8 +39,6 @@ end
 clear
 clc
 loop = topsFunctionLoop;
-tic
-loop.clockFcn = @toc;
 mathMode = 'maths';
 mathFunctions = {{@eye, 77}, {@mod, 6, 3}, {@rand}};
 for ii = 1:length(mathFunctions)
@@ -48,11 +46,11 @@ for ii = 1:length(mathFunctions)
 end
 
 % run once through loop
-[when, functionRun] = loop.runInModeForDuration(mathMode, 0);
-for ii = 2:length(mathFunctions)
-    assert(isequal(functionRun{ii}, mathFunctions{ii}), ...
-        'wrong function run');
-    assert(when(ii) >= when(ii-1), 'function run out of order');
+loop.runInModeForDuration(mathMode, 0);
+functionList = loop.getFunctionListForMode(mathMode);
+for ii = 1:length(mathFunctions)
+    assert(isequal(functionList{ii}, mathFunctions{ii}), ...
+        'wrong function in list');
 end
 
 %% Should run dummy functions in preview mode
@@ -66,12 +64,7 @@ for ii = 1:length(mathFunctions)
 end
 
 % run once through loop
-[when, functionRun] = loop.runInModeForDuration(mathMode, 0);
-[previewWhen, previewRun] = loop.previewForMode(mathMode);
-
-% should at least get same number of function calls
-assert(isequal(size(when), size(previewWhen)), 'wrong number of dummy timestamps')
-assert(isequal(size(functionRun), size(previewRun)), 'wrong number of dummy functions')
+loop.previewForMode(mathMode);
 
 %% should post event when props change
 clear

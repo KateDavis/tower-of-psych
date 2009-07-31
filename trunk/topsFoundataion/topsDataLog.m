@@ -25,19 +25,17 @@ classdef (Sealed) topsDataLog < handle
             end
             log = theLog;
         end
-    end
-    
-    methods (Access = private, Static)
+        
         function logStruct = newLogStruct(datas, times, mnemonics)
             logStruct = struct( ...
                 'data', datas, ...
                 'time', times, ...
                 'mnemonic', mnemonics);
         end
-    end
-    
-    methods
-        function flushAllData(self)
+        
+        function flushAllData
+            self = topsDataLog.theDataLog;
+            
             keys = self.mnemonicMap.keys;
             for ii = 1:length(keys)
                 self.mnemonicMap.remove(keys{ii});
@@ -45,7 +43,9 @@ classdef (Sealed) topsDataLog < handle
             self.count = 0;
         end
         
-        function flushDataForMnemonic(self, mnemonic)
+        function flushDataForMnemonic(mnemonic)
+            self = topsDataLog.theDataLog;
+            
             if self.mnemonicMap.isKey(mnemonic)
                 timeMap = self.mnemonicMap(mnemonic);
                 keys = timeMap.keys;
@@ -56,9 +56,11 @@ classdef (Sealed) topsDataLog < handle
             end
         end
         
-        function logMnemonicWithData(self, mnemonic, data)
+        function logMnemonicWithData(mnemonic, data)
+            self = topsDataLog.theDataLog;
+            
             nowTime = feval(self.clockFcn);
-            if nargin < 3
+            if nargin < 2
                 data = nowTime;
             end
             
@@ -77,11 +79,14 @@ classdef (Sealed) topsDataLog < handle
             end
         end
         
-        function allMnemonics = getAllMnemonics(self)
+        function allMnemonics = getAllMnemonics
+            self = topsDataLog.theDataLog;
             allMnemonics = self.mnemonicMap.keys;
         end
         
-        function logStruct = getAllDataSorted(self)
+        function logStruct = getAllDataSorted
+            self = topsDataLog.theDataLog;
+            
             logStruct = topsDataLog.newLogStruct({}, {}, {});
             for m = self.mnemonicMap.keys
                 % growing the log struct may be too slow
@@ -89,13 +94,15 @@ classdef (Sealed) topsDataLog < handle
             end
             
             % sorting from scratch may be too slow
-            %   may be able to improve since keys 
+            %   may be able to improve since keys
             %   from each timeMap should be sorted--merge k sorted lists
             [a, order] = sort([logStruct.time]);
             logStruct = logStruct(order);
         end
         
-        function logStruct = getDataForMnemonic(self, mnemonic)
+        function logStruct = getDataForMnemonic(mnemonic)
+            self = topsDataLog.theDataLog;
+            
             if self.mnemonicMap.isKey(mnemonic)
                 timeMap = self.mnemonicMap(mnemonic);
                 logStruct = topsDataLog.newLogStruct(timeMap.values, timeMap.keys, mnemonic);

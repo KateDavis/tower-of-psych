@@ -11,29 +11,35 @@ assert(tree1~=tree2, 'failed to get unique instances')
 clear
 clc
 tree = topsBlockTree;
+topsDataLog.flushAllData;
+
 tree.name = 'test tree';
 tree.blockBeginFcn = {@disp, 'block begin'};
 tree.blockActionFcn = {@disp, 'block action'};
 tree.blockEndFcn = {@disp, 'block end'};
-summary = tree.preview;
-assert(size(summary, 1) == 3, 'wrong number of summary functions');
-assert(isequal(tree.blockBeginFcn, summary{1,3}), 'wrong block begin function');
-assert(isequal(tree.blockActionFcn, summary{2,3}), 'wrong block action function');
-assert(isequal(tree.blockEndFcn, summary{3,3}), 'wrong block end function');
+
+tree.preview;
+summary = topsDataLog.getAllDataSorted;
+assert(length(summary) == 3, 'wrong number of summary functions');
+assert(isequal(tree.blockBeginFcn, summary(1).data), 'wrong block begin function');
+assert(isequal(tree.blockActionFcn, summary(2).data), 'wrong block action function');
+assert(isequal(tree.blockEndFcn, summary(3).data), 'wrong block end function');
 
 %% should add and preview children
 clear
 clc
 tree = topsBlockTree;
+topsDataLog.flushAllData;
+
 tree.name = 'test tree';
 for ii = 1:3
     child = topsBlockTree;
     child.name = 'child tree';
     tree.addChild(child);
 end
-summary = tree.preview;
-unrolled = tree.unrollSummary(summary);
-assert(size(unrolled, 1) == 3*(ii+1), 'wrong number of summary functions for children');
+tree.preview;
+summary = topsDataLog.getAllDataSorted;
+assert(length(summary) == 3*(ii+1), 'wrong number of child blocks logged');
 
 %% should run functions and children in depth-first order
 clear
@@ -41,6 +47,9 @@ clc
 tree = topsBlockTree;
 child = topsBlockTree;
 grandchild = topsBlockTree;
+
+topsDataLog.flushAllData;
+
 tree.name = 'test tree';
 child.name = 'child';
 grandchild.name = 'grandchild';
@@ -61,10 +70,10 @@ grandchild.blockEndFcn = fcn{7};
 child.blockEndFcn = fcn{8};
 tree.blockEndFcn = fcn{9};
 
-summary = tree.run;
-unrolled = tree.unrollSummary(summary);
+tree.run;
+summary = topsDataLog.getAllDataSorted;
 for ii = 1:9
-    assert(isequal(fcn{ii}, unrolled{ii,3}), 'function summary in wrong order');
+    assert(isequal(fcn{ii}, summary(ii).data), 'function summary in wrong order');
 end
 
 
