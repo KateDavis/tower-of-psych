@@ -4,9 +4,10 @@ function topsTests
 clear classes
 
 [path, file] = fileparts(mfilename('fullpath'));
-d = dir(path);
-for ii = 1:length(d)
-    if ~isempty(regexp(d(ii).name, 'test\w+\.m$'))
-        run(fullfile(path, d(ii).name))
+
+directoryList = dir(path);
+for ii = 1:length(directoryList)
+    if ~isempty(regexp(directoryList(ii).name, 'test\w+\.m$'))
+        run(fullfile(path, directoryList(ii).name))
     end
 end

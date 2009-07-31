@@ -8,7 +8,6 @@ classdef battleTimer < handle
         callback={};
         
         clockFcn = @now;
-        summary=cell(0,2);
     end
     
     methods
@@ -36,7 +35,7 @@ classdef battleTimer < handle
             
             if didFire
                 feval(self.callback{:});
-                self.summary(end+1,1:2) = {nowTime, self.callback};
+                topsDataLog.logMnemonicWithData('battleTimer fired', self.callback});
                 self.nextFire = nowTime + self.repeatInterval;
             end
         end

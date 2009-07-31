@@ -5,8 +5,6 @@ classdef battleQueue < handle
     properties
         fevalables = {};
         isLocked = false;
-        clockFcn = @now;
-        summary = cell(0,2);
     end
     
     methods
@@ -23,9 +21,8 @@ classdef battleQueue < handle
         
         function dispatchNextFevalable(self)
             if ~self.isLocked && length(self.fevalables) > 0
-                nowTime = feval(self.clockFcn);
                 feval(self.fevalables{1}{:});
-                self.summary(end+1, 1:2) = {nowTime, self.fevalables{1}};
+                topsDataLog.logMnemonicWithData('battleQueue dispatched', self.fevalables{1});
                 self.fevalables(1) = [];
             end
         end

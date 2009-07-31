@@ -1,3 +1,4 @@
+function testTopsDataLog
 %% should behave as singleton
 clear
 clc
@@ -9,8 +10,7 @@ assert(isequal(log1, log2), 'log is not a singleton');
 %% should store data with mnemonics and account for them
 clear
 clc
-theLog = topsDataLog.theDataLog;
-theLog.flushAllData;
+topsDataLog.flushAllData;
 
 % log each datum with each mnemonic
 %   redundant data would not be normal
@@ -18,22 +18,23 @@ mnemonics = {'animals', 'pizzas', 'phone books'};
 data = {1, {'elephant', 'sauce'}, []};
 for m = mnemonics
     for d = data
-        theLog.logMnemonicWithData(m{1}, d{1});
+        topsDataLog.logMnemonicWithData(m{1}, d{1});
     end
 end
+theLog = topsDataLog.theDataLog;
 assert(theLog.count == (length(mnemonics)*length(data)), 'failed to count log entries')
 
-gotMnemnics = theLog.getAllMnemonics;
+gotMnemnics = topsDataLog.getAllMnemonics;
 assert(isequal(sort(gotMnemnics), sort(mnemonics)), 'failed to account for unique mnemonics')
 
 
 %% should flush all data
 clear
 clc
+topsDataLog.flushAllData;
 theLog = topsDataLog.theDataLog;
-theLog.flushAllData;
 assert(theLog.count == 0, 'failed to get log with 0 entries')
-assert(isempty(theLog.getAllMnemonics), 'failed to get log with no mnemonics')
+assert(isempty(topsDataLog.getAllMnemonics), 'failed to get log with no mnemonics')
 
 % log each datum with each mnemonic
 %   redundant data would not be normal
@@ -41,21 +42,20 @@ mnemonics = {'animals', 'pizzas', 'phone books'};
 data = {1, {'elephant', 'sauce'}, []};
 for m = mnemonics
     for d = data
-        theLog.logMnemonicWithData(m{1}, d{1});
+        topsDataLog.logMnemonicWithData(m{1}, d{1});
     end
 end
 
-theLog.flushAllData;
+topsDataLog.flushAllData;
 assert(theLog.count == 0, 'failed to clear log entries after adding')
-assert(isempty(theLog.getAllMnemonics), 'failed to clear log mnemonics after adding')
+assert(isempty(topsDataLog.getAllMnemonics), 'failed to clear log mnemonics after adding')
 
 
 
 %% should return data by mnemonic or all at once
 clear
 clc
-theLog = topsDataLog.theDataLog;
-theLog.flushAllData;
+topsDataLog.flushAllData;
 
 % log each datum with each mnemonic
 %   redundant data would not be normal
@@ -63,12 +63,12 @@ mnemonics = {'animals', 'pizzas', 'phone books'};
 data = {1, {'elephant', 'sauce'}, []};
 for m = mnemonics
     for d = data
-        theLog.logMnemonicWithData(m{1}, d{1});
+        topsDataLog.logMnemonicWithData(m{1}, d{1});
     end
 end
 
 for m = mnemonics
-    dataStruct = theLog.getDataForMnemonic(m{1});
+    dataStruct = topsDataLog.getDataForMnemonic(m{1});
     gotData = {dataStruct.data};
     for d = data
         count = 0;
@@ -86,8 +86,7 @@ end
 %% should return data all at once, sorted
 clear
 clc
-theLog = topsDataLog.theDataLog;
-theLog.flushAllData;
+topsDataLog.flushAllData;
 
 % log each datum with each mnemonic
 %   redundant data would not be normal
@@ -95,11 +94,11 @@ mnemonics = {'animals', 'pizzas', 'phone books'};
 data = {1, {'elephant', 'sauce'}, []};
 for m = mnemonics
     for d = data
-        theLog.logMnemonicWithData(m{1}, d{1});
+        topsDataLog.logMnemonicWithData(m{1}, d{1});
     end
 end
 
-allStruct = theLog.getAllDataSorted;
+allStruct = topsDataLog.getAllDataSorted;
 gotAllMnemonics = {allStruct.mnemonic};
 for m = mnemonics
     assert(sum(strcmp(m{1}, gotAllMnemonics))==length(data), 'wrong number of mnemonics in grand data struct')

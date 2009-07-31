@@ -12,18 +12,14 @@ classdef topsBlockTree < handle
         blockBeginFcn = {};
         blockActionFcn = {};
         blockEndFcn = {};
-        
-        clockFcn = @now;
     end
     
     properties(Hidden = true)
         validIterationMethods = {'sequential', 'random'};
-        subBlockHint = 'sub-block';
     end
     
     methods
-        function self = topsBlockTree
-            
+        function self = topsBlockTree 
         end
         
         function addChild(self, child)
@@ -36,18 +32,12 @@ classdef topsBlockTree < handle
                 doFeval = true;
             end
             
-            % allocate for summary of fevals and child blocks
-            numberOfFevals = 2+self.iterations*(1 + length(self.children));
-            summary = cell(numberOfFevals, 3);
-            
             % begin the block
-            summary = self.fevalWithSummary(summary, 'start', self.blockBeginFcn, doFeval, 1);
+            self.fevalAndLog('start', self.blockBeginFcn, doFeval);
             
             % do the meat of the block
-            index = 1;
             for ii = 1:self.iterations
-                index = index+1;
-                summary = self.fevalWithSummary(summary, 'action', self.blockActionFcn, doFeval, index);
+                self.fevalAndLog('action', self.blockActionFcn, doFeval);
                 
                 switch self.iterationMethod
                     case 'sequential'
@@ -57,28 +47,24 @@ classdef topsBlockTree < handle
                 end
                 
                 for jj = childSequence
-                    index = index+1;
-                    summary{index, 1} = feval(self.clockFcn);
-                    summary{index, 2} = self.subBlockHint;
-                    summary{index, 3} = self.children(jj).run(doFeval);
+                    self.children(jj).run(doFeval);
                 end
             end
             
             % finish the block
-            summary = self.fevalWithSummary(summary, 'end', self.blockEndFcn, doFeval, numberOfFevals);
+            self.fevalAndLog('end', self.blockEndFcn, doFeval);
         end
         
-        function summary = preview(self)
-            summary = self.run(false);
+        function preview(self)
+            self.run(false);
         end
         
-        function summary = fevalWithSummary(self, summary, note, fcn, doFeval, index)
-            summary{index, 1} = feval(self.clockFcn);
+        function fevalAndLog(self, note, fcn, doFeval)
             if doFeval && ~isempty(fcn)
                 feval(fcn{:});
             end
-            summary{index, 2} = sprintf('%s:%s', self.name, note);
-            summary{index, 3} = fcn;
+            mnemonic = sprintf('%s:%s', self.name, note);
+            topsDataLog.logMnemonicWithData(mnemonic, fcn);
         end
         
         function set.iterationMethod(self, iterationMethod)
@@ -87,17 +73,6 @@ classdef topsBlockTree < handle
             else
                 warning(sprintf('%s.iterationMethod may be %s', ...
                     mfilename, sprintf('"%s", ', self.validIterationMethods{:})));
-            end
-        end
-        
-        function unrolled = unrollSummary(self, summary)
-            unrolled = cell(0, size(summary, 2));
-            for ii = 1:size(summary, 1)
-                if strcmp(summary{ii,2}, self.subBlockHint)
-                    unrolled = cat(1, unrolled, self.unrollSummary(summary{ii,end}));
-                else
-                    unrolled = cat(1, unrolled, summary(ii,:));
-                end
             end
         end
     end
