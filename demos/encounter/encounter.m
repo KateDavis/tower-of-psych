@@ -251,6 +251,7 @@ gameList.replaceItemInModeWithMnemonicWithPrecedence(groupName, 'game', 'activeM
 characterQueue = gameList.getItemFromModeWithMnemonic('game', 'characterQueue');
 characterQueue.isLocked = false;
 
+
 function battleGo(battleBlock, gameList)
 groupName = battleBlock.name;
 
@@ -325,7 +326,6 @@ if all([monsterGroup.isDead])
     battleLoop.proceed = false;
     disp('Victory!')
 end
-
 
 
 function battleTearDown(battleBlock, gameList)
