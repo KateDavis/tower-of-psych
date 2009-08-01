@@ -10,6 +10,12 @@ classdef (Sealed) topsDataLog < handle
         count=0;
     end
     
+    events
+        newMnemonic;
+        newDataForMnemonic;
+        flushedTheDataLog;
+    end
+    
     methods (Access = private)
         function self = topsDataLog
             self.mnemonicMap = containers.Map;
@@ -36,24 +42,15 @@ classdef (Sealed) topsDataLog < handle
         function flushAllData
             self = topsDataLog.theDataLog;
             
-            keys = self.mnemonicMap.keys;
-            for ii = 1:length(keys)
-                self.mnemonicMap.remove(keys{ii});
+            for m = self.mnemonicMap.keys
+                timeMap = self.mnemonicMap(m{1});
+                for t = timeMap.keys
+                    timeMap.remove(t{1});
+                end
+                self.mnemonicMap.remove(m{1});
             end
             self.count = 0;
-        end
-        
-        function flushDataForMnemonic(mnemonic)
-            self = topsDataLog.theDataLog;
-            
-            if self.mnemonicMap.isKey(mnemonic)
-                timeMap = self.mnemonicMap(mnemonic);
-                keys = timeMap.keys;
-                for ii = 1:length(keys)
-                    timeMap.remove(keys{ii});
-                end
-                self.mnemonicMap.remove(mnemonic);
-            end
+            notify(self, 'flushedTheDataLog');
         end
         
         function logMnemonicWithData(mnemonic, data)
@@ -76,7 +73,9 @@ classdef (Sealed) topsDataLog < handle
                 self.mnemonicMap(mnemonic) = ...
                     containers.Map(nowTime, data, 'uniformValues', false);
                 self.count = self.count + 1;
+                notify(self, 'newMnemonic');
             end
+            notify(self, 'newDataForMnemonic');
         end
         
         function allMnemonics = getAllMnemonics
