@@ -10,16 +10,11 @@ classdef topsDataLogGUI < handle
         triggerMnemonicsList;
         
         dataLogAxes;
-        dataLogLines;
-        dataLogTexts;
-        dataLogPreviousLines;
         
         flushLogButton;
         refreshGUIButton;
         
-        newMnemonicListener;
-        newDataListener;
-        flushedLogListener;
+        listeners = struct();
     end
     
     methods
@@ -28,15 +23,11 @@ classdef topsDataLogGUI < handle
             self.listenToDataLog;
         end
         function delete(self)
-            if ~isempty(self.fig) && ishandle(self.fig)
-                close(self.fig)
+            if ~isempty(self.fig) && ishandle(self.fig);
+                delete(self.fig);
             end
-            
-            delete(self.newMnemonicListener);
-            delete(self.newDataListener);
-            delete(self.flushedLogListener);
+            delete(struct2array(self.listeners));
         end
-        
         
         function createWidgets(self)
             self.setupFigure;
@@ -103,7 +94,11 @@ classdef topsDataLogGUI < handle
                 'XTick', [], ...
                 'XLim', [0 1], ...
                 'YTick', [], ...
-                'YLim', [0 1]);
+                'YLimMode', 'auto', ...
+                'YDir', 'reverse');
+            dataLogLines = [];
+            dataLogTexts = [];
+            dataLogPreviousLines = [];
             
             self.flushLogButton = uicontrol ( ...
                 'Parent', self.fig, ...
@@ -124,32 +119,6 @@ classdef topsDataLogGUI < handle
                 'HorizontalAlignment', 'left');
         end
         
-        function listenToDataLog(self)
-            theLog = topsDataLog.theDataLog;
-            
-            self.newMnemonicListener = theLog.addlistener( ...
-                'newMnemonic', ...
-                @(source, event) self.hearNewMnemonic(source, event));
-            self.newDataListener = theLog.addlistener( ...
-                'newDataForMnemonic', ...
-                @(source, event) self.hearNewDataForMnemonic(source, event));
-            self.flushedLogListener  = theLog.addlistener( ...
-                'flushedTheDataLog', ...
-                @(source, event) self.hearFlushedTheDataLog(source, event));
-        end
-        
-        function hearNewMnemonic(self, theLog, eventData)
-            
-        end
-        
-        function hearNewDataForMnemonic(self, theLog, eventData)
-            
-        end
-        
-        function hearFlushedTheDataLog(self, theLog, eventData)
-            self.createWidgets;
-        end
-        
         function setupFigure(self)
             if ~isempty(self.fig) && ishandle(self.fig)
                 clf(self.fig)
@@ -162,6 +131,86 @@ classdef topsDataLogGUI < handle
                 'Name', mfilename, ...
                 'NumberTitle', 'off', ...
                 'ToolBar', 'none');
+        end
+        
+        function listenToDataLog(self)
+            theLog = topsDataLog.theDataLog;
+            
+            delete(struct2array(self.listeners))
+            self.listeners.NewMnemonic = theLog.addlistener( ...
+                'NewMnemonic', ...
+                @(source, event) self.hearNewMnemonic(source, event));
+            self.listeners.NewDataForMnemonic = theLog.addlistener( ...
+                'NewDataForMnemonic', ...
+                @(source, event) self.hearNewDataForMnemonic(source, event));
+            self.listeners.FlushedTheDataLog = theLog.addlistener( ...
+                'FlushedTheDataLog', ...
+                @(source, event) self.hearFlushedTheDataLog(source, event));
+        end
+        
+        function hearNewMnemonic(self, theLog, event)
+            mnemonics = theLog.getAllMnemonics;
+            insert = find(strcmp(mnemonics, event.UserData));
+            set(self.shownMnemonicsList, 'String', mnemonics);
+            set(self.triggerMnemonicsList, 'String', mnemonics);
+            
+            if length(mnemonics) > 1
+                self.fixListSelectionsAfterInsert(self.shownMnemonicsList, insert);
+                self.fixListSelectionsAfterInsert(self.triggerMnemonicsList, insert);
+            end
+        end
+        
+        function fixListSelectionsAfterInsert(self, list, insert)
+            selected = get(list, 'Value');
+            bump = selected >= insert;
+            selected(bump) = selected(bump) + 1;
+            set(list, 'Value', selected);
+        end
+        
+        function hearNewDataForMnemonic(self, theLog, eventData)
+            logStruct = eventData.UserData;
+            mnemonics = theLog.getAllMnemonics;
+            
+            if get(self.triggerMnemonicsToggle, 'Value')
+                trig = get(self.triggerMnemonicsList, 'Value');
+                if any(strcmp(mnemonics(trig), logStruct.mnemonic))
+                    cla(self.dataLogAxes);
+                end
+            end
+            
+            show = get(self.shownMnemonicsList, 'Value');
+            if any(strcmp(mnemonics(show), logStruct.mnemonic))
+                self.plotLogEntry(logStruct);
+            end
+        end
+        
+        function plotLogEntry(self, logStruct)
+            % fudge a color for each mnemonic by BS hashing
+            colNum = mod(sum(logStruct.mnemonic), 7);
+            col = dec2bin(colNum, 3)=='1';
+            
+            line( ...
+                [0 .1], [1,1]*logStruct.time, ...
+                'Parent', self.dataLogAxes, ...
+                'Color', col, ...
+                'LineStyle', '-', ...
+                'Marker', 'none');
+            
+            summary = sprintf('%s: %s', ...
+                logStruct.mnemonic, ...
+                stringifyValue(logStruct.data));
+            
+            text( ...
+                .11, logStruct.time, summary, ...
+                'FontName', 'Courier', ...
+                'HitTest', 'off', ...
+                'Interpreter', 'none', ...
+                'Parent', self.dataLogAxes, ...
+                'Color', col);
+        end
+        
+        function hearFlushedTheDataLog(self, theLog, eventData)
+            self.createWidgets;
         end
     end
 end

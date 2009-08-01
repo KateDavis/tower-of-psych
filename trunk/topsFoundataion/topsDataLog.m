@@ -2,18 +2,20 @@ classdef (Sealed) topsDataLog < handle
     %Singleton to log events, data with time stamps
     
     properties
-        mnemonicMap;
         clockFcn = @now;
     end
     
     properties (SetAccess=private)
-        count=0;
+        mnemonicMap;
+        count = 0;
+        earliestTime = nan;
+        latestTime = nan;
     end
     
     events
-        newMnemonic;
-        newDataForMnemonic;
-        flushedTheDataLog;
+        NewMnemonic;
+        NewDataForMnemonic;
+        FlushedTheDataLog;
     end
     
     methods (Access = private)
@@ -49,14 +51,19 @@ classdef (Sealed) topsDataLog < handle
                 end
                 self.mnemonicMap.remove(m{1});
             end
+            self.earliestTime = nan;
+            self.latestTime = nan;
             self.count = 0;
-            notify(self, 'flushedTheDataLog');
+            notify(self, 'FlushedTheDataLog');
         end
         
         function logMnemonicWithData(mnemonic, data)
             self = topsDataLog.theDataLog;
             
             nowTime = feval(self.clockFcn);
+            self.earliestTime = min(self.earliestTime, nowTime);
+            self.latestTime = max(self.latestTime, nowTime);
+
             if nargin < 2
                 data = nowTime;
             end
@@ -73,9 +80,10 @@ classdef (Sealed) topsDataLog < handle
                 self.mnemonicMap(mnemonic) = ...
                     containers.Map(nowTime, data, 'uniformValues', false);
                 self.count = self.count + 1;
-                notify(self, 'newMnemonic');
+                notify(self, 'NewMnemonic', EventWithData(mnemonic));
             end
-            notify(self, 'newDataForMnemonic');
+            notify(self, 'NewDataForMnemonic', ...
+                EventWithData(topsDataLog.newLogStruct(data, nowTime, mnemonic)));
         end
         
         function allMnemonics = getAllMnemonics
