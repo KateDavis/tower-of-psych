@@ -15,6 +15,8 @@ classdef topsDataLogGUI < handle
         refreshGUIButton;
         
         listeners = struct();
+        
+        zeroTime = nan;
     end
     
     methods
@@ -94,7 +96,7 @@ classdef topsDataLogGUI < handle
                 'XTick', [], ...
                 'XLim', [0 1], ...
                 'YTick', [], ...
-                'YLimMode', 'auto', ...
+                'YLim', [0 1], ...
                 'YDir', 'reverse');
             dataLogLines = [];
             dataLogTexts = [];
@@ -168,13 +170,18 @@ classdef topsDataLogGUI < handle
         end
         
         function hearNewDataForMnemonic(self, theLog, eventData)
-            logStruct = eventData.UserData;
-            mnemonics = theLog.getAllMnemonics;
             
+            logStruct = eventData.UserData;
+            
+            % replace nan, preserve trigger time
+            self.zeroTime = max(self.zeroTime, theLog.earliestTime);
+            set(self.dataLogAxes, 'YLim', [0 logStruct.time-self.zeroTime+eps]);
+            
+            mnemonics = theLog.getAllMnemonics;
             if get(self.triggerMnemonicsToggle, 'Value')
                 trig = get(self.triggerMnemonicsList, 'Value');
                 if any(strcmp(mnemonics(trig), logStruct.mnemonic))
-                    cla(self.dataLogAxes);
+                    self.trigger(logStruct);
                 end
             end
             
@@ -184,24 +191,31 @@ classdef topsDataLogGUI < handle
             end
         end
         
+        function trigger(self, logStruct)
+            self.zeroTime = logStruct.time;
+            cla(self.dataLogAxes);
+        end
+        
         function plotLogEntry(self, logStruct)
             % fudge a color for each mnemonic by BS hashing
             colNum = mod(sum(logStruct.mnemonic), 7);
             col = dec2bin(colNum, 3)=='1';
             
+            summary = sprintf('%s: %s', ...
+                logStruct.mnemonic, ...
+                stringifyValue(logStruct.data));
+
+            y = logStruct.time - self.zeroTime;
+            
             line( ...
-                [0 .1], [1,1]*logStruct.time, ...
+                [0 .1], [y y], ...
                 'Parent', self.dataLogAxes, ...
                 'Color', col, ...
                 'LineStyle', '-', ...
                 'Marker', 'none');
             
-            summary = sprintf('%s: %s', ...
-                logStruct.mnemonic, ...
-                stringifyValue(logStruct.data));
-            
             text( ...
-                .11, logStruct.time, summary, ...
+                .11, y, summary, ...
                 'FontName', 'Courier', ...
                 'HitTest', 'off', ...
                 'Interpreter', 'none', ...
