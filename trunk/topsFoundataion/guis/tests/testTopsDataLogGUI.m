@@ -52,19 +52,25 @@ selections = get(gui.shownMnemonicsList, 'Value');
 delete(gui)
 assert(isequal(selections, [1 2 4]), 'gui failed to manage selctions with new mnemonic')
 
+%% don't run the below automatically
+return
+
 %% drive the gui for a while
-% clear all
-% close all hidden
-% clear classes
-% clc
-% 
-% topsDataLog.flushAllData;
-% gui = topsDataLogGUI;
-% 
-% mnemonics = {'aaaa', 'bbbb', 'cccc'};
-% for m = repmat(mnemonics, 1, 10)
-%     topsDataLog.logMnemonicWithData(m{1}, 1);
-%     pause(1);
-% end
-% 
-% delete(gui)
+clear all
+close all hidden
+clear classes
+clc
+
+topsDataLog.flushAllData;
+gui = topsDataLogGUI;
+
+mnemonics = {'aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'};
+for m = repmat(mnemonics, 1, 10)
+    topsDataLog.logMnemonicWithData(m{1}, 1);
+    pause(1);
+    if ~ishandle(gui.fig)
+        break
+    end
+end
+
+delete(gui)

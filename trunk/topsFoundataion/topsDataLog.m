@@ -14,7 +14,7 @@ classdef (Sealed) topsDataLog < handle
     
     events
         NewMnemonic;
-        NewDataForMnemonic;
+        NewData;
         FlushedTheDataLog;
     end
     
@@ -82,7 +82,7 @@ classdef (Sealed) topsDataLog < handle
                 self.count = self.count + 1;
                 notify(self, 'NewMnemonic', EventWithData(mnemonic));
             end
-            notify(self, 'NewDataForMnemonic', ...
+            notify(self, 'NewData', ...
                 EventWithData(topsDataLog.newLogStruct(data, nowTime, mnemonic)));
         end
         
