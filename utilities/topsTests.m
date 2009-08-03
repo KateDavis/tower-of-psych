@@ -1,13 +1,35 @@
 function topsTests
-% run all test*.m in this folder
+% run all test*.m in tops folders
 
+clear all
 clear classes
+initialDir = pwd;
 
-[path, file] = fileparts(mfilename('fullpath'));
+% visit all tops folders and run files named "test*.m"
+[p, f] = fileparts(mfilename('fullpath'));
+topsRoot = fullfile(p, '..');
+try
+    runTestsInDir(topsRoot)
+catch testError
+    cd(initialDir)
+    rethrow(testError)
+end
+cd(initialDir)
 
-directoryList = dir(path);
+
+function runTestsInDir(d)
+cd(d)
+wd = pwd;
+directoryList = dir(wd);
 for ii = 1:length(directoryList)
-    if ~isempty(regexp(directoryList(ii).name, 'test\w+\.m$'))
-        run(fullfile(path, directoryList(ii).name))
+    fullPath = fullfile(wd, directoryList(ii).name);
+
+    if directoryList(ii).isdir && isempty(regexp(directoryList(ii).name, '^\.'))
+        % recursive: drill into subdirectory
+        runTestsInDir(fullPath);
+    elseif ~isempty(regexp(directoryList(ii).name, 'test\w+\.m$'))
+        % base case: execute test funtion
+        disp(sprintf('Testing: %s', fullPath))
+        run(fullPath)
     end
 end
