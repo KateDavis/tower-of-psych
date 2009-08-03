@@ -10,10 +10,10 @@ clc
 topsDataLog.flushAllData;
 gui = topsDataLogGUI;
 
-gotShown = get(gui.shownMnemonicsList, 'String');
+gotShown = get(gui.ignoredMnemonicsList, 'String');
 assert(isempty(gotShown), 'list box should be empty')
 
-gotTrigger = get(gui.shownMnemonicsList, 'String');
+gotTrigger = get(gui.ignoredMnemonicsList, 'String');
 assert(isempty(gotTrigger), 'list box should be empty')
 
 mnemonics = {'aaaa', 'bbbb', 'cccc'};
@@ -22,10 +22,10 @@ for m = mnemonics
     drawnow;
 end
 
-gotShown = get(gui.shownMnemonicsList, 'String');
+gotShown = get(gui.ignoredMnemonicsList, 'String');
 assert(isequal(gotShown, mnemonics'), 'list box should match mnemonics')
 
-gotTrigger = get(gui.shownMnemonicsList, 'String');
+gotTrigger = get(gui.ignoredMnemonicsList, 'String');
 assert(isequal(gotTrigger, mnemonics'), 'list box should match mnemonics')
 
 delete(gui)
@@ -43,16 +43,16 @@ gui = topsDataLogGUI;
 topsDataLog.logMnemonicWithData('aaaa', 1);
 topsDataLog.logMnemonicWithData('bbbb', 1);
 topsDataLog.logMnemonicWithData('dddd', 1);
-set(gui.shownMnemonicsList, 'Value', [1 2 3]);
+set(gui.ignoredMnemonicsList, 'Value', [1 2 3]);
 drawnow
 topsDataLog.logMnemonicWithData('cccc', 1);
 drawnow
-selections = get(gui.shownMnemonicsList, 'Value');
+selections = get(gui.ignoredMnemonicsList, 'Value');
 
 delete(gui)
 assert(isequal(selections, [1 2 4]), 'gui failed to manage selctions with new mnemonic')
 
-%% don't run the below automatically
+%% don't run below during automatic testing
 return
 
 %% drive the gui for a while
@@ -64,13 +64,13 @@ clc
 topsDataLog.flushAllData;
 gui = topsDataLogGUI;
 
-mnemonics = {'aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'};
-for m = repmat(mnemonics, 1, 10)
-    topsDataLog.logMnemonicWithData(m{1}, 1);
-    pause(1);
-    if ~ishandle(gui.fig)
+m = {'aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'};
+ii = 0;
+while true
+    if ~isvalid(gui)
         break
     end
+    topsDataLog.logMnemonicWithData(m{1+mod(ii, length(m))}, ii);
+    ii = ii + 1;
+    pause(.5)
 end
-
-delete(gui)
