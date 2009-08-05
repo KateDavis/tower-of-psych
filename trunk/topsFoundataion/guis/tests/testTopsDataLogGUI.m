@@ -51,26 +51,3 @@ selections = get(gui.ignoredMnemonicsList, 'Value');
 
 delete(gui)
 assert(isequal(selections, [1 2 4]), 'gui failed to manage selctions with new mnemonic')
-
-%% don't run below during automatic testing
-return
-
-%% drive the gui for a while
-clear all
-close all hidden
-clear classes
-clc
-
-topsDataLog.flushAllData;
-gui = topsDataLogGUI;
-
-m = {'aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'};
-ii = 0;
-while true
-    if ~isvalid(gui)
-        break
-    end
-    topsDataLog.logMnemonicWithData(m{1+mod(ii, length(m))}, ii);
-    ii = ii + 1;
-    pause(.5)
-end
