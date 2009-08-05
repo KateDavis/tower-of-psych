@@ -1,0 +1,117 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red34\green139\blue34;}
+\margl1440\margr1440\vieww16700\viewh11520\viewkind0
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs24 \cf2 %   Some goals for this demonstration:\cf0 \
+\cf2 %   - Should use all of the tops foundation classes\cf0 \
+\cf2 %   - Should be re-runnable with gameTree.run().\cf0 \
+\cf2 %   - Should live in as few files as possible (hmmm...)\cf0 \
+\cf2 %   - Should be a fun(ish) game to play\cf0 \
+\cf2 %   - Should produce a science-worthy, reproduceable record of conditions\cf0 \
+\cf2 %   and user/player responses.\cf0 \
+\cf2 %   - Should depend only on Matlab (i.e. not Psychtoolbox)\cf0 \
+\cf2 %\cf0 \
+\cf2 %   The game is somewhat like the battle sequences in the Final Fantasy\cf0 \
+\cf2 %   video games.  These sequences are good demonstrations of random\cf0 \
+\cf2 %   repeated conditions (c.f. topsBlockTree, topsModalList), and event\cf0 \
+\cf2 %   loops (c.f. topsFunctionLoop).  They also demonstrate a GUI and control\cf0 \
+\cf2 %   branching, which are left up to this program to define.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   The user/player should control a set of characters through several\cf0 \
+\cf2 %   randomly selected battle sequences.  The game should end when the\cf0 \
+\cf2 %   player completes all the sequences (win) or all of the player's\cf0 \
+\cf2 %   characters die (lose).\cf0 \
+\cf2 %\cf0 \
+\cf2 %   For each battle sequence, there should be some number player-controled\cf0 \
+\cf2 %   characters vs. some number of monsters.  All characters and monsters\cf0 \
+\cf2 %   should have limited hit points and should damage each other by\cf0 \
+\cf2 %   attacking. A character or monster should die and leave play when its\cf0 \
+\cf2 %   hit points reach zero.  A battle sequence should end when either all\cf0 \
+\cf2 %   the monsters or all the players have died.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   Each battle should begin with a consistent set of characters vs. a set\cf0 \
+\cf2 %   of monsters which was previously defined but randomly selected.\cf0 \
+\cf2 %   Character states should be preserved between encounters (i.e. they\cf0 \
+\cf2 %   should never get healed up) but monsters should be created fresh for\cf0 \
+\cf2 %   each encounter.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   Each character and each monster should be inactive during most of each\cf0 \
+\cf2 %   sequence.  Each should periodically wake up.  When a monster wakes up,\cf0 \
+\cf2 %   it should randomly selct a character to attack and deal damage to, from\cf0 \
+\cf2 %   a random variable.  When a character wakes up, the user/player should\cf0 \
+\cf2 %   be able to select a monster for that character to attack.  Then the\cf0 \
+\cf2 %   character should attack that monster and deal it damage from a random\cf0 \
+\cf2 %   variable.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   Monsters should be able to wake up and attack while the user/player is\cf0 \
+\cf2 %   performing selections.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   When a character or monster is dealt damage, the damage amount should\cf0 \
+\cf2 %   be displayed for a short, controllable duration near the graphical\cf0 \
+\cf2 %   representation of the character or monster in the GUI.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   The maximum and remining hit points of all the characters should always\cf0 \
+\cf2 %   be displayed.  The monster's hit points should be hidden.\cf0 \
+\cf2 %\cf0 \
+\cf2 %   Copyright 2009 by benjamin.heasly@gmail.com\cf0 \
+\cf2  \cf0 \
+\cf2 % TOP-LEVEL CONCEPTS\cf0 \
+\cf2 %   figure with widgets in it (GUI)\cf0 \
+\cf2 %   character objects, in a set\cf0 \
+\cf2 %   Matlab figure mouse events\cf0 \
+\cf2 %       Need to serialize when multiple characters wake up at once...\cf0 \
+\cf2 %       separate queue: lock on character wake-up, unlock on mouse selection\cf0 \
+\cf2 %   It seems like the major currency is the fevalable cell array \{@, ...\}\cf0 \
+\cf2 %   The design habit is to define functions for narrow behaviors and let\cf0 \
+\cf2 %   the tree and loop integreate them and the list communicate for them\cf0 \
+\cf2  \cf0 \
+\cf2 % BATTLE-LEVEL CONCEPTS\cf0 \
+\cf2 %   monster objects, in various sets\cf0 \
+\cf2 %   concurrent behaviors\cf0 \
+\cf2 %   user interaction\cf0 \
+\cf2 %   random conditions\cf0 \
+\cf2 %   resetting of battle sequence state\cf0 \
+\cf2  \cf0 \
+\cf2 % EVENT LOOP\cf0 \
+\cf2 %   drawnow\cf0 \
+\cf2 %   tick battle timers\cf0 \
+\cf2 %   dispatch next queued battle event\cf0 \
+\cf2 %   check for battle sequence exit contitions\cf0 \
+\cf2  \cf0 \
+\cf2 % TOP-LEVEL-BLOCK\cf0 \
+\cf2 %   create GUI\cf0 \
+\cf2 %   create event loop\cf0 \
+\cf2 %\cf0 \
+\cf2 %   create character group\cf0 \
+\cf2 %   load character group into GUI\cf0 \
+\cf2 %   create battle timer for each character, enqueue\cf0 \
+\cf2 %\cf0 \
+\cf2 %   create several groups of monsters\cf0 \
+\cf2 %   create several battle blocks\cf0 \
+\cf2  \cf0 \
+\cf2 % BATTLE BLOCK\cf0 \
+\cf2 %   load monster group into GUI\cf0 \
+\cf2 %   create battle timer for each monster, enqueue\cf0 \
+\cf2 %   start event loop\cf0 \
+\cf2 %   clear monster group form gui\cf0 \
+\cf2 %   dequeue battle timer for each monster, destroy\cf0 \
+\cf2  \cf0 \
+\cf2 % WISH LIST\cf0 \
+\cf2 %   would like to have blockTree preview extend to function loop\cf0 \
+\cf2 %       global mode?  ew.  special case for function loop? ew.\cf0 \
+\cf2 %       "previewable" superclass?  maybe.\cf0 \
+\cf2 %   similarly, might want to pass a parameter through run method.  Or not.\cf0 \
+\cf2 %   want a singleton class to manage summary/log functions.\cf0 \
+\cf2 %       should log events as \{time, mnemonic, data\}\cf0 \
+\cf2 %       should sort by time.  online or offline?\cf0 \
+\cf2 %       should index events from same mnemonic?\cf0 \
+\cf2 %       should magage own allocation smartly\cf0 \
+\cf2 %       modal list with time = precedence???  Fast enough?\cf0 \
+\cf2 %       or [table(mnemonic)](time) = data;\cf0 \
+\cf2 %       means no duplicate times and mnemonics\cf0 \
+\cf2 %   One problem is that once things are "concurrent" and in queues, it gets\cf0 \
+\cf2 %   harder to debug.  Order matters.  Visualization would help?\cf0 \
+}
