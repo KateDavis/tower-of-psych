@@ -9,21 +9,53 @@
 \fs24 \
 "Tower of Psych", or "tops", is a code project started by benjamin.heasly@gmail.com in July of 2009.  It aims to facilitate the design and running of psychophysics experiments in Matlab.  The idea is that a lot of psychophysics experiments have a lot of organization in common, and this organization should be factored into well-behaving classes with handy graphical interfaces.\
 \
-This document is intended as a tops survey and introduction.  It discusses the high-level philosophies and design choices of tops, some of the Matlab concepts used commonly in tops, and each of the four tops "foundataion" classes.\
+This document is intended as a tops survey and introduction.  It discusses the motivation for the tops "foundation" classes, some high-level philosophies and design choices of tops, and some of the Matlab concepts that tops builds on.\
 \
-A good follow-up to this document would be "encounter-as-tops-demo.rtf".  It explains the "encounter" game, which is one of the demos that comes with tops.  encounter synthesizes all the tops foundation classes into a game that is similar to a psychophysics experiment.\
+A good follow-up to this document would be "encounter-as-tops-demo.rtf".  It explains the "encounter" game, which is a demo that comes with tops.  encounter synthesizes all the tops foundation classes into a game that is similar to a psychophysics experiment.\
+\
+\
+
+\fs36 tops foundation\
+
+\fs24 The "foundation" of the Tower of Psych is a group of four classes called the "tops foundation".  These classes attempt to support the most common behaviors required for running psychophysics experiments.  tops also tries to support experimenters with graphical interfaces to each of the foundation classes.  Each of these has its own motivation:\
+\
+TREE-LIKE ORGANIZATION\
+Many psychophysics experiments require some big initial setup, followed by smaller setup steps that are specific to individual tasks, followed by even smaller setups for individual trials.  Corresponding cleanups or tear-downs may need to happen in reverse order.  This behavior is well modeled by a depth-first traversal of a tree, so tops defines the "topsBlockTree" to organize setup, execution, and tear-down of experiments, tasks, trials, etc.\
+\
+LOOPING\
+During a trial, many concurrent behaviors may need to happen in a time-sensitive way.  These might include checking for user input, updating some model of behavior, computing a new stimulus frame, and sending the frame to the graphics card for display.  A program loop can accomplish this behavior.  tops defines the "topsFunctionLoop" which lets you sort out various functions to be called in loop-fashion.  topsFunctionLoop also lets you organize multiple loop "modes" which can be arranged and combined, and executed conveniently.\
+\
+MODES OF OPERATION\
+An experimenter should be able to do all the setup for an experiment once, at the beginning, and then run various tasks and trials in any order.  tops defines the "topsModalList" which can hold program variables and objects and group them into various "modes" which can be accessed separately for a given task, trial, etc.\
+\
+LOGGING DATA\
+An experimenter should be able to look back at an experiment and know "what happened, when".  They should not have to worry about things like memory allocation.  The computer should log a lot of information, without the experimenter having to anticipate every conceivable event of interest.  Thus, tops defines the "topsDataLog" which makes it easy to keep a log of data along with time-stamps and mnemonics.  Other tops classes automatically add to the data log as they do their normal behaviors.\
+\
+GRAPHICAL INTERFACES\
+Most experimenters are not experienced programmers.  They may not be adept at managing complicated programs and may waste time by misunderstanding what a program is doing or what they're really asking a program to do.  Thus, tops attempts to make program behavior transparent and intuitive with graphical interfaces for all of its "foundation" classes.  These are designed always sync their appearance with the data and behaviors they model, and give users a consistent view "under the hood".\
+\
 \
 
 \fs36 tops big ideas\
 
-\fs24 The main goal of tops is that it should be worth a user's time to design an experiment so that it agrees with the way tops factors functionality.  That is, it may cost a user some effort to cast his/her experiment in terms of tops classes, but the payoff should be greater, of well-behaving classes, transparent guis, and pre-invented wheels.  Otherwise, tops is designed wrong (or worse, the very idea is wrong that psychophysics experiments have most of their organization in common).\
+\fs24 The tops project has a few guiding principles which may explain why it has the form it has, and should focus its future development.
+\fs36 \
 \
+
+\fs24 WORTH USING
+\fs36 \
+
+\fs24 The main goal of tops is that it should be worth a user's time to design an experiment so that it agrees with the way tops factors functionality.  That is, it may cost a user some effort to cast his/her experiment in terms of tops classes, but the payoff should be greater, of well-behaving classes, transparent guis, and pre-invented wheels.  Otherwise, tops must be designed wrong (or worse, the very idea is wrong that psychophysics experiments have most of their organization in common).\
+\
+INDEPENDENCE vs. INTEGRATION\
 tops should depend only on Matlab.  You should be able to use all of the features of all of the tops classes and functions without installing any other library.  For example, the default timekeeping function for tops classes is Matlab's builtin @now function.  @now may be inconvenient (it keeps time in days, not seconds) or inadequate for some purposes, but it is the highest-precision, standalone clock function that Matlab provides.\
 \
 However, tops should easily interface with other libraries.  For example, tops classes can easily substitute a different timekeeping function for @now.  Psychtoolbox's @GetSecs might be a suitable choice, or perhaps some other custom function that counts trials.\
 \
+SMALL TASKS\
 tops should encourage a myopic design habit.  That is, users should be able to design narrowly-purposed functions and classes (i.e. draw this stimulus, check this input) and let tops integrated them into grander behavior.  tops itself should be hyperopic.  That is, it should provide structure and leave the details of an experiment up to the experimenter. \
 \
+MODES AND MNEMONICS\
 tops frequently uses the concepts of 
 \i mode
 \i0  and 
@@ -36,10 +68,16 @@ tops frequently uses the concepts of
 \i menmonic
 \i0  should be more like a tag for a single value (e.g. "reaction time") or object  or (e.g. "left mouse button").\
 \
+OBJECT-ORIENTED\
+tops uses an object-oriented approach to most programming tasks.\
+\
 
 \fs36 tops Matlab concepts\
 
-\fs24 One of the major currencies of tops is the 
+\fs24 tops is written in Matlab and should take advantage of what Matlab has to offer.  It relies on a few Matlab concepts, in particular.\
+\
+"FEVALABLES"\
+One of the major currencies of tops is the 
 \i fevalable
 \i0  cell array.  This is a cell array whose first element is a function handle and whose other elements are arguments to pass to that function.  For example the Matlab code,\
 	
@@ -64,6 +102,7 @@ It may be worth noting that the
 \i "
 \i0 .\
 \
+FEVALABLES vs. ANONYMOUS FUNCTIONS\
 Matlab also defines the 
 \i anonymous function
 \i0 , which is another way of packaging a function with some data.  In many cases the 
@@ -88,20 +127,16 @@ tops favors the
 \i fevalable
 \i0  can be accessed and manipulated programmatically.  But anonymous functions are still useful and still used by tops, especially as callbacks for Matlab graphics objects.\
 \
-subfunctions are scope-safe\
+SUBFUNCTIONS\
+A good way to define focused behaviors is with subfunctions.  A useful strategy for working with tops is to define a single function that performs setup for an experiment.  At the bottom of its file, this setup function may define several subfunctions which can be referenced and packaged up into 
+\i fevalables
+\i0 .  As long as a subfunction and an 
+\i fevalable
+\i0  are defined in the same m-file, the subfunction can remain valid and can be passes around like other variables.\
 \
-handle classes, passing by reference\
+"HANDLE" objects\
+As of Matlab 2009a, Matlab supports object-oriented programming and passing of objects by reference (so-called "handles").  Thus, many objects in tops are subclasses of the Matlab "handle" class.  This means that different functions may refer to one self-same object, and modify it concurrently.  This behavior should be familiar to programmers.  But object references may be new to users who are used to having Matlab 
+\i copy
+\i0  all of their variables from one function to another.\
 \
-
-\fs36 tops foundation
-\fs24 \
-tops defines four "foundataion" classes that should support many different kinds of experiments:\
-	-topsBlockTree manages experiment setup, tear-down, and traversal of various task and trial conditions.\
-	-topsFunctionLoop; manages concurrent operations (e.g. checking user input while drawing graphics)\
-	-topsModalList: holds arbitrary values and objects, grouped by operational modes (e.g. various tasks)\
-	-topsDataLog: logs arbitrary values with timestamps and string mnemonics (may refuse handles or even enforce doubles at some point?)\
-\
-Each of these foundation classes comes [eventually] with a graphical user interface (gui).  Each gui's main job is to keep its appearance in sync with the foundation object it represents and thereby provide the user with a good look "under the hood" of that object.  In a few cases where it makes the most sense, a gui can also provide access to an object's methods or allow the user to edit an object's properties.\
-\
-\
-Copyright 2009 by benjamin.heasly@gmail.com}
+2009 benjamin.heasly@gmail.com, Seattle, WA}
