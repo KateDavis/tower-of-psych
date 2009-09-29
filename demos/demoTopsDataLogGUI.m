@@ -23,7 +23,7 @@ mnemonics = { ...
 % until the gui window closes, continually log events
 %   they will appear in the gui
 ii = 0;
-while isvalid(gui)
+while ii<1e4%isvalid(gui)
     % log some data--the number ii--with one of the mnemoncis above
     m = mnemonics{1+mod(ii, length(mnemonics))};
     topsDataLog.logMnemonicWithData(m, ii);
