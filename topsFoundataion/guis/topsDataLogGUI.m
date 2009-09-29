@@ -1,6 +1,8 @@
 classdef topsDataLogGUI < handle
     properties
         figure;
+        isBusy = false;
+        
         timeZero = 0;
         timeInterval = eps;
     end
@@ -8,20 +10,20 @@ classdef topsDataLogGUI < handle
     properties(Hidden)
         ignoredMnemonicsLabel;
         ignoredMnemonicsList;
-        
         triggerMnemonicsLabel;
         triggerMnemonicsList;
-        
         accumulatorAxes;
         accumulatorClearButton;
         
         dataLogAxes;
         dataLogReplayButton;
-        dataLogLines;
-        
-        guiClearButton;
+        dataLogTexts;
+        dataLogCount = 0;
         
         listeners = struct();
+        
+        title = 'Data Log Viewer';
+        busyTitle = 'Data Log Viewer (busy...)'
     end
     
     methods
@@ -38,13 +40,23 @@ classdef topsDataLogGUI < handle
             delete(struct2array(self.listeners));
         end
         
+        function set.isBusy(self, isBusy)
+            self.isBusy = isBusy;
+            if isBusy
+                set(self.figure, 'Name', self.busyTitle);
+            else
+                set(self.figure, 'Name', self.title);
+            end
+            drawnow;
+        end
+        
         function replayEntireLog(self)
-            cla(self.dataLogAxes)
-            cla(self.accumulatorAxes);
-            
             self.timeInterval = eps;
-            self.dataLogLines = [];
-
+            self.dataLogCount = 0;
+            set(self.dataLogTexts, 'Visible', 'off');
+            cla(self.accumulatorAxes);
+            self.isBusy = true;
+            
             theLog = topsDataLog.theDataLog;
             entireLogStruct = theLog.getAllDataSorted;
             ed = EventWithData;
@@ -52,6 +64,7 @@ classdef topsDataLogGUI < handle
                 ed.UserData = entireLogStruct(ii);
                 self.hearNewData(theLog, ed);
             end
+            self.isBusy = false;
         end
         
         function listenToDataLog(self)
@@ -111,11 +124,12 @@ classdef topsDataLogGUI < handle
         
         function trigger(self, logEntryStruct)
             self.timeZero = logEntryStruct.time;
-            if ~isempty(self.dataLogLines)
-                set(self.dataLogLines, 'Parent', self.accumulatorAxes);
+            if self.dataLogCount > 0
+                t = copyobj(self.dataLogTexts(1:self.dataLogCount), ...
+                    self.accumulatorAxes);
+                set(t, 'String', '-----');
             end
-            self.dataLogLines = [];
-            cla(self.dataLogAxes);
+            self.dataLogCount = 0;
         end
         
         function plotLogEntry(self, logEntryStruct)
@@ -131,36 +145,51 @@ classdef topsDataLogGUI < handle
             colNum = mod(sum(logEntryStruct.mnemonic), 7);
             col = dec2bin(colNum, 3)=='1';
             
-            summary = sprintf('%s: %s', ...
-                logEntryStruct.mnemonic, ...
-                stringifyValue(logEntryStruct.data));
+            % summary = sprintf('-----%s: %s', ...
+            %     logEntryStruct.mnemonic, ...
+            %     stringifyValue(logEntryStruct.data));
             
-            self.dataLogLines (end+1) = line([0 .1], [y y], ...
-                'Parent', self.dataLogAxes, ...
-                'Color', col, ...
-                'LineStyle', '-', ...
-                'Marker', 'none');
-            
-            text(.11, y, summary, ...
-                'FontName', 'Courier', ...
-                'HitTest', 'off', ...
-                'Interpreter', 'none', ...
-                'Parent', self.dataLogAxes, ...
-                'Color', col, ....
-                'VerticalAlignment', 'middle', ...
-                'HorizontalAlignment', 'left');
+            t = self.getNextText;
+            summary = sprintf('----- %s', logEntryStruct.mnemonic);
+            set(t, ...
+                'Visible', 'on', ...
+                'String', summary, ...
+                'Position', [0, y, 0], ...
+                'Color', col);
         end
         
         function hearFlushedTheDataLog(self, theLog, eventData)
-            self.createWidgets;
+            self.replayEntireLog;
+        end
+        
+        function t = getNextText(self)
+            if self.dataLogCount >= length(self.dataLogTexts)
+                % double up on handle graphics
+                n = max(100, self.dataLogCount);
+                newTexts = text(zeros(1,n), zeros(1,n), '', ...
+                    'Parent', self.dataLogAxes, ...
+                    'Visible', 'off', ...
+                    'FontName', 'Courier', ...
+                    'HitTest', 'off', ...
+                    'Interpreter', 'none', ...
+                    'VerticalAlignment', 'middle', ...
+                    'HorizontalAlignment', 'left');
+                self.dataLogTexts = cat(1, self.dataLogTexts, newTexts);
+                disp(sprintf('news: %d', n))
+            end
+            n = self.dataLogCount + 1;
+            t = self.dataLogTexts(n);
+            self.dataLogCount = n;
         end
         
         function createWidgets(self)
             self.setupFigure;
             
             self.timeInterval = eps;
+            self.dataLogCount = 0;
+            self.dataLogTexts = [];
             
-            x = [0 .1 .11 .6 .61 .85 1];
+            x = [0 .07 .08 .7 .71 .85 1];
             y = [0 .45 .5 .95 1];
             self.accumulatorAxes = axes( ...
                 'Parent', self.figure, ...
@@ -215,7 +244,7 @@ classdef topsDataLogGUI < handle
                 'Value', [], ...
                 'Min', 0, ...
                 'Max', 1000);
-
+            
             self.ignoredMnemonicsLabel = uicontrol( ...
                 'Parent', self.figure, ...
                 'Style', 'text', ...
@@ -236,7 +265,7 @@ classdef topsDataLogGUI < handle
                 'Value', [], ...
                 'Min', 0, ...
                 'Max', 1000);
-
+            
             self.dataLogReplayButton = uicontrol ( ...
                 'Parent', self.figure, ...
                 'Style', 'pushbutton', ...
@@ -257,7 +286,7 @@ classdef topsDataLogGUI < handle
                 'CloseRequestFcn', @(obj, event) delete(self), ...
                 'HandleVisibility', 'off', ...
                 'MenuBar', 'none', ...
-                'Name', mfilename, ...
+                'Name', self.title, ...
                 'NumberTitle', 'off', ...
                 'ToolBar', 'none');
         end
