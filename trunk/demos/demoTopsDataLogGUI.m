@@ -28,5 +28,5 @@ while isvalid(gui)
     m = mnemonics{1+mod(ii, length(mnemonics))};
     topsDataLog.logMnemonicWithData(m, ii);
     ii = ii + 1;
-    pause(.5)
+    pause(1 + normrnd(.1,.1))
 end
