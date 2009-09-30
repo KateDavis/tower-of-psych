@@ -14,21 +14,24 @@ classdef topsDataLogGUI < handle
         triggerMnemonicsList;
         accumulatorAxes;
         accumulatorClearButton;
+        accumulatorCount = 0;
         
         dataLogAxes;
         dataLogReplayButton;
         dataLogTexts;
+        dataLogCount = 0;
         
         listeners = struct();
         
         title = 'Data Log Viewer';
-        busyTitle = 'Data Log Viewer (busy...)'
+        busyTitle = 'Data Log Viewer (busy...)';
+        colors = spacedColors(64);
     end
     
     methods
         function self = topsDataLogGUI()
             self.createWidgets;
-            self.replayEntireLog;
+            %self.replayEntireLog;
             self.listenToDataLog;
         end
         
@@ -50,10 +53,10 @@ classdef topsDataLogGUI < handle
         end
         
         function replayEntireLog(self)
+            set(self.dataLogTexts, 'Visible', 'off');
             self.timeInterval = eps;
-            cla(self.accumulatorAxes);
-            delete(self.dataLogTexts);
-            self.dataLogTexts = [];
+            self.dataLogCount = 0;
+            self.accumulatorCount = 0;
             self.isBusy = true;
             
             theLog = topsDataLog.theDataLog;
@@ -68,6 +71,7 @@ classdef topsDataLogGUI < handle
         
         function listenToDataLog(self)
             theLog = topsDataLog.theDataLog;
+            self.timeZero = theLog.earliestTime;
             
             delete(struct2array(self.listeners))
             self.listeners.NewMnemonic = theLog.addlistener( ...
@@ -122,12 +126,16 @@ classdef topsDataLogGUI < handle
         end
         
         function trigger(self, logEntryStruct)
+            set(self.dataLogTexts(self.accumulatorCount+1:self.dataLogCount), ...
+                'Parent', self.accumulatorAxes, ...
+                'String', '-----');
+            self.accumulatorCount = self.dataLogCount;
             self.timeZero = logEntryStruct.time;
-            t = copyobj(self.dataLogTexts, self.accumulatorAxes);
-            set(t, 'String', '-----');
-            
-            delete(self.dataLogTexts);
-            self.dataLogTexts = [];
+        end
+        
+        function clearAccumulator(self)
+            set(self.dataLogTexts(1:self.accumulatorCount), ...
+                'Visible', 'off');
         end
         
         function plotLogEntry(self, logEntryStruct)
@@ -139,25 +147,38 @@ classdef topsDataLogGUI < handle
                     'YLim', [0 self.timeInterval+eps]);
             end
             
-            % fudge a color for each mnemonic by BS hashing
-            colNum = mod(sum(logEntryStruct.mnemonic), 7);
-            col = dec2bin(colNum, 3)=='1';
+            % fudge a color for each mnemonic hashing into a colormap
+            colNum = 1 + mod(sum(logEntryStruct.mnemonic), size(self.colors,1));
             
             % summary = sprintf('-----%s: %s', ...
             %     logEntryStruct.mnemonic, ...
             %     stringifyValue(logEntryStruct.data));
-            
             summary = sprintf('----- %s', logEntryStruct.mnemonic);
-            self.dataLogTexts(end+1) = text(0, y, summary, ...
+            set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Visible', 'on', ...
-                'Color', col, ...
-                'EraseMode', 'background', ...
-                'FontName', 'Courier', ...
-                'HitTest', 'off', ...
-                'Interpreter', 'none', ...
-                'VerticalAlignment', 'middle', ...
-                'HorizontalAlignment', 'left');
+                'Color', self.colors(colNum, :), ...
+                'Position', [0, y], ...
+                'String', summary, ...
+                'Visible', 'on');
+        end
+        
+        function t = nextText(self)
+            if self.dataLogCount >= length(self.dataLogTexts)
+                n = max(100, self.dataLogCount);
+                newTexts = text(zeros(1,n), zeros(1,n), '', ...
+                    'Parent', self.dataLogAxes, ...
+                    'Visible', 'off', ...
+                    'EraseMode', 'background', ...
+                    'FontName', 'Courier', ...
+                    'HitTest', 'off', ...
+                    'Interpreter', 'none', ...
+                    'VerticalAlignment', 'middle', ...
+                    'HorizontalAlignment', 'left');
+                self.dataLogTexts = cat(1, self.dataLogTexts, newTexts);
+            end
+            n = self.dataLogCount + 1;
+            t = self.dataLogTexts(n);
+            self.dataLogCount = n;
         end
         
         function hearFlushedTheDataLog(self, theLog, eventData)
@@ -169,6 +190,8 @@ classdef topsDataLogGUI < handle
             
             self.timeInterval = eps;
             self.dataLogTexts = [];
+            self.dataLogCount = 0;
+            self.accumulatorCount = 0;
             
             x = [0 .07 .08 .7 .71 .85 1];
             y = [0 .45 .5 .95 1];
@@ -190,7 +213,7 @@ classdef topsDataLogGUI < handle
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
                 'String', 'clear', ...
-                'Callback', @(obj, event) cla(self.accumulatorAxes), ...
+                'Callback', @(obj, event) self.clearAccumulator, ...
                 'Position', [x(1), y(4), x(2)-x(1), y(5)-y(4)], ...
                 'HorizontalAlignment', 'left');
             
