@@ -1,4 +1,4 @@
-#Motivation and overview of the Tower of Psych project
+#summary Motivation and overview of the Tower of Psych project
 
 = Tower of Psych =
 
