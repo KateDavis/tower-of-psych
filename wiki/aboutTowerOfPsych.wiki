@@ -111,7 +111,7 @@ A good way to define focused behaviors is by breaking a task into multiple small
 You can package up subfunctions as fevalables and return them from your main function.  You can then pass the fevalable from file to file, or object to object, just like any other variable, and it will remain valid and usable.  It's portable!
 
 === "HANDLE" OBJECTS, REFERENCES ===
-As of Matlab 2009a, Matlab supports object-oriented programming and passing of objects by reference (so-called "handles").  Thus, many objects in tops are subclasses of the Matlab "handle" class.  This means that different functions can access the self-same object and modify it concurrently.
+As of Matlab 2008a, Matlab supports object-oriented programming and passing of objects by reference (so-called "handles").  Thus, many objects in tops are subclasses of the Matlab "handle" class.  This means that different functions can access the self-same object and modify it concurrently.
 
 References should be familiar to programmers, but may be new to users who are used to Matlab's usual copying behavior.  Most Matlab variables are copied, not referenced, so that one function cannot access or modify a variable in used by another function.
 
