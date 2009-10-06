@@ -1,23 +1,38 @@
-{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf540
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\margl1440\margr1440\vieww12360\viewh12100\viewkind0
 \deftab720
 \pard\pardeftab720\ql\qnatural
 
-\f0\fs24 \cf0 Would like to have blockTree preview functionality extend dynamically to function loop.  But how, since the block tree may or may not directly see function loop?\
-	-both classes could obey a global mode, but that would be dumb\
-	-block tree could specially check for a function loops in its \{@,...\}, but this is also dumb.\
-	-there could be a "previewable" superclass that they both inherit.  With some kind of singleton behavior (encapsulated global behavior).  Or a preview broadcast event?\
+\f0\fs28 \cf0 Previews
+\fs24 \
+Hey, are previews necessary?\
 \
+If so might like to have blockTree preview mode extend dynamically to function loop.  But how, since the block tree may or may not directly see function loop?\
+	-there could be a "previewable" superclass that they both inherit.  With some kind of singleton behavior (encapsulated global behavior).\
 \
-In making encounter, I noticed that once things are "concurrent" and in queues, and getting checked with a function loop, things get harder to conceptualize and debug.  So the goal of the function loop gui should be to make this conceptualization easier--during development and sandboxing.\
-\
-\
-the topsDataLogGUI should have a better browsing mode.  Automatic resizing is cool, but with lots of data entries are illegible and this defeats the purpose of having a GUI.  There should be range selection sliders?  Which automatically slice?  The correct size of range, or zoom factor, is still unspecified because the clock function and font sizes are unknown.  Maybe the user must select the range, which can automatically get nudged forward with new data.\
-\
-\
+
+\fs28 Inheriting loop modes
+\fs24 \
 Something that would be cool, but might be too clever to be practical, is letting a block tree noded define a function loop mode, and also define a mode that concatenates its parent mode.  This would be a strong form of tree organization.  It would require that a block be associated with a function loop.  It might be better left as a design pattern, rather than a foundation behavior.\
 \
+
+\fs28 topsDataLog
+\fs24 \
+Should probably exclude handle objects.  Storing these is counter to the idea of writing data out to disk.  This would be a key difference vs. topsModalList.  At most, classes should be able to dump themselves as a struct into the log.\
 \
-The clear() time for topsDataLog can be outrageous.  This is probably because it has been containing handle instances.  I would like to convince myself that it's okay to restrict the log to constant values, or even just doubles.  Restricting to doubles could improve hash table performance, memory, or both.  But it seems reasonable to be able to log a string or an array.}
+
+\fs28 topsDataLogGUI
+\fs24 \
+Should have a better browsing mode.  Automatic resizing is necessary since the clock function and font sizes are unknown.  But somehow the user also needs to select a range.\
+	- triggering is a partial solution, but leaves the bottom end hanging.  How do you focus on one trial when all trials contain the "correct" mnemonic?\
+	- slider to change window size?  ...to some proportion of the automatic size?\
+\
+Mnemonics in the trigger and ignore lists really want to be colored like the axes items.  uicontrol:listbox can't do this.  Maybe uitable will be a drop-in solution.  uitable might also make selections more intuitive.\
+\
+
+\fs28 topsFunctionLoopGUI
+\fs24 \
+In making encounter, I noticed that once things are "concurrent" and in queues, and getting checked with a function loop, things get harder to conceptualize and debug.  So the goal of the function loop gui should be to make this conceptualization easier--during development and sandboxing.\
+}
