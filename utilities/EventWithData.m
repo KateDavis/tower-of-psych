@@ -9,6 +9,7 @@ classdef EventWithData < event.EventData
     
     methods
         function self = EventWithData(UserData)
+            self = self@event.EventData;
             if nargin
                 self.UserData = UserData;
             end

@@ -1,4 +1,4 @@
-classdef battleQueue < handle
+classdef EncounterBattleQueue < handle
     %Skeletal queue of feval()able cell arrays, for "encounter" game
     %   With thought, may get promoted to topsFoundataion
     
@@ -8,7 +8,7 @@ classdef battleQueue < handle
     end
     
     methods
-        function self = battleQueue
+        function self = EncounterBattleQueue
         end
         
         function flushQueue(self)

@@ -1,4 +1,4 @@
-classdef battler < handle
+classdef EncounterBattler < handle
     %Class to represent character or monster in the "encounter" game
     
     properties (SetObservable)
@@ -26,7 +26,7 @@ classdef battler < handle
     end
     
     methods
-        function self = battler(isMonster)
+        function self = EncounterBattler(isMonster)
             if nargin
                 self.isMonster = isMonster;
             end

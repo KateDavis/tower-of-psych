@@ -102,5 +102,22 @@ classdef TestTopsDataLog < TestCase
             allTimes = [allLogged.time];
             assertTrue(all(diff(allTimes) >=0), 'data log entries not sorted by time')
         end
+        
+        function testLogStructCorrectSize(self)
+            % should make struct array for cell array of times,
+            %   else scalar struct
+            time = 1;
+            s = topsDataLog.newLogStruct(self.data{1}, time, self.mnemonics{1});
+            assertEqual(length(s), 1, 'logStruct should be scalar');
+            
+            s = topsDataLog.newLogStruct(self.data, time, self.mnemonics{1});
+            assertEqual(length(s), 1, 'logStruct should be scalar');
+            
+            for ii = 1:length(self.data)
+                timeCell{ii} = sprintf('%d', ii);
+            end
+            s = topsDataLog.newLogStruct(self.data, timeCell, self.mnemonics{1});
+            assertEqual(length(s), length(self.data), 'logStruct should be array');
+        end
     end
 end

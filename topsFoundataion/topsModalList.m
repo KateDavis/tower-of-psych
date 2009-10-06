@@ -47,8 +47,25 @@ classdef topsModalList < handle
                         modeItems(selector).precedence = precedence;
                     end
                     modeItems(selector).data = item;
+                    self.modes.(mode) = modeItems;
+                else
+                    if nargin >= 5
+                        self.addItemToModeWithMnemonicWithPrecedence( ...
+                            item, mode, mnemonic, precedence);
+                    else
+                        self.addItemToModeWithMnemonicWithPrecedence( ...
+                            item, mode, mnemonic);
+                    end
                 end
-                self.modes.(mode) = modeItems;
+            else
+                if nargin >= 5
+                    self.addItemToModeWithMnemonicWithPrecedence( ...
+                        item, mode, mnemonic, precedence);
+                else
+                    self.addItemToModeWithMnemonicWithPrecedence( ...
+                        item, mode, mnemonic);
+                end
+                
             end
         end
         
@@ -116,7 +133,7 @@ classdef topsModalList < handle
             end
         end
         
-        function items = getAllItemsFromModeByMnemonic(self, mode)
+        function items = getAllItemsFromModeWithMnemonics(self, mode)
             modeItems = self.modes.(mode);
             items = cell2struct({modeItems.data}, {modeItems.mnemonic}, 2);
         end
