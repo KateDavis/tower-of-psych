@@ -7,6 +7,7 @@ classdef TestTopsFunctionLoop < TestCase
         orderedMode;
         orderedFunctions;
         order;
+        eventCount;
     end
     
     methods
@@ -81,26 +82,35 @@ classdef TestTopsFunctionLoop < TestCase
             assertTrue(all(diff(self.order))>0, 'executes functions in wrong order');
         end
         
+        function testAbortRunWithProceedFlag(self)
+            abortMode = 'abortTest';
+            self.functionLoop.addFunctionToModeWithPrecedence({@self.clearProceedFlag}, abortMode, 1);
+            self.functionLoop.runInModeForDuration(abortMode, 1);
+            assertFalse(self.functionLoop.proceed, 'function loop proceed flag should be false');
+        end
+        
+        function clearProceedFlag(self)
+            self.functionLoop.proceed = false;
+        end
+        
         function testPropertyChangeEventPosting(self)
-            global eventCount
-            eventCount = 0;
-            
             % listen for event postings
             props = properties(self.functionLoop);
             n = length(props);
             for ii = 1:n
-                self.functionLoop.addlistener(props{ii}, 'PostSet', @hearEvent);
+                self.functionLoop.addlistener(props{ii}, 'PostSet', @self.hearEvent);
             end
             
             % trigger a posting for each property
+            self.eventCount = 0;
             for ii = 1:n
                 self.functionLoop.(props{ii}) = self.functionLoop.(props{ii});
             end
-            assertEqual(eventCount, n, 'heard wrong number of property set events');
-            clear global eventCount
-            function hearEvent(metaProp, event)
-                eventCount = eventCount + 1;
-            end
+            assertEqual(self.eventCount, n, 'heard wrong number of property set events');
+        end
+        
+        function hearEvent(self, metaProp, event)
+            self.eventCount = self.eventCount + 1;
         end
     end
 end

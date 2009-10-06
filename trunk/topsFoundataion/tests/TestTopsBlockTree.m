@@ -2,6 +2,7 @@ classdef TestTopsBlockTree < TestCase
     
     properties
         blockTree;
+        eventCount;
     end
     
     methods
@@ -26,9 +27,9 @@ classdef TestTopsBlockTree < TestCase
         end
         
         function testPreviewOwnFunctions(self)
-            self.blockTree.blockBeginFcn = {@disp, 'block begin'};
-            self.blockTree.blockActionFcn = {@disp, 'block action'};
-            self.blockTree.blockEndFcn = {@disp, 'block end'};
+            self.blockTree.blockBeginFcn = {@sprintf, 'block begin'};
+            self.blockTree.blockActionFcn = {@sprintf, 'block action'};
+            self.blockTree.blockEndFcn = {@sprintf, 'block end'};
             
             self.blockTree.preview;
             summary = topsDataLog.getAllDataSorted;
@@ -43,11 +44,14 @@ classdef TestTopsBlockTree < TestCase
             for ii = 1:nChildren
                 child = topsBlockTree;
                 child.name = 'child tree';
+                child.blockBeginFcn = {@sprintf, 'block begin'};
+                child.blockActionFcn = {@sprintf, 'block action'};
+                child.blockEndFcn = {@sprintf, 'block end'};
                 self.blockTree.addChild(child);
             end
             self.blockTree.preview;
             summary = topsDataLog.getAllDataSorted;
-            assertEqual(length(summary), 3*(nChildren+1), 'wrong number of child functions logged');
+            assertEqual(length(summary), 3*nChildren, 'wrong number of child functions logged');
         end
         
         function testDepthFirstFunctionOrder(self)
@@ -84,25 +88,23 @@ classdef TestTopsBlockTree < TestCase
         end
         
         function testPropertyChangeEventPosting(self)
-            global eventCount
-            eventCount = 0;
-            
             % listen for event postings
             props = properties(self.blockTree);
             n = length(props);
             for ii = 1:n
-                self.blockTree.addlistener(props{ii}, 'PostSet', @hearEvent);
+                self.blockTree.addlistener(props{ii}, 'PostSet', @self.hearEvent);
             end
             
             % trigger a posting for each property
+            self.eventCount = 0;
             for ii = 1:n
                 self.blockTree.(props{ii}) = self.blockTree.(props{ii});
             end
-            assertEqual(eventCount, n, 'heard wrong number of property set events');
-            clear global eventCount
-            function hearEvent(metaProp, event)
-                eventCount = eventCount + 1;
-            end
+            assertEqual(self.eventCount, n, 'heard wrong number of property set events');
+        end
+        
+        function hearEvent(self, metaProp, event)
+            self.eventCount = self.eventCount + 1;
         end
     end
 end

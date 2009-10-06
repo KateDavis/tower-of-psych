@@ -1,4 +1,4 @@
-classdef battleTimer < handle
+classdef EncounterBattleTimer < handle
     %Skeletal timer class to help schedule "encounter" battle events
     %   with thought, might get promoted to topsFoundataion
     
@@ -11,7 +11,7 @@ classdef battleTimer < handle
     end
     
     methods
-        function self = battleTimer
+        function self = EncounterBattleTimer
         end
 
         function loadForTimeWithCallback(self, time, callback)

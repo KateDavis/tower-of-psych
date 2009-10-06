@@ -27,7 +27,7 @@ classdef topsBlockTree < handle
             self.children(end+1) = child;
         end
         
-        function summary = run(self, doFeval)
+        function run(self, doFeval)
             if nargin < 2
                 doFeval = true;
             end
@@ -60,11 +60,16 @@ classdef topsBlockTree < handle
         end
         
         function fevalAndLog(self, note, fcn, doFeval)
-            if doFeval && ~isempty(fcn)
-                feval(fcn{:});
+            if ~isempty(fcn)
+                if doFeval
+                    mnemonic = sprintf('%s:%s', self.name, note);
+                    topsDataLog.logMnemonicWithData(mnemonic, fcn);
+                    feval(fcn{:});
+                else
+                    mnemonic = sprintf('%s:%s(preview)', self.name, note);
+                    topsDataLog.logMnemonicWithData(mnemonic, fcn);
+                end
             end
-            mnemonic = sprintf('%s:%s', self.name, note);
-            topsDataLog.logMnemonicWithData(mnemonic, fcn);
         end
         
         function set.iterationMethod(self, iterationMethod)

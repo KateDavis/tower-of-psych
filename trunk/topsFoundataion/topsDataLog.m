@@ -34,11 +34,20 @@ classdef (Sealed) topsDataLog < handle
             log = theLog;
         end
         
-        function logStruct = newLogStruct(datas, times, mnemonics)
-            logStruct = struct( ...
-                'data', datas, ...
-                'time', times, ...
-                'mnemonic', mnemonics);
+        function logStruct = newLogStruct(data, time, mnemonic)
+            % cell array of times -> struct array
+            %   else, scalar struct
+            if iscell(data) && ~iscell(time)
+                logStruct = struct( ...
+                    'data', {data}, ...
+                    'time', time, ...
+                    'mnemonic', mnemonic);
+            else
+                logStruct = struct( ...
+                    'data', data, ...
+                    'time', time, ...
+                    'mnemonic', mnemonic);
+            end
         end
         
         function flushAllData
@@ -57,7 +66,7 @@ classdef (Sealed) topsDataLog < handle
             notify(self, 'FlushedTheDataLog');
         end
         
-        function logMnemonicWithData(mnemonic, data)
+        function logMnemonicWithData(mnemonic, data)            
             self = topsDataLog.theDataLog;
             
             nowTime = feval(self.clockFcn);
@@ -82,8 +91,9 @@ classdef (Sealed) topsDataLog < handle
                 self.count = self.count + 1;
                 notify(self, 'NewMnemonic', EventWithData(mnemonic));
             end
-            notify(self, 'NewData', ...
-                EventWithData(topsDataLog.newLogStruct(data, nowTime, mnemonic)));
+            
+            dataStruct = topsDataLog.newLogStruct(data, nowTime, mnemonic);
+            notify(self, 'NewData', EventWithData(dataStruct));
         end
         
         function allMnemonics = getAllMnemonics
