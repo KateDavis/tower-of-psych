@@ -14,7 +14,7 @@ logFigurePosition = logFigurePosition - [.5*logFigurePosition(3), 0 0 0];
 set(logGUI.figure, 'Position', logFigurePosition);
 
 % configure the Spots Task
-[spotsList, spotsTree] = configureSpotsTask(spotsFigurePosition);
+[spotsList, spotsTree] = configureSpotsTasks(spotsFigurePosition);
 
 % launch the Spots Task
 spotsTree.run;

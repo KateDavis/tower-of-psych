@@ -1,5 +1,21 @@
-function [spotsList, spotsTree] = configureSpotsTask(figurePosition)
-%Configure tops for a demo psychophysics task, with two trial types
+function [spotsList, spotsTree] = configureSpotsTasks(figurePosition)
+%Configure tops for a demo psychophysics task, with two task types
+%
+%   [spotsList, spotsTree] = configureSpotsTasks(figurePosition);
+%
+%   spotsList is a topsModalList object which holds all the data needed to
+%   run the "spots" experiment.
+%
+%   spotsTree is a topsBlockTree object which organizes tasks and trials.
+%   It uses it and spotsList "know about" each other.
+%
+%   spotsTree.run(); will start the task
+%
+%
+% See also, demoSpotsTask; topsModalList, topsBlockTree
+
+% 2009 benjamin.heasly@gmail.com
+%   Seattle, WA
 
 if ~nargin
     figurePosition = [];
