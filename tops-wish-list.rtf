@@ -13,9 +13,11 @@ If so might like to have blockTree preview mode extend dynamically to function l
 	-there could be a "previewable" superclass that they both inherit.  With some kind of singleton behavior (encapsulated global behavior).\
 \
 
-\fs28 Inheriting loop modes
+\fs28 topsBlockTree
 \fs24 \
 Something that would be cool, but might be too clever to be practical, is letting a block tree noded define a function loop mode, and also define a mode that concatenates its parent mode.  This would be a strong form of tree organization.  It would require that a block be associated with a function loop.  It might be better left as a design pattern, rather than a foundation behavior.\
+\
+The block tree may need a custom iterationMethod--a function handle.  Must return one of the blockTree's children, else done.  Or similar...\
 \
 
 \fs28 topsDataLog
@@ -28,8 +30,11 @@ Should probably exclude handle objects.  Storing these is counter to the idea of
 Should have a better browsing mode.  Automatic resizing is necessary since the clock function and font sizes are unknown.  But somehow the user also needs to select a range.\
 	- triggering is a partial solution, but leaves the bottom end hanging.  How do you focus on one trial when all trials contain the "correct" mnemonic?\
 	- slider to change window size?  ...to some proportion of the automatic size?\
+	- or restrict range that gets replayed?  ...by clicking on the log itself??  ...I think so, by setting markers then hitting replay.\
 \
 Mnemonics in the trigger and ignore lists really want to be colored like the axes items.  uicontrol:listbox can't do this.  Maybe uitable will be a drop-in solution.  uitable might also make selections more intuitive.\
+\
+Should data be grouped into modes as well?  For quicker hide/trigger behavior?  Or allow some kind of mnemonics markup beyond alphabetical sorting?\
 \
 
 \fs28 topsFunctionLoopGUI

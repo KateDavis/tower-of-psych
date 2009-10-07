@@ -7,10 +7,38 @@ function [spotsList, spotsTree] = configureSpotsTasks(figurePosition)
 %   run the "spots" experiment.
 %
 %   spotsTree is a topsBlockTree object which organizes tasks and trials.
-%   It uses it and spotsList "know about" each other.
+%   spotsTree and spotsList "know about" each other.
 %
-%   spotsTree.run(); will start the task
+%   spotsTree.run(); will start the "spots" experiment.
 %
+%   figurePosition is optional.  It should contain a postion rectangle of
+%   the form [x, y, w, h] for where to put the expermient figure window.
+%
+%   The "spots" experiment is a demo for the Tower of Psych.  It uses the
+%   tops foundataion classes to implement an experiment similar to a real
+%   psychophysics experiment.
+%
+%   There are two tasks: a reaction time (rt) task and a fixed viewing time
+%   (fvt) task.  In both, the subject (you) uses the mouse to click on one
+%   of several spots that appear.
+%
+%   For the rt task, the trials go like this:
+%       -several blue spots and one red spot appear in the figure.
+%       -at any time, the subject may click on one of the spots.  The red
+%       spot is "correct" and the rest "incorrect".
+%       -the spots disappear and the figure is blank for an interval
+%       -the next trial begins...
+%
+%   For the fvt task, the trials go like this:
+%       -several blue and one red spot appear in the figure, then quickly
+%       all turn black
+%       -after the spots are black, the subject may click on one of the
+%       spots.  The spot that was red is "correct", the rest "incorrect".
+%       -the spots disappear and the figure is blank for an interval.
+%       -the next trial begins.
+%
+%   Several experiment parameters may be controlled by editing values near
+%   the top of configureSpotsTasks.m.
 %
 % See also, demoSpotsTask; topsModalList, topsBlockTree
 
@@ -21,69 +49,101 @@ if ~nargin
     figurePosition = [];
 end
 
-% this list will hold all data for the spots task
-%   it's somewhat like the ROOT_STRUCT of DotsX
+
+%%%
+%%% experiment parameters to edit:
+%%%
+spotRows = 5;
+spotColumns = 5;
+spotCount = 6;
+spotViewingTime = .25;
+
+intertrialInterval = 1;
+trialsInARow = 10;
+
+taskRepetitions = 2;
+taskOrder = 'sequential'; % 'sequential' or 'random'
+
+
+%%%
+%%% foundataion classes
+%%%
+
+% topsModalList
+% spotsList list will hold all parameters and other data for the spots
+%   experiment, somewhat like the ROOT_STRUCT of dotsx
 spotsList = topsModalList;
-
-% remember figure location for this "spots experiment"
 spotsList.addItemToModeWithMnemonicWithPrecedence(figurePosition, 'spots', 'figurePosition');
+spotsList.addItemToModeWithMnemonicWithPrecedence(spotRows, 'spots', 'spotRows');
+spotsList.addItemToModeWithMnemonicWithPrecedence(spotColumns, 'spots', 'spotColumns');
+spotsList.addItemToModeWithMnemonicWithPrecedence(spotCount, 'spots', 'spotCount');
+spotsList.addItemToModeWithMnemonicWithPrecedence(spotViewingTime, 'spots', 'spotViewingTime');
+spotsList.addItemToModeWithMnemonicWithPrecedence(intertrialInterval, 'spots', 'intertrialInterval');
+spotsList.addItemToModeWithMnemonicWithPrecedence(trialsInARow, 'spots', 'trialsInARow');
+spotsList.addItemToModeWithMnemonicWithPrecedence(taskRepetitions, 'spots', 'taskRepetitions');
+spotsList.addItemToModeWithMnemonicWithPrecedence(taskOrder, 'spots', 'taskOrder');
 
-% this loop will call functions during a trial
-%   each task can configure it, if necessary
+% topsFunctionLoop
+% function loops can multiple call functions repeatedly, during a trial
+%   spotsLoop just needs call drawnow(), over and over.
 spotsLoop = topsFunctionLoop;
 spotsLoop.addFunctionToModeWithPrecedence({@drawnow}, 'spots', 1);
 spotsList.addItemToModeWithMnemonicWithPrecedence(spotsLoop, 'spots', 'spotsLoop');
 
-% the top level block, to manage the overall "spots experiment"
+% topsBlockTree
+% spotsTree manages the main figure window
+%   it also will have the rt and fvt tasks as its "children"
 spotsTree = topsBlockTree;
 spotsTree.name = 'spots';
+spotsTree.iterations = taskRepetitions;
+spotsTree.iterationMethod = taskOrder;
 spotsTree.blockBeginFcn = {@spotsSetup, spotsList, 'spots'};
 spotsTree.blockEndFcn = {@spotsTearDown, spotsList, 'spots'};
 spotsList.addItemToModeWithMnemonicWithPrecedence(spotsTree, 'spots', 'spotsTopLevel');
 
-% a middle level block, to manage a reaction time task
+% rtTask manages the reaction time task
+%   it will also have a reaction time *trial* as its child
 taskName = 'rt_task';
 rtTask = topsBlockTree;
 rtTask.name = taskName;
-rtTask.iterations = 10;
+rtTask.iterations = trialsInARow;
 rtTask.blockBeginFcn = {@rtTaskSetup, spotsList, taskName};
 rtTask.blockEndFcn = {@rtTaskTearDown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(rtTask, taskName, 'rtTask');
+spotsTree.addChild(rtTask);
 
-% a bottom level block, to manage reaction time trials
+% rtTrial manages individual reaction time trials
 rtTrial = topsBlockTree;
 rtTrial.name = 'rt_trial';
 rtTrial.blockBeginFcn = {@rtTrialSetup, spotsList, taskName};
 rtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
 rtTrial.blockEndFcn = {@rtTrialTeardown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(rtTrial, taskName, 'rtTrial');
-
-% attach the task to the experiment!!
-%   attach the trial to the task!!!!!!!
-spotsTree.addChild(rtTask);
 rtTask.addChild(rtTrial);
 
-% another middle level block, to manage a fixed viewing time task
-taskName = 'fix_task';
-fixTask = topsBlockTree;
-fixTask.name = taskName;
-fixTask.iterations = 10;
-fixTask.blockBeginFcn = {@fixTaskSetup, spotsList, taskName};
-fixTask.blockEndFcn = {@fixTaskTearDown, spotsList, taskName};
-spotsList.addItemToModeWithMnemonicWithPrecedence(fixTask, taskName, 'fixTask');
+% fvtTask manages the fixed viewing time task
+%   it will also have a fixed viewing time time *trial* as its child
+taskName = 'fvt_task';
+fvtTask = topsBlockTree;
+fvtTask.name = taskName;
+fvtTask.iterations = trialsInARow;
+fvtTask.blockBeginFcn = {@fvtTaskSetup, spotsList, taskName};
+fvtTask.blockEndFcn = {@fvtTaskTearDown, spotsList, taskName};
+spotsList.addItemToModeWithMnemonicWithPrecedence(fvtTask, taskName, 'fvtTask');
 
 % another bottom level block, to manage a fixed viewing time trial
-fixTrial = topsBlockTree;
-fixTrial.name = 'fix_trial';
-fixTrial.blockBeginFcn = {@fixTrialSetup, spotsList, taskName};
-fixTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
-fixTrial.blockEndFcn = {@fixTrialTeardown, spotsList, taskName};
-spotsList.addItemToModeWithMnemonicWithPrecedence(fixTrial, taskName, 'fixTrial');
+fvtTrial = topsBlockTree;
+fvtTrial.name = 'fvt_trial';
+fvtTrial.blockBeginFcn = {@fvtTrialSetup, spotsList, taskName};
+fvtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
+fvtTrial.blockEndFcn = {@fvtTrialTeardown, spotsList, taskName};
+spotsList.addItemToModeWithMnemonicWithPrecedence(fvtTrial, taskName, 'fvtTrial');
 
 % attach the task to the experiment!!
 %   attach the trial to the task!!!!!!!
-spotsTree.addChild(fixTask);
-fixTask.addChild(fixTrial);
+spotsTree.addChild(fvtTask);
+fvtTask.addChild(fvtTrial);
+
 
 %%%
 %%% Functions for the overall experiment (the top level)
@@ -119,26 +179,27 @@ close(fig);
 function rtTaskSetup(spotsList, modeName)
 % build stimulus spots in the axes
 ax = spotsList.getItemFromModeWithMnemonic('spots', 'axes');
-n = 5;
-d = .1;
-positions = [linspace(-1,1-d,n)', ...
-    linspace(-1,1-d,n)', ...
-    d*ones(n,1), ...
-    d*ones(n,1)];
+n = spotsList.getItemFromModeWithMnemonic('spots', 'spotCount');
+r = spotsList.getItemFromModeWithMnemonic('spots', 'spotRows');
+c = spotsList.getItemFromModeWithMnemonic('spots', 'spotColumns');
+shuffle = randperm(r*c);
+area = [-1 -1 2 2];
 for ii = 1:n
+    m = shuffle(ii);
+    pos = subposition(area, r, c, mod(m,c)+1, ceil(m/c));
+    topsDataLog.logMnemonicWithData('made new spot', pos);
     spots(ii) = rectangle('Parent', ax, ...
-        'Position', positions(ii,:), ...
+        'Position', pos,...
         'Curvature', [1 1], ...
         'FaceColor', [1 1 1], ...
         'Visible', 'off');
 end
 
 % use "replace" rather than "add", since this could get called twice and we
-% don't want redundant spots created
+% don't want to replace any existing spots
 spotsList.replaceItemInModeWithMnemonicWithPrecedence(spots, modeName, 'spots');
 
 uiwait(warndlg({'Click the red spot,' 'as soon as you can.'}, 'Ready to begin?'));
-
 
 function rtTaskTearDown(spotsList, modeName)
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');
@@ -160,6 +221,7 @@ set(spots, 'Visible', 'on');
 drawnow;
 
 function rtTrialSpotCallback(spot, event, spotsLoop, redSpot)
+topsDataLog.logMnemonicWithData('picked spot', get(spot, 'Position'));
 if spot==redSpot
     topsDataLog.logMnemonicWithData('correct');
 else
@@ -169,24 +231,28 @@ spotsLoop.proceed = false;
 
 function rtTrialTeardown(spotsList, modeName)
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');
+iti = spotsList.getItemFromModeWithMnemonic('spots', 'intertrialInterval');
 set(spots, 'Visible', 'off');
-pause(1);
+pause(iti);
+
 
 %%%
-%%% Functions for the fixed viewing task (a middle level)
+%%% Functions for the fixed viewing time task
 %%%
-function fixTaskSetup(spotsList, modeName)
+function fvtTaskSetup(spotsList, modeName)
 % build stimulus spots in the axes
 ax = spotsList.getItemFromModeWithMnemonic('spots', 'axes');
-n = 5;
-d = .1;
-positions = [linspace(-1,1-d,n)', ...
-    linspace(-1,1-d,n)', ...
-    d*ones(n,1), ...
-    d*ones(n,1)];
+n = spotsList.getItemFromModeWithMnemonic('spots', 'spotCount');
+r = spotsList.getItemFromModeWithMnemonic('spots', 'spotRows');
+c = spotsList.getItemFromModeWithMnemonic('spots', 'spotColumns');
+shuffle = randperm(r*c);
+area = [-1 -1 2 2];
 for ii = 1:n
+    m = shuffle(ii);
+    pos = subposition(area, r, c, mod(m,c)+1, ceil(m/c));
+    topsDataLog.logMnemonicWithData('made new spot', pos);
     spots(ii) = rectangle('Parent', ax, ...
-        'Position', positions(ii,:), ...
+        'Position', pos,...
         'Curvature', [1 1], ...
         'FaceColor', [1 1 1], ...
         'LineStyle', ':', ...
@@ -197,28 +263,31 @@ spotsList.replaceItemInModeWithMnemonicWithPrecedence(spots, modeName, 'spots');
 
 uiwait(warndlg({'Click the red spot,' 'after it turns black.'}, 'Ready to begin?'));
 
-function fixTaskTearDown(spotsList, modeName)
+function fvtTaskTearDown(spotsList, modeName)
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');
 delete(spots);
 
 
 %%%
-%%% Functions for the fixed viewing trial (a bottom level)
+%%% Functions for the fixed viewing time trial
 %%%
-function fixTrialSetup(spotsList, modeName)
+function fvtTrialSetup(spotsList, modeName)
 spotsLoop = spotsList.getItemFromModeWithMnemonic('spots', 'spotsLoop');
+vt = spotsList.getItemFromModeWithMnemonic('spots', 'spotViewingTime');
+
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');
 redSpot = spots(ceil(rand*length(spots)));
 set(spots, ...
     'FaceColor', [0 0 1], ...
-    'ButtonDownFcn', {@fixTrialSpotCallback, spotsLoop, redSpot});
+    'ButtonDownFcn', {@fvtTrialSpotCallback, spotsLoop, redSpot});
 set(redSpot, 'FaceColor', [1 0 0]);
 set(spots, 'Visible', 'on', 'HitTest', 'off');
-pause(.25);
+pause(vt);
 set(spots, 'FaceColor', [0 0 0], 'HitTest', 'on');
 drawnow;
 
-function fixTrialSpotCallback(spot, event, spotsLoop, redSpot)
+function fvtTrialSpotCallback(spot, event, spotsLoop, redSpot)
+topsDataLog.logMnemonicWithData('picked spot', get(spot, 'Position'));
 if spot==redSpot
     topsDataLog.logMnemonicWithData('correct');
 else
@@ -226,7 +295,8 @@ else
 end
 spotsLoop.proceed = false;
 
-function fixTrialTeardown(spotsList, modeName)
+function fvtTrialTeardown(spotsList, modeName)
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');
+iti = spotsList.getItemFromModeWithMnemonic('spots', 'intertrialInterval');
 set(spots, 'Visible', 'off');
-pause(1);
+pause(iti);
