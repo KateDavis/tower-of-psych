@@ -39,8 +39,10 @@ classdef ScrollingControlGrid < handle
             
             self.panel = uipanel( ...
                 'Parent', self.parent, ...
-                'BorderType', 'none', ...
-                'BorderWidth', 0, ...
+                'BorderType', 'line', ...
+                'BorderWidth', 1, ...
+                'ForegroundColor', [1 1 1]*.7, ...
+                'HighlightColor', [1 1 1]*.7, ...
                 'Title', '', ...
                 'BackgroundColor', 'none', ...
                 'Units', 'normalized', ...
@@ -71,6 +73,7 @@ classdef ScrollingControlGrid < handle
                 'BorderType', 'none', ...
                 'BorderWidth', 0, ...
                 'Title', '', ...
+                'BackgroundColor', 'none', ...
                 'Units', 'normalized', ...
                 'Position', [0 0 .95 1], ...
                 'Clipping', 'on', ...
@@ -81,15 +84,25 @@ classdef ScrollingControlGrid < handle
         end
         
         function h = newControlAtRowAndColumn(self, row, column, varargin)
+            z = size(self.controls);
+            if (z(1) >= row) && (z(2) >= column)
+                h = self.controls(row, column);
+                if ishandle(h) && h > 0
+                    delete(h);
+                end
+            end
             h = uicontrol(varargin{:}, 'Parent', self.controlPanel);
             self.controls(row, column) = h;
             self.repositionControls;
         end
         
         function removeControlAtRowAndColumn(self, row, column)
-            h = self.controls(row, column);
-            if ishandle(h) && h > 0
-                delete(h);
+            z = size(self.controls);
+            if (z(1) >= row) && (z(2) >= column)
+                h = self.controls(row, column);
+                if ishandle(h) && h > 0
+                    delete(h);
+                end
             end
             self.controls(row, column) = 0;
             self.trimEdges;
@@ -97,7 +110,7 @@ classdef ScrollingControlGrid < handle
         end
         
         function trimEdges(self)
-            % trim empty edge rows, columns
+            % trim empty edge rows and columns
             z = size(self.controls);
             keepRow = logical(ones(1,z(1)));
             for ii = z(1):-1:1
@@ -121,11 +134,19 @@ classdef ScrollingControlGrid < handle
         end
         
         function repositionControls(self)
+            % this is ugly, since want normalized width but
+            % character-spaced heights.
+            
+            % establish the correct controlPanel size,
+            %   in character units
             z = size(self.controls);
             set(self.controlPanel, 'Units', 'Characters');
             charPos = get(self.controlPanel, 'Position');
             charPos = [0 0 charPos(3) z(1)];
             set(self.controlPanel, 'Position', charPos);
+            
+            % divvy up character units to each control
+            %   then make them normalized for any figure resizing
             for ii = 1:z(1)
                 for jj = 1:z(2)
                     h = self.controls(ii,jj);
@@ -137,12 +158,16 @@ classdef ScrollingControlGrid < handle
                     end
                 end
             end
+            
+            % make the controlPanel normalized for resizing and scrolling
+            %   and place it at the top of the main panel.
             set(self.controlPanel, 'Units', 'normalized');
             normPos = get(self.controlPanel, 'Position');
             y = 1-normPos(4);
             normPos(1:2) = [0, y];
             set(self.controlPanel, 'Position', normPos);
             
+            % only allow scrolling when the controlPanel is too big to fit
             if y < 0
                 set(self.slider, 'Max', -y, 'Min', 0, ...
                     'Value', -y, 'Enable', 'on');

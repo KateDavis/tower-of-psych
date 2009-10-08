@@ -8,6 +8,9 @@ classdef topsDataLogGUI < handle
     end
     
     properties(Hidden)
+        % replace list boxes with ScrollingControlGrid
+        %   hopefully set/get for rows and columns of controls will be easy
+        
         ignoredMnemonicsLabel;
         ignoredMnemonicsList;
         triggerMnemonicsLabel;
