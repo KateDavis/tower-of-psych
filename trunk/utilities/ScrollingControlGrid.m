@@ -136,15 +136,24 @@ classdef ScrollingControlGrid < handle
         function repositionControls(self)
             % this is ugly, since want normalized width but
             % character-spaced heights.
-            
+
             % establish the correct controlPanel size,
             %   in character units
             z = size(self.controls);
             set(self.controlPanel, 'Units', 'Characters');
             charPos = get(self.controlPanel, 'Position');
             charPos = [0 0 charPos(3) z(1)];
-            set(self.controlPanel, 'Position', charPos);
-            
+
+            % make the controlPanel normalized for resizing and scrolling
+            %   and place it at the top of the main panel.
+            %   try not to draw intermediate steps
+            drawnow;
+            set(self.controlPanel, 'Position', charPos, 'Units', 'normalized');
+            normPos = get(self.controlPanel, 'Position');
+            y = 1-normPos(4);
+            normPos(1:2) = [0, y];
+            set(self.controlPanel, 'Position', normPos);
+
             % divvy up character units to each control
             %   then make them normalized for any figure resizing
             for ii = 1:z(1)
@@ -158,20 +167,12 @@ classdef ScrollingControlGrid < handle
                     end
                 end
             end
-            
-            % make the controlPanel normalized for resizing and scrolling
-            %   and place it at the top of the main panel.
-            set(self.controlPanel, 'Units', 'normalized');
-            normPos = get(self.controlPanel, 'Position');
-            y = 1-normPos(4);
-            normPos(1:2) = [0, y];
-            set(self.controlPanel, 'Position', normPos);
-            
+            drawnow('expose')
+
             % only allow scrolling when the controlPanel is too big to fit
             if y < 0
                 set(self.slider, 'Max', -y, 'Min', 0, ...
                     'Value', -y, 'Enable', 'on');
-                drawnow
             else
                 set(self.slider, 'Enable', 'off');
             end
