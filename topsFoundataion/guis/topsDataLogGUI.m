@@ -11,10 +11,8 @@ classdef topsDataLogGUI < handle
         % replace list boxes with ScrollingControlGrid
         %   hopefully set/get for rows and columns of controls will be easy
         
-        ignoredMnemonicsLabel;
-        ignoredMnemonicsList;
         triggerMnemonicsLabel;
-        triggerMnemonicsList;
+        mnemonicsGrid;
         accumulatorAxes;
         accumulatorClearButton;
         accumulatorCount = 0;
@@ -55,6 +53,11 @@ classdef topsDataLogGUI < handle
             drawnow;
         end
         
+        function c = hashColorForMnemonic(self, mnemonic)
+            hash = 1 + mod(sum(mnemonic), size(self.colors,1));
+            c = self.colors(hash, :);
+        end
+        
         function replayEntireLog(self)
             set(self.dataLogTexts, 'Visible', 'off');
             self.timeInterval = eps;
@@ -89,15 +92,21 @@ classdef topsDataLogGUI < handle
         end
         
         function hearNewMnemonic(self, theLog, event)
-            mnemonics = theLog.getAllMnemonics;
-            insert = find(strcmp(mnemonics, event.UserData));
-            set(self.ignoredMnemonicsList, 'String', mnemonics);
-            set(self.triggerMnemonicsList, 'String', mnemonics);
+            mnemonic = event.UserData;
+            hashColor = self.hashColorForMnemonic(mnemonic);
             
-            if length(mnemonics) > 1
-                self.fixListSelectionsAfterInsert(self.ignoredMnemonicsList, insert);
-                self.fixListSelectionsAfterInsert(self.triggerMnemonicsList, insert);
-            end
+            % a control for triggering, a control for hiding
+            z = size(self.mnemonicsGrid.controls);
+            h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
+                z(1)+1, 1, ...
+                'Style', 'togglebutton', ...
+                'String', mnemonic, ...
+                'ForegroundColor', hashColor);
+            h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
+                z(1)+1, 2, ...
+                'Style', 'togglebutton', ...
+                'String', 'hide', ...
+                'ForegroundColor', hashColor);
         end
         
         function fixListSelectionsAfterInsert(self, list, insert)
@@ -109,11 +118,26 @@ classdef topsDataLogGUI < handle
         
         function hearNewData(self, theLog, eventData)
             logEntryStruct = eventData.UserData;
-            mnemonics = theLog.getAllMnemonics;
             
-            trig = get(self.triggerMnemonicsList, 'Value');
-            if ~isempty(trig)
-                
+            % doing triggering or ignoring?
+            z = size(self.mnemonicsGrid.controls);
+            if z(1) == 1
+                trig = logical(get(self.mnemonicsGrid.controls(1,1), 'Value'));
+                ignore = logical(get(self.mnemonicsGrid.controls(1,2), 'Value'));
+                mnemonics = get(self.mnemonicsGrid.controls(1,1), 'String');
+            elseif z(1) > 1
+                allTrig = get(self.mnemonicsGrid.controls(:,1), 'Value');
+                trig = logical([allTrig{:}]);
+                allIgnore = get(self.mnemonicsGrid.controls(:,2), 'Value');
+                ignore = logical([allIgnore{:}]);
+                mnemonics = get(self.mnemonicsGrid.controls(:,1), 'String');
+            else
+                trig = false;
+                ignore = false;
+                mnemonics = '';
+            end
+            
+            if any(trig)
                 if any(strcmp(mnemonics(trig), logEntryStruct.mnemonic))
                     % retrigger
                     self.trigger(logEntryStruct);
@@ -121,9 +145,7 @@ classdef topsDataLogGUI < handle
             else
                 self.timeZero = theLog.earliestTime;
             end
-            
-            ignored = get(self.ignoredMnemonicsList, 'Value');
-            if isempty(ignored) || ~any(strcmp(mnemonics(ignored), logEntryStruct.mnemonic))
+            if ~any(ignore) || ~any(strcmp(mnemonics(ignore), logEntryStruct.mnemonic))
                 self.plotLogEntry(logEntryStruct);
             end
         end
@@ -150,16 +172,13 @@ classdef topsDataLogGUI < handle
                     'YLim', [0 self.timeInterval+eps]);
             end
             
-            % fudge a color for each mnemonic hashing into a colormap
-            colNum = 1 + mod(sum(logEntryStruct.mnemonic), size(self.colors,1));
-            
             % summary = sprintf('-----%s: %s', ...
             %     logEntryStruct.mnemonic, ...
             %     stringifyValue(logEntryStruct.data));
             summary = sprintf('----- %s', logEntryStruct.mnemonic);
             set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Color', self.colors(colNum, :), ...
+                'Color', self.hashColorForMnemonic(logEntryStruct.mnemonic), ...
                 'Position', [0, y], ...
                 'String', summary, ...
                 'Visible', 'on');
@@ -196,7 +215,7 @@ classdef topsDataLogGUI < handle
             self.dataLogCount = 0;
             self.accumulatorCount = 0;
             
-            x = [0 .07 .08 .7 .71 .85 1];
+            x = [0 .07 .08 .6 .61 .85 1];
             y = [0 .45 .5 .95 1];
             self.accumulatorAxes = axes( ...
                 'Parent', self.figure, ...
@@ -242,38 +261,9 @@ classdef topsDataLogGUI < handle
                 'BackgroundColor', get(self.figure, 'Color'), ...
                 'HorizontalAlignment', 'left');
             
-            self.triggerMnemonicsList = uicontrol( ...
-                'Parent', self.figure, ...
-                'Style', 'listbox', ...
-                'Units', 'normalized', ...
-                'String', topsDataLog.getAllMnemonics, ...
-                'Position', [x(5), y(3), x(7)-x(5), y(4)-y(3)], ...
-                'BackgroundColor', get(self.figure, 'Color'), ...
-                'HorizontalAlignment', 'left', ...
-                'Value', [], ...
-                'Min', 0, ...
-                'Max', 1000);
-            
-            self.ignoredMnemonicsLabel = uicontrol( ...
-                'Parent', self.figure, ...
-                'Style', 'text', ...
-                'Units', 'normalized', ...
-                'String', 'hide:', ...
-                'Position', [x(5), y(2), .3, y(3)-y(2)], ...
-                'BackgroundColor', get(self.figure, 'Color'), ...
-                'HorizontalAlignment', 'left');
-            
-            self.ignoredMnemonicsList = uicontrol( ...
-                'Parent', self.figure, ...
-                'Style', 'listbox', ...
-                'Units', 'normalized', ...
-                'String', topsDataLog.getAllMnemonics, ...
-                'Position', [x(5), y(1), x(7)-x(5), y(2)-y(1)], ...
-                'BackgroundColor', get(self.figure, 'Color'), ...
-                'HorizontalAlignment', 'left', ...
-                'Value', [], ...
-                'Min', 0, ...
-                'Max', 1000);
+            % custom widget class, in tops/utilities
+            self.mnemonicsGrid = ScrollingControlGrid( ...
+                self.figure, [x(5), y(1), x(7)-x(5), y(4)-y(1)]);
             
             self.dataLogReplayButton = uicontrol ( ...
                 'Parent', self.figure, ...
