@@ -7,7 +7,7 @@ function colors = spacedColors(n)
 %
 %   n is the number of colors you want.
 %
-%   Imagine the RGB cube in [0 1]: any point in the cube defines a color.
+%   Imagine the RGB cube in [0 1]--any point in the cube defines a color.
 %
 %   Colors near the [1 1 1] corner won't show up against white.
 %   spacedColors picks evenly-spaced points from the cube, with that corner
