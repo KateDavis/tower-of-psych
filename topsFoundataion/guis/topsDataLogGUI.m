@@ -127,13 +127,6 @@ classdef topsDataLogGUI < handle
                 'ForegroundColor', hashColor);
         end
         
-        function fixListSelectionsAfterInsert(self, list, insert)
-            selected = get(list, 'Value');
-            bump = selected >= insert;
-            selected(bump) = selected(bump) + 1;
-            set(list, 'Value', selected);
-        end
-        
         function hearNewData(self, theLog, eventData)
             logEntryStruct = eventData.UserData;
             
@@ -362,6 +355,7 @@ classdef topsDataLogGUI < handle
             time = point(1,2) + self.timeZero;
             theLog = topsDataLog.theDataLog;
             frac = (time-theLog.earliestTime)/(theLog.latestTime-theLog.earliestTime);
+            frac = min(max(0, frac), 1);
             
             clickType = get(self.figure, 'SelectionType');
             if strcmp(clickType, 'normal')
