@@ -27,14 +27,16 @@ Should probably exclude handle objects.  Storing these is counter to the idea of
 
 \fs28 topsDataLogGUI
 \fs24 \
-Should have a better browsing mode.  Automatic resizing is necessary since the clock function and font sizes are unknown.  But somehow the user also needs to select a range.\
-	- triggering is a partial solution, but leaves the bottom end hanging.  How do you focus on one trial when all trials contain the "correct" mnemonic?\
-	- slider to change window size?  ...to some proportion of the automatic size?\
-	- or restrict range that gets replayed?  ...by clicking on the log itself??  ...I think so, by setting markers then hitting replay.\
+Triggering and range slider allow focus on specific events.  But one potential ugliness is trying to focus on a subset of events with the same mnemonic.  e.g. "trial start" events from just the third block.  I guess you'd trigger on "start block three" and "trial start", then restrict the view to end above the fourth block (which contains "trial start" events as well).\
 \
-Mnemonics in the trigger and ignore lists really want to be colored like the axes items.  uicontrol:listbox can't do this.  Maybe uitable will be a drop-in solution.  uitable might also make selections more intuitive.\
+The intuition is really to click on the axes.  Would be easy for this to be an alternate to the range slider.  What about setting an arbitrary zero time, though?  Could replay with this zero and let earlier events go negative?  Not as it is now, since new events and triggers can set the timeZero...\
 \
-Should data be grouped into modes as well?  For quicker hide/trigger behavior?  Or allow some kind of mnemonics markup beyond alphabetical sorting?\
+
+\fs28 ScrollingControlGrid
+\fs24 \
+Should have flexible widths for different-length labels.  This is clumsy given the conceit of packing in "subposition"s for handle elements of a 2D array.  Would prefer not to store an extra flag.  What if adjacent, redundant control handles can get a merged subposition?\
+\
+It might be good to have range selections, like with a shift modifier.\
 \
 
 \fs28 topsFunctionLoopGUI

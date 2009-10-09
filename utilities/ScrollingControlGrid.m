@@ -134,20 +134,15 @@ classdef ScrollingControlGrid < handle
         end
         
         function repositionControls(self)
-            % this is ugly, since want normalized width but
-            % character-spaced heights.
-
             % establish the correct controlPanel size,
             %   in character units
             z = size(self.controls);
-            set(self.controlPanel, 'Units', 'Characters');
+            set(self.controlPanel, 'Visible', 'off', 'Units', 'Characters');
             charPos = get(self.controlPanel, 'Position');
-            charPos = [0 0 charPos(3) z(1)];
+            charPos = [0 0 charPos(3) z(1)*1.5];
 
-            % make the controlPanel normalized for resizing and scrolling
-            %   and place it at the top of the main panel.
-            %   try not to draw intermediate steps
-            drawnow;
+            % size controlPanel, *then* set it to normalized
+            %   then place it at the top of the main panel.
             set(self.controlPanel, 'Position', charPos, 'Units', 'normalized');
             normPos = get(self.controlPanel, 'Position');
             y = 1-normPos(4);
@@ -167,7 +162,8 @@ classdef ScrollingControlGrid < handle
                     end
                 end
             end
-            drawnow('expose')
+            set(self.controlPanel, 'Visible', 'on');
+            drawnow;
 
             % only allow scrolling when the controlPanel is too big to fit
             if y < 0
