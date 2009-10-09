@@ -25,13 +25,6 @@ The block tree may need a custom iterationMethod--a function handle.  Must retur
 Should probably exclude handle objects.  Storing these is counter to the idea of writing data out to disk.  This would be a key difference vs. topsModalList.  At most, classes should be able to dump themselves as a struct into the log.\
 \
 
-\fs28 topsDataLogGUI
-\fs24 \
-Triggering and range slider allow focus on specific events.  But one potential ugliness is trying to focus on a subset of events with the same mnemonic.  e.g. "trial start" events from just the third block.  I guess you'd trigger on "start block three" and "trial start", then restrict the view to end above the fourth block (which contains "trial start" events as well).\
-\
-The intuition is really to click on the axes.  Would be easy for this to be an alternate to the range slider.  What about setting an arbitrary zero time, though?  Could replay with this zero and let earlier events go negative?  Not as it is now, since new events and triggers can set the timeZero...\
-\
-
 \fs28 ScrollingControlGrid
 \fs24 \
 Should have flexible widths for different-length labels.  This is clumsy given the conceit of packing in "subposition"s for handle elements of a 2D array.  Would prefer not to store an extra flag.  What if adjacent, redundant control handles can get a merged subposition?\
