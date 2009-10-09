@@ -9,8 +9,8 @@ logGUI = topsDataLogGUI;
 
 % manage screen real estate
 logFigurePosition = get(logGUI.figure, 'Position');
-spotsFigurePosition = logFigurePosition + [.5*logFigurePosition(3), 0 0 0];
-logFigurePosition = logFigurePosition - [.5*logFigurePosition(3), 0 0 0];
+spotsFigurePosition = logFigurePosition + [.51*logFigurePosition(3), 0 0 0];
+logFigurePosition = logFigurePosition - [.51*logFigurePosition(3), 0 0 0];
 set(logGUI.figure, 'Position', logFigurePosition);
 
 % configure the Spots Task

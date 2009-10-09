@@ -27,37 +27,14 @@ classdef TestTopsDataLogGUI < TestCase
         end
         
         function testUpdateMnemonicsListBoxes(self)
-            ignoredMnemonics = get(self.logGui.ignoredMnemonicsList, 'String');
-            assertTrue(isempty(ignoredMnemonics), 'ignored mnemonics list should start out empty')
-            
-            triggerMnemonics = get(self.logGui.triggerMnemonicsList, 'String');
-            assertTrue(isempty(triggerMnemonics), 'trigger mnemonics list should start out empty')
+            assertTrue(isempty(self.logGui.mnemonics), 'gui mnemonics list should start out empty')
             
             newMnemonics = {'aaaa', 'bbbb', 'cccc'};
             for m = newMnemonics
                 topsDataLog.logMnemonicWithData(m{1}, 1);
             end
-            
-            ignoredMnemonics = get(self.logGui.ignoredMnemonicsList, 'String');
-            assertEqual(ignoredMnemonics', newMnemonics, 'ignored mnemonics list should match new mnemonics')
-            
-            triggerMnemonics = get(self.logGui.triggerMnemonicsList, 'String');
-            assertEqual(triggerMnemonics', newMnemonics, 'trigger mnemonics list should match new mnemonics')
-        end
-        
-        function testFixListSelectionsOnInsert(self)
-            topsDataLog.logMnemonicWithData('aaaa', 1);
-            topsDataLog.logMnemonicWithData('bbbb', 1);
-            topsDataLog.logMnemonicWithData('dddd', 1);
-            
-            % set a multi-selection
-            set(self.logGui.ignoredMnemonicsList, 'Value', [1 2 3]);
-            
-            % insert a new mnemonic inside the selection
-            topsDataLog.logMnemonicWithData('cccc', 1);
-            newSelection = get(self.logGui.ignoredMnemonicsList, 'Value');
-            
-            assertEqual(newSelection, [1 2 4], 'failed to manage selctions with inserted mnemonic')
+            assertEqual(self.logGui.mnemonics, newMnemonics, 'gui mnemonics list should match mnemonics just added')
+            assertEqual(sort(self.logGui.mnemonics), sort(topsDataLog.getAllMnemonics), 'gui mnemonics list should contain same values as topsDataLog')
         end
     end
 end
