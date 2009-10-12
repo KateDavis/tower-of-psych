@@ -73,12 +73,15 @@ classdef ScrollingControlGrid < handle
                 'Callback', {@ScrollingControlGrid.respondToSlider, self}, ...
                 'HandleVisibility', 'off', ...
                 'HitTest', 'on', ...
-                'Visible', 'on');
+                'Enable', 'off', ...
+                'Visible', 'off');
             
             self.controlPanel = uipanel( ...
                 'Parent', self.panel, ...
-                'BorderType', 'none', ...
-                'BorderWidth', 0, ...
+                'BorderType', 'line', ...
+                'BorderWidth', 1, ...
+                'ForegroundColor', [1 1 1]*.7, ...
+                'HighlightColor', [1 1 1]*.7, ...
                 'Title', '', ...
                 'BackgroundColor', 'none', ...
                 'Units', 'normalized', ...
@@ -147,7 +150,7 @@ classdef ScrollingControlGrid < handle
             set(self.controlPanel, 'Visible', 'off', 'Units', 'Characters');
             charPos = get(self.controlPanel, 'Position');
             charPos = [0 0 charPos(3) max(1, z(1)*1.5)];
-
+            
             % size controlPanel, *then* set it to normalized
             %   then place it at the top of the main panel.
             set(self.controlPanel, 'Position', charPos, 'Units', 'normalized');
@@ -155,23 +158,33 @@ classdef ScrollingControlGrid < handle
             y = 1-normPos(4);
             normPos(1:2) = [0, y];
             set(self.controlPanel, 'Position', normPos);
-
+            
             % divvy up character units to each control
+            % stretch controls with redundant entries
             %   then make them normalized for any figure resizing
+            didOnce = logical(zeros(size(self.controls)));
             for ii = 1:z(1)
                 for jj = 1:z(2)
                     h = self.controls(ii,jj);
                     if h > 0 && ishandle(h)
-                        pos = subposition(charPos, z(1), z(2), z(1)-ii+1, jj);
-                        set(h, 'Units', 'Characters', ...
-                            'Position', pos, ...
-                            'Units', 'normalized');
+                        set(h, 'Units', 'Characters');
+                        if didOnce(ii,jj)
+                            % stretch this control
+                            orig = get(h, 'Position');
+                            new = subposition(charPos, z(1), z(2), z(1)-ii+1, jj);
+                            pos = ScrollingControlGrid.mergePositionRects(orig, new);
+                        else
+                            % just position this control
+                            pos = subposition(charPos, z(1), z(2), z(1)-ii+1, jj);
+                        end
+                        didOnce(ii,jj) = true;
+                        set(h, 'Position', pos, 'Units', 'normalized');
                     end
                 end
             end
             set(self.controlPanel, 'Visible', 'on');
             drawnow;
-
+            
             % only allow scrolling when the controlPanel is too big to fit
             if y < 0
                 set(self.slider, 'Max', -y, 'Min', 0, ...
@@ -187,6 +200,16 @@ classdef ScrollingControlGrid < handle
             normPos = get(self.controlPanel, 'Position');
             normPos(2) = -get(slider, 'Value');
             set(self.controlPanel, 'Position', normPos);
+        end
+        
+        function mergedPos = mergePositionRects(varargin)
+            % take cell array of [x,y,w,h] position rects
+            p = vertcat(varargin{:});
+            l = min(p(:,1));
+            b = min(p(:,2));
+            r = max(p(:,1)+p(:,3));
+            t = max(p(:,2)+p(:,4));
+            mergedPos = [l, b, r-l, t-b];
         end
     end
 end
