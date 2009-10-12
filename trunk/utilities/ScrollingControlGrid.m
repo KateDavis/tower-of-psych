@@ -33,6 +33,13 @@ classdef ScrollingControlGrid < handle
             end
         end
         
+        function deleteAllControls(self)
+            h = self.controls;
+            delete(h(ishandle(h) & (h > 0)));
+            self.controls = [];
+            self.repositionControls;
+        end
+        
         function initPanels(self)
             h = [self.slider, self.panel, self.controlPanel, self.controls];
             delete(h(ishandle(h)));
@@ -139,7 +146,7 @@ classdef ScrollingControlGrid < handle
             z = size(self.controls);
             set(self.controlPanel, 'Visible', 'off', 'Units', 'Characters');
             charPos = get(self.controlPanel, 'Position');
-            charPos = [0 0 charPos(3) z(1)*1.5];
+            charPos = [0 0 charPos(3) max(1, z(1)*1.5)];
 
             % size controlPanel, *then* set it to normalized
             %   then place it at the top of the main panel.
@@ -168,9 +175,9 @@ classdef ScrollingControlGrid < handle
             % only allow scrolling when the controlPanel is too big to fit
             if y < 0
                 set(self.slider, 'Max', -y, 'Min', 0, ...
-                    'Value', -y, 'Enable', 'on');
+                    'Value', -y, 'Enable', 'on', 'Visible', 'on');
             else
-                set(self.slider, 'Enable', 'off');
+                set(self.slider, 'Enable', 'off', 'Visible', 'off');
             end
         end
     end

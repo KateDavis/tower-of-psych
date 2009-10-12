@@ -1,8 +1,5 @@
-classdef topsDataLogGUI < handle
+classdef topsDataLogGUI < topsGUI
     properties
-        figure;
-        isBusy = false;
-        
         timeZero = 0;
         timeInterval = eps;
         
@@ -27,41 +24,14 @@ classdef topsDataLogGUI < handle
         replayStartSlider;
         replayEndSlider;
         replayAllButton;
-        
-        listeners = struct();
-        
-        title = 'Data Log Viewer';
-        busyTitle = 'Data Log Viewer (busy...)';
-        colors = spacedColors(61);
     end
     
     methods
         function self = topsDataLogGUI()
+            self = self@topsGUI;
+            self.title = 'Data Log Viewer';
             self.createWidgets;
-            %self.replayEntireLog;
             self.listenToDataLog;
-        end
-        
-        function delete(self)
-            if ~isempty(self.figure) && ishandle(self.figure);
-                delete(self.figure);
-            end
-            delete(struct2array(self.listeners));
-        end
-        
-        function set.isBusy(self, isBusy)
-            self.isBusy = isBusy;
-            if isBusy
-                set(self.figure, 'Name', self.busyTitle);
-            else
-                set(self.figure, 'Name', self.title);
-            end
-            drawnow;
-        end
-        
-        function c = hashColorForMnemonic(self, mnemonic)
-            hash = 1 + mod(sum(mnemonic), size(self.colors,1));
-            c = self.colors(hash, :);
         end
         
         function replayEntireLog(self)
@@ -111,7 +81,7 @@ classdef topsDataLogGUI < handle
         function hearNewMnemonic(self, theLog, event)
             mnemonic = event.UserData;
             self.mnemonics{end+1} = mnemonic;
-            hashColor = self.hashColorForMnemonic(mnemonic);
+            col = self.getColorForString(mnemonic);
             
             % a control for triggering, a control for hiding
             z = size(self.mnemonicsGrid.controls);
@@ -119,12 +89,12 @@ classdef topsDataLogGUI < handle
                 z(1)+1, 1, ...
                 'Style', 'togglebutton', ...
                 'String', mnemonic, ...
-                'ForegroundColor', hashColor);
+                'ForegroundColor', col);
             h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
                 z(1)+1, 2, ...
                 'Style', 'togglebutton', ...
                 'String', 'hide', ...
-                'ForegroundColor', hashColor);
+                'ForegroundColor', col);
         end
         
         function hearNewData(self, theLog, eventData)
@@ -188,7 +158,7 @@ classdef topsDataLogGUI < handle
             summary = sprintf('--- %s', logEntryStruct.mnemonic);
             set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Color', self.hashColorForMnemonic(logEntryStruct.mnemonic), ...
+                'Color', self.getColorForString(logEntryStruct.mnemonic), ...
                 'Position', [0, y], ...
                 'String', summary, ...
                 'Visible', 'on');
@@ -318,22 +288,6 @@ classdef topsDataLogGUI < handle
                 'Callback', @(obj, event) self.replayEntireLog, ...
                 'Position', [right-2*width, yDiv, 2*width, top-yDiv], ...
                 'HorizontalAlignment', 'left');
-        end
-        
-        function setupFigure(self)
-            if ~isempty(self.figure) && ishandle(self.figure)
-                clf(self.figure)
-            else
-                self.figure = figure;
-            end
-            set(self.figure, ...
-                'CloseRequestFcn', @(obj, event) delete(self), ...
-                'Renderer', 'zbuffer', ...
-                'HandleVisibility', 'on', ...
-                'MenuBar', 'none', ...
-                'Name', self.title, ...
-                'NumberTitle', 'off', ...
-                'ToolBar', 'none');
         end
     end
     
