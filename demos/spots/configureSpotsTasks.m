@@ -130,6 +130,7 @@ fvtTask.iterations = trialsInARow;
 fvtTask.blockBeginFcn = {@fvtTaskSetup, spotsList, taskName};
 fvtTask.blockEndFcn = {@fvtTaskTearDown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(fvtTask, taskName, 'fvtTask');
+spotsTree.addChild(fvtTask);
 
 % another bottom level block, to manage a fixed viewing time trial
 fvtTrial = topsBlockTree;
@@ -138,10 +139,6 @@ fvtTrial.blockBeginFcn = {@fvtTrialSetup, spotsList, taskName};
 fvtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
 fvtTrial.blockEndFcn = {@fvtTrialTeardown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(fvtTrial, taskName, 'fvtTrial');
-
-% attach the task to the experiment!!
-%   attach the trial to the task!!!!!!!
-spotsTree.addChild(fvtTask);
 fvtTask.addChild(fvtTrial);
 
 

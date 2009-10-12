@@ -30,6 +30,18 @@ classdef TestScrollingControlGrid < TestCase
             delete(newGrid);
         end
         
+        function testDeleteAllControls(self)
+            self.scrollGrid.deleteAllControls;
+            assertTrue(isempty(self.scrollGrid.controls), 'should have no controls')
+            
+            h = self.scrollGrid.newControlAtRowAndColumn(1, 1);
+            assertTrue(ishandle(h), 'should have valid handle');
+            
+            self.scrollGrid.deleteAllControls;
+            assertTrue(isempty(self.scrollGrid.controls), 'should have no controls')
+            assertFalse(ishandle(h), 'should have invalid handle');
+        end
+        
         function testTrimWhenRemove(self)
             locations = [1 5; 5 1; 100 3];
             for ii = 1:size(locations,1)
