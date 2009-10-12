@@ -95,12 +95,6 @@ classdef ScrollingControlGrid < handle
         
         function h = newControlAtRowAndColumn(self, row, column, varargin)
             z = size(self.controls);
-            if (z(1) >= row) && (z(2) >= column)
-                h = self.controls(row, column);
-                if ishandle(h) && h > 0
-                    delete(h);
-                end
-            end
             h = uicontrol(varargin{:}, 'Parent', self.controlPanel);
             self.controls(row, column) = h;
             self.repositionControls;
@@ -113,8 +107,8 @@ classdef ScrollingControlGrid < handle
                 if ishandle(h) && h > 0
                     delete(h);
                 end
+                self.controls(self.controls == h) = 0;
             end
-            self.controls(row, column) = 0;
             self.trimEdges;
             self.repositionControls;
         end
@@ -161,24 +155,21 @@ classdef ScrollingControlGrid < handle
             
             % divvy up character units to each control
             % stretch controls with redundant entries
-            %   then make them normalized for any figure resizing
-            didOnce = logical(zeros(size(self.controls)));
+            % then normalized controls for figure resizing
+            alreadyPlaced = [];
             for ii = 1:z(1)
                 for jj = 1:z(2)
                     h = self.controls(ii,jj);
                     if h > 0 && ishandle(h)
                         set(h, 'Units', 'Characters');
-                        if didOnce(ii,jj)
+                        gridPos = subposition(charPos, z(1), z(2), z(1)-ii+1, jj);
+                        if any(h == alreadyPlaced)
                             % stretch this control
-                            orig = get(h, 'Position');
-                            new = subposition(charPos, z(1), z(2), z(1)-ii+1, jj);
-                            pos = ScrollingControlGrid.mergePositionRects(orig, new);
-                        else
-                            % just position this control
-                            pos = subposition(charPos, z(1), z(2), z(1)-ii+1, jj);
+                            controlPos = get(h, 'Position');
+                            gridPos = ScrollingControlGrid.mergePositionRects(controlPos, gridPos);
                         end
-                        didOnce(ii,jj) = true;
-                        set(h, 'Position', pos, 'Units', 'normalized');
+                        alreadyPlaced(end+1) = h;
+                        set(h, 'Position', gridPos, 'Units', 'normalized');
                     end
                 end
             end

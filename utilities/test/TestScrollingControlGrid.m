@@ -57,13 +57,21 @@ classdef TestScrollingControlGrid < TestCase
             assertEqual(size(controls,2), max(locations(1:end-1,2)));
         end
         
-        function testReplaceInSameLocation(self)
-            location = [1 5];
-            hFirst = self.scrollGrid.newControlAtRowAndColumn(location(1), location(2));
-            hReplace = self.scrollGrid.newControlAtRowAndColumn(location(1), location(2));
-            assertFalse(ishandle(hFirst), 'old control should have been deleted');
-            assertFalse(hFirst==hReplace, 'old control should have been replaced');
-            assertTrue(ishandle(hReplace), 'new control should work');
+        function testStretchForMultipleRowsAndColumns(self)
+            rows = [3 4];
+            cols = [2 5];
+            big = self.scrollGrid.newControlAtRowAndColumn(rows, cols);
+            small = self.scrollGrid.newControlAtRowAndColumn(1, 1);
+
+            bigPos = get(big, 'Position');
+            smallPos = get(small, 'Position');
+            assertTrue(smallPos(3) < bigPos(3), 'multi-entry control should have bigger width')
+            assertTrue(smallPos(4) < bigPos(4), 'multi-entry control should have bigger height')
+            for r = rows
+                for c = cols
+                    assertEqual(big, self.scrollGrid.controls(r,c), 'multi-entry control should be redundant in controls array');
+                end
+            end
         end
     end
 end

@@ -39,19 +39,19 @@ classdef TestTopsBlockTreeGUI < TestCase
         end
         
         function testInitialNumberOfTreeControls(self)
-            z = size(self.blockTreeGUI.blocksGrid.controls);
-            assertEqual(z(1), 2, 'wrong number of block control rows');
-            assertEqual(z(2), 2, 'wrong number of block control columns');
+            controls = self.blockTreeGUI.blocksGrid.controls;
+            n = length(unique(controls(controls>0 & ishandle(controls))));
+            assertEqual(n, 2, 'should be two controls--parent and child');
         end
         
         function testLaterNumberOfTreeControls(self)
             blockTreeGrandchild = topsBlockTree;
             blockTreeGrandchild.name = 'child';
             self.blockTreeChild.addChild(blockTreeGrandchild);
-
-            z = size(self.blockTreeGUI.blocksGrid.controls);
-            assertEqual(z(1), 3, 'wrong number of block control rows');
-            assertEqual(z(2), 3, 'wrong number of block control columns');
+            
+            controls = self.blockTreeGUI.blocksGrid.controls;
+            n = length(unique(controls(controls>0 & ishandle(controls))));
+            assertEqual(n, 3, 'should be three controls--parent, child and grandchild');
         end
     end
 end
