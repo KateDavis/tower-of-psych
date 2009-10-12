@@ -10,6 +10,7 @@ classdef topsDataLogGUI < topsGUI
     properties(Hidden)
         mnemonicsNoTrig;
         mnemonicsGrid;
+        mnemonicsWidth=4;
         mnemonics;
         
         accumulatorAxes;
@@ -66,7 +67,7 @@ classdef topsDataLogGUI < topsGUI
             theLog = topsDataLog.theDataLog;
             self.timeZero = theLog.earliestTime;
             
-            delete(struct2array(self.listeners))
+            self.deleteListeners;
             self.listeners.NewMnemonic = theLog.addlistener( ...
                 'NewMnemonic', ...
                 @(source, event) self.hearNewMnemonic(source, event));
@@ -86,12 +87,12 @@ classdef topsDataLogGUI < topsGUI
             % a control for triggering, a control for hiding
             z = size(self.mnemonicsGrid.controls);
             h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                z(1)+1, 1, ...
+                z(1)+1, [1 self.mnemonicsWidth], ...
                 'Style', 'togglebutton', ...
                 'String', mnemonic, ...
                 'ForegroundColor', col);
             h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                z(1)+1, 2, ...
+                z(1)+1, self.mnemonicsWidth+1, ...
                 'Style', 'togglebutton', ...
                 'String', 'hide', ...
                 'ForegroundColor', col);
@@ -104,11 +105,11 @@ classdef topsDataLogGUI < topsGUI
             z = size(self.mnemonicsGrid.controls);
             if z(1) == 1
                 trig = logical(get(self.mnemonicsGrid.controls(1,1), 'Value'));
-                ignore = logical(get(self.mnemonicsGrid.controls(1,2), 'Value'));
+                ignore = logical(get(self.mnemonicsGrid.controls(1,self.mnemonicsWidth+1), 'Value'));
             elseif z(1) > 1
                 allTrig = get(self.mnemonicsGrid.controls(:,1), 'Value');
                 trig = logical([allTrig{:}]);
-                allIgnore = get(self.mnemonicsGrid.controls(:,2), 'Value');
+                allIgnore = get(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value');
                 ignore = logical([allIgnore{:}]);
             else
                 trig = false;
