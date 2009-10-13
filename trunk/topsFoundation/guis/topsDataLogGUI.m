@@ -63,6 +63,11 @@ classdef topsDataLogGUI < topsGUI
             self.isBusy = false;
         end
         
+        function repondToResize(self, figure, event)
+            % attempt to resize with characters, rather than normalized
+            self.mnemonicsGrid.repositionControls;
+        end
+        
         function listenToDataLog(self)
             theLog = topsDataLog.theDataLog;
             self.timeZero = theLog.earliestTime;
