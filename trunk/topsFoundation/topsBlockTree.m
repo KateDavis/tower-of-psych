@@ -14,12 +14,16 @@ classdef topsBlockTree < handle
         blockEndFcn = {};
     end
     
+    events
+        BlockBegin;
+    end
+    
     properties(Hidden = true)
         validIterationMethods = {'sequential', 'random'};
     end
     
     methods
-        function self = topsBlockTree 
+        function self = topsBlockTree
         end
         
         function addChild(self, child)
@@ -31,6 +35,9 @@ classdef topsBlockTree < handle
             if nargin < 2
                 doFeval = true;
             end
+            
+            % notify listeners, like the GUI
+            self.notify('BlockBegin');
             
             % begin the block
             self.fevalAndLog('start', self.blockBeginFcn, doFeval);

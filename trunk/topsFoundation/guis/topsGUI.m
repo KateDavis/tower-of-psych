@@ -26,7 +26,15 @@ classdef topsGUI < handle
         end
         
         function deleteListeners(self)
-            delete(struct2array(self.listeners));
+            % would like to use struct2array, but
+            % cannot concatenate event.listener withevent.proplistener
+            % so, iterate the struct fields
+            fn = fieldnames(self.listeners);
+            if ~isempty(fn)
+                for ii = 1:length(fn)
+                    delete([self.listeners.(fn{ii})]);
+                end
+            end
         end
         
         function setupFigure(self)

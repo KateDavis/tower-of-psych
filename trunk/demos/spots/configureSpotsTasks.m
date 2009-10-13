@@ -62,7 +62,7 @@ intertrialInterval = 1;
 trialsInARow = 10;
 
 taskRepetitions = 2;
-taskOrder = 'sequential'; % 'sequential' or 'random'
+taskOrder = 'random'; % 'sequential' or 'random'
 
 
 %%%
@@ -116,7 +116,7 @@ spotsTree.addChild(rtTask);
 rtTrial = topsBlockTree;
 rtTrial.name = 'rt_trial';
 rtTrial.blockBeginFcn = {@rtTrialSetup, spotsList, taskName};
-rtTrial.blockActionFcn = {@()spotsLoop.runInModeForDuration, 'spots', 1};
+rtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
 rtTrial.blockEndFcn = {@rtTrialTeardown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(rtTrial, taskName, 'rtTrial');
 rtTask.addChild(rtTrial);
@@ -136,7 +136,7 @@ spotsTree.addChild(fvtTask);
 fvtTrial = topsBlockTree;
 fvtTrial.name = 'fvt_trial';
 fvtTrial.blockBeginFcn = {@fvtTrialSetup, spotsList, taskName};
-fvtTrial.blockActionFcn = {@()spotsLoop.runInModeForDuration, 'spots', 1};
+fvtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
 fvtTrial.blockEndFcn = {@fvtTrialTeardown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(fvtTrial, taskName, 'fvtTrial');
 fvtTask.addChild(fvtTrial);
