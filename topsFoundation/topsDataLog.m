@@ -63,16 +63,16 @@ classdef (Sealed) topsDataLog < handle
             self.earliestTime = nan;
             self.latestTime = nan;
             self.count = 0;
-            notify(self, 'FlushedTheDataLog');
+            self.notify('FlushedTheDataLog');
         end
         
-        function logMnemonicWithData(mnemonic, data)            
+        function logMnemonicWithData(mnemonic, data)
             self = topsDataLog.theDataLog;
             
             nowTime = feval(self.clockFcn);
             self.earliestTime = min(self.earliestTime, nowTime);
             self.latestTime = max(self.latestTime, nowTime);
-
+            
             if nargin < 2
                 data = nowTime;
             end
@@ -89,11 +89,11 @@ classdef (Sealed) topsDataLog < handle
                 self.mnemonicMap(mnemonic) = ...
                     containers.Map(nowTime, data, 'uniformValues', false);
                 self.count = self.count + 1;
-                notify(self, 'NewMnemonic', EventWithData(mnemonic));
+                self.notify('NewMnemonic', EventWithData(mnemonic));
             end
             
             dataStruct = topsDataLog.newLogStruct(data, nowTime, mnemonic);
-            notify(self, 'NewData', EventWithData(dataStruct));
+            self.notify('NewData', EventWithData(dataStruct));
         end
         
         function allMnemonics = getAllMnemonics

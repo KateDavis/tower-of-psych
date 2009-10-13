@@ -183,18 +183,21 @@ classdef topsBlockTreeGUI < topsGUI
         
         function listenToBlockTree(self, block)
             props = properties(block);
+            n = self.blockTreeCount;
             for ii = 1:length(props)
-                self.listeners(self.blockTreeCount).(props{ii}) = ...
-                    block.addlistener(props{ii}, 'PostSet', ...
-                    @(source, event)topsBlockTreeGUI.hearBlockPropertyChange(source, event, self));
+                self.listeners(n).(props{ii}) = block.addlistener( ...
+                    props{ii}, 'PostSet', ...
+                    @(source, event)self.hearBlockPropertyChange(source, event));
             end
+            
+            self.listeners(n).BlockBegin = block.addlistener( ...
+                'BlockBegin', ...
+                @(source, event)self.hearBlockBegin(source, event));
         end
-    end
-    
-    methods(Static)
-        function hearBlockPropertyChange(source, event, self)
+        
+        function hearBlockPropertyChange(self, metaProp, event)
             % rebuild when tree structure or name changes
-            if any(strcmp(source.Name, {'children', 'parent', 'name'}))
+            if any(strcmp(metaProp.Name, {'children', 'parent', 'name'}))
                 self.repopulateBlocksGrid;
             end
             
@@ -202,6 +205,10 @@ classdef topsBlockTreeGUI < topsGUI
             if event.AffectedObject == self.currentBlockTree
                 self.displayDetailsForBlock(self.currentBlockTree);
             end
+        end
+        
+        function hearBlockBegin(self, block, event)
+            self.displayDetailsForBlock(block);
         end
     end
 end
