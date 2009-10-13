@@ -50,7 +50,27 @@ classdef topsGUI < handle
                 'MenuBar', 'none', ...
                 'Name', self.title, ...
                 'NumberTitle', 'off', ...
-                'ToolBar', 'none');
+                'ToolBar', 'none', ...
+                'ResizeFcn', @(fig, event)self.repondToResize(fig, event), ...
+                'WindowKeyPressFcn', @(fig, event)self.respondToKeypress(fig, event), ...
+                'WindowScrollWheelFcn', @(fig, event)self.respondToScrolling(fig, event));
+        end
+        
+        function repondToResize(self, figure, event)
+            % no-op for subclass to override
+        end
+        
+        function respondToKeypress(self, figure, event)
+            % no-op for subclass to override
+        end
+        
+        function respondToScrolling(self, figure, event)
+            % switchyard for scrollable widgets owned in subclass
+            %   self.scrollableHandles and self.scrollCallbacks
+            % get all handle Positions, vertat X,Y,W,H
+            % get current point x,y
+            % find any X<x & Y<y & x<X+W & y<Y+H
+            % execute first correspond callback(handle, event)
         end
         
         function set.title(self, title)

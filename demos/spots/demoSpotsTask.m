@@ -24,6 +24,3 @@ set(blockGUI.figure, 'Position', blockGUIPosition);
 topsDataLog.flushAllData;
 logGUI = topsDataLogGUI;
 set(logGUI.figure, 'Position', logGUIPosition);
-
-% launch the Spots Task
-spotsTree.run;

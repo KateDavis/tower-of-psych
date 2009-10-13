@@ -14,6 +14,7 @@ classdef topsBlockTreeGUI < topsGUI
         blockActionFcnText;
         blockEndFcnText;
         userDataText;
+        runButton;
     end
     
     methods
@@ -67,6 +68,16 @@ classdef topsBlockTreeGUI < topsGUI
                 'Units', 'normalized', ...
                 'String', 'block name', ...
                 'Position', [0, 1-(y*height), width, height], ...
+                'HorizontalAlignment', 'left');
+
+            self.runButton = uicontrol( ...
+                'Parent', self.blockDetailPanel, ...
+                'BackgroundColor', bg, ...
+                'Callback', @(obj, event)self.runCurrentBlock, ...
+                'Style', 'pushbutton', ...
+                'Units', 'normalized', ...
+                'String', 'run', ...
+                'Position', [1-inset, 1-(y*height), inset, height], ...
                 'HorizontalAlignment', 'left');
             
             y = y+2;
@@ -150,6 +161,10 @@ classdef topsBlockTreeGUI < topsGUI
                 'ForegroundColor', [0 0 0]);
         end
         
+        function runCurrentBlock(self)
+            self.currentBlockTree.run;
+        end
+        
         function repopulateBlocksGrid(self)
             % delete all listeners and controls
             self.deleteListeners;
@@ -179,6 +194,11 @@ classdef topsBlockTreeGUI < topsGUI
                 self.blockTreeCount = self.blockTreeCount + 1;
                 self.addBlockAtDepth(block.children(ii), depth+1);
             end
+        end
+        
+        function repondToResize(self, figure, event)
+            % attempt to resize with characters, rather than normalized
+            self.blocksGrid.repositionControls;
         end
         
         function listenToBlockTree(self, block)
