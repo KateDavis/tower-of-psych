@@ -141,6 +141,10 @@ classdef ScrollingControlGrid < handle
             % establish the correct controlPanel size,
             %   in character units
             z = size(self.controls);
+            if ~any(z)
+                return;
+            end
+            
             set(self.controlPanel, 'Visible', 'off', 'Units', 'Characters');
             charPos = get(self.controlPanel, 'Position');
             charPos = [0 0 charPos(3) max(1, z(1)*1.5)];
