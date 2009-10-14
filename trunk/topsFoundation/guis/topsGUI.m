@@ -1,12 +1,10 @@
 classdef topsGUI < handle
-    properties (SetObservable)
-        figure;
-        title = 'tops GUI';
-        isBusy = false;
-    end
     
     properties(Hidden)
+        figure;
+        title = 'tops GUI';
         busyTitle = '(busy...)';
+        isBusy = false;
         colors;
         listeners = struct();
     end
