@@ -7,7 +7,7 @@ classdef EncounterBattleTimer < handle
         repeatInterval=inf;
         callback={};
         
-        clockFcn = @now;
+        clockFcn = @topsTimer;
     end
     
     methods
