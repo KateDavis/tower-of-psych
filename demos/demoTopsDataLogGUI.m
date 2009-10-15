@@ -1,6 +1,4 @@
-function demoTopsDataLogGUI
-%Continually feed sample data to topsDataLog and topsDataLogGUI
-
+%Continually feed fake data to topsDataLog and topsDataLogGUI
 clear all
 clear classes
 

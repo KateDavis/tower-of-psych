@@ -1,17 +1,14 @@
-classdef topsDataLogGUI < topsGUI
+classdef topsDataLogGUI < topsGUI    
     properties
-        intervalStart = 0;
-        intervalLength = 1;
-        replayStartTime = -inf;
-        replayEndTime = inf;
+        viewStart=0;
+        viewLength=0;
+        viewIsSliding;
+        replayStartTime;
+        replayEndTime;
     end
     
     properties(Hidden)
         mnemonics;
-        mnemonicsWidth=4;
-        
-        intervalSliding;
-        intervalGrowing;
         
         dataLogTexts;
         accumulatorCount;
@@ -23,28 +20,39 @@ classdef topsDataLogGUI < topsGUI
         replayEndInput;
         replayAllButton;
         
-        intervalLabel;
-        intervalLengthInput;
-        intervalAutoButton;
-        intervalStartSlider;
+        viewSlideToggle;
+        viewLengthInput;
+        viewAllToggle;
+        viewStartSlider;
         
+        mnemonicLabel;
         mnemonicNoTriggerButton;
-        mnemonicShowAllButton;
+        mnemonicPlotAllButton;
         
         accumulatorAxes;
         dataLogAxes;
         mnemonicsGrid;
+        mnemonicsWidth=4;
     end
     
     methods
         function self = topsDataLogGUI()
             self = self@topsGUI;
             self.title = 'Data Log Viewer';
+            
             self.createWidgets;
+            
+            self.setReplayEntireLog;
+            
+            self.mnemonics = {};
+            self.viewStart = 0;
+            self.viewLength = self.biggerThanEps;
+            self.viewIsSliding = false;
+            
             self.listenToDataLog;
         end
         
-        function replayEntireLog(self)
+        function replayDataLog(self)
             set(self.dataLogTexts, 'Visible', 'off');
             
             self.dataLogCount = 0;
@@ -107,7 +115,7 @@ classdef topsDataLogGUI < topsGUI
         end
         
         function hearNewData(self, theLog, eventData)
-            logEntryStruct = eventData.UserData;
+            logEntry = eventData.UserData;
             
             % trigger and ignore selections
             z = size(self.mnemonicsGrid.controls);
@@ -124,54 +132,48 @@ classdef topsDataLogGUI < topsGUI
                 ignore = false;
             end
             
-            % intervalStart and intervalLength depend on mode of operation:
-            % intervalStart is either
-            %   the time of the last triggering log entry
-            %   left as is
-            %   sliding, to accomodate all incoming log entries
-            % intervalLength is either
-            %   left as is
-            %   doubled as needed to accomodate all incoming entries
-            % there's a conflict between sliding the start vs. growing the
-            % length.  Let sliding win.
-            if any(trig)
-                if any(strcmp(self.mnemonics(trig), logEntryStruct.mnemonic))
-                    self.trigger(logEntryStruct);
-                    self.intervalStart = logEntryStruct.time;
+            % what are the view start and length?
+            %   they depend on sliding and triggering
+            if self.viewIsSliding
+                if any(trig)
+                    if any(strcmp(self.mnemonics(trig), logEntry.mnemonic))
+                        self.trigger(logEntry);
+                        self.viewStart = logEntry.time;
+                    end
+                elseif self.viewSliderIsPegged
+                    % keep sliding
+                    self.viewStart = logEntry.time-self.viewLength;
                 end
-            elseif self.intervalSliding
-                self.intervalStart = logEntryStruct.time - self.intervalLength;
+            else
+                % get bounds from user inputs or the dataLog
+                [self.viewStart, self.viewLength] = self.getFullViewSize;
             end
             
-            if self.intervalGrowing
-                if logEntryStruct.time > (self.intervalStart + self.intervalLength)
-                    self.intervalLength = self.intervalLength * 2;
-                end
-            end
-            
-            % ignore this log entry?
-            if ~any(ignore) || ~any(strcmp(self.mnemonics(ignore), logEntryStruct.mnemonic))
-                self.plotLogEntry(logEntryStruct);
+            % plot this log entry?
+            if ~any(ignore) || ~any(strcmp(self.mnemonics(ignore), logEntry.mnemonic))
+                self.plotLogEntry(logEntry);
             end
         end
         
-        function trigger(self, logEntryStruct)
+        function trigger(self, logEntry)
             textToMove = self.dataLogTexts(self.accumulatorCount+1:self.dataLogCount);
-            if length(textToMove) == 1
-                p = get(textToMove, 'Position');
-                p(1) = p(1) - self.intervalStart;
-                pCell = {p};
-            elseif length(textToMove) > 1
-                pCell = get(textToMove, 'Position');
-                p = vertcat(pCell{:});
-                p(:,1) = p(:,1) - self.intervalStart;
-                pCell = mat2cell(p, ones(1,size(p,1)));
+            if ~isempty(textToMove)
+                if length(textToMove) == 1
+                    p = get(textToMove, 'Position');
+                    p(2) = p(2) - self.viewStart;
+                    pCell = {p};
+                elseif length(textToMove) > 1
+                    pCell = get(textToMove, 'Position');
+                    p = vertcat(pCell{:});
+                    p(:,2) = p(:,2) - self.viewStart;
+                    pCell = mat2cell(p, ones(1,size(p,1)));
+                end
+                set(textToMove, ...
+                    'Parent', self.accumulatorAxes, ...
+                    {'Position'}, pCell, ...
+                    'String', '---');
+                self.accumulatorCount = self.dataLogCount;
             end
-            set(textToMove, ...
-                'Parent', self.accumulatorAxes, ...
-                {'Position'}, pCell, ...
-                'String', '---');
-            self.accumulatorCount = self.dataLogCount;
         end
         
         function clearAccumulator(self)
@@ -179,12 +181,12 @@ classdef topsDataLogGUI < topsGUI
                 'Visible', 'off');
         end
         
-        function plotLogEntry(self, logEntryStruct)
-            summary = sprintf('--- %s', logEntryStruct.mnemonic);
+        function plotLogEntry(self, logEntry)
+            summary = sprintf('--- %s', logEntry.mnemonic);
             set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Color', self.getColorForString(logEntryStruct.mnemonic), ...
-                'Position', [0, logEntryStruct.time], ...
+                'Color', self.getColorForString(logEntry.mnemonic), ...
+                'Position', [0, logEntry.time], ...
                 'String', summary, ...
                 'Visible', 'on');
         end
@@ -209,13 +211,11 @@ classdef topsDataLogGUI < topsGUI
         end
         
         function hearFlushedTheDataLog(self, theLog, eventData)
-            self.replayEntireLog;
+            self.replayDataLog;
         end
         
         function createWidgets(self)
             self.setupFigure;
-            
-            self.mnemonics = {};
             
             self.dataLogTexts = [];
             self.dataLogCount = 0;
@@ -228,28 +228,31 @@ classdef topsDataLogGUI < topsGUI
             
             bottom = 0;
             top = 1;
-            yDiv = .95;
+            yDiv = .85;
+            height = .05;
             
-            x = left;
+            % replay the log into the GUI
+            y = top-height;
+            x = xDiv;
             w = 4*width;
             self.replayButton = uicontrol ( ...
                 'Parent', self.figure, ...
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
                 'String', 'Replay:', ...
-                'Callback', @(obj, event) self.replayEntireLog, ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'Callback', @(obj, event) self.replayDataLog, ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'left');
             
             x = x + w;
-            w = 3*width;
+            w = 4*width;
             self.replayStartInput = uicontrol ( ...
                 'Parent', self.figure, ...
                 'Style', 'edit', ...
                 'BackgroundColor', [1 1 1], ...
-                'Callback', {@topsDataLogGUI.adjustReplayFromInput, self}, ...
+                'Callback', {@topsDataLogGUI.valueFromInput, self}, ...
                 'Units', 'normalized', ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'left', ...
                 'Enable', 'on');
             
@@ -261,115 +264,130 @@ classdef topsDataLogGUI < topsGUI
                 'BackgroundColor', get(self.figure, 'Color'), ...
                 'Units', 'normalized', ...
                 'String', 'thru', ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'center');
             
             x = x + w;
-            w = 3*width;
+            w = 4*width;
             self.replayEndInput = uicontrol ( ...
                 'Parent', self.figure, ...
                 'Style', 'edit', ...
                 'BackgroundColor', [1 1 1], ...
-                'Callback', {@topsDataLogGUI.adjustReplayFromInput, self}, ...
+                'Callback', {@topsDataLogGUI.valueFromInput, self}, ...
                 'Units', 'normalized', ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'left', ...
                 'Enable', 'on');
             
-            x = x + w;
             w = 2*width;
+            x = right - w;
             self.replayAllButton = uicontrol ( ...
                 'Parent', self.figure, ...
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
                 'String', 'all', ...
-                'Callback', {@topsDataLogGUI.adjustReplayAll, self}, ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'Callback', @(obj,event)self.setReplayEntireLog, ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'left');
             
             
-            w = 3*width;
-            x = xDiv-w;
-            self.intervalLengthInput = uicontrol ( ...
-                'Parent', self.figure, ...
-                'Style', 'edit', ...
-                'BackgroundColor', [1 1 1], ...
-                'Callback', {@topsDataLogGUI.intervalLengthFromInput, self}, ...
-                'Units', 'normalized', ...
-                'Position', [x, yDiv, w, top-yDiv], ...
-                'HorizontalAlignment', 'left', ...
-                'Enable', 'off');
-            
-            w = 4*width;
-            x = x - w;
-            self.intervalAutoButton = uicontrol ( ...
+            % view in the axes
+            y = top-2*height;
+            w = 6*width;
+            x = xDiv;
+            self.viewSlideToggle = uicontrol ( ...
                 'Parent', self.figure, ...
                 'Style', 'togglebutton', ...
                 'Units', 'normalized', ...
-                'String', 'View:', ...
-                'Callback', {@topsDataLogGUI.intervalGrowingFromToggle, self}, ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'String', 'Sliding view:', ...
+                'Callback', {@topsDataLogGUI.viewIsSlidingFromTogle, self}, ...
+                'Position', [x, y, w, height], ...
+                'HorizontalAlignment', 'left');
+            
+            x = x + w;
+            w = 4*width;
+            self.viewLengthInput = uicontrol ( ...
+                'Parent', self.figure, ...
+                'Style', 'edit', ...
+                'BackgroundColor', [1 1 1], ...
+                'Callback', {@topsDataLogGUI.valueFromInput, self}, ...
+                'Units', 'normalized', ...
+                'Position', [x, y, w, height], ...
+                'HorizontalAlignment', 'left', ...
+                'Enable', 'on');
+            
+            w = 4*width;
+            x = right-w;
+            self.viewAllToggle = uicontrol ( ...
+                'Parent', self.figure, ...
+                'Style', 'togglebutton', ...
+                'Units', 'normalized', ...
+                'String', 'view all', ...
+                'Callback', {@topsDataLogGUI.viewIsSlidingFromTogle, self}, ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'left');
             
             
-            w = 5*width;
-            x = right-w;
-            self.mnemonicShowAllButton = uicontrol ( ...
-                'Parent', self.figure, ...
-                'Style', 'pushbutton', ...
-                'Units', 'normalized', ...
-                'String', 'show all', ...
-                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value', false), ...
-                'Position', [x, yDiv, w, top-yDiv], ...
-                'HorizontalAlignment', 'center');
-            
-            x = xDiv + 3*width;
-            w = 5*width;
+            % use mnemoics for trigger or hide
+            y = top-3*height;
+            w = 4*width;
+            x = xDiv;
             self.mnemonicNoTriggerButton = uicontrol( ...
                 'Parent', self.figure, ...
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
                 'String', 'no trigger', ...
                 'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,1), 'Value', false), ...
-                'Position', [x, yDiv, w, top-yDiv], ...
+                'Position', [x, y, w, height], ...
                 'HorizontalAlignment', 'left');
             
+            w = 4*width;
+            x = right - w;
+            self.mnemonicPlotAllButton = uicontrol ( ...
+                'Parent', self.figure, ...
+                'Style', 'pushbutton', ...
+                'Units', 'normalized', ...
+                'String', 'plot all', ...
+                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value', false), ...
+                'Position', [x, y, w, height], ...
+                'HorizontalAlignment', 'center');
+            
+            
+            % axes for viewing
+            axesOptions = { ...
+                'Color', [1 1 1], ...
+                'DrawMode', 'fast', ...
+                'HitTest', 'on', ...
+                'XTick', [], ...
+                'YTick', [], ...
+                'YLim', [0 self.biggerThanEps], ...
+                'YLimMode', 'manual', ...
+                'YDir', 'reverse', ...
+                'Projection', 'orthographic'};
             
             self.accumulatorAxes = axes( ...
                 'Parent', self.figure, ...
                 'Box', 'on', ...
-                'ButtonDownFcn', {@topsDataLogGUI.adjustReplayFromAxes, self}, ...
-                'Color', [1 1 1], ...
-                'DrawMode', 'fast', ...
-                'HitTest', 'on', ...
-                'Position', [left, bottom, 2*width, yDiv], ...
-                'XTick', [], ...
+                'Position', [left, bottom, 2*width, top], ...
                 'XLim', [0 .1], ...
-                'YTick', [], ...
-                'YLim', [0 1], ...
-                'YDir', 'reverse');
+                axesOptions{:});
+            
             
             self.dataLogAxes = axes( ...
                 'Parent', self.figure, ...
-                'Box', 'off', ...
                 'ButtonDownFcn', {@topsDataLogGUI.adjustReplayFromAxes, self}, ...
-                'Color', [1 1 1], ...
-                'DrawMode', 'fast', ...
-                'HitTest', 'on', ...
-                'Position', [2*width, bottom, xDiv-3*width, yDiv], ...
-                'XTick', [], ...
+                'Box', 'off', ...
+                'Position', [2*width, bottom, xDiv-3*width, top], ...
                 'XLim', [0 1], ...
-                'YTick', [], ...
-                'YLim', [0 1], ...
-                'YDir', 'reverse');
+                axesOptions{:});
             
-            self.intervalStartSlider = uicontrol( ...
+            self.viewStartSlider = uicontrol( ...
                 'Parent', self.figure, ...
                 'Style', 'slider', ...
                 'Units', 'normalized', ...
                 'String', '', ...
-                'Callback', {@topsDataLogGUI.intervalStartFromSlider, self}, ...
-                'Position', [xDiv-width, bottom, width, yDiv], ...
+                'Callback', {@topsDataLogGUI.viewStartFromSlider, self}, ...
+                'Position', [xDiv-width, bottom, width, top], ...
                 'HorizontalAlignment', 'left', ...
                 'Min', -1, ...
                 'Max', 0, ...
@@ -378,13 +396,6 @@ classdef topsDataLogGUI < topsGUI
             % custom widget class, in tops/utilities
             self.mnemonicsGrid = ScrollingControlGrid( ...
                 self.figure, [xDiv, bottom, right-xDiv, yDiv]);
-            
-            % trigger mutators to update new controls
-            theLog = topsDataLog.theDataLog;
-            self.intervalStart = theLog.earliestTime;
-            self.intervalLength = theLog.latestTime;
-            self.replayStartTime = -inf;
-            self.replayEndTime = inf;
         end
         
         function repondToResize(self, figure, event)
@@ -392,27 +403,71 @@ classdef topsDataLogGUI < topsGUI
             self.mnemonicsGrid.repositionControls;
         end
         
-        function limitAxesToInterval(self)
-            interval = [0 self.intervalLength];
-            set(self.dataLogAxes, 'YLim', interval + self.intervalStart);
-            set(self.accumulatorAxes, 'YLim', interval);
-        end
-        
-        function set.intervalStart(self, intervalStart)
-            self.intervalStart = intervalStart;
-            theLog = topsDataLog.theDataLog;
-            self.limitAxesToInterval;
-
-            frac = (intervalStart - theLog.earliestTime) / (theLog.latestTime - theLog.earliestTime);
-            if isfinite(frac)
-                set(self.intervalStartSlider, 'Value', -frac);
+        function updateAxesForView(self)
+            vals = [self.viewStart, self.viewLength];
+            if length(vals) == 2 && all(isfinite(vals)) && vals(2) > 0
+                set(self.dataLogAxes, 'YLim', [vals(1), vals(1)+vals(2)]);
+                set(self.accumulatorAxes, 'YLim', [0, vals(2)]);
             end
         end
         
-        function set.intervalLength(self, intervalLength)
-            self.intervalLength = intervalLength;
-            set(self.intervalLengthInput, 'String', num2str(intervalLength));
-            self.limitAxesToInterval;
+        function updateSliderForView(self)
+            [start, length] = self.getFullViewSize;
+            frac = (self.viewStart-start)/(length-self.viewLength);
+            set(self.viewStartSlider, 'Value', -max(min(frac,1),0));
+        end
+
+        function setReplayEntireLog(self)
+            theLog = topsDataLog.theDataLog;
+            self.replayStartTime = max(-inf, theLog.earliestTime);
+            self.replayEndTime = max(inf, theLog.latestTime);
+        end
+        
+        function [start, length] = getFullViewSize(self)
+            theLog = topsDataLog.theDataLog;
+            if isfinite(self.replayStartTime)
+                start = self.replayStartTime;
+            else
+                start = theLog.earliestTime;
+            end
+            
+            if isfinite(self.replayEndTime)
+                length = self.replayEndTime - start;
+            else
+                length = theLog.latestTime - start + self.biggerThanEps;
+            end
+        end
+        
+        function isPegged = viewSliderIsPegged(self)
+            isPegged = get(self.viewStartSlider, 'Value') + 1 < .01;
+        end
+        
+        function set.viewStart(self, viewStart)
+            self.viewStart = viewStart;
+            self.updateAxesForView;
+            self.updateSliderForView;
+        end
+        
+        function set.viewLength(self, viewLength)
+            self.viewLength = viewLength;
+            set(self.viewLengthInput, 'String', num2str(viewLength));
+            self.updateAxesForView;
+            self.updateSliderForView;
+        end
+        
+        function set.viewIsSliding(self, viewIsSliding)
+            self.viewIsSliding = viewIsSliding;
+            enables = [self.viewStartSlider, self.viewLengthInput];
+            if viewIsSliding
+                set(self.viewAllToggle, 'Value', false);
+                set(self.viewSlideToggle, 'Value', true);
+                set(self.viewStartSlider, 'Value', -1);
+                set(enables, 'Enable', 'on');
+            else
+                set(self.viewAllToggle, 'Value', true);
+                set(self.viewSlideToggle, 'Value', false);
+                set(enables, 'Enable', 'off');
+            end
         end
         
         function set.replayStartTime(self, replayStartTime)
@@ -427,19 +482,29 @@ classdef topsDataLogGUI < topsGUI
     end
     
     methods(Static)
-        function adjustReplayFromInput(input, event, self)
+        function valueFromInput(input, event, self)
             value = str2num(get(input, 'String'));
             switch input
                 case self.replayStartInput
                     self.replayStartTime = value;
                 case self.replayEndInput
                     self.replayEndTime = value;
+                case self.viewLengthInput
+                    % try to keep scrolling 
+                    if self.viewSliderIsPegged
+                        [start, length] = self.getFullViewSize;
+                        self.viewStart = length - value;
+                        self.viewLength = value;
+                    else
+                        self.viewLength = value;
+                    end
+
             end
         end
         
         function adjustReplayFromAxes(ax, event, self)
             point = get(ax, 'CurrentPoint');
-            time = point(1,2) + self.intervalStart;
+            time = point(1,2);
             switch get(self.figure, 'SelectionType');
                 case 'normal'
                     self.replayStartTime = time;
@@ -448,36 +513,20 @@ classdef topsDataLogGUI < topsGUI
             end
         end
         
-        function adjustReplayAll(button, event, self)
-            self.replayStartTime = -inf;
-            self.replayEndTime = inf;
-        end
-        
-        function intervalStartFromSlider(slider, event, self)
+        function viewStartFromSlider(slider, event, self)
             frac = -get(slider, 'Value');
-            theLog = topsDataLog.theDataLog;
-            start = (1-frac)*theLog.earliestTime + frac*theLog.latestTime;
-            if isfinite(start)
-                self.intervalStart = start;
-            end
-            
-            % slide the axes view this slider is at the bottom
-            self.intervalSliding = frac == 1;
+            [start, length] = self.getFullViewSize;
+            self.viewStart = start + frac*(length-self.viewLength);;
         end
         
-        function intervalGrowingFromToggle(toggle, event, self)
-            if get(toggle, 'Value')
-                set(self.intervalLengthInput, 'Enable', 'on');
-                self.intervalLength = str2num(get(self.intervalLengthInput, 'String'));
-                self.intervalGrowing = false;
-            else
-                set(self.intervalLengthInput, 'Enable', 'off');
-                self.intervalGrowing = true;
+        function viewIsSlidingFromTogle(toggle, event, self)
+            value = get(toggle, 'Value');
+            switch toggle
+                case self.viewAllToggle
+                    self.viewIsSliding = ~value;
+                case self.viewSlideToggle
+                    self.viewIsSliding = value;
             end
-        end
-        
-        function intervalLengthFromInput(input, event, self)
-            self.intervalLength = str2num(get(input, 'String'));
         end
     end
 end

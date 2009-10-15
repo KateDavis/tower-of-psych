@@ -7,6 +7,7 @@ classdef topsGUI < handle
         isBusy = false;
         colors;
         listeners = struct();
+        biggerThanEps = 1e-6;
     end
     
     methods
@@ -32,6 +33,12 @@ classdef topsGUI < handle
                 for ii = 1:length(fn)
                     delete([self.listeners.(fn{ii})]);
                 end
+            end
+        end
+        
+        function figureClose(self)
+            if isvalid(self)
+                delete(self)
             end
         end
         

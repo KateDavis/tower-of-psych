@@ -2,7 +2,7 @@ classdef topsFunctionLoop < handle
     properties (SetObservable)
         modeList;
         proceed = true;
-        clockFcn = @now;
+        clockFcn = @topsTimer;
     end
     
     methods

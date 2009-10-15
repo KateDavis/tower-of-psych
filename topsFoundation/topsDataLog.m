@@ -2,7 +2,7 @@ classdef (Sealed) topsDataLog < handle
     %Singleton to log events, data with time stamps
     
     properties
-        clockFcn = @now;
+        clockFcn = @topsTimer;
     end
     
     properties (SetAccess=private)
