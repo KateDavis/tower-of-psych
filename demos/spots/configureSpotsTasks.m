@@ -116,7 +116,7 @@ spotsTree.addChild(rtTask);
 rtTrial = topsBlockTree;
 rtTrial.name = 'rt_trial';
 rtTrial.blockBeginFcn = {@rtTrialSetup, spotsList, taskName};
-rtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
+rtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 600};
 rtTrial.blockEndFcn = {@rtTrialTeardown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(rtTrial, taskName, 'rtTrial');
 rtTask.addChild(rtTrial);
@@ -136,7 +136,7 @@ spotsTree.addChild(fvtTask);
 fvtTrial = topsBlockTree;
 fvtTrial.name = 'fvt_trial';
 fvtTrial.blockBeginFcn = {@fvtTrialSetup, spotsList, taskName};
-fvtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 1};
+fvtTrial.blockActionFcn = {@spotsLoop.runInModeForDuration, 'spots', 600};
 fvtTrial.blockEndFcn = {@fvtTrialTeardown, spotsList, taskName};
 spotsList.addItemToModeWithMnemonicWithPrecedence(fvtTrial, taskName, 'fvtTrial');
 fvtTask.addChild(fvtTrial);
@@ -149,6 +149,7 @@ function spotsSetup(spotsList, modeName)
 fp = spotsList.getItemFromModeWithMnemonic(modeName, 'figurePosition');
 fig = figure( ...
     'Name', 'See Spots', ...
+    'Units', 'normalized', ...
     'ToolBar', 'none', ...
     'MenuBar', 'none');
 if ~isempty(fp)
@@ -169,6 +170,21 @@ spotsList.addItemToModeWithMnemonicWithPrecedence(ax, modeName, 'axes');
 function spotsTearDown(spotsList, modeName)
 fig = spotsList.getItemFromModeWithMnemonic(modeName, 'figure');
 close(fig);
+
+function waitForUserClick(spotsList, message)
+fig = spotsList.getItemFromModeWithMnemonic('spots', 'figure');
+button = uicontrol( ...
+    'Parent', fig, ...
+    'Style', 'togglebutton', ...
+    'Value', false, ...
+    'Units', 'normalized', ...
+    'Position', [0 0 1 1], ...
+    'String', message);
+while get(button, 'Value') == false
+    drawnow;
+end
+delete(button);
+drawnow
 
 
 %%%
@@ -197,7 +213,9 @@ end
 % don't want to replace any existing spots
 spotsList.replaceItemInModeWithMnemonicWithPrecedence(spots, modeName, 'spots');
 
-uiwait(warndlg({'Click the red spot,' 'as soon as you can.'}, 'Ready to begin?'));
+msg = 'Click the red spot--as soon as you can.';
+waitForUserClick(spotsList, msg);
+
 
 function rtTaskTearDown(spotsList, modeName)
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');
@@ -259,7 +277,8 @@ for ii = 1:n
 end
 spotsList.replaceItemInModeWithMnemonicWithPrecedence(spots, modeName, 'spots');
 
-uiwait(warndlg({'Click the red spot,' 'after it turns black.'}, 'Ready to begin?'));
+msg = 'Click the red spot--after it turns black.';
+waitForUserClick(spotsList, msg);
 
 function fvtTaskTearDown(spotsList, modeName)
 spots = spotsList.getItemFromModeWithMnemonic(modeName, 'spots');

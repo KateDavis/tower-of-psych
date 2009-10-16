@@ -1,4 +1,4 @@
-classdef topsDataLogGUI < topsGUI    
+classdef topsDataLogGUI < topsGUI
     properties
         viewStart=0;
         viewLength=0;
@@ -33,6 +33,7 @@ classdef topsDataLogGUI < topsGUI
         dataLogAxes;
         mnemonicsGrid;
         mnemonicsWidth=4;
+        stickyPeg;
     end
     
     methods
@@ -48,6 +49,7 @@ classdef topsDataLogGUI < topsGUI
             self.viewStart = 0;
             self.viewLength = self.biggerThanEps;
             self.viewIsSliding = false;
+            self.stickyPeg = false;
             
             self.listenToDataLog;
         end
@@ -59,7 +61,9 @@ classdef topsDataLogGUI < topsGUI
             self.accumulatorCount = 0;
             self.isBusy = true;
             
-            % replay events within replay window
+            self.stickyPeg = self.viewSliderIsPegged;
+            
+            % replay the log, within bounds
             theLog = topsDataLog.theDataLog;
             entireLogStruct = theLog.getAllDataSorted;
             t = [entireLogStruct.time];
@@ -77,6 +81,8 @@ classdef topsDataLogGUI < topsGUI
                 ed.UserData = entireLogStruct(ii);
                 self.hearNewData(theLog, ed);
             end
+            
+            self.stickyPeg = false;
             self.isBusy = false;
         end
         
@@ -121,9 +127,9 @@ classdef topsDataLogGUI < topsGUI
             z = size(self.mnemonicsGrid.controls);
             if z(1) > 1
                 allTrig = get(self.mnemonicsGrid.controls(:,1), 'Value');
-                trig = logical([allTrig{:}]);
+                trig = logical([allTrig{2:end}]);
                 allIgnore = get(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value');
-                ignore = logical([allIgnore{:}]);
+                ignore = logical([allIgnore{2:end}]);
             else
                 trig = false;
                 ignore = false;
@@ -137,8 +143,7 @@ classdef topsDataLogGUI < topsGUI
                         self.trigger(logEntry);
                         self.viewStart = logEntry.time;
                     end
-                elseif self.viewSliderIsPegged ...
-                        || (self.viewStart + self.viewLength - logEntry.time) / self.viewLength < .05
+                elseif self.viewSliderIsPegged
                     % keep sliding
                     self.viewStart = logEntry.time-self.viewLength;
                 end
@@ -228,7 +233,32 @@ classdef topsDataLogGUI < topsGUI
             top = .99;
             yDiv = .85*(top-bottom);
             height = .05;
-
+            
+            % custom widget class, in tops/utilities
+            self.mnemonicsGrid = ScrollingControlGrid( ...
+                self.figure, [xDiv, bottom, right-xDiv, yDiv]);
+            
+            self.addScrollableChild(self.mnemonicsGrid.panel, ...
+                {@ScrollingControlGrid.respondToSliderOrScroll, self.mnemonicsGrid});
+            
+            self.mnemonicNoTriggerButton = self.mnemonicsGrid.newControlAtRowAndColumn( ...
+                1, [1 self.mnemonicsWidth], ...
+                'Style', 'pushbutton', ...
+                'Units', 'normalized', ...
+                'String', '(no trigger)', ...
+                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,1), 'Value', false), ...
+                'HorizontalAlignment', 'left', ...
+                'Value', false);
+            
+            self.mnemonicPlotAllButton = self.mnemonicsGrid.newControlAtRowAndColumn( ...
+                1, self.mnemonicsWidth+1, ...
+                'Style', 'pushbutton', ...
+                'Units', 'normalized', ...
+                'String', '(none)', ...
+                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value', false), ...
+                'HorizontalAlignment', 'left', ...
+                'Value', false);
+            
             % view controls for the axes
             h = height;
             y = top-height;
@@ -265,7 +295,7 @@ classdef topsDataLogGUI < topsGUI
                 'Callback', {@topsDataLogGUI.viewIsSlidingFromTogle, self}, ...
                 'Position', [x, y, w, h], ...
                 'HorizontalAlignment', 'left');
-
+            
             
             % replay the data log into the GUI
             y = top - 2.5*height;
@@ -355,39 +385,20 @@ classdef topsDataLogGUI < topsGUI
                 'XLim', [0 1], ...
                 axesOptions{:});
             
+            self.addScrollableChild(self.dataLogAxes, ...
+                {@topsDataLogGUI.viewStartFromScrollOrSlider, self});
+            
             self.viewStartSlider = uicontrol( ...
                 'Parent', self.figure, ...
                 'Style', 'slider', ...
                 'Units', 'normalized', ...
                 'String', '', ...
-                'Callback', {@topsDataLogGUI.viewStartFromSlider, self}, ...
+                'Callback', {@topsDataLogGUI.viewStartFromScrollOrSlider, self}, ...
                 'Position', [xDiv-width, bottom, width, top-bottom], ...
                 'HorizontalAlignment', 'left', ...
                 'Min', -1, ...
                 'Max', 0, ...
                 'Value', -1);
-            
-            % custom widget class, in tops/utilities
-            self.mnemonicsGrid = ScrollingControlGrid( ...
-                self.figure, [xDiv, bottom, right-xDiv, yDiv]);
-
-            self.mnemonicNoTriggerButton = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                1, [1 self.mnemonicsWidth], ...
-                'Style', 'pushbutton', ...
-                'Units', 'normalized', ...
-                'String', '(no trigger)', ...
-                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,1), 'Value', false), ...
-                'HorizontalAlignment', 'left', ...
-                'Value', false);
-
-            self.mnemonicPlotAllButton = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                1, self.mnemonicsWidth+1, ...
-                'Style', 'pushbutton', ...
-                'Units', 'normalized', ...
-                'String', '(none)', ...
-                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value', false), ...
-                'HorizontalAlignment', 'left', ...
-                'Value', false);
         end
         
         function repondToResize(self, figure, event)
@@ -405,18 +416,14 @@ classdef topsDataLogGUI < topsGUI
         
         function updateSliderForView(self)
             [start, length] = self.getFullReplaySize;
-            if self.viewStart <= start
-                set(self.viewStartSlider, 'Value', -1);
-            else
-                frac = (self.viewStart-start)/(length-self.viewLength);
-                set(self.viewStartSlider, 'Value', -max(min(frac,1),0));
-            end
+            frac = (self.viewStart - start) / (length - self.viewLength);
+            set(self.viewStartSlider, 'Value', -max(min(frac,1),0));
         end
-
+        
         function isPegged = viewSliderIsPegged(self)
-            isPegged = get(self.viewStartSlider, 'Value') + 1 < .01;
+            isPegged = self.stickyPeg || get(self.viewStartSlider, 'Value') + 1 < .01;
         end
-
+        
         function setReplayEntireLog(self)
             theLog = topsDataLog.theDataLog;
             self.replayStartTime = max(-inf, theLog.earliestTime);
@@ -486,15 +493,7 @@ classdef topsDataLogGUI < topsGUI
                 case self.replayEndInput
                     self.replayEndTime = value;
                 case self.viewLengthInput
-                    % try to keep scrolling 
-                    if self.viewSliderIsPegged
-                        [start, length] = self.getFullReplaySize;
-                        self.viewStart = length - value;
-                        self.viewLength = value;
-                    else
-                        self.viewLength = value;
-                    end
-
+                    self.viewLength = value;
             end
         end
         
@@ -509,10 +508,15 @@ classdef topsDataLogGUI < topsGUI
             end
         end
         
-        function viewStartFromSlider(slider, event, self)
-            frac = -get(slider, 'Value');
+        function viewStartFromScrollOrSlider(obj, event, self)
+            frac = -get(self.viewStartSlider, 'Value');
+            if isfield(event, 'VerticalScrollCount')
+                % mouse scroll event
+                scroll = .01*event.VerticalScrollCount;
+                frac = max(min(frac + scroll, 1), 0);
+            end
             [start, length] = self.getFullReplaySize;
-            self.viewStart = start + frac*(length-self.viewLength);;
+            self.viewStart = frac*(length-self.viewLength) + start;
         end
         
         function viewIsSlidingFromTogle(toggle, event, self)

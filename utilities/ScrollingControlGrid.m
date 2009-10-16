@@ -55,7 +55,7 @@ classdef ScrollingControlGrid < handle
                 'Units', 'normalized', ...
                 'Position', self.position, ...
                 'Clipping', 'on', ...
-                'HandleVisibility', 'off', ...
+                'HandleVisibility', 'on', ...
                 'HitTest', 'off', ...
                 'SelectionHighlight', 'off', ...
                 'Visible', 'on');
@@ -70,7 +70,7 @@ classdef ScrollingControlGrid < handle
                 'Style', 'slider', ...
                 'SliderStep', [.01 .1], ...
                 'Value', 0, ...
-                'Callback', {@ScrollingControlGrid.respondToSlider, self}, ...
+                'Callback', {@ScrollingControlGrid.respondToSliderOrScroll, self}, ...
                 'HandleVisibility', 'off', ...
                 'HitTest', 'on', ...
                 'Enable', 'off', ...
@@ -178,7 +178,6 @@ classdef ScrollingControlGrid < handle
                 end
             end
             set(self.controlPanel, 'Visible', 'on');
-            drawnow;
             
             % only allow scrolling when the controlPanel is too big to fit
             if y < 0
@@ -191,10 +190,20 @@ classdef ScrollingControlGrid < handle
     end
     
     methods(Static)
-        function respondToSlider(slider, event, self)
-            normPos = get(self.controlPanel, 'Position');
-            normPos(2) = -get(slider, 'Value');
-            set(self.controlPanel, 'Position', normPos);
+        function respondToSliderOrScroll(obj, event, self)
+            if strcmp(get(self.slider, 'Enable'), 'on')
+                y = -get(self.slider, 'Value');
+                if isfield(event, 'VerticalScrollCount')
+                    % mouse scroll event
+                    scroll = .01*event.VerticalScrollCount;
+                    bottom = -get(self.slider, 'Max');
+                    y = min(max(y+scroll, bottom), 0);
+                    set(self.slider, 'Value', -y);
+                end
+                normPos = get(self.controlPanel, 'Position');
+                normPos(2) = y;
+                set(self.controlPanel, 'Position', normPos);
+            end
         end
         
         function mergedPos = mergePositionRects(varargin)
