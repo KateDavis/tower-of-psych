@@ -28,7 +28,6 @@ classdef topsFunctionLoop < handle
             end
             
             % run whole passes through loop until duration
-            %   for now, punt on timeStamps preallocation
             functionLoop = self.getFunctionListForMode(mode);
             n = length(functionLoop);
             
