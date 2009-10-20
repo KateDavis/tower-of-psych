@@ -2,9 +2,9 @@ classdef TestTopsFunctionLoop < TestCase
     
     properties
         functionLoop;
-        mathMode;
+        mathGroup;
         mathFunctions;
-        orderedMode;
+        orderedGroup;
         orderedFunctions;
         order;
         eventCount;
@@ -18,12 +18,12 @@ classdef TestTopsFunctionLoop < TestCase
         function setUp(self)
             self.functionLoop = topsFunctionLoop;            
 
-            self.mathMode = 'maths';
+            self.mathGroup = 'maths';
             self.mathFunctions  = { ...
                 {@eye, 6}, ...
                 {@mod, 3, 2}};
             
-            self.orderedMode = 'ordered';
+            self.orderedGroup = 'ordered';
             self.orderedFunctions = { ...
                 {@self.executeFunction, 1}, ...
                 {@self.executeFunction, 2}, ...
@@ -42,14 +42,14 @@ classdef TestTopsFunctionLoop < TestCase
             self.order(end+1) = value;
         end
         
-        function addFunctionsToModesInOrder(self)
-            % bunch of functions for two different modes
+        function addFunctionsToGroupsInOrder(self)
+            % bunch of functions for two different groups
             for ii = 1:length(self.mathFunctions)
-                self.functionLoop.addFunctionToModeWithPrecedence(self.mathFunctions{ii}, self.mathMode, -ii);
+                self.functionLoop.addFunctionToGroupWithRank(self.mathFunctions{ii}, self.mathGroup, ii);
             end
             
             for ii = 1:length(self.orderedFunctions)
-                self.functionLoop.addFunctionToModeWithPrecedence(self.orderedFunctions{ii}, self.orderedMode, -ii);
+                self.functionLoop.addFunctionToGroupWithRank(self.orderedFunctions{ii}, self.orderedGroup, ii);
             end
         end
         
@@ -58,35 +58,36 @@ classdef TestTopsFunctionLoop < TestCase
             assertFalse(self.functionLoop==newLoop, 'topsFunctionLoop should not be a singleton');
         end
         
-        function testRetrieveFunctionsByModeAndPrecedence(self)
-            self.addFunctionsToModesInOrder;
+        function testRetrieveFunctionsByGroupAndRank(self)
+            self.addFunctionsToGroupsInOrder;
             
-            mathLoop = self.functionLoop.getFunctionListForMode(self.mathMode);
+            mathLoop = self.functionLoop.getFunctionListForGroup(self.mathGroup);
             for ii = 1:length(mathLoop)
                 assertEqual(mathLoop{ii}, self.mathFunctions{ii}, ...
-                    'failed to add and retrieve functions for mode, in order');
+                    'should get back identical list of math functions');
             end
 
-            orderedLoop = self.functionLoop.getFunctionListForMode(self.orderedMode);
+            orderedLoop = self.functionLoop.getFunctionListForGroup(self.orderedGroup);
             for ii = 1:length(orderedLoop)
                 assertEqual(orderedLoop{ii}, self.orderedFunctions{ii}, ...
-                    'failed to add and retrieve functions for mode, in order');
+                    'should get back identical list of test functions');
             end
         end
 
-        function testRunFunctionsByModeAndPrecedence(self)
-            self.addFunctionsToModesInOrder;
-            % run once through loop
-            self.functionLoop.runInModeForDuration(self.orderedMode, 0);
+        function testRunFunctionsInCorrectOrder(self)
+            self.addFunctionsToGroupsInOrder;
+            self.functionLoop.runForGroupForDuration(self.orderedGroup, 0);
             assertFalse(isempty(self.order), 'failed to execute functions');
-            assertTrue(all(diff(self.order))>0, 'executes functions in wrong order');
+            assertTrue(all(diff(self.order))>0, 'executed functions in wrong order');
         end
         
         function testAbortRunWithProceedFlag(self)
-            abortMode = 'abortTest';
-            self.functionLoop.addFunctionToModeWithPrecedence({@self.clearProceedFlag}, abortMode, 1);
-            self.functionLoop.runInModeForDuration(abortMode, 1);
+            abortGroup = 'abortTest';
+            self.functionLoop.addFunctionToGroupWithRank({@self.clearProceedFlag}, abortGroup, 1);
+            self.functionLoop.addFunctionToGroupWithRank({@self.executeFunction, 1}, abortGroup, 2);
+            self.functionLoop.runForGroupForDuration(abortGroup, 0);
             assertFalse(self.functionLoop.proceed, 'function loop proceed flag should be false');
+            assertTrue(isempty(self.order), 'function loop should have aborted early');
         end
         
         function clearProceedFlag(self)

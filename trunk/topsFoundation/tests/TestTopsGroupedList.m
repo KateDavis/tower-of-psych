@@ -36,6 +36,10 @@ classdef TestTopsGroupedList < TestCase
             end
         end
         
+        function hearEvent(self, obj, event)
+            self.eventCount = self.eventCount + 1;
+        end
+        
         function testSingleton(self)
             newList = topsGroupedList;
             assertFalse(self.groupedList==newList, 'topsGroupedList should not be a singleton');
@@ -230,12 +234,38 @@ classdef TestTopsGroupedList < TestCase
             end
         end
         
+        function testGetAllItemsAsStruct(self)
+            % should make struct array for all items in group
+            groupStruct = self.groupedList.getAllItemsFromGroupAsStruct('nonexistant');
+            assertTrue(isempty(groupStruct), 'should get empty struct for nonexistant group');
+            
+            g = self.stringGroups{1};
+            self.addItemsToGroupWithMnemonics(self.items, g, self.stringMnemonics);
+            groupStruct = self.groupedList.getAllItemsFromGroupAsStruct(g);
+            
+            assertEqual(length(groupStruct), length(self.items));
+            assertTrue(all(strcmp(g, {groupStruct.group})), 'all struct should have same group');
+            
+            items = {groupStruct.item};
+            assertEqual(size(self.items), size(items), 'should get same number of items added to group')
+            
+            mnemonics = {groupStruct.mnemonic};
+            assertEqual(size(self.stringMnemonics), size(mnemonics), 'should get same number of mnemonics added to group')
+            
+            for ii = 1:length(self.stringMnemonics)
+                % look up returned items by mnemonics
+                jj = strcmp(mnemonics, self.stringMnemonics{ii});
+                assertEqual(sum(jj), 1, 'added and returned mnemonics should be 1:1')
+                assertEqual(self.items{ii}, items{jj}, 'added and returned items should be 1:1')
+            end
+        end
+        
         function testPropertyChangeEventPosting(self)
             % listen for event postings
             props = properties(self.groupedList);
             n = length(props);
             for ii = 1:n
-                self.groupedList.addlistener(props{ii}, 'PostSet', @self.hearEvent);
+                listeners(ii) = self.groupedList.addlistener(props{ii}, 'PostSet', @self.hearEvent);
             end
             
             % trigger a posting for each property
@@ -244,10 +274,18 @@ classdef TestTopsGroupedList < TestCase
                 self.groupedList.(props{ii}) = self.groupedList.(props{ii});
             end
             assertEqual(self.eventCount, n, 'heard wrong number of property set events');
+            delete(listeners);
         end
         
-        function hearEvent(self, metaProp, event)
-            self.eventCount = self.eventCount + 1;
+        function testNewItemEventPosting(self)
+            listeners(1) = self.groupedList.addlistener('NewGroup',  @self.hearEvent);
+            listeners(2) = self.groupedList.addlistener('NewMnemonic',  @self.hearEvent);
+            
+            g = self.stringGroups{1};
+            self.addItemsToGroupWithMnemonics(self.items, g, self.stringMnemonics);
+            n = 1 + length(self.stringMnemonics);
+            assertEqual(self.eventCount, n, 'heard wrong number of new item events');
+            delete(listeners);
         end
     end
 end

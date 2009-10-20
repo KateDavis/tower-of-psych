@@ -22,7 +22,7 @@ classdef EncounterBattleQueue < handle
         function dispatchNextFevalable(self)
             if ~self.isLocked && length(self.fevalables) > 0
                 feval(self.fevalables{1}{:});
-                topsDataLog.logMnemonicWithData('battleQueue dispatched', self.fevalables{1});
+                topsDataLog.logDataInGroup(self.fevalables{1}, 'battleQueue dispatched');
                 self.fevalables(1) = [];
             end
         end

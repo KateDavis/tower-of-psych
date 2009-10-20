@@ -8,6 +8,11 @@ classdef topsGroupedList < handle
         allGroupsMap;
     end
     
+    events
+        NewGroup;
+        NewMnemonic;
+    end
+    
     methods
         function self = topsGroupedList
             self.length = 0;
@@ -21,7 +26,12 @@ classdef topsGroupedList < handle
             % For each topsGroupedList, group values must be all strings or
             % all numbers.  Likewise, for each group, mnemonics must be all
             % strings or all numbers.
+            %
+            % topsGroupedList posts NewGroup and NewMnemonic notifications
+            % after new items are added.
             
+            notifyGroup = true;
+            notifyMnemonic = true;
             if isempty(self.allGroupsMap)
                 % start from scratch
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
@@ -29,15 +39,29 @@ classdef topsGroupedList < handle
                 self.length = 1;
             elseif self.containsGroup(group)
                 % routine addition
-                isNew = self.containsMnemonicInGroup(mnemonic, group);
+                isNew = ~self.containsMnemonicInGroup(mnemonic, group);
                 groupMap = self.allGroupsMap(group);
                 groupMap(mnemonic) = item;
-                self.length = self.length + ~isNew;
+                self.length = self.length + isNew;
+                
+                notifyGroup = false;
+                notifyMnemonic = isNew;
             else
                 % new group
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
                 self.allGroupsMap(group) = groupMap;
                 self.length = self.length + 1;
+            end
+            
+            if notifyGroup
+                self.notify('NewGroup', EventWithData(group));
+            end
+            
+            if notifyMnemonic
+                ed.item = item;
+                ed.group = group;
+                ed.mnemonic = mnemonic;
+                self.notify('NewMnemonic', EventWithData(ed));
             end
         end
         
@@ -103,7 +127,7 @@ classdef topsGroupedList < handle
         function item = getItemFromGroupWithMnemonic(self, group, mnemonic)
             % returns item stored in the given group, with the given
             % mnemonic
-            if self.containsMnemonicInGroup
+            if self.containsMnemonicInGroup(mnemonic, group)
                 groupMap = self.allGroupsMap(group);
                 item = groupMap(mnemonic);
             else
@@ -120,6 +144,28 @@ classdef topsGroupedList < handle
                 if nargout > 1
                     mnemonics = groupMap.keys;
                 end
+            else
+                items = [];
+                mnemonics = [];
+            end
+        end
+        
+        function groupStruct = getAllItemsFromGroupAsStruct(self, group)
+            % returns all items stored in a given group, in a struct array
+            %
+            %   groupStruct has one element per item in the given group.
+            %   It has three fields: item, menemonic, and group.
+            if self.containsGroup(group)
+                [items, mnemonics] = self.getAllItemsFromGroup(group);
+                groupStruct = struct( ...
+                    'item', items, ...
+                    'mnemonic', mnemonics, ...
+                    'group', group);
+            else
+                groupStruct = struct( ...
+                    'item', {}, ...
+                    'mnemonic', {}, ...
+                    'group', {});
             end
         end
         
@@ -151,13 +197,12 @@ classdef topsGroupedList < handle
     methods(Static)
         
         function isContained = mapContainsKey(map, key)
-            switch map.KeyType
-                case 'char'
-                    isContained = any(strcmp(map.keys, key));
-                case 'double'
-                    keyCell = map.keys;
-                    k = [keyCell{:}];
-                    isContained = any(key==k);
+            if strcmp(map.KeyType, 'char')
+                isContained = any(strcmp(map.keys, key));
+            else
+                keyCell = map.keys;
+                k = [keyCell{:}];
+                isContained = any(key==k);
             end
         end
         

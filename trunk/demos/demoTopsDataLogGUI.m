@@ -9,8 +9,8 @@ topsDataLog.flushAllData;
 %   which shows the contents of the topsDataLog
 gui = topsDataLogGUI;
 
-% mnemonics for sample data to save to the topsDataLog
-mnemonics = { ...
+% groups for sample data to save to the topsDataLog
+groups = { ...
     'abracadabra', ...
     'an event', ...
     'something boring happened', ...
@@ -23,8 +23,8 @@ mnemonics = { ...
 ii = 0;
 while isvalid(gui)
     % log some data--the number ii--with one of the mnemoncis above
-    m = mnemonics{1+mod(ii, length(mnemonics))};
-    topsDataLog.logMnemonicWithData(m, ii);
+    g = groups{1+mod(ii, length(groups))};
+    topsDataLog.logDataInGroup(ii, g);
     ii = ii + 1;
     pause(1 + normrnd(.1,.1))
 end

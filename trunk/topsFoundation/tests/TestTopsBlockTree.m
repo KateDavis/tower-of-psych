@@ -32,11 +32,11 @@ classdef TestTopsBlockTree < TestCase
             self.blockTree.blockEndFcn = {@sprintf, 'block end'};
             
             self.blockTree.preview;
-            summary = topsDataLog.getAllDataSorted;
+            summary = topsDataLog.getSortedDataStruct;
             assertEqual(length(summary), 3, 'wrong number of summary functions');
-            assertEqual(self.blockTree.blockBeginFcn, summary(1).data, 'wrong block begin function');
-            assertEqual(self.blockTree.blockActionFcn, summary(2).data, 'wrong block action function');
-            assertEqual(self.blockTree.blockEndFcn, summary(3).data, 'wrong block end function');
+            assertEqual(self.blockTree.blockBeginFcn, summary(1).item, 'wrong block begin function');
+            assertEqual(self.blockTree.blockActionFcn, summary(2).item, 'wrong block action function');
+            assertEqual(self.blockTree.blockEndFcn, summary(3).item, 'wrong block end function');
         end
         
         function testPreviewChildFunctions(self)
@@ -50,7 +50,7 @@ classdef TestTopsBlockTree < TestCase
                 self.blockTree.addChild(child);
             end
             self.blockTree.preview;
-            summary = topsDataLog.getAllDataSorted;
+            summary = topsDataLog.getSortedDataStruct;
             assertEqual(length(summary), 3*nChildren, 'wrong number of child functions logged');
         end
         
@@ -81,9 +81,9 @@ classdef TestTopsBlockTree < TestCase
             self.blockTree.blockEndFcn = fcn{9};
             
             self.blockTree.run;
-            summary = topsDataLog.getAllDataSorted;
+            summary = topsDataLog.getSortedDataStruct;
             for ii = 1:length(fcn)
-                assertEqual(fcn{ii}, summary(ii).data, 'functions run in wrong order');
+                assertEqual(fcn{ii}, summary(ii).item, 'functions run in wrong order');
             end
         end
         

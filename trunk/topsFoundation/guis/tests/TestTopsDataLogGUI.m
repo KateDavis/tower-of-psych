@@ -26,15 +26,16 @@ classdef TestTopsDataLogGUI < TestCase
             delete(newGui);
         end
         
-        function testUpdateMnemonicsListBoxes(self)
-            assertTrue(isempty(self.logGui.mnemonics), 'gui mnemonics list should start out empty')
+        function testUpdateGroupsList(self)
+            assertTrue(isempty(self.logGui.groups), 'gui groups list should start out empty')
             
-            newMnemonics = {'aaaa', 'bbbb', 'cccc'};
-            for m = newMnemonics
-                topsDataLog.logMnemonicWithData(m{1}, 1);
+            newGroups = {'aaaa', 'bbbb', 'cccc'};
+            for g = newGroups
+                topsDataLog.logDataInGroup(1, g{1});
             end
-            assertEqual(self.logGui.mnemonics, newMnemonics, 'gui mnemonics list should match mnemonics just added')
-            assertEqual(sort(self.logGui.mnemonics), sort(topsDataLog.getAllMnemonics), 'gui mnemonics list should contain same values as topsDataLog')
+            assertEqual(self.logGui.groups, newGroups, 'gui groups list should match groups just added')
+            theLog = topsDataLog.theDataLog;
+            assertEqual(sort(self.logGui.groups), sort(theLog.groups), 'gui groups list should contain same values as topsDataLog')
         end
     end
 end

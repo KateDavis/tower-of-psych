@@ -1,17 +1,17 @@
 classdef EventWithData < event.EventData
     % It's outrageous--outrageous--that Matlab's EventData superclass
-    % doesn't have a UserData property, or a default subclass with user
+    % doesn't have a userData property, or a default subclass with user
     % data.  Here it is.
     
     properties
-        UserData;
+        userData;
     end
     
     methods
-        function self = EventWithData(UserData)
+        function self = EventWithData(userData)
             self = self@event.EventData;
             if nargin
-                self.UserData = UserData;
+                self.userData = userData;
             end
         end
     end

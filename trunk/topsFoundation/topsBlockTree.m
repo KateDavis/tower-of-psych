@@ -69,12 +69,12 @@ classdef topsBlockTree < handle
         function fevalAndLog(self, note, fcn, doFeval)
             if ~isempty(fcn)
                 if doFeval
-                    mnemonic = sprintf('%s:%s', self.name, note);
-                    topsDataLog.logMnemonicWithData(mnemonic, fcn);
+                    group = sprintf('%s:%s', self.name, note);
+                    topsDataLog.logDataInGroup(fcn, group);
                     feval(fcn{:});
                 else
-                    mnemonic = sprintf('%s:%s(preview)', self.name, note);
-                    topsDataLog.logMnemonicWithData(mnemonic, fcn);
+                    group = sprintf('%s:%s(preview)', self.name, note);
+                    topsDataLog.logDataInGroup(fcn, group);
                 end
             end
         end
