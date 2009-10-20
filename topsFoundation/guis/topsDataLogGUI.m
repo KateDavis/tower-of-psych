@@ -8,7 +8,7 @@ classdef topsDataLogGUI < topsGUI
     end
     
     properties(Hidden)
-        mnemonics;
+        groups;
         
         dataLogTexts;
         accumulatorCount;
@@ -25,14 +25,14 @@ classdef topsDataLogGUI < topsGUI
         viewAllToggle;
         viewStartSlider;
         
-        mnemonicLabel;
-        mnemonicNoTriggerButton;
-        mnemonicPlotAllButton;
+        groupLabel;
+        groupNoTriggerButton;
+        groupPlotAllButton;
         
         accumulatorAxes;
         dataLogAxes;
-        mnemonicsGrid;
-        mnemonicsWidth=4;
+        groupsGrid;
+        groupsWidth=4;
         stickyPeg;
     end
     
@@ -45,7 +45,7 @@ classdef topsDataLogGUI < topsGUI
             
             self.setReplayEntireLog;
             
-            self.mnemonics = {};
+            self.groups = {};
             self.viewStart = 0;
             self.viewLength = self.biggerThanEps;
             self.viewIsSliding = false;
@@ -65,21 +65,21 @@ classdef topsDataLogGUI < topsGUI
             
             % replay the log, within bounds
             theLog = topsDataLog.theDataLog;
-            entireLogStruct = theLog.getAllDataSorted;
-            t = [entireLogStruct.time];
+            logStruct = theLog.getSortedDataStruct;
+            t = [logStruct.mnemonic];
             replayWindow = (t >= self.replayStartTime) & (t <= self.replayEndTime);
             ed = EventWithData;
             for ii = find(replayWindow);
-                % look for new mnemonics as they come
-                m = entireLogStruct(ii).mnemonic;
-                if ~any(strcmp(self.mnemonics, m))
-                    ed.UserData = m;
-                    self.hearNewMnemonic(theLog, ed)
+                % look for new groups as they come
+                g = logStruct(ii).group;
+                if ~any(strcmp(self.groups, g))
+                    ed.userData = g;
+                    self.hearNewGroup(theLog, ed)
                 end
                 
                 % read all data as they come
-                ed.UserData = entireLogStruct(ii);
-                self.hearNewData(theLog, ed);
+                ed.userData = logStruct(ii);
+                self.hearNewMnemonic(theLog, ed);
             end
             
             self.stickyPeg = false;
@@ -90,45 +90,45 @@ classdef topsDataLogGUI < topsGUI
             theLog = topsDataLog.theDataLog;
             
             self.deleteListeners;
-            self.listeners.NewMnemonic = theLog.addlistener( ...
+            self.listeners.NewGroup = theLog.addlistener( ...
+                'NewGroup', ...
+                @(source, event) self.hearNewGroup(source, event));
+            self.listeners.NewData = theLog.addlistener( ...
                 'NewMnemonic', ...
                 @(source, event) self.hearNewMnemonic(source, event));
-            self.listeners.NewData = theLog.addlistener( ...
-                'NewData', ...
-                @(source, event) self.hearNewData(source, event));
-            self.listeners.FlushedTheDataLog = theLog.addlistener( ...
+            self.listeners.FlushedTheMnemonicLog = theLog.addlistener( ...
                 'FlushedTheDataLog', ...
                 @(source, event) self.hearFlushedTheDataLog(source, event));
         end
         
-        function hearNewMnemonic(self, theLog, event)
-            mnemonic = event.UserData;
-            self.mnemonics{end+1} = mnemonic;
-            col = self.getColorForString(mnemonic);
+        function hearNewGroup(self, theLog, event)
+            group = event.userData;
+            self.groups{end+1} = group;
+            col = self.getColorForString(group);
             
             % a control for triggering, a control for hiding
-            z = size(self.mnemonicsGrid.controls);
-            h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                z(1)+1, [1 self.mnemonicsWidth], ...
+            z = size(self.groupsGrid.controls);
+            h = self.groupsGrid.newControlAtRowAndColumn( ...
+                z(1)+1, [1 self.groupsWidth], ...
                 'Style', 'togglebutton', ...
-                'String', mnemonic, ...
+                'String', group, ...
                 'ForegroundColor', col);
-            h = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                z(1)+1, self.mnemonicsWidth+1, ...
+            h = self.groupsGrid.newControlAtRowAndColumn( ...
+                z(1)+1, self.groupsWidth+1, ...
                 'Style', 'togglebutton', ...
                 'String', 'hide', ...
                 'ForegroundColor', col);
         end
         
-        function hearNewData(self, theLog, eventData)
-            logEntry = eventData.UserData;
+        function hearNewMnemonic(self, theLog, eventData)
+            logEntry = eventData.userData;
             
             % trigger and ignore selections
-            z = size(self.mnemonicsGrid.controls);
+            z = size(self.groupsGrid.controls);
             if z(1) > 1
-                allTrig = get(self.mnemonicsGrid.controls(:,1), 'Value');
+                allTrig = get(self.groupsGrid.controls(:,1), 'Value');
                 trig = logical([allTrig{2:end}]);
-                allIgnore = get(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value');
+                allIgnore = get(self.groupsGrid.controls(:,self.groupsWidth+1), 'Value');
                 ignore = logical([allIgnore{2:end}]);
             else
                 trig = false;
@@ -139,13 +139,13 @@ classdef topsDataLogGUI < topsGUI
             %   they depend on sliding and triggering
             if self.viewIsSliding
                 if any(trig)
-                    if any(strcmp(self.mnemonics(trig), logEntry.mnemonic))
+                    if any(strcmp(self.groups(trig), logEntry.group))
                         self.trigger(logEntry);
-                        self.viewStart = logEntry.time;
+                        self.viewStart = logEntry.mnemonic;
                     end
                 elseif self.viewSliderIsPegged
                     % keep sliding
-                    self.viewStart = logEntry.time-self.viewLength;
+                    self.viewStart = logEntry.mnemonic-self.viewLength;
                 end
             else
                 % get bounds from user inputs or the dataLog
@@ -153,7 +153,7 @@ classdef topsDataLogGUI < topsGUI
             end
             
             % plot this log entry?
-            if ~any(ignore) || ~any(strcmp(self.mnemonics(ignore), logEntry.mnemonic))
+            if ~any(ignore) || ~any(strcmp(self.groups(ignore), logEntry.group))
                 self.plotLogEntry(logEntry);
             end
         end
@@ -185,11 +185,11 @@ classdef topsDataLogGUI < topsGUI
         end
         
         function plotLogEntry(self, logEntry)
-            summary = sprintf('--- %s', logEntry.mnemonic);
+            summary = sprintf('--- %s', logEntry.group);
             set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Color', self.getColorForString(logEntry.mnemonic), ...
-                'Position', [0, logEntry.time], ...
+                'Color', self.getColorForString(logEntry.group), ...
+                'Position', [0, logEntry.mnemonic], ...
                 'String', summary, ...
                 'Visible', 'on');
         end
@@ -235,27 +235,27 @@ classdef topsDataLogGUI < topsGUI
             height = .05;
             
             % custom widget class, in tops/utilities
-            self.mnemonicsGrid = ScrollingControlGrid( ...
+            self.groupsGrid = ScrollingControlGrid( ...
                 self.figure, [xDiv, bottom, right-xDiv, yDiv]);
             
-            self.addScrollableChild(self.mnemonicsGrid.panel, ...
-                {@ScrollingControlGrid.respondToSliderOrScroll, self.mnemonicsGrid});
+            self.addScrollableChild(self.groupsGrid.panel, ...
+                {@ScrollingControlGrid.respondToSliderOrScroll, self.groupsGrid});
             
-            self.mnemonicNoTriggerButton = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                1, [1 self.mnemonicsWidth], ...
+            self.groupNoTriggerButton = self.groupsGrid.newControlAtRowAndColumn( ...
+                1, [1 self.groupsWidth], ...
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
                 'String', '(no trigger)', ...
-                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,1), 'Value', false), ...
+                'Callback', @(obj, event)set(self.groupsGrid.controls(:,1), 'Value', false), ...
                 'HorizontalAlignment', 'left', ...
                 'Value', false);
             
-            self.mnemonicPlotAllButton = self.mnemonicsGrid.newControlAtRowAndColumn( ...
-                1, self.mnemonicsWidth+1, ...
+            self.groupPlotAllButton = self.groupsGrid.newControlAtRowAndColumn( ...
+                1, self.groupsWidth+1, ...
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
                 'String', '(none)', ...
-                'Callback', @(obj, event)set(self.mnemonicsGrid.controls(:,self.mnemonicsWidth+1), 'Value', false), ...
+                'Callback', @(obj, event)set(self.groupsGrid.controls(:,self.groupsWidth+1), 'Value', false), ...
                 'HorizontalAlignment', 'left', ...
                 'Value', false);
             
@@ -403,7 +403,7 @@ classdef topsDataLogGUI < topsGUI
         
         function repondToResize(self, figure, event)
             % attempt to resize with characters, rather than normalized
-            self.mnemonicsGrid.repositionControls;
+            self.groupsGrid.repositionControls;
         end
         
         function updateAxesForView(self)

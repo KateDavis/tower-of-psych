@@ -1,10 +1,10 @@
 function benchTopsDataLog(n)
-% Add n mnemonics and n^2 data items to a topsDataLog
+%Add n groups and n^2 data items to a topsDataLog
 
-mnemonics = cell(1,n);
+groups = cell(1,n);
 data = cell(1,n);
 for ii = 1:n
-    mnemonics{ii} = sprintf('mnemonic%d', ii);
+    groups{ii} = sprintf('group%d', ii);
     data{ii} = ii;
 end
 
@@ -12,19 +12,19 @@ topsDataLog.flushAllData;
 
 benchTimes = zeros(1, n^2);
 ii = 0;
-for m = mnemonics
+for g = groups
     for d = data
         ii = ii + 1;
         tic;
-        topsDataLog.logMnemonicWithData(m{1}, d{1});
+        topsDataLog.logDataInGroup(d{1}, g{1});
         benchTimes(ii) = toc;
     end
 end
 % for d = data
-%     for m = mnemonics
+%     for g = groups
 %         ii = ii + 1;
 %         tic;
-%         theLog.logMnemonicWithData(m{1}, d{1});
+%         topsDataLog.logDataInGroup(d{1}, g{1});
 %         benchTimes(ii) = toc;
 %     end
 % end
@@ -32,8 +32,8 @@ end
 
 % get internally recorded log entry times
 %   compare to benchmarked times
-logStruct = topsDataLog.getAllDataSorted;
-internalTimes = diff([logStruct.time])*(60*60*24);
+logStruct = topsDataLog.getSortedDataStruct;
+internalTimes = diff([logStruct.mnemonic]);
 
 cla
 line(1:(n^2), benchTimes, 'Color', [1 0 0])

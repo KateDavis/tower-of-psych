@@ -141,20 +141,20 @@ classdef topsBlockTreeGUI < topsGUI
             set(self.iterationsText, 'String', sprintf('%d iterations -- %s', block.iterations, method), ...
                 'ForegroundColor', [0 0 0]);
             
-            mnemonic = sprintf('%s:start', block.name);
+            group = sprintf('%s:start', block.name);
             fcn = summarizeFcn(block.blockBeginFcn);
-            set(self.blockBeginFcnText, 'String', sprintf('%s = %s', mnemonic, fcn), ...
-                'ForegroundColor', self.getColorForString(mnemonic));
+            set(self.blockBeginFcnText, 'String', sprintf('%s = %s', group, fcn), ...
+                'ForegroundColor', self.getColorForString(group));
             
-            mnemonic = sprintf('%s:action', block.name);
+            group = sprintf('%s:action', block.name);
             fcn = summarizeFcn(block.blockActionFcn);
-            set(self.blockActionFcnText, 'String', sprintf('%s = %s', mnemonic, fcn), ...
-                'ForegroundColor', self.getColorForString(mnemonic));
+            set(self.blockActionFcnText, 'String', sprintf('%s = %s', group, fcn), ...
+                'ForegroundColor', self.getColorForString(group));
             
-            mnemonic = sprintf('%s:end', block.name);
+            group = sprintf('%s:end', block.name);
             fcn = summarizeFcn(block.blockEndFcn);
-            set(self.blockEndFcnText, 'String', sprintf('%s = %s', mnemonic, fcn), ...
-                'ForegroundColor', self.getColorForString(mnemonic));
+            set(self.blockEndFcnText, 'String', sprintf('%s = %s', group, fcn), ...
+                'ForegroundColor', self.getColorForString(group));
             
             data = stringifyValue(block.userData);
             set(self.userDataText, 'String', sprintf('userData = %s', data), ...

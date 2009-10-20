@@ -35,7 +35,7 @@ classdef EncounterBattleTimer < handle
             
             if didFire
                 feval(self.callback{:});
-                topsDataLog.logMnemonicWithData('battleTimer fired', self.callback);
+                topsDataLog.logDataInGroup(self.callback, 'battleTimer fired');
                 self.nextFire = nowTime + self.repeatInterval;
             end
         end
