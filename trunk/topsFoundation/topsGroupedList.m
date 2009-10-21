@@ -135,6 +135,16 @@ classdef topsGroupedList < handle
             end
         end
         
+        function mnemonics = getAllMnemonicsFromGroup(self, group)
+            % returns all mnemonics used in given group, sorted.
+            if self.containsGroup(group)
+                groupMap = self.allGroupsMap(group);
+                mnemonics = groupMap.keys;
+            else
+                mnemonics = {};
+            end
+        end
+        
         function [items, mnemonics] = getAllItemsFromGroup(self, group)
             % returns all items stored in given group, sorted by mnemonic
             % optionally returns corresponding sorted mnemonics
@@ -145,8 +155,8 @@ classdef topsGroupedList < handle
                     mnemonics = groupMap.keys;
                 end
             else
-                items = [];
-                mnemonics = [];
+                items = {};
+                mnemonics = {};
             end
         end
         
