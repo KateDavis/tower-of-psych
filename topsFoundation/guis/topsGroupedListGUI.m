@@ -117,8 +117,10 @@ classdef topsGroupedListGUI < topsGUI
                 self.newButtonInGridWithNameWithCallback( ...
                     self.groupsGrid, ii, groups{ii}, cb);
             end
-            button = self.groupsGrid.controls(1,1);
-            self.setCurrentGroup(groups{1}, button);
+            if ~isempty(groups)
+                button = self.groupsGrid.controls(1,1);
+                self.setCurrentGroup(groups{1}, button);
+            end
         end
         
         function repopulateMnemonicsGrid(self)
@@ -129,8 +131,10 @@ classdef topsGroupedListGUI < topsGUI
                 self.newButtonInGridWithNameWithCallback( ...
                     self.mnemonicsGrid, ii, mnemonics{ii}, cb);
             end
-            button = self.mnemonicsGrid.controls(1,1);
-            self.setCurrentMnemonic(mnemonics{1}, button);
+            if ~isempty(mnemonics)
+                button = self.mnemonicsGrid.controls(1,1);
+                self.setCurrentMnemonic(mnemonics{1}, button);
+            end
         end
         
         function newButtonInGridWithNameWithCallback(self, grid, row, name, callback)
