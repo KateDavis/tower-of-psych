@@ -9,6 +9,7 @@ classdef topsGUI < handle
         listeners = struct();
         scrollables;
         biggerThanEps = 1e-6;
+        lightColor = [1 1 1]*.95;
     end
     
     methods

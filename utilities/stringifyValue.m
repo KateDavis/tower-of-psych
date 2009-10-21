@@ -8,8 +8,8 @@ if isempty(value)
     
 elseif ischar(value)
     
-    % put string in quotes
-    stringSummary = sprintf('''%s''', value);
+    % string as is
+    stringSummary = value;
     
 elseif isnumeric(value) && isscalar(value)
     
