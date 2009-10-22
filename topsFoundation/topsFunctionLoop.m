@@ -8,6 +8,15 @@ classdef topsFunctionLoop < topsGroupedList
         function self = topsFunctionLoop
         end
         
+        function g = gui(self, alternateFlag)
+            if nargin > 1 && strcmp(alternateFlag, 'asList')
+                g = topsGroupedListGUI(self);
+            else
+                disp('there is no topsFunctionLoopGUI yet...');
+                g = topsGroupedListGUI(self);
+            end
+        end
+        
         function addFunctionToGroupWithRank(self, fcn, group, rank)
             % add a function to be called while loop is runnung.
             %   fcn is an fevalable cell array

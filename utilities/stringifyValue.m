@@ -15,6 +15,15 @@ elseif isnumeric(value) && isscalar(value)
     
     % builtin scalar conversion
     stringSummary = num2str(value);
+
+elseif islogical(value) && isscalar(value)
+    
+    % boolean strings
+    if value
+        stringSummary = 'true';
+    else
+        stringSummary = 'false';
+    end
     
 elseif isa(value, 'function_handle')
     
@@ -23,7 +32,7 @@ elseif isa(value, 'function_handle')
     
 elseif iscell(value) && ~isempty(value) && isa(value{1}, 'function_handle')
     
-    % function-with-arguments cell array
+    % function-with-arguments "fevalable" cell array
     %   summarizeFcn is recursive to this function
     stringSummary = summarizeFcn(value);
     

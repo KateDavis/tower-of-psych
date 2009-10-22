@@ -55,42 +55,42 @@ gameList.addItemToGroupWithMnemonic(gameTree, 'game', 'gameTree');
 % low-level control loop object
 %   with functions defined below
 battleLoop = topsFunctionLoop;
-battleLoop.addFunctionToGroupWithRank({@drawnow}, 'battle', 10);
-battleLoop.addFunctionToGroupWithRank({@checkBattleStatus, gameList, battleLoop}, 'battle', 0);
+battleLoop.addFunctionToGroupWithRank({@drawnow}, 'battle', 1);
+battleLoop.addFunctionToGroupWithRank({@checkBattleStatus, gameList, battleLoop}, 'battle', 6);
 gameList.addItemToGroupWithMnemonic(battleLoop, 'game', 'battleLoop');
 
 
 % low-level function queues for character and monster attacks
 %   add dispatch method to function queue
-monsterQueue = battleQueue;
-characterQueue = battleQueue;
+monsterQueue = EncounterBattleQueue;
+characterQueue = EncounterBattleQueue;
 gameList.addItemToGroupWithMnemonic(monsterQueue, 'game', 'monsterQueue');
 gameList.addItemToGroupWithMnemonic(characterQueue, 'game', 'characterQueue');
-battleLoop.addFunctionToGroupWithRank({@()monsterQueue.dispatchNextFevalable}, 'battle', 1);
-battleLoop.addFunctionToGroupWithRank({@()characterQueue.dispatchNextFevalable}, 'battle', 9.5);
+battleLoop.addFunctionToGroupWithRank({@()monsterQueue.dispatchNextFevalable}, 'battle', 5);
+battleLoop.addFunctionToGroupWithRank({@()characterQueue.dispatchNextFevalable}, 'battle', 2);
 
 
 % Create an array of battler objects to represent player characters. 
 %   add character array to the gameList
 %   create a wake-up timers for character
 %   add each timer to the function loop
-Goonius = battler;
+Goonius = EncounterBattler;
 Goonius.name = 'Goonius';
-Goonius.attackInterval = 5/(60*60*24);
+Goonius.attackInterval = 15;
 Goonius.attackMean = 10;
 Goonius.maxHp = 50;
 Goonius.restoreHp;
 
-Jet = battler;
+Jet = EncounterBattler;
 Jet.name = 'Jet';
-Jet.attackInterval = 1/(60*60*24);
+Jet.attackInterval = 5;
 Jet.attackMean = 2;
 Jet.maxHp = 50;
 Jet.restoreHp;
 
-Hero = battler;
+Hero = EncounterBattler;
 Hero.name = 'Hero';
-Hero.attackInterval = 1/(60*60*24);
+Hero.attackInterval = 5;
 Hero.attackMean = 10;
 Hero.maxHp = 10;
 Hero.restoreHp;
@@ -100,11 +100,11 @@ gameList.addItemToGroupWithMnemonic(characters, 'game', 'characters');
 gameList.addItemToGroupWithMnemonic({}, 'game', 'activeCharacter');
 
 for ii = 1:length(characters)
-    bt = battleTimer;
+    bt = EncounterBattleTimer;
     charTimers(ii) = bt;
     bt.loadForRepeatIntervalWithCallback ...
         (characters(ii).attackInterval, {@characterWakesUp, characters(ii), gameList});
-    battleLoop.addFunctionToGroupWithRank({@()bt.tick}, 'charTimers', 9);
+    battleLoop.addFunctionToGroupWithRank({@()bt.tick}, 'charTimers', 3+(ii/10));
 end
 gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
 
@@ -116,34 +116,37 @@ gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
 %   add each timer to the function loop
 isMonster = true;
 
-Evil = battler(isMonster);
+Evil = EncounterBattler(isMonster);
 Evil.name = 'Evil Hero';
-Evil.attackInterval = 1/(60*60*24);
-Evil.attackMean = 10;
+Evil.attackInterval = 5;
+Evil.attackMean = 7;
 Evil.maxHp = 1;
 Evil.restoreHp;
 
-Fool = battler(isMonster);
+Fool = EncounterBattler(isMonster);
 Fool.name = 'Fool';
-Fool.attackInterval = 10/(60*60*24);
-Fool.attackMean = 1;
+Fool.attackInterval = 10;
+Fool.attackMean = 0.5;
 Fool.maxHp = 5;
 Fool.restoreHp;
 
-Boxer = battler(isMonster);
+Boxer = EncounterBattler(isMonster);
 Boxer.name = 'Boxer';
-Boxer.attackInterval = 2/(60*60*24);
-Boxer.attackMean = 2;
+Boxer.attackInterval = 3;
+Boxer.attackMean = 1;
 Boxer.maxHp = 20;
 Boxer.restoreHp;
 
-Robot = battler(isMonster);
+Robot = EncounterBattler(isMonster);
 Robot.name = 'Iron Robot';
-Robot.attackInterval = 10/(60*60*24);
+Robot.attackInterval = 15;
 Robot.attackMean = 10;
 Robot.maxHp = 100;
 Robot.restoreHp;
 
+% group monsters into several overlapping groups, 
+%   add groups top-level grouped list object
+%   create a game subblock for each group, add to top-level block tree
 group(1).name = 'fools';
 group(1).monsters = [Fool.copy, Fool.copy, Fool.copy, Fool.copy];
 group(2).name = 'robot';
@@ -155,23 +158,21 @@ group(4).monsters = [Evil.copy, Boxer.copy, Boxer.copy, Boxer.copy, Boxer.copy, 
 group(5).name = 'ambush';
 group(5).monsters = [Hero.copy];
 
-% group monsters into several overlapping groups, add groups top-level data object
-%   create a game subblock for each group, add to top-level control object
 for ii = 1:length(group)
     loopName = sprintf('%sTimers', group(ii).name);
-    groupTimers = battleTimer.empty;
+    groupTimers = EncounterBattleTimer.empty;
     for jj = 1:length(group(ii).monsters)
-        bt = battleTimer;
+        bt = EncounterBattleTimer;
         groupTimers(jj) = bt;
         bt.loadForRepeatIntervalWithCallback ...
             (group(ii).monsters(jj).attackInterval, {@monsterWakesUp, group(ii).monsters(jj), gameList});
-        battleLoop.addFunctionToGroupWithRank({@()bt.tick}, loopName, 8);
+        battleLoop.addFunctionToGroupWithRank({@()bt.tick}, loopName, 4+(jj/10));
     end
     gameList.addItemToGroupWithMnemonic(group(ii).monsters, 'monsters', group(ii).name);
     gameList.addItemToGroupWithMnemonic(groupTimers, 'monsterTimers', group(ii).name);
     
     % concatenate loop modes specially for this monster group
-    battleLoop.modeList.mergeModesIntoMode({'battle', 'charTimers', loopName}, group(ii).name);
+    battleLoop.mergeGroupsIntoGroup({'battle', 'charTimers', loopName}, group(ii).name);
     
     battleBlock = topsBlockTree;
     battleBlock.name = group(ii).name;
@@ -243,7 +244,7 @@ for t = [charTimers, monsterTimers]
     t.beginRepetitions;
 end
 battleLoop = gameList.getItemFromGroupWithMnemonic('game', 'battleLoop');
-battleLoop.runForGroupForDuration(groupName, 60/(60*60*24));
+battleLoop.runForGroupForDuration(groupName, 600);
 
 
 function characterWakesUp(character, gameList)

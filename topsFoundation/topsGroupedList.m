@@ -18,6 +18,10 @@ classdef topsGroupedList < handle
             self.length = 0;
         end
         
+        function g = gui(self)
+            g = topsGroupedListGUI(self);
+        end
+        
         function addItemToGroupWithMnemonic(self, item, group, mnemonic)
             % item is any Matlab variable
             % group is a string or number for grouping related items
