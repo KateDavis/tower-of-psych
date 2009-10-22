@@ -137,5 +137,52 @@ classdef topsGUI < handle
             hash = 1 + mod(sum(string), size(self.colors,1));
             col = self.colors(hash, :);
         end
+        
+        function args = getDescriptiveUIControlArgsForValue(self, value)
+            if ischar(value)
+                col = self.getColorForString(value);
+            else
+                col = [0 0 0];
+            end
+            args = { ...
+                'Style', 'text', ...
+                'String', stringifyValue(value), ...
+                'HitTest', 'off', ...
+                'HorizontalAlignment', 'left', ...
+                'BackgroundColor', get(self.figure, 'Color'), ...
+                'ForegroundColor', col};
+        end
+        
+        function args = getInteractiveUIControlArgsForValue(self, value)
+            if isscalar(value) && any(strcmp(methods(value), 'gui'))
+                % open up one of the tops guis
+                callback = @(obj,event) value.gui;
+                string = 'gui';
+                
+            elseif isscalar(value) && isa(value, 'function_handle') ...
+                    && ~isempty(which(func2str(value)))
+                % open up the funciton's m-file
+                name = func2str(value);
+                callback = @(obj,event) open(name);
+                string = 'open';
+                
+            elseif ischar(value) && ~isempty(which(value))
+                % open up the m-file
+                callback = @(obj,event) open(value);
+                string = 'open';
+                
+            else
+                args = {};
+                return
+            end
+            args = { ...
+                'Style', 'pushbutton', ...
+                'String', string, ...
+                'HitTest', 'on', ...
+                'Callback', callback, ...
+                'HorizontalAlignment', 'left', ...
+                'BackgroundColor', self.lightColor, ...
+                'ForegroundColor', [0 0 0]};
+        end
     end
 end
