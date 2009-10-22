@@ -99,7 +99,6 @@ classdef ScrollingControlGrid < handle
             z = size(self.controls);
             h = uicontrol(varargin{:}, 'Parent', self.controlPanel);
             self.controls(row, column) = h;
-            self.repositionControls;
         end
         
         function removeControlAtRowAndColumn(self, row, column)
@@ -112,7 +111,6 @@ classdef ScrollingControlGrid < handle
                 self.controls(self.controls == h) = 0;
             end
             self.trimEdges;
-            self.repositionControls;
         end
         
         function trimEdges(self)

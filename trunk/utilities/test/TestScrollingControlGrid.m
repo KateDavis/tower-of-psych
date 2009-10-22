@@ -62,6 +62,7 @@ classdef TestScrollingControlGrid < TestCase
             cols = [2 5];
             big = self.scrollGrid.newControlAtRowAndColumn(rows, cols);
             small = self.scrollGrid.newControlAtRowAndColumn(1, 1);
+            self.scrollGrid.repositionControls;
 
             bigPos = get(big, 'Position');
             smallPos = get(small, 'Position');

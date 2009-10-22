@@ -117,6 +117,7 @@ classdef topsGroupedListGUI < topsGUI
                 self.addBrowserButtonToGridRowWithNameAndCallback( ...
                     self.groupsGrid, ii, groups{ii}, cb);
             end
+            self.groupsGrid.repositionControls;
             if ~isempty(groups)
                 button = self.groupsGrid.controls(1,1);
                 self.setCurrentGroup(groups{1}, button);
@@ -131,6 +132,7 @@ classdef topsGroupedListGUI < topsGUI
                 self.addBrowserButtonToGridRowWithNameAndCallback( ...
                     self.mnemonicsGrid, ii, mnemonics{ii}, cb);
             end
+            self.mnemonicsGrid.repositionControls;
             if ~isempty(mnemonics)
                 button = self.mnemonicsGrid.controls(1,1);
                 self.setCurrentMnemonic(mnemonics{1}, button);
@@ -222,6 +224,7 @@ classdef topsGroupedListGUI < topsGUI
                     end
                 end
             end
+            self.itemDetailGrid.repositionControls;
         end
         
         function currentItemToBaseWorkspace(self)
