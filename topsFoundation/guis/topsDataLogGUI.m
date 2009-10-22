@@ -118,6 +118,7 @@ classdef topsDataLogGUI < topsGUI
                 'Style', 'togglebutton', ...
                 'String', 'hide', ...
                 'ForegroundColor', col);
+            self.groupsGrid.repositionControls;
         end
         
         function hearNewMnemonic(self, theLog, eventData)
@@ -258,6 +259,7 @@ classdef topsDataLogGUI < topsGUI
                 'Callback', @(obj, event)set(self.groupsGrid.controls(:,self.groupsWidth+1), 'Value', false), ...
                 'HorizontalAlignment', 'left', ...
                 'Value', false);
+            self.groupsGrid.repositionControls;
             
             % view controls for the axes
             h = height;

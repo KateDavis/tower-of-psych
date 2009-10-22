@@ -172,6 +172,7 @@ classdef topsBlockTreeGUI < topsGUI
             self.blockTreeCount = 1;
             depth = 1;
             self.addBlockAtDepth(self.topLevelBlockTree, depth);
+            self.blocksGrid.repositionControls;
         end
         
         function addBlockAtDepth(self, block, depth);
