@@ -30,6 +30,14 @@ classdef (Sealed) topsDataLog < topsGroupedList
             log = theLog;
         end
         
+        function g = gui(alternateFlag)
+            if nargin && strcmp(alternateFlag, 'asList')
+                g = topsGroupedListGUI(topsDataLog.theDataLog);
+            else
+                g = topsDataLogGUI;
+            end
+        end
+        
         function flushAllData
             self = topsDataLog.theDataLog;
             for g = self.groups

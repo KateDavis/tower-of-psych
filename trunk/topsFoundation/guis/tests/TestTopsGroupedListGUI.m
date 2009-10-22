@@ -85,6 +85,23 @@ classdef TestTopsGroupedListGUI < TestCase
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize struct item');
         end
+
+        function testDrillIntoStructArrayItem(self)
+            s(1).one = 1;
+            s(1).two = 2;
+            s(1).three = 'three';
+
+            s(2).one = 1;
+            s(2).two = 2;
+            s(2).three = 'three';
+
+            self.groupedList.addItemToGroupWithMnemonic(s, 'struct', 's');
+            
+            self.groupedListGUI.setCurrentGroup('struct');
+            controls = self.groupedListGUI.itemDetailGrid.controls;
+            n = length(unique(controls(controls>0 & ishandle(controls))));
+            assertTrue(n > 1, 'should have multiple controls to summarize struct item');
+        end
         
         function testDrillIntoCellItem(self)
             c{1} = 1;

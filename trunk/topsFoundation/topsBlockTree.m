@@ -26,6 +26,10 @@ classdef topsBlockTree < handle
         function self = topsBlockTree
         end
         
+        function g = gui(self)
+            g = topsBlockTreeGUI(self);
+        end
+        
         function addChild(self, child)
             child.parent = self;
             self.children(end+1) = child;

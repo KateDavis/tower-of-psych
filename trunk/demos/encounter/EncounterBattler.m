@@ -195,7 +195,7 @@ classdef EncounterBattler < handle
             % copy all fields into a new object
             %   I think "value classes" are dumb
             %   Perhaps copy() should belong to a "copyable" superclass
-            newCopy = battler;
+            newCopy = EncounterBattler;
             meta = metaclass(newCopy);
             props = meta.Properties;
             for ii =1:length(props)
