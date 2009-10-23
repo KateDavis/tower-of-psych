@@ -14,6 +14,12 @@ classdef topsBlockTree < handle
         blockEndFcn = {};
     end
     
+    properties(Hidden)
+        startString = 'start';
+        actionString = 'action';
+        endString = 'end';
+    end
+    
     events
         BlockBegin;
     end
@@ -44,11 +50,11 @@ classdef topsBlockTree < handle
             self.notify('BlockBegin');
             
             % begin the block
-            self.fevalAndLog('start', self.blockBeginFcn, doFeval);
+            self.fevalAndLog(self.startString, self.blockBeginFcn, doFeval);
             
             % do the meat of the block
             for ii = 1:self.iterations
-                self.fevalAndLog('action', self.blockActionFcn, doFeval);
+                self.fevalAndLog(self.actionString, self.blockActionFcn, doFeval);
                 
                 switch self.iterationMethod
                     case 'sequential'
@@ -63,7 +69,7 @@ classdef topsBlockTree < handle
             end
             
             % finish the block
-            self.fevalAndLog('end', self.blockEndFcn, doFeval);
+            self.fevalAndLog(self.endString, self.blockEndFcn, doFeval);
         end
         
         function preview(self)

@@ -86,7 +86,7 @@ classdef topsGroupedListGUI < topsGUI
                 self.figure, [right-width, bottom, width, yDiv-bottom]);
             self.addScrollableChild(self.itemDetailGrid.panel, ...
                 {@ScrollingControlGrid.respondToSliderOrScroll, self.itemDetailGrid});
-            self.itemDetailGrid.rowHeight = 1;
+            self.itemDetailGrid.rowHeight = 1.2;
         end
         
         function setCurrentGroup(self, group, button)
@@ -160,18 +160,13 @@ classdef topsGroupedListGUI < topsGUI
                 self.currentGroup, self.currentMnemonic);
             
             self.itemDetailGrid.deleteAllControls;
-            width = 9;
+            width = 10;
             
             % shallow look at any item
-            args = self.getDescriptiveUIControlArgsForValue(item);
-            self.itemDetailGrid.newControlAtRowAndColumn(1, 1:width, args{:});
-            
             args = self.getInteractiveUIControlArgsForValue(item);
-            if ~isempty(args)
-                self.itemDetailGrid.newControlAtRowAndColumn(1, width, args{:});
-            end
+            self.itemDetailGrid.newControlAtRowAndColumn(1, [1 width], args{:});
             
-            % deeper look at deeper items
+            % deeper look at deep items
             if isstruct(item) || isobject(item)
                 if isstruct(item)
                     fn = fieldnames(item);
@@ -181,47 +176,34 @@ classdef topsGroupedListGUI < topsGUI
                 
                 row = 1;
                 n = numel(item);
+                bg = get(self.figure, 'Color');
                 for ii = 1:n
-                    % show type and index of the struct or object
-                    delimiter = sprintf('(%d of %d)', ii, n);
-                    args = self.getDescriptiveUIControlArgsForValue(delimiter);
+                    % delimiter for each array element
                     row = row+1;
-                    self.itemDetailGrid.newControlAtRowAndColumn(row, 2:width, args{:});
-                    
+                    delimiter = sprintf('(%d of %d)', ii, n);
                     args = self.getInteractiveUIControlArgsForValue(item(ii));
-                    if ~isempty(args)
-                        self.itemDetailGrid.newControlAtRowAndColumn(row, width, args{:});
-                    end
+                    self.itemDetailGrid.newControlAtRowAndColumn( ...
+                        row, [1 4], args{:}, 'String', delimiter);
                     
                     for jj = 1:length(fn)
-                        % show field name and value
-                        value = item(ii).(fn{jj});
+                        % field name and value
+                        row = row+1;
                         args = self.getDescriptiveUIControlArgsForValue(fn{jj});
-                        row = row+1;
                         self.itemDetailGrid.newControlAtRowAndColumn( ...
-                            row, [2 width], args{:}, ...
-                            'ForegroundColor', [0 0 0]);
+                            row, [2 width], args{:});
                         
-                        args = self.getDescriptiveUIControlArgsForValue(value);
                         row = row+1;
+                        args = self.getInteractiveUIControlArgsForValue(item(ii).(fn{jj}));
                         self.itemDetailGrid.newControlAtRowAndColumn( ...
-                            row, [2 width], args{:}, ...
-                            'HorizontalAlignment', 'right', ...
-                            'BackgroundColor', self.lightColor);
+                            row, [2 width], args{:}, 'HorizontalAlignment', 'right');
                     end
                 end
                 
             elseif iscell(item)
                 for ii = 1:numel(item)
-                    value = item{ii};
                     row = ii + 1;
-                    args = self.getDescriptiveUIControlArgsForValue(value);
-                    self.itemDetailGrid.newControlAtRowAndColumn(row, 2:width, args{:});
-                    
-                    args = self.getInteractiveUIControlArgsForValue(value);
-                    if ~isempty(args)
-                        self.itemDetailGrid.newControlAtRowAndColumn(row, width, args{:});
-                    end
+                    args = self.getInteractiveUIControlArgsForValue(item{ii});
+                    self.itemDetailGrid.newControlAtRowAndColumn(row, [2 width], args{:});
                 end
             end
             self.itemDetailGrid.repositionControls;
@@ -259,6 +241,7 @@ classdef topsGroupedListGUI < topsGUI
             cb = @(obj, event)self.setCurrentGroup(group, obj);
             self.addBrowserButtonToGridRowWithNameAndCallback( ...
                 self.groupsGrid, row, group, cb);
+            self.groupsGrid.repositionControls;
         end
         
         function hearNewListMnemonic(self, groupedList, event)
@@ -268,6 +251,7 @@ classdef topsGroupedListGUI < topsGUI
                 cb = @(obj, event)self.setCurrentMnemonic(mnemonic, obj);
                 self.addBrowserButtonToGridRowWithNameAndCallback( ...
                     self.mnemonicsGrid, row, mnemonic, cb);
+                self.mnemonicsGrid.repositionControls;
             end
         end
     end
