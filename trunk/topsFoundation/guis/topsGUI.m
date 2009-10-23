@@ -161,12 +161,14 @@ classdef topsGUI < handle
                 % open up one of the topsFoundataion guis
                 callback = @(obj,event) value.gui;
                 
-            elseif isscalar(value) && isa(value, 'function_handle') ...
-                && 2 == exist(func2str(value), 'file')
-                
-                % open up the funciton's m-file
+            elseif isscalar(value) && isa(value, 'function_handle')
+                % open a funciton's m-file
                 name = func2str(value);
-                callback = @(obj,event) open(name);
+                if exist(name, 'file') || exist([name, '.m'], 'file')
+                    callback = @(obj,event) open(name);
+                else
+                    return
+                end
                 
             elseif ischar(value) && ~isempty(which(value))
                 % open up the m-file
