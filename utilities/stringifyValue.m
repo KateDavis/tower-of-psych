@@ -30,11 +30,11 @@ elseif isa(value, 'function_handle')
     % builtin function handle conversion
     stringSummary = sprintf('@%s', func2str(value));
     
-elseif iscell(value) && ~isempty(value) && isa(value{1}, 'function_handle')
-    
-    % function-with-arguments "fevalable" cell array
-    %   summarizeFcn is recursive to this function
-    stringSummary = summarizeFcn(value);
+% elseif iscell(value) && ~isempty(value) && isa(value{1}, 'function_handle')
+%     
+%     % function-with-arguments "fevalable" cell array
+%     %   summarizeFcn is recursive to this function
+%     stringSummary = summarizeFcn(value);
     
 else
     

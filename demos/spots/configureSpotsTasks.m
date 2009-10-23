@@ -1,18 +1,18 @@
-function [spotsList, spotsTree] = configureSpotsTasks(figurePosition)
+function [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
 %Configure tops for a demo psychophysics task, with two task types
 %
-%   [spotsList, spotsTree] = configureSpotsTasks(figurePosition);
-%
-%   spotsList is a topsGroupedList object which holds all the data needed
-%   to run the "spots" experiment.
+%   [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
 %
 %   spotsTree is a topsBlockTree object which organizes tasks and trials.
 %   spotsTree and spotsList "know about" each other.
 %
 %   spotsTree.run(); will start the "spots" experiment.
 %
+%   spotsList is a topsGroupedList object which holds all the data needed
+%   to run the "spots" experiment.
+%
 %   figurePosition is optional.  It should contain a postion rectangle of
-%   the form [x, y, w, h] for where to put the expermient figure window.
+%   the form [x, y, w, h]--where to put the expermient figure window.
 %
 %   The "spots" experiment is a demo for the Tower of Psych.  It uses the
 %   tops foundataion classes to implement an experiment similar to a real
