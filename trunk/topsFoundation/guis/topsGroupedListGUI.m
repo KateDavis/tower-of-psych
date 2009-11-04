@@ -224,6 +224,7 @@ classdef topsGroupedListGUI < topsGUI
         function repondToResize(self, figure, event)
             self.groupsGrid.repositionControls;
             self.mnemonicsGrid.repositionControls;
+            self.itemDetailGrid.repositionControls;
         end
         
         function listenToGroupedList(self, groupedList)
