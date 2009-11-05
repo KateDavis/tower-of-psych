@@ -56,7 +56,7 @@ classdef topsBlockTree < handle
         parent;
         
         % action to perform before iterating through any children
-        blockBeginFcn = {};
+        blockStartFcn = {};
         
         % action to perform before each iteration
         blockActionFcn = {};
@@ -75,7 +75,7 @@ classdef topsBlockTree < handle
     events
         % Notifies any listeners just before performing any actions or
         % iterations
-        BlockBegin;
+        BlockStart;
     end
    
     methods
@@ -108,9 +108,9 @@ classdef topsBlockTree < handle
         % @details
         % Begin traversing the tree with this block as the topmost parent.
         % The sequence of events goes like this:
-        %   - This block sends a 'BlockBegin' notification to any
+        %   - This block sends a 'BlockStart' notification to any
         %   listeners.
-        %   - This block executes its blockBeginFcn (if doFeval is true)
+        %   - This block executes its blockStartFcn (if doFeval is true)
         %   - This block does zero or more "iterations":
         %       - This block executes its blockActionFcn (if doFeval is
         %       true)
@@ -125,7 +125,7 @@ classdef topsBlockTree < handle
         % their children, etc.
         % <br><br>
         % Also note that the recursion happens in the middle of the
-        % sequence of events.  Thus, all of the blockBeginFcns and
+        % sequence of events.  Thus, all of the blockStartFcn and
         % blockActionFcns will happen first, in the order of parents before
         % children.  Then all the blockEndFcns will happen, in the order of
         % children before parents.
@@ -135,10 +135,10 @@ classdef topsBlockTree < handle
             end
             
             % notify listeners, like the GUI
-            self.notify('BlockBegin');
+            self.notify('BlockStart');
             
-            % begin the block
-            self.fevalAndLog(self.startString, self.blockBeginFcn, doFeval);
+            % start the block
+            self.fevalAndLog(self.startString, self.blockStartFcn, doFeval);
             
             % do the meat of the block
             for ii = 1:self.iterations

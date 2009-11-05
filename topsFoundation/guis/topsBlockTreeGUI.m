@@ -1,6 +1,39 @@
 classdef topsBlockTreeGUI < topsGUI
+    % @class topsBlockTreeGUI
+    % Visualize the tree structure of an experiment.
+    % topsBlockTreeGUI shows you hiererchy of topsBlockTree "blocks" that
+    % make up an experiment.
+    % <br><br>
+    % On the left it shows you a tree browser with several buttons that
+    % represent individual blocks.  The topmost block is at the upper left
+    % corner.  Its children are indented and displayed below.  Their
+    % children are indented further, and so on.
+    % <br><br>
+    % You can click on an individual block to view it in detail, on the
+    % right.  The name of the block is at the top and its proerties are
+    % displayed below.  In particular, the blocks start, action, and end
+    % functions are expanded to show each function handle and arguments.
+    % <br><br>
+    % At the top right, the "run block" button allows you to invoke the
+    % run() method of the currently displayed block.  You should probably
+    % only run the topmost block in this way.
+    % <br><br>
+    % You can launch topsBlockTreeGUI with the topsBlockTreeGUI()
+    % constructor, or with the gui() method a topsBlockTreeGUI.
+    % <br><br>
+    % topsBlockTreeGUI uses listeners to detect changes to the blocks its
+    % showing.  This means that you can view your blocks as you work on
+    % your experiment, and you don't have to reopen or refresh the GUI.
+    % <br><br>
+    % Beware that listeners can slow Matlab down.  So if you're in a
+    % timing-critical situation, like some experiments, you might wish to
+    % close the GUI, deleting its listeners.
+    
     properties
+        % The highest-up block to visualize in the GUI.
         topLevelBlockTree;
+        
+        % The block whose details are currently displayed.
         currentBlockTree;
     end
     
@@ -12,15 +45,21 @@ classdef topsBlockTreeGUI < topsGUI
     end
     
     methods
-        function self = topsBlockTreeGUI(topLevelTree)
+        % Constructor takes one optional argument
+        % @param topLevelBlock a block to visualize, with all its children
+        % @details
+        % Returns a handle to the new topsBlockTreeGUI.  If
+        % <em>topLevelBlock</em> is missing, the GUI will launch but no
+        % data will be shown.
+        function self = topsBlockTreeGUI(topLevelBlock)
             self = self@topsGUI;
             self.title = 'Block Tree Viewer';
             self.createWidgets;
             
             if nargin
-                self.topLevelBlockTree = topLevelTree;
+                self.topLevelBlockTree = topLevelBlock;
                 self.repopulateBlocksGrid;
-                self.displayDetailsForBlock(topLevelTree);
+                self.displayDetailsForBlock(topLevelBlock);
             end
         end
         
@@ -82,7 +121,7 @@ classdef topsBlockTreeGUI < topsGUI
             self.blockDetailGrid.newControlAtRowAndColumn( ...
                 row, [7 width], args{:});
             
-            props = {'blockBeginFcn', 'blockActionFcn', 'blockEndFcn'};
+            props = {'blockStartFcn', 'blockActionFcn', 'blockEndFcn'};
             prefixes = {block.startString, block.actionString, block.endString};
             for ii = 1:length(props)
                 % label the property
@@ -114,6 +153,9 @@ classdef topsBlockTreeGUI < topsGUI
             self.blockDetailGrid.repositionControls;
         end
         
+        % Invoke the run() method of the currently displayed block.
+        % The "run block" button calls this method.  This method then calls
+        % currentBlockTree.run();
         function runCurrentBlock(self)
             self.currentBlockTree.run;
         end
@@ -159,9 +201,9 @@ classdef topsBlockTreeGUI < topsGUI
                     @(source, event)self.hearBlockPropertyChange(source, event));
             end
             
-            self.listeners(n).BlockBegin = block.addlistener( ...
-                'BlockBegin', ...
-                @(source, event)self.hearBlockBegin(source, event));
+            self.listeners(n).BlockStart = block.addlistener( ...
+                'BlockStart', ...
+                @(source, event)self.hearBlockStart(source, event));
         end
         
         function hearBlockPropertyChange(self, metaProp, event)
@@ -176,7 +218,7 @@ classdef topsBlockTreeGUI < topsGUI
             end
         end
         
-        function hearBlockBegin(self, block, event)
+        function hearBlockStart(self, block, event)
             self.displayDetailsForBlock(block);
         end
         

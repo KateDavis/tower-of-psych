@@ -27,14 +27,14 @@ classdef TestTopsBlockTree < TestCase
         end
         
         function testPreviewOwnFunctions(self)
-            self.blockTree.blockBeginFcn = {@sprintf, 'block begin'};
+            self.blockTree.blockStartFcn = {@sprintf, 'block start'};
             self.blockTree.blockActionFcn = {@sprintf, 'block action'};
             self.blockTree.blockEndFcn = {@sprintf, 'block end'};
             
             self.blockTree.preview;
             summary = topsDataLog.getSortedDataStruct;
             assertEqual(length(summary), 3, 'wrong number of summary functions');
-            assertEqual(self.blockTree.blockBeginFcn, summary(1).item, 'wrong block begin function');
+            assertEqual(self.blockTree.blockStartFcn, summary(1).item, 'wrong block start function');
             assertEqual(self.blockTree.blockActionFcn, summary(2).item, 'wrong block action function');
             assertEqual(self.blockTree.blockEndFcn, summary(3).item, 'wrong block end function');
         end
@@ -44,7 +44,7 @@ classdef TestTopsBlockTree < TestCase
             for ii = 1:nChildren
                 child = topsBlockTree;
                 child.name = 'child tree';
-                child.blockBeginFcn = {@sprintf, 'block begin'};
+                child.blockStartFcn = {@sprintf, 'block start'};
                 child.blockActionFcn = {@sprintf, 'block action'};
                 child.blockEndFcn = {@sprintf, 'block end'};
                 self.blockTree.addChild(child);
@@ -70,11 +70,11 @@ classdef TestTopsBlockTree < TestCase
             end
             
             % expected depth-first execution order
-            self.blockTree.blockBeginFcn = fcn{1};
+            self.blockTree.blockStartFcn = fcn{1};
             self.blockTree.blockActionFcn = fcn{2};
-            child.blockBeginFcn = fcn{3};
+            child.blockStartFcn = fcn{3};
             child.blockActionFcn = fcn{4};
-            grandchild.blockBeginFcn = fcn{5};
+            grandchild.blockStartFcn = fcn{5};
             grandchild.blockActionFcn = fcn{6};
             grandchild.blockEndFcn = fcn{7};
             child.blockEndFcn = fcn{8};
