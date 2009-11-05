@@ -1,6 +1,6 @@
 classdef ScrollingControlGrid < handle
     % @class ScrollingControlGrid
-    % Manages a grid of uicontrol objects.
+    % A grid of uicontrol objects.
     % ScrollingControlGrid is an alternative to Matlab's built-in uitable.
     % Like uitable, it presents rows and columns of data and controls that
     % you specify.  ScrollingControlGrid has fewer explicit features than

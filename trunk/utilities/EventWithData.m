@@ -1,13 +1,18 @@
 classdef EventWithData < event.EventData
-    % It's outrageous--outrageous--that Matlab's EventData superclass
-    % doesn't have a userData property, or a default subclass with user
-    % data.  Here it is.
-    
+    % @class EventWithData
+    % A way to pass arbitrary data with Matlab events.
+    % It's outrageous that Matlab's default EventData class has no property
+    % to hold arbitrary data, or no suitable default subclass.
+    % EventWithData adds this "userData" property.
+
     properties
+        % arbitrary data to pass with the event
         userData;
     end
     
     methods
+        % Constructor takes one optional argument
+        % @param userData arbitrary data to pass with the event
         function self = EventWithData(userData)
             self = self@event.EventData;
             if nargin
