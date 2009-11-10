@@ -20,14 +20,14 @@ classdef topsGroupedList < handle
     % <br><br>
     % There is one important constriant on groups and mnemonics: for each
     % instance of topsGroupedList, all groups must be identified by 
-    % <em>either</em> strings <em>or</em> numbers, but not a mixture of the
+    % @a either strings @a or numbers, but not a mixture of the
     % two.  Likewise, the mnemonics used in each group must be all strings
     % or all numbers.
     % <br><br>
     % One way in which topsGroupedList is better organized than a random
     % collection of structs and cell arrays is that you can always "ask" it
     % what groups, mnemonics, and items it contains, and it knows where to
-    % look for them.  You can also ask it <em>if</em> it contains a certain
+    % look for them.  You can also ask it @a if it contains a certain
     % group, mnemonic, or item.
     % <br><br>
     % The big idea is that you can neatly list whatever data and objects
@@ -35,6 +35,7 @@ classdef topsGroupedList < handle
     % other functions and objects (as an argument, for example), they can
     % access all of your stuff.  Moreover, you can always view what's in
     % your list by using its gui() method.
+    % @ingroup foundation
     
     properties (SetObservable)
         % Cell array of strings or numbers identifying all the groups in
@@ -76,9 +77,9 @@ classdef topsGroupedList < handle
         % related items
         % @param mnemonic a string or number to identify this new item
         % @details
-        % If <em>group</em> and <em>mnemonic</em> are already in the list,
-        % then <em>item</em> will overwrite an older item.  Otherwise,
-        % after adding <em>item</em>, the list will send a NewGroup and/or
+        % If @a group and @a mnemonic are already in the list,
+        % then @a item will overwrite an older item.  Otherwise,
+        % after adding @a item, the list will send a NewGroup and/or
         % NewMnemonic notification to any listeners.
         % <br><br>
         % Note: for each topsGroupedList, group values must be all strings or
@@ -122,10 +123,10 @@ classdef topsGroupedList < handle
         
         % Remove all instances of an item from a group.
         % @param item the item to remove
-        % @param group the group from which <em>item</em> should be removed
+        % @param group the group from which @a item should be removed
         % @details
-        % Searches <em>group</em> for items that isequal() to
-        % <em>item</em>.  Removes all such items, along with their
+        % Searches @a group for items that isequal() to
+        % @a item.  Removes all such items, along with their
         % mnemonics.
         function removeItemFromGroup(self, item, group)
             if self.containsItemInGroup(item, group)
@@ -142,10 +143,10 @@ classdef topsGroupedList < handle
         
         % Remove a mnemonic and its item from a group.
         % @param mnemonic the string or number identifying an item
-        % @param group the group from which <em>mnemonic</em>, and its
+        % @param group the group from which @a mnemonic, and its
         % item, should be removed
         % @details
-        % Removes <em>mnemonic</em> and its item from <em>group</em>.
+        % Removes @a mnemonic and its item from @a group.
         function removeMnemonicFromGroup(self, mnemonic, group)
             if self.containsMnemonicInGroup(mnemonic, group)
                 groupMap = self.allGroupsMap(group);
@@ -158,8 +159,8 @@ classdef topsGroupedList < handle
         % @param group the string or number identifying the group to
         % remove
         % @details
-        % Removes all mnemonics and items from <em>group</em>, then removes
-        % <em>group</em> itself from the list.
+        % Removes all mnemonics and items from @a group, then removes
+        % @a group itself from the list.
         function removeGroup(self, group)
             if self.containsGroup(group)
                 groupMap = self.allGroupsMap(group);
@@ -175,7 +176,7 @@ classdef topsGroupedList < handle
         % groups to be merged.
         % @param destinationGroup string or number identifying a group that
         % will receive all the mnemonics and items from all of the source
-        % groups.  <em>destinationGroup</em> may exist already, or not.
+        % groups.  @a destinationGroup may exist already, or not.
         % @details
         % Merging groups will probably result in redundant items being
         % stored in the list.  For example, imagine merging source groups A
@@ -192,7 +193,7 @@ classdef topsGroupedList < handle
         % <br><br>
         % Another exception is when the source groups share some mnemonics
         % among them.  In that case, groups listed later in
-        % <em>soureGroups</em> will win out, and their items will overwrite
+        % @a soureGroups will win out, and their items will overwrite
         % items from other groups that share the same mnemonics.
         function mergeGroupsIntoGroup(self, sourceGroups, destinationGroup)
             % could potentially do this in group-sized batches
@@ -216,9 +217,9 @@ classdef topsGroupedList < handle
         % @param group the group containing the desired item
         % @param mnemonic the menemonic identifying the desired item
         % @details
-        % Returns the item listed under <em>group</em> and
-        % <em>mnemonic</em>.  If <em>group</em> isn't in the list, or
-        % doesn't contain <em>mnemonic</em>, returns [].
+        % Returns the item listed under @a group and
+        % @a mnemonic.  If @a group isn't in the list, or
+        % doesn't contain @a mnemonic, returns [].
         function item = getItemFromGroupWithMnemonic(self, group, mnemonic)
             if self.containsMnemonicInGroup(mnemonic, group)
                 groupMap = self.allGroupsMap(group);
@@ -232,7 +233,7 @@ classdef topsGroupedList < handle
         % @param group the group to get mnemonics for
         % @details
         % Returns a cell array containing all mnemonics from
-        % <em>group</em>, or {} if <em>group</em> isn't in the list. The
+        % @a group, or {} if @a group isn't in the list. The
         % mnemonics will be sorted alphabetically or numerically.
         function mnemonics = getAllMnemonicsFromGroup(self, group)
             if self.containsGroup(group)
@@ -246,11 +247,11 @@ classdef topsGroupedList < handle
         % Get all items (and optionally all mnemonics) from a group.
         % @param group the group to get items for
         % @details
-        % Returns a cell array of all items from <em>group</em>.  If
-        % <em>group</em> isn't in the list, returns {}.  Items will be
+        % Returns a cell array of all items from @a group.  If
+        % @a group isn't in the list, returns {}.  Items will be
         % sorted  alphabetically or numerically, by mnemonic.
         % <br><br>
-        % Optionally returns all mnemonics from <em>group</em>, as well.
+        % Optionally returns all mnemonics from @a group, as well.
         function [items, mnemonics] = getAllItemsFromGroup(self, group)
             if self.containsGroup(group)
                 groupMap = self.allGroupsMap(group);
@@ -268,12 +269,12 @@ classdef topsGroupedList < handle
         % @param group the group to get items for
         % @details
         % Returns a struct array with one element per item in
-        % <em>group</em>.  Each struct element has three fields:
+        % @a group.  Each struct element has three fields:
         %  - item -- the item itself
         %  - mnemonic -- the mnemonic for the item
-        %  - group -- the string or number equal to <em>group</em>
+        %  - group -- the string or number equal to @a group
         % .
-        % If <em>group</em> isn't in the list, the struct array will have
+        % If @a group isn't in the list, the struct array will have
         % zero length.
         function groupStruct = getAllItemsFromGroupAsStruct(self, group)
             if self.containsGroup(group)
@@ -294,7 +295,7 @@ classdef topsGroupedList < handle
         % @param group a string or number for a group that might be in the
         % list
         % @details
-        % Returns true if the list contains <em>group</em>.  Otherwise
+        % Returns true if the list contains @a group.  Otherwise
         % returns false. 
         function isContained = containsGroup(self, group)
             isContained = isobject(self.allGroupsMap) ...
@@ -303,12 +304,12 @@ classdef topsGroupedList < handle
         
         % Does the list contain the given group and mnemonic?
         % @param mnemonic a string or number for a menemonic that might be in
-        % <em>group</em>
+        % @a group
         % @param group a string or number for a group that might be in the
         % list
         % @details
-        % Returns true if the list contains <em>group</em> and
-        % <em>group</em> contains <em>mnemonic</em>.  Otherwise returns
+        % Returns true if the list contains @a group and
+        % @a group contains @a mnemonic.  Otherwise returns
         % false. 
         function isContained = containsMnemonicInGroup(self, mnemonic, group)
             isContained = self.containsGroup(group) ...
@@ -316,14 +317,14 @@ classdef topsGroupedList < handle
         end
         
         % Does the list contain the given group and item?
-        % @param item a value or object that might be in <em>group</em>
+        % @param item a value or object that might be in @a group
         % @param group a string or number for a group that might be in the
         % list
         % @details
-        % Searches <em>group</em> for any occurence of <em>item</em>.
-        % Returns true if the list contains <em>group</em> and
-        % <em>group</em> contains at least on item that isequal() to 
-        % <em>item</em>. Otherwise returns false.
+        % Searches @a group for any occurence of @a item.
+        % Returns true if the list contains @a group and
+        % @a group contains at least on item that isequal() to 
+        % @a item. Otherwise returns false.
         function isContained = containsItemInGroup(self, item, group)
             isContained = self.containsGroup(group) ...
                 && topsGroupedList.mapContainsItem(self.allGroupsMap(group), item);
@@ -344,7 +345,7 @@ classdef topsGroupedList < handle
         % @param map an instance of containers.Map
         % @param key string or number that might be a key in the map
         % @details
-        % Returns true if the map contains the <em>key</em>. Otherwise
+        % Returns true if the map contains the @a key. Otherwise
         % returns false.
         function isContained = mapContainsKey(map, key)
             if strcmp(map.KeyType, 'char')
@@ -360,8 +361,8 @@ classdef topsGroupedList < handle
         % @param map an instance of containers.Map
         % @param item a value or object that might be in the map
         % @details
-        % Searches the map for the <em>item</em>.  Returns true if any
-        % value in <em>map</em> isequal() to <em>item</em>.  Otherwise
+        % Searches the map for the @a item.  Returns true if any
+        % value in @a map isequal() to @a item.  Otherwise
         % returns false.
         function isContained = mapContainsItem(map, item)
             isContained = false;

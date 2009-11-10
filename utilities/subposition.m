@@ -1,23 +1,24 @@
-function subpos = subposition(position, r, c, ii, jj)
-%Position of sub-region of given [x,y,w,h] rectangle
+% Rectangular sub-region of a rectangle.
 %
-%   subpos = subposition(position, r, c, ii, jj)
+% subpos = subposition(position, r, c, ii, jj)
 %
-%   subposition is similar to the builtin subplot, but it operates on
-%   position rectangles of the form [x,y,w,h], rather than figures and
-%   axes.  subpos is the rectangle found by dividing the given rectangle
-%   into r rows and c columns and taking the iith row and jjth column.
+% @param postion an array that defines a rectangle, [x y w h]
+% @param r the number of rows to divide @a position into
+% @param c the number of columns to divide @a position into
+% @param ii the row index of the desired sub-region
+% @param jj the column index of the desired sub-region
 %
-%   p = [0 0 1 1];
-%   isequal([0 0 .1 .1],    subposition(p, 10, 10, 1, 1))
-%   isequal([.9 .9 .1 .1],  subposition(p, 10, 10, 10, 10))
-%   isequal([0 .9 .1 .1],   subposition(p, 10, 10, 10, 1))
-%   isequal([.9 0 .1 .1],   subposition(p, 10, 10, 1, 10))
+% @details
+% Returns an array of the form [x y w h] which defines the rectangular
+% subregion found at the iith row and jjth column of @a position.
 %
-%   See also: subplot
+% subposition() is similar to the Matlab's built-in subplot(), but it
+% operates on position rectangles (that is, arrays) rather than figures and
+% axes objects.
+% @ingroup utilities
 
-% 2009 benjamin.heasly@gmail.com
-%   Seattle, WA
+function subpos = subposition(position, r, c, ii, jj)
 w = position(3)/c;
 h = position(4)/r;
 subpos = [position(1)+(jj-1)*w, position(2)+(ii-1)*h, w, h];
+end

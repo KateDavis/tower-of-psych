@@ -74,6 +74,7 @@ classdef topsDataLogGUI < topsGUI
     % Beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
+    % @ingroup foundation
 
     properties(Hidden)
         viewStart=0;

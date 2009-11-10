@@ -1,23 +1,24 @@
-function colors = spacedColors(n)
 %Colormap with evenly-spaced colors that show up against white
 %
 %   colors = spacedColors(n)
 %
-%   colors is an nX3 matrix whose rows are RGB colors.
+%   @param n the length of colormap to build
 %
-%   n is the number of colors you want.
+%   @details
+%   Returns an nX3 colormap whose rows are RGB colors.
 %
-%   Imagine the RGB cube in [0 1]--any point in the cube defines a color.
+%   Imagine a cube with sides in the interval [0 1]--any point in the cube
+%   can be interpreted as an RGB color.  Colors near the [1 1 1] corner
+%   will be bright and won't show up against a white background.
 %
-%   Colors near the [1 1 1] corner won't show up against white.
-%   spacedColors picks evenly-spaced points from the cube, with that corner
-%   cut off.  The smaller n, the greater the spacing.
-%
+%   spacedColors truncates the cube by cutting off points near [1 1 1] and
+%   picks @a n colors from the rest of the cube.  The smaller @a n, the
+%   greater the spacing.
 %
 %   See also colormap colorcube
+%   @ingroup utilities
 
-% 2009 benjamin.heasly@gmail.com
-%   Seattle, WA
+function colors = spacedColors(n)
 
 % define a whiteness index, w = r + g + b, 
 %   want to exclude colors with w > some k

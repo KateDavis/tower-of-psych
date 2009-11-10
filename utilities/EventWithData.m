@@ -4,6 +4,7 @@ classdef EventWithData < event.EventData
     % It's outrageous that Matlab's default EventData class has no property
     % to hold arbitrary data, or no suitable default subclass.
     % EventWithData adds this "userData" property.
+    % @ingroup utilities
 
     properties
         % arbitrary data to pass with the event
