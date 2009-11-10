@@ -17,7 +17,7 @@ classdef topsBlockTree < handle
     % <br><br>
     % Then it's back up the tree.  On the way up, each child block performs
     % a final action.  When a parent finishes "running" all of its
-    % children, it performs its own final action.  Then <em>its</em> parent
+    % children, it performs its own final action.  Then @a its parent
     % can finish up in the same way, and so on, until reaching the topmost
     % parent again.  At that point the experiment is done.
     % <br><br>
@@ -34,6 +34,7 @@ classdef topsBlockTree < handle
     %   how the blocks are connected.
     %   - You can easily view the structure of your experiment using the
     %   topsBlockTree.gui() method.
+    % @ingroup foundation
     
     properties (SetObservable)
         % a string name for this block
@@ -94,8 +95,8 @@ classdef topsBlockTree < handle
         % Add a child beneath this block
         % @param child a topsBlockTree to add beneath this block.
         % @details
-        % Sets the parent property of the <em>child</em> to be this
-        % block, and appends <em>child</em> to the children property of
+        % Sets the parent property of the @a child to be this
+        % block, and appends @a child to the children property of
         % this block.
         function addChild(self, child)
             child.parent = self;

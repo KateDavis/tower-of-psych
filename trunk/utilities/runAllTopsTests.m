@@ -1,16 +1,13 @@
-function didPass = runAllTopsTests
 %Invoke mtest's runtests() for all of the tops directories
 %
 %   didPass = runAllTopsTests
 %
-%   didPass is a boolean, whether all tests passed.  runAllTopsTests
-%   returns as soon as it encounters a failure.
-%
-%   See also, runtests
+%   @details
+%   Run all unit test for the Tower of Psych code.  Returns true if all
+%   tests pass.  If any test fails, aborts and returns false.
+%   @ingroup utilities
 
-% 2009 benjamin.heasly@gmail.com
-%   Seattle, WA
-
+function didPass = runAllTopsTests
 % locate the tops code tree
 [p, f] = fileparts(mfilename('fullpath'));
 topsRoot = fullfile(p, '..');

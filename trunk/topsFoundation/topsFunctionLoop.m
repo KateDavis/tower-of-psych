@@ -32,6 +32,7 @@ classdef topsFunctionLoop < topsGroupedList
     % now).  Instead, the gui() method for a loop allows you to browse
     % through fevalables by group and rank, just as you would browse
     % through a list by group and mnemonic.
+    % @ingroup foundation
     
     properties (SetObservable)
         % true or false, wheher the loop should keep running.
@@ -52,11 +53,11 @@ classdef topsFunctionLoop < topsGroupedList
         % to use.
         % @details
         % For now, gui() always launches the generic topsGroupedListGUI, as
-        % though you provided an <em>alternateFlag</em> with the value
+        % though you provided an @a alternateFlag with the value
         % 'asList' (see below).  In the future, gui() may launch a
         % different interface by default.
         % <br><br>
-        % If you provide <em>alternateFlag</em> and it has the value
+        % If you provide @a alternateFlag and it has the value
         % 'asList', then gui() will launch the generic topsGroupedListGUI,
         % which lets you browse functions in the loop by groups and ranks,
         % and shows details about each function.
@@ -76,15 +77,15 @@ classdef topsFunctionLoop < topsGroupedList
         % and arguments
         % @param group a string identifying a group of functions to be run
         % concurrently.
-        % @param rank a number used to sort the functions in <em>group</em>
+        % @param rank a number used to sort the functions in @a group
         % @details
-        % inserts <em>fcn</em> among among other functions in
-        % <em>group</em> based on <em>rank</em>.
+        % inserts @a fcn among among other functions in
+        % @a group based on @a rank.
         % <br><br>
         % Since topsFunctionLoop is a subclass of topsGroupedList,
         % adding functions to a loop is a lot like adding items to a list.
-        % <em>group</em> is treated just like the groups in
-        % topsGroupedList.  <em>rank</em> is treated as a numeric mnemonic
+        % @a group is treated just like the groups in
+        % topsGroupedList.  @a rank is treated as a numeric mnemonic
         % for the function item.
         function addFunctionToGroupWithRank(self, fcn, group, rank)
             assert(iscell(fcn), 'fcn argument should be a cell array');
@@ -98,7 +99,7 @@ classdef topsFunctionLoop < topsGroupedList
         % concurrently
         % @details
         % Returns all the "fevalable" cell arrays contained in
-        % <em>group</em>, sorted by their ranks.
+        % @a group, sorted by their ranks.
         % <br><br>
         % Optionally returns the ranks, as well.
         % <br><br>
@@ -121,15 +122,15 @@ classdef topsFunctionLoop < topsGroupedList
         % @param duration the length of time to loop through functions, in
         % the same units as clockFcn.
         % @details
-        % Gets the list of functions for <em>group</em> and calls feval()
+        % Gets the list of functions for @a group and calls feval()
         % on each funcion in the list, in order, over and over again, until
-        % <em>duration</em> expires.
+        % @a duration expires.
         % <br><br>
         % Always makes complete passes through the function list.  So if
-        % <em>duration</em> expires in the middle of the loop, won't return
+        % @a duration expires in the middle of the loop, won't return
         % until reaching the bottom of the list.
         % <br><br>
-        % If <em>duration</em> is missing or not finite, defaults to
+        % If @a duration is missing or not finite, defaults to
         % duration = 0.  As long as duration >= 0, will make at least one
         % pass through the loop.
         % <br><br>

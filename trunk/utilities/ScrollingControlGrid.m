@@ -24,6 +24,7 @@ classdef ScrollingControlGrid < handle
     % only specifies their 'Parent', 'Position', and 'Units' properties.
     % So ScrollingControlGrid should accomodate many user interface tasks
     % that call for a roughly grid-like presentation of data or controls.
+    % @ingroup utilities
     
     properties
         % the figure or uipanel that contains the ScrollingControlGrid
@@ -47,10 +48,10 @@ classdef ScrollingControlGrid < handle
     methods
         % Contructor takes two optional arguments.
         % @param parent figure or uipanel to contain the new
-        % ScrollingControlGrid.  Uses gcf() if <em>parent</em> is missing.
+        % ScrollingControlGrid.  Uses gcf() if @a parent is missing.
         % @param position [x y w h] in normalized units of the
-        % ScrollingControlGrid within <em>parent</em>.  Uses [0 0 1 1] if
-        % <em>position</em> is missing.
+        % ScrollingControlGrid within @a parent.  Uses [0 0 1 1] if
+        % @a position is missing.
         function self = ScrollingControlGrid(parent, position)
             if nargin
                 self.parent = parent;
@@ -84,11 +85,11 @@ classdef ScrollingControlGrid < handle
         end
         
         % Add a new uicontrol to the grid.
-        % @param row the grid row to add the uicontrol to.  <em>row</em>
+        % @param row the grid row to add the uicontrol to.  @a row
         % may be an array of row indices, in which case the uicontrol will
         % be stretched vertically.
         % @param column the grid column to add the uicontrol to.
-        % <em>column</em> may be an array of column indices, in which case
+        % @a column may be an array of column indices, in which case
         % the uicontrol will be stretched horizontally.
         % @param varargin uicontrol property-value pairs.  These are the
         % same property-value pairs you might pass to the uicontrol() or
@@ -96,11 +97,11 @@ classdef ScrollingControlGrid < handle
         % @details
         % Returns a handle to a newly created uicontrol object, and adds
         % the handle to the grid's two-dimensional matrix of handles, at
-        % <em>row</em> and <em>column</em>.  The new uicontrol will use all
-        % property-value pairs contained in <em>varargin</em>.  In
+        % @a row and @a column.  The new uicontrol will use all
+        % property-value pairs contained in @a varargin.  In
         % addition, the new uicontrol will have its Parent property set by
         % the grid.
-        % <br><br> <em>row</em> and/or <em>column</em> may be array of
+        % <br><br> @a row and/or @a column may be array of
         % indices. In that case, the new uicontrol's handle will be added
         % redundantly to multiple grid locations and it's appearance will
         % be stretched to cover all the individual locations.  Matlab's
@@ -122,7 +123,7 @@ classdef ScrollingControlGrid < handle
         % @param column a scalar column index for the uicontrol to remove
         % @details
         % Looks for a uicontrol handle in the controls matrix, at
-        % <em>row</em> and <em>column</em>.  Calls delete() for any handle
+        % @a row and @a column.  Calls delete() for any handle
         % it finds there.  Then sets all entries in the controls matrix
         % that match the handle to 0.  If removing a control results in
         % empty rows on the bottom of the grid, or empty columns on the

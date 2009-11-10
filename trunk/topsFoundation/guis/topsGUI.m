@@ -5,6 +5,7 @@ classdef topsGUI < handle
     % new graphical interface.  If that's what you're doing, you may wish
     % to write a sublcass of topsGUI to take advantage of its features,
     % which are described here briefly.
+    % @ingroup foundation
     
     properties(Hidden)
         % Matlab figure to show gui, and delete it when closed.
@@ -197,8 +198,8 @@ classdef topsGUI < handle
         % @param value any value or object to be represented with a
         % uicontrol
         % @details
-        % Returns a list of standard arguments to represent <em>value</em>.
-        % The arguments will reflect the type of <em>value</em>.  For
+        % Returns a list of standard arguments to represent @a value.
+        % The arguments will reflect the type of @a value.  For
         % example, strings get colored in using getColorForString().  Other
         % values get summarized as black strings.
         function args = getDescriptiveUIControlArgsForValue(self, value)
@@ -222,14 +223,14 @@ classdef topsGUI < handle
         % uicontrol
         % @details
         % Returns a list of standard arguments to represent and interact
-        % with <em>value</em>.  The arguments will reflect the type of
-        % <em>value</em>.  For example, strings get colored in using
+        % with @a value.  The arguments will reflect the type of
+        % @a value.  For example, strings get colored in using
         % getColorForString().  Strings and function handles match files on
         % Matlab's path become clickable links for opening the file in
-        % Matlab.  Instances of topsFoundation classes also become bold,
+        % Matlab.  Instances of tops foundation classes also become bold,
         % clickable links, to other topsGUI subclasses.
         % <br><br>
-        % If there's no good way to ineract with <em>value</em>, returns
+        % If there's no good way to ineract with @a value, returns
         % the same arguments as getDescriptiveUIControlArgsForValue.
         function args = getInteractiveUIControlArgsForValue(self, value)
             args = self.getDescriptiveUIControlArgsForValue(value);

@@ -48,7 +48,8 @@ classdef topsGroupedListGUI < topsGUI
     % Beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
-    
+    % @ingroup foundation
+
     properties
         % The topsGroupedList or subclass to visualize in the GUI.
         groupedList;
@@ -77,7 +78,7 @@ classdef topsGroupedListGUI < topsGUI
         % @param groupedList a list to visualize
         % @details
         % Returns a handle to the new topsGroupedListGUI.  If
-        % <em>groupedList</em> is missing, the GUI will launch but no
+        % @a groupedList is missing, the GUI will launch but no
         % data will be shown.
         function self = topsGroupedListGUI(groupedList)
             self = self@topsGUI;

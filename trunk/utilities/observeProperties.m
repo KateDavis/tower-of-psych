@@ -1,27 +1,30 @@
-function table = observeProperties(object, fig, position)
-%Observe properties of an object in a uitable
+% Visualize properties of a Matlab object
 %
 %   table = observeProperties(object, fig, position)
 %
-%   table is a new uitable object that summarizes properties of the given
-%   handle object.
+%   @param object a Matlab object whose properties are SetObservable
+%   @param fig an optional Matlab figure for the visualization, default is
+%   gcf().
+%   @param position an optional [x y w h] rectangle within @a fig, for the
+%   visualization
 %
-%   object is any handle object whose public properties are
-%   "SetObservable".
+%   @details
+%   Returns a handle to a new uitable that summarizes the properties of
+%   the @a object.
 %
-%   fig is an optional figure that should be the 'Parent' of table.
+%   Uses listeners to automatically update the visualization when the
+%   properties of @a object change.  For example:
 %
-%   position is an optional [x,y,w,h] array where to place table instide
-%   its parent, with 'normalized' units.
-%
-%   % should automatically update table with new tree name
+%   @code
 %   tree = topsBlockTree;
 %   table = observeProperties(tree);
 %   tree.name = 'new name';
+%   @endcode
+%
+%   The table should display the value 'new name'.
+%   @ingroup utilities
 
-% 2009 by benjamin.heasly@gmail.com
-%   Seattle, WA
-
+function table = observeProperties(object, fig, position)
 if nargin < 2 || isempty(fig)
     fig = figure('MenuBar', 'none', 'ToolBar', 'none');
 end

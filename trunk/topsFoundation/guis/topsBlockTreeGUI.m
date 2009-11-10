@@ -28,6 +28,7 @@ classdef topsBlockTreeGUI < topsGUI
     % Beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
+    % @ingroup foundation
     
     properties
         % The highest-up block to visualize in the GUI.
@@ -49,7 +50,7 @@ classdef topsBlockTreeGUI < topsGUI
         % @param topLevelBlock a block to visualize, with all its children
         % @details
         % Returns a handle to the new topsBlockTreeGUI.  If
-        % <em>topLevelBlock</em> is missing, the GUI will launch but no
+        % @a topLevelBlock is missing, the GUI will launch but no
         % data will be shown.
         function self = topsBlockTreeGUI(topLevelBlock)
             self = self@topsGUI;

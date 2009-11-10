@@ -40,6 +40,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
     %   .
     % You can also use topsDataLogGUI online, to see data as they arrive in
     % the log.
+    % @ingroup foundation
 
     properties
         % Any function that returns the current time as a number.
@@ -100,7 +101,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % time.  You can use this interface online, to see data as they
         % arrive in the log.
         % <br><br>
-        % If you provide <em>alternateFlag</em> and it has the value
+        % If you provide @a alternateFlag and it has the value
         % 'asList', then gui() will launch the generic topsGroupedListGUI,
         % which lets you browse the log by groups and timestamps, and shows
         % details about each piece of data.
@@ -140,20 +141,20 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @param group a string for grouping related data, such as the name
         % of a recurring event. 
         % @details
-        % If <em>data</em> is a handle object, throws an error.  This is
+        % If @a data is a handle object, throws an error.  This is
         % because Matlab does a bad job of dealing with large numbers of
         % handles to the same object, and a worse job of writing and
         % reading them to disk.  Better to keep the data log out of that
         % mess.
         % <br><br>
-        % Otherwise, adds <em>data</em> along with the current time
-        % reported by clockFcn to <em>group</em>, in the current instance
+        % Otherwise, adds @a data along with the current time
+        % reported by clockFcn to @a group, in the current instance
         % of topsDataLog.  Then updates earliestTime and latestTime to
         % account for the the time of this log entry.
         % <br><br>
         % Since topsDataLog is a subclass of topsGroupedList,
         % logging data is a lot like adding items to a list.
-        % <em>group</em> is treated just like the groups in
+        % @a group is treated just like the groups in
         % topsGroupedList.  The data log uses a timestamp as the mnemonic
         % for each data item.
         function logDataInGroup(data, group)
