@@ -58,5 +58,6 @@ cla
 line(1:(n^2), benchTimes, 'Color', [1 0 0])
 line(1:((n^2)-1), internalTimes, 'Color', [0 1 0])
 ylabel('time to make data log entry (s)')
+ylim([0 3e-3])
 xlabel('data log entry #')
 legend('benchmark tic-toc', 'dataLog timestamps')
