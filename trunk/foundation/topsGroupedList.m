@@ -92,6 +92,7 @@ classdef topsGroupedList < handle
                 % start from scratch
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
                 self.allGroupsMap = containers.Map(group, groupMap, 'uniformValues', false);
+                self.groups = {group};
                 self.length = 1;
             elseif self.containsGroup(group)
                 % routine addition
@@ -106,6 +107,7 @@ classdef topsGroupedList < handle
                 % new group
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
                 self.allGroupsMap(group) = groupMap;
+                self.groups = self.allGroupsMap.keys;
                 self.length = self.length + 1;
             end
             
@@ -168,6 +170,7 @@ classdef topsGroupedList < handle
                 groupMap.remove(groupMap.keys);
                 self.allGroupsMap.remove(group);
                 self.length = self.length - n;
+                self.groups = self.allGroupsMap.keys;
             end
         end
         
@@ -298,8 +301,11 @@ classdef topsGroupedList < handle
         % Returns true if the list contains @a group.  Otherwise
         % returns false. 
         function isContained = containsGroup(self, group)
-            isContained = isobject(self.allGroupsMap) ...
-                && topsGroupedList.mapContainsKey(self.allGroupsMap, group);
+            if ischar(group)
+                isContained = any(strcmp(self.groups, group));
+            else
+                isContained = any(group == [self.groups{:}]);
+            end
         end
         
         % Does the list contain the given group and mnemonic?
@@ -329,14 +335,6 @@ classdef topsGroupedList < handle
             isContained = self.containsGroup(group) ...
                 && topsGroupedList.mapContainsItem(self.allGroupsMap(group), item);
         end
-        
-        function g = get.groups(self)
-            if isempty(self.allGroupsMap)
-                g = {};
-            else
-                g = self.allGroupsMap.keys;
-            end
-        end
     end
     
     methods(Static)
@@ -348,12 +346,11 @@ classdef topsGroupedList < handle
         % Returns true if the map contains the @a key. Otherwise
         % returns false.
         function isContained = mapContainsKey(map, key)
-            if strcmp(map.KeyType, 'char')
+            if ischar(key)
                 isContained = any(strcmp(map.keys, key));
             else
                 keyCell = map.keys;
-                k = [keyCell{:}];
-                isContained = any(key==k);
+                isContained = any(key == [keyCell{:}]);
             end
         end
         
