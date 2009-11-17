@@ -135,6 +135,18 @@ classdef TestTopsGroupedList < TestCase
             assertTrue(isempty(self.groupedList.groups), 'should have removed all groups')
         end
         
+        function testRemoveAllGroups(self)
+            groups = self.stringGroups;
+            mnemonics = self.stringMnemonics;
+            for g = groups
+                self.addItemsToGroupWithMnemonics(self.items, g{1}, mnemonics);
+            end
+            assertTrue(self.groupedList.length > 0, 'list should be full')
+            
+            self.groupedList.removeAllGroups;
+            assertTrue(self.groupedList.length == 0, 'list should be empty')
+        end
+        
         function testMergeGroups(self)
             % add same items to each group
             for g = self.numberGroups

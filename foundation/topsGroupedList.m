@@ -10,7 +10,7 @@ classdef topsGroupedList < handle
     % Groups and mnemonics can be strings or numbers.  So a topsGroupedList
     % is something like a struct (which uses strings) or cell array (which
     % uses numbers) that contains a bunch of other structs or cell arrays.
-    % But it's more flexible and better organized than that. 
+    % But it's more flexible and better organized than that.
     % <br><br>
     % One way it's more flexible is in the values that a group or mnemonic
     % is allowed to have.  Groups and mnemonics can use arbitrary strings,
@@ -19,7 +19,7 @@ classdef topsGroupedList < handle
     % where as cell arrays must use positive integers.
     % <br><br>
     % There is one important constriant on groups and mnemonics: for each
-    % instance of topsGroupedList, all groups must be identified by 
+    % instance of topsGroupedList, all groups must be identified by
     % @a either strings @a or numbers, but not a mixture of the
     % two.  Likewise, the mnemonics used in each group must be all strings
     % or all numbers.
@@ -63,6 +63,12 @@ classdef topsGroupedList < handle
         % Constructor takes no arguments.
         function self = topsGroupedList
             self.length = 0;
+        end
+        
+        function delete(self)
+            if isvalid(self)
+                self.removeAllGroups;
+            end
         end
         
         % Launch a graphical interface for this list.
@@ -171,6 +177,15 @@ classdef topsGroupedList < handle
                 self.allGroupsMap.remove(group);
                 self.length = self.length - n;
                 self.groups = self.allGroupsMap.keys;
+            end
+        end
+        
+        % Remove a whole groups from the list.
+        % Removes each item from each group, and each group itself, one at
+        % a time.
+        function removeAllGroups(self)
+            for g = self.groups
+                self.removeGroup(g{1});
             end
         end
         
@@ -299,7 +314,7 @@ classdef topsGroupedList < handle
         % list
         % @details
         % Returns true if the list contains @a group.  Otherwise
-        % returns false. 
+        % returns false.
         function isContained = containsGroup(self, group)
             if ischar(group)
                 isContained = any(strcmp(self.groups, group));
@@ -316,7 +331,7 @@ classdef topsGroupedList < handle
         % @details
         % Returns true if the list contains @a group and
         % @a group contains @a mnemonic.  Otherwise returns
-        % false. 
+        % false.
         function isContained = containsMnemonicInGroup(self, mnemonic, group)
             isContained = self.containsGroup(group) ...
                 && topsGroupedList.mapContainsKey(self.allGroupsMap(group), mnemonic);
@@ -329,7 +344,7 @@ classdef topsGroupedList < handle
         % @details
         % Searches @a group for any occurence of @a item.
         % Returns true if the list contains @a group and
-        % @a group contains at least on item that isequal() to 
+        % @a group contains at least on item that isequal() to
         % @a item. Otherwise returns false.
         function isContained = containsItemInGroup(self, item, group)
             isContained = self.containsGroup(group) ...
