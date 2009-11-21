@@ -39,8 +39,11 @@ elseif islogical(value) && isscalar(value)
     
 elseif isa(value, 'function_handle')
     
-    % builtin function handle conversion
-    stringSummary = sprintf('@%s', func2str(value));
+    % built-in function handle conversion
+    stringSummary = func2str(value);
+    if ~strcmp(stringSummary(1), '@')
+        stringSummary = sprintf('@%s', stringSummary);
+    end
     
 else
     
