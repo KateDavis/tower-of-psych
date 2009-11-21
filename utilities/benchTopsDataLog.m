@@ -8,14 +8,6 @@
 %   Adds @a n pieces of data to @a n different groups in topsDataLog, for
 %   n^2 total log additions.  Records how long each addition takes and
 %   plots the results.
-%
-%   @todo
-%   As of revision 78, checking whether the log already contains a given
-%   group or mnemonic is a bottleneck, and additions take some 2ms.  This
-%   is at least twice as slow as it should be.  I think the bottleneck
-%   happens when when containers.Map objects are dereferenced (they're handle
-%   subclasses) to access their keys.  I can probably work around this by
-%   caching keys as I add them.
 %   @ingroup utilities
 
 function benchTopsDataLog(n)
