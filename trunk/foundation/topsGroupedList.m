@@ -65,12 +65,6 @@ classdef topsGroupedList < handle
             self.length = 0;
         end
         
-        function delete(self)
-            if isvalid(self)
-                self.removeAllGroups;
-            end
-        end
-        
         % Launch a graphical interface for this list.
         % Returns a handle to the new topsGroupedListGUI
         function g = gui(self)

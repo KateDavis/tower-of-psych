@@ -49,6 +49,27 @@ classdef topsGroupedListGUI < topsGUI
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
     % @ingroup foundation
+    
+    % @todo
+    % Currently, the GUI doesn't respond when groups are cleared.  This
+    % means that if something like Snow Dots' dotsTheMachineSettings resets
+    % itself, it will re-add all the same groups and the GUI will show
+    % everyting twice.  There are several ways to go here:
+    %   - add notifications of group removal, smells bad since it would be
+    %   a lot of time-consuming notifications.  But the behavior would be
+    %   most correct.
+    %   - rebuild the GUI's groups control grid after every notification,
+    %   would be a lot slower for the GUI, but the grouped list wouldn't
+    %   have to worry about extra notifications
+    %   - cache the list of groups here in the GUI and check whether the
+    %   new group notification requires a new control grid button, smells
+    %   because the cache could go stale. 
+    %   - maybe keep a cacheed groups list in the GUI, update it during
+    %   every notification, and try to apply the changes, including
+    %   removals, to the control grid.  Behavior would be good, except
+    %   between a list's group removal and subsequend addition
+    %   .
+    % All this probably applies to mnemonics, as well.
 
     properties
         % The topsGroupedList or subclass to visualize in the GUI.
