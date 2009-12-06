@@ -31,6 +31,8 @@ directoryList = dir(absPath);
 disp(sprintf('\n\n%s', absPath));
 didPass = runtests(absPath);
 
+clear global DOTS_TESTS_FORCE_LOCAL
+
 if didPass
     for ii = 1:length(directoryList)
         if directoryList(ii).isdir && isempty(regexp(directoryList(ii).name, '^\.'))
