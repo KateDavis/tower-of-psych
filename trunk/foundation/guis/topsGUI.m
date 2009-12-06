@@ -7,6 +7,18 @@ classdef topsGUI < handle
     % which are described here briefly.
     % @ingroup foundation
     
+    % @todo
+    % From looking through mtest code, it looks like the built-in which()
+    % can report subfunctions in an mfile:
+    % subs = which('-subfun', 'configureSpotsTasks')
+    % I wonder if I can use this to link to subfunctions from uicontrols.
+    %   - mfile = which('subfunction_name') doesn't seem to work.
+    %   - can subfunctoins report their mfile?  Perhaps,
+    %   info = functions(\@subfunction)
+    %   - if not, would have to build an index of subfunctions to lookup
+    %   mfile names, which probably isn't worth it.  Would also introduce
+    %   name collisions, which is definitely not worth gettin into.
+    
     properties(Hidden)
         % Matlab figure to show gui, and delete it when closed.
         figure;

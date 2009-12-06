@@ -62,6 +62,7 @@ classdef topsGroupedList < handle
     methods
         % Constructor takes no arguments.
         function self = topsGroupedList
+            self.groups = {};
             self.length = 0;
         end
         
