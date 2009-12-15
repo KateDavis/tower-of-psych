@@ -126,9 +126,6 @@ classdef TestTopsGroupedList < TestCase
             n = length(self.stringMnemonics);
             assertEqual(n, self.groupedList.length, 'should have removed half the items');
             
-            self.groupedList.removeGroup(self.stringGroups{1});
-            assertEqual(n, self.groupedList.length, 'redundant remove should be OK');
-            
             self.groupedList.removeGroup(self.stringGroups{2});
             assertEqual(0, self.groupedList.length, 'should have removed all items');
             
@@ -247,16 +244,16 @@ classdef TestTopsGroupedList < TestCase
         end
         
         function testGetAllItemsAsStruct(self)
-            % should make struct array for all items in group
-            groupStruct = self.groupedList.getAllItemsFromGroupAsStruct('nonexistant');
-            assertTrue(isempty(groupStruct), 'should get empty struct for nonexistant group');
+            groupStruct = self.groupedList.getAllItemsFromGroupAsStruct('');
+            assertEqual(length(groupStruct), 0, 'struct should have no length');
             
+            % should make struct array for all items in group
             g = self.stringGroups{1};
             self.addItemsToGroupWithMnemonics(self.items, g, self.stringMnemonics);
             groupStruct = self.groupedList.getAllItemsFromGroupAsStruct(g);
             
-            assertEqual(length(groupStruct), length(self.items));
-            assertTrue(all(strcmp(g, {groupStruct.group})), 'all struct should have same group');
+            assertEqual(length(groupStruct), length(self.items), 'struct is wrong size');
+            assertTrue(all(strcmp(g, {groupStruct.group})), 'struct should have same size as group');
             
             items = {groupStruct.item};
             assertEqual(size(self.items), size(items), 'should get same number of items added to group')
@@ -290,13 +287,12 @@ classdef TestTopsGroupedList < TestCase
         end
         
         function testNewItemEventPosting(self)
-            listeners(1) = self.groupedList.addlistener('NewGroup',  @self.hearEvent);
-            listeners(2) = self.groupedList.addlistener('NewMnemonic',  @self.hearEvent);
+            listeners(1) = self.groupedList.addlistener('NewAddition',  @self.hearEvent);
             
             g = self.stringGroups{1};
             self.addItemsToGroupWithMnemonics(self.items, g, self.stringMnemonics);
-            n = 1 + length(self.stringMnemonics);
-            assertEqual(self.eventCount, n, 'heard wrong number of new item events');
+            n = length(self.stringMnemonics);
+            assertEqual(self.eventCount, n, 'heard wrong number of new addition events');
             delete(listeners);
         end
     end
