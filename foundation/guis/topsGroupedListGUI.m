@@ -270,7 +270,7 @@ classdef topsGroupedListGUI < topsGUI
             end
             self.itemDetailGrid.repositionControls;
         end
-
+        
         % Send the currently displayed item to the base workspace.
         % The "to workspace" button calls this method.  This method then
         % uses Matlab's built-in assignin() to put the currently shown item
@@ -299,26 +299,26 @@ classdef topsGroupedListGUI < topsGUI
         end
         
         function listenToGroupedList(self, groupedList)
-            self.listeners.NewGroup = groupedList.addlistener( ...
-                'NewGroup', ...
-                @(source, event)self.hearNewListGroup(source, event));
-            self.listeners.NewMnemonic = groupedList.addlistener( ...
-                'NewMnemonic', ...
-                @(source, event)self.hearNewListMnemonic(source, event));
+            self.deleteListeners;
+            self.listeners.NewAddition = ...
+                groupedList.addlistener('NewAddition', ...
+                @(source, event)self.hearNewListAddition(source, event));
         end
         
-        function hearNewListGroup(self, groupedList, event)
-            group = event.userData;
-            row = 1 + size(self.groupsGrid.controls, 1);
-            cb = @(obj, event)self.setCurrentGroup(group, obj);
-            self.addBrowserButtonToGridRowWithNameAndCallback( ...
-                self.groupsGrid, row, group, cb);
-            self.groupsGrid.repositionControls;
-        end
-        
-        function hearNewListMnemonic(self, groupedList, event)
+        function hearNewListAddition(self, groupedList, event)
+            logEntry = event.userData;
+            
+            if logEntry.groupIsNew
+                group = logEntry.group;
+                row = 1 + size(self.groupsGrid.controls, 1);
+                cb = @(obj, event)self.setCurrentGroup(group, obj);
+                self.addBrowserButtonToGridRowWithNameAndCallback( ...
+                    self.groupsGrid, row, group, cb);
+                self.groupsGrid.repositionControls;
+            end
+            
             if isequal(self.currentGroup, event.userData.group)
-                mnemonic = event.userData.mnemonic;
+                mnemonic = logEntry.mnemonic;
                 row = 1 + size(self.mnemonicsGrid.controls, 1);
                 cb = @(obj, event)self.setCurrentMnemonic(mnemonic, obj);
                 self.addBrowserButtonToGridRowWithNameAndCallback( ...

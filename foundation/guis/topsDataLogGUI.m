@@ -148,8 +148,7 @@ classdef topsDataLogGUI < topsGUI
                 % look for new groups as they come
                 g = logStruct(ii).group;
                 if ~any(strcmp(self.groups, g))
-                    ed.userData = g;
-                    self.hearNewGroup(theLog, ed)
+                    self.addNewGroup(g)
                 end
                 
                 % read all data as they come
@@ -162,22 +161,19 @@ classdef topsDataLogGUI < topsGUI
         end
         
         function listenToDataLog(self)
-            theLog = topsDataLog.theDataLog;
-            
             self.deleteListeners;
-            self.listeners.NewGroup = theLog.addlistener( ...
-                'NewGroup', ...
-                @(source, event) self.hearNewGroup(source, event));
-            self.listeners.NewData = theLog.addlistener( ...
-                'NewMnemonic', ...
-                @(source, event) self.hearNewMnemonic(source, event));
-            self.listeners.FlushedTheMnemonicLog = theLog.addlistener( ...
-                'FlushedTheDataLog', ...
+            theLog = topsDataLog.theDataLog;
+
+            self.listeners.NewAddition = ...
+                theLog.addlistener('NewAddition', ...
+                @(source, event) self.hearNewAddition(source, event));
+            
+            self.listeners.FlushedTheMnemonicLog = ...
+                theLog.addlistener('FlushedTheDataLog', ...
                 @(source, event) self.hearFlushedTheDataLog(source, event));
         end
         
-        function hearNewGroup(self, theLog, event)
-            group = event.userData;
+        function addNewGroup(self, group)
             self.groups{end+1} = group;
             col = self.getColorForString(group);
             
@@ -196,8 +192,12 @@ classdef topsDataLogGUI < topsGUI
             self.groupsGrid.repositionControls;
         end
         
-        function hearNewMnemonic(self, theLog, eventData)
+        function hearNewAddition(self, theLog, eventData)
             logEntry = eventData.userData;
+            
+            if logEntry.groupIsNew
+                self.addNewGroup(logEntry.group);
+            end
             
             % trigger and ignore selections
             z = size(self.groupsGrid.controls);

@@ -48,22 +48,20 @@ classdef topsGroupedList < handle
     
     properties(Hidden)
         allGroupsMap;
+        sendNotifications;
     end
     
     events
-        % Notifies any listeners after a new group was created.
-        NewGroup;
-        
-        % Notifies any listeners after a new Mnemonic was added to a group,
-        % and what group is was.
-        NewMnemonic;
+        % Notifies any listeners when items added to the list, including
+        % group and mnemonic
+        NewAddition;
     end
     
     methods
         % Constructor takes no arguments.
         function self = topsGroupedList
             self.groups = {};
-            self.length = 0;
+            self.sendNotifications = false;
         end
         
         % Launch a graphical interface for this list.
@@ -78,50 +76,51 @@ classdef topsGroupedList < handle
         % related items
         % @param mnemonic a string or number to identify this new item
         % @details
-        % If @a group and @a mnemonic are already in the list,
-        % then @a item will overwrite an older item.  Otherwise,
-        % after adding @a item, the list will send a NewGroup and/or
-        % NewMnemonic notification to any listeners.
+        % If @a group and @a mnemonic are already in the list, then @a item
+        % will replace an older item.  If @a group is not already in the
+        % list, it may send a NewAddition notification to any listeners
+        % after adding @a item.
         % <br><br>
         % Note: for each topsGroupedList, group values must be all strings or
         % all numbers.  Likewise, for each group, mnemonics must be all
         % strings or all numbers.
         function addItemToGroupWithMnemonic(self, item, group, mnemonic)
-            notifyGroup = true;
-            notifyMnemonic = true;
             if isempty(self.allGroupsMap)
                 % start from scratch
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
                 self.allGroupsMap = containers.Map(group, groupMap, 'uniformValues', false);
                 self.groups = {group};
-                self.length = 1;
+                
+                groupIsNew = true;
+
             elseif self.containsGroup(group)
                 % routine addition
-                isNew = ~self.containsMnemonicInGroup(mnemonic, group);
                 groupMap = self.allGroupsMap(group);
                 groupMap(mnemonic) = item;
-                self.length = self.length + isNew;
+
+                groupIsNew = false;
                 
-                notifyGroup = false;
-                notifyMnemonic = isNew;
             else
                 % new group
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
                 self.allGroupsMap(group) = groupMap;
                 self.groups = self.allGroupsMap.keys;
-                self.length = self.length + 1;
+
+                groupIsNew = true;
             end
             
-            if notifyGroup
-                self.notify('NewGroup', EventWithData(group));
-            end
-            
-            if notifyMnemonic
+            if self.sendNotifications
                 ed.item = item;
                 ed.group = group;
+                ed.groupIsNew = groupIsNew;
                 ed.mnemonic = mnemonic;
-                self.notify('NewMnemonic', EventWithData(ed));
+                self.notify('NewAddition', EventWithData(ed));
             end
+        end
+        
+        function el = addlistener(self, varargin)
+            el = self.addlistener@handle(varargin{:});
+            self.sendNotifications = true;
         end
         
         % Remove all instances of an item from a group.
@@ -131,17 +130,18 @@ classdef topsGroupedList < handle
         % Searches @a group for items that isequal() to
         % @a item.  Removes all such items, along with their
         % mnemonics.
+        % <br><br>
+        % This method is likely to be very slow.  Use
+        % removeMnemonicFromGroup for better performance.
         function removeItemFromGroup(self, item, group)
-            if self.containsItemInGroup(item, group)
-                groupMap = self.allGroupsMap(group);
-                keys = groupMap.keys;
-                isItem = logical(zeros(size(keys)));
-                for ii = 1:length(keys)
-                    isItem(ii) = isequal(groupMap(keys{ii}), item);
-                end
-                groupMap.remove(keys(isItem));
-                self.length = self.length - sum(isItem);
+            groupMap = self.allGroupsMap(group);
+            keys = groupMap.keys;
+            vals = groupMap.values;
+            isItem = logical(zeros(size(keys)));
+            for ii = 1:length(keys)
+                isItem(ii) = isequal(vals{ii}, item);
             end
+            groupMap.remove(keys(isItem));
         end
         
         % Remove a mnemonic and its item from a group.
@@ -151,11 +151,8 @@ classdef topsGroupedList < handle
         % @details
         % Removes @a mnemonic and its item from @a group.
         function removeMnemonicFromGroup(self, mnemonic, group)
-            if self.containsMnemonicInGroup(mnemonic, group)
-                groupMap = self.allGroupsMap(group);
-                groupMap.remove(mnemonic);
-                self.length = self.length - 1;
-            end
+            groupMap = self.allGroupsMap(group);
+            groupMap.remove(mnemonic);
         end
         
         % Remove a whole group from the list.
@@ -165,14 +162,11 @@ classdef topsGroupedList < handle
         % Removes all mnemonics and items from @a group, then removes
         % @a group itself from the list.
         function removeGroup(self, group)
-            if self.containsGroup(group)
-                groupMap = self.allGroupsMap(group);
-                n = length(groupMap);
-                groupMap.remove(groupMap.keys);
-                self.allGroupsMap.remove(group);
-                self.length = self.length - n;
-                self.groups = self.allGroupsMap.keys;
-            end
+            groupMap = self.allGroupsMap(group);
+            n = length(groupMap);
+            groupMap.remove(groupMap.keys);
+            self.allGroupsMap.remove(group);
+            self.groups = self.allGroupsMap.keys;
         end
         
         % Remove a whole groups from the list.
@@ -213,15 +207,13 @@ classdef topsGroupedList < handle
             %   which would require additional accounting
             %   but might be faster
             for ii = 1:length(sourceGroups)
-                if self.containsGroup(sourceGroups{ii})
-                    sourceMap = self.allGroupsMap(sourceGroups{ii});
-                    mnemonics = sourceMap.keys;
-                    for jj = 1:length(mnemonics)
-                        self.addItemToGroupWithMnemonic( ...
-                            sourceMap(mnemonics{jj}), ...
-                            destinationGroup, ...
-                            mnemonics{jj});
-                    end
+                sourceMap = self.allGroupsMap(sourceGroups{ii});
+                mnemonics = sourceMap.keys;
+                for jj = 1:length(mnemonics)
+                    self.addItemToGroupWithMnemonic( ...
+                        sourceMap(mnemonics{jj}), ...
+                        destinationGroup, ...
+                        mnemonics{jj});
                 end
             end
         end
@@ -234,12 +226,8 @@ classdef topsGroupedList < handle
         % @a mnemonic.  If @a group isn't in the list, or
         % doesn't contain @a mnemonic, returns [].
         function item = getItemFromGroupWithMnemonic(self, group, mnemonic)
-            if self.containsMnemonicInGroup(mnemonic, group)
-                groupMap = self.allGroupsMap(group);
-                item = groupMap(mnemonic);
-            else
-                item = [];
-            end
+            groupMap = self.allGroupsMap(group);
+            item = groupMap(mnemonic);
         end
         
         % Get all mnemonics from a group.
@@ -249,12 +237,8 @@ classdef topsGroupedList < handle
         % @a group, or {} if @a group isn't in the list. The
         % mnemonics will be sorted alphabetically or numerically.
         function mnemonics = getAllMnemonicsFromGroup(self, group)
-            if self.containsGroup(group)
-                groupMap = self.allGroupsMap(group);
-                mnemonics = groupMap.keys;
-            else
-                mnemonics = {};
-            end
+            groupMap = self.allGroupsMap(group);
+            mnemonics = groupMap.keys;
         end
         
         % Get all items (and optionally all mnemonics) from a group.
@@ -266,15 +250,10 @@ classdef topsGroupedList < handle
         % <br><br>
         % Optionally returns all mnemonics from @a group, as well.
         function [items, mnemonics] = getAllItemsFromGroup(self, group)
-            if self.containsGroup(group)
-                groupMap = self.allGroupsMap(group);
-                items = groupMap.values;
-                if nargout > 1
-                    mnemonics = groupMap.keys;
-                end
-            else
-                items = {};
-                mnemonics = {};
+            groupMap = self.allGroupsMap(group);
+            items = groupMap.values;
+            if nargout > 1
+                mnemonics = groupMap.keys;
             end
         end
         
@@ -317,7 +296,6 @@ classdef topsGroupedList < handle
                 isContained = any(group == [self.groups{:}]);
             end
         end
-        
         % Does the list contain the given group and mnemonic?
         % @param mnemonic a string or number for a menemonic that might be in
         % @a group
@@ -328,8 +306,12 @@ classdef topsGroupedList < handle
         % @a group contains @a mnemonic.  Otherwise returns
         % false.
         function isContained = containsMnemonicInGroup(self, mnemonic, group)
-            isContained = self.containsGroup(group) ...
-                && topsGroupedList.mapContainsKey(self.allGroupsMap(group), mnemonic);
+            if self.containsGroup(group)
+                groupMap = self.allGroupsMap(group);
+                isContained = groupMap.isKey(mnemonic);
+            else
+                isContained = false;
+            end
         end
         
         % Does the list contain the given group and item?
@@ -345,25 +327,17 @@ classdef topsGroupedList < handle
             isContained = self.containsGroup(group) ...
                 && topsGroupedList.mapContainsItem(self.allGroupsMap(group), item);
         end
+        
+        function l = get.length(self)
+            l = 0;
+            for g = self.groups
+                groupMap = self.allGroupsMap(g{1});
+                l = l + groupMap.length;
+            end
+        end
     end
     
     methods(Static)
-        
-        % Does the containers.Map contain the given key?
-        % @param map an instance of containers.Map
-        % @param key string or number that might be a key in the map
-        % @details
-        % Returns true if the map contains the @a key. Otherwise
-        % returns false.
-        function isContained = mapContainsKey(map, key)
-            if ischar(key)
-                isContained = any(strcmp(map.keys, key));
-            else
-                keyCell = map.keys;
-                isContained = any(key == [keyCell{:}]);
-            end
-        end
-        
         % Does the containers.Map contain the given item?
         % @param map an instance of containers.Map
         % @param item a value or object that might be in the map
