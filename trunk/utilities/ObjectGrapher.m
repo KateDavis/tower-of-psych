@@ -16,6 +16,24 @@ classdef ObjectGrapher < handle
         colors;
     end
     
+    methods (Static)
+        function og = withSeedObject(object)
+            og = ObjectGrapher;
+            og.addSeedObject(object);
+            og.crawlForUniqueObjects;
+            og.writeDotFile;
+        end
+        
+        function og = withSeedObjectAndImageStyle(object, style)
+            og = ObjectGrapher;
+            og.addSeedObject(object);
+            og.crawlForUniqueObjects;
+            og.writeDotFile;
+            og.writeDotImage(style);
+            system(sprintf('open %s', fullfile(og.dotFilePath, og.imageFile)));
+        end
+    end
+    
     methods
         function self = ObjectGrapher
             self.maxElementDepth = 20;
@@ -241,18 +259,40 @@ classdef ObjectGrapher < handle
             fclose(dotFile);
             
             function nodeLabelForObject(name, object, dotFile)
-                props = fieldnames(struct(object));
+                
+                % gather those properties that point to objects
+                propMap = containers.Map('a', 0);
+                propMap.remove('a');
+
+                brokenObject = struct(object);
+                props = fieldnames(brokenObject);
                 n = length(props);
-                labelCells = cell(1,n);
                 for ii = 1:n
-                    labelCells{ii} = sprintf('<%s>%s', props{ii}, props{ii});
+                    p = props{ii};
+                    propFun = @(object, depth, path, objFcn)propertyPointsToObject(name, p, path, object, propMap);
+                    self.iterateElements(brokenObject.(p), self.maxElementDepth, {}, propFun);
                 end
-                label = sprintf('|%s', labelCells{:});
+
+                % write the useful properties to node label
+                props = propMap.keys;
+                n = length(props);
+                if n > 0
+                    for ii = 1:n
+                        labelCells{ii} = sprintf('<%s>%s', props{ii}, props{ii});
+                    end
+                    labelProps = sprintf('|%s', labelCells{:});
+                else
+                    labelProps = '';
+                end
                 col = self.colorForString(name);
-                fprintf(dotFile, '%s [label="{{<top>|%s}%s}" color="%s"]\n', name, name, label, col);
+                fprintf(dotFile, '%s [label="{{<top>|%s}%s}" color="%s"]\n', name, name, labelProps, col);
             end
             
-            function str = edgesForObject(name, object, dotFile)
+            function propertyPointsToObject(name, prop, path, object, propMap)
+                propMap(prop) = true;
+            end
+            
+            function edgesForObject(name, object, dotFile)
                 brokenObject = struct(object);
                 props = fieldnames(brokenObject);
                 n = length(props);
