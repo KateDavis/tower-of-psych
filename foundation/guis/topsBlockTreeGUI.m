@@ -75,7 +75,7 @@ classdef topsBlockTreeGUI < topsGUI
             
             % custom widget class, in tops/utilities
             self.blocksGrid = ScrollingControlGrid( ...
-                self.figure, [left, bottom, xDiv-left, top-bottom]);
+                self.figure, [left, bottom, xDiv-left, yDiv-bottom]);
             self.addScrollableChild(self.blocksGrid.panel, ...
                 {@ScrollingControlGrid.respondToSliderOrScroll, self.blocksGrid});
             
@@ -97,8 +97,14 @@ classdef topsBlockTreeGUI < topsGUI
                 'HorizontalAlignment', 'left');
         end
         
-        function displayDetailsForBlock(self, block)
+        function displayDetailsForBlock(self, block, button)
             self.currentBlockTree = block;
+            
+            if nargin > 2
+                obj = self.blocksGrid.controls;
+                topsText.toggleOff(obj(ishandle(obj) & obj > 0));
+                topsText.toggleOn(button);
+            end
             
             self.blockDetailGrid.deleteAllControls;
             
@@ -176,11 +182,13 @@ classdef topsBlockTreeGUI < topsGUI
             % add this block
             row = self.blockTreeCount;
             col = self.getColorForString(block.name);
+            toggle = topsText.toggleText;
             h = self.blocksGrid.newControlAtRowAndColumn( ...
                 row, [0 1]+depth, ...
-                'Style', 'pushbutton', ...
+                toggle{:}, ...
                 'String', block.name, ...
-                'Callback', @(obj, event) self.displayDetailsForBlock(block), ...
+                'Callback', @(obj, event) self.displayDetailsForBlock(block, obj), ...
+                'BackgroundColor', self.lightColor, ...
                 'ForegroundColor', col);
             
             % listen to this block
