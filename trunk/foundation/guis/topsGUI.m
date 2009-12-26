@@ -218,16 +218,17 @@ classdef topsGUI < handle
             if ischar(value)
                 col = self.getColorForString(value);
                 bg = self.lightColor;
+                string = value;
             else
                 col = [0 0 0];
                 bg = get(self.figure, 'Color');
+                string = stringifyValue(value);
             end
-            args = { ...
-                'Style', 'text', ...
-                'String', stringifyValue(value), ...
-                'HorizontalAlignment', 'left', ...
+            static = topsText.staticText;
+            more = {'String', string, ...
                 'BackgroundColor', bg, ...
                 'ForegroundColor', col};
+            args = cat(2, static, more);
         end
         
         % Subclasses can present standard controls to interact with values
@@ -245,8 +246,16 @@ classdef topsGUI < handle
         % If there's no good way to ineract with @a value, returns
         % the same arguments as getDescriptiveUIControlArgsForValue.
         function args = getInteractiveUIControlArgsForValue(self, value)
-            args = self.getDescriptiveUIControlArgsForValue(value);
-            
+            if ischar(value)
+                col = self.getColorForString(value);
+                bg = self.lightColor;
+                string = value;
+            else
+                col = [0 0 0];
+                bg = get(self.figure, 'Color');
+                string = stringifyValue(value);
+            end
+
             if isscalar(value) && any(strcmp(methods(value), 'gui'))
                 % open up one of the topsFoundataion guis
                 callback = @(obj,event) value.gui;
@@ -257,7 +266,8 @@ classdef topsGUI < handle
                 if exist(name, 'file') || exist([name, '.m'], 'file')
                     callback = @(obj,event) open(name);
                 else
-                    return
+                    args = self.getDescriptiveUIControlArgsForValue(value);
+                    return;
                 end
                 
             elseif ischar(value) && ~isempty(which(value))
@@ -266,15 +276,18 @@ classdef topsGUI < handle
                 
             else
                 % fallback on descripive uicontrol
-                return
+                args = self.getDescriptiveUIControlArgsForValue(value);
+                return;
             end
             
             % 'inactive' mode actually enables the ButtonDownFcn
-            moreArgs = { ...
+            click = topsText.clickText;
+            more = {'String', string, ...
                 'FontWeight', 'bold', ...
-                'ButtonDownFcn', callback, ...
-                'Enable', 'inactive'};
-            args = cat(2, args, moreArgs);
+                'Callback', callback, ...
+                'BackgroundColor', bg, ...
+                'ForegroundColor', col};
+            args = cat(2, click, more);
         end
     end
 end

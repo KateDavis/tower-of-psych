@@ -155,8 +155,8 @@ classdef topsGroupedListGUI < topsGUI
             self.currentGroup = group;
             self.repopulateMnemonicsGrid;
             if nargin > 2
-                set(self.groupsGrid.controls, 'Value', false);
-                set(button, 'Value', true);
+                topsText.toggleOff(self.groupsGrid.controls);
+                topsText.toggleOn(button);
                 drawnow;
             end
         end
@@ -165,8 +165,8 @@ classdef topsGroupedListGUI < topsGUI
             self.currentMnemonic = mnemonic;
             self.showDetailsForCurrentItem;
             if nargin > 2
-                set(self.mnemonicsGrid.controls, 'Value', false);
-                set(button, 'Value', true);
+                topsText.toggleOff(self.mnemonicsGrid.controls);
+                topsText.toggleOn(button);
                 drawnow;
             end
         end
@@ -209,11 +209,13 @@ classdef topsGroupedListGUI < topsGUI
                 string = num2str(name);
                 col = [0 0 0];
             end
+            toggle = topsText.toggleText;
             grid.newControlAtRowAndColumn( ...
                 row, 1, ...
-                'Style', 'toggle', ...
+                toggle{:}, ...
                 'String', string, ...
                 'Callback', callback, ...
+                'BackgroundColor', self.lightColor, ...
                 'ForegroundColor', col);
         end
         
