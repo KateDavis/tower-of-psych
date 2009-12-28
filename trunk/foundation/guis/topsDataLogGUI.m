@@ -147,13 +147,16 @@ classdef topsDataLogGUI < topsGUI
             for ii = find(replayWindow);
                 % look for new groups as they come
                 g = logStruct(ii).group;
+                ed.userData = logStruct(ii);
                 if ~any(strcmp(self.groups, g))
-                    self.addNewGroup(g)
+                    self.addNewGroup(g);
+                    ed.userData.groupIsNew = true;
+                else
+                    ed.userData.groupIsNew = false;
                 end
                 
                 % read all data as they come
-                ed.userData = logStruct(ii);
-                self.hearNewMnemonic(theLog, ed);
+                self.hearNewAddition(theLog, ed);
             end
             
             self.stickyPeg = false;
