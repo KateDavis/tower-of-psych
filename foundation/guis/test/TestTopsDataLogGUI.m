@@ -37,5 +37,13 @@ classdef TestTopsDataLogGUI < TestCase
             theLog = topsDataLog.theDataLog;
             assertEqual(sort(self.logGui.groups), sort(theLog.groups), 'gui groups list should contain same values as topsDataLog')
         end
+        
+        function testReplayData(self)
+            newGroups = {'aaaa', 'bbbb', 'cccc'};
+            for g = newGroups
+                topsDataLog.logDataInGroup(1, g{1});
+            end
+            self.logGui.replayDataLog;
+        end
     end
 end
