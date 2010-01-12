@@ -2,6 +2,14 @@ classdef ObjectGrapher < handle
     %Crawl among objects in Matlab, generate abstract graph, render with
     %something like GraphViz
     
+    % @todo
+    % Draw the seed object(s?) in a cluster, with edges constriaining and
+    % weight 100.  Draw subsequent edges outside the cluster with edges not
+    % constraining and weight 0.
+    % Does this imply a better way to manage writing the graph file?
+    % Should be object-at-a-time, with node and edge defaults set in
+    % between.  Maybe there's a Graphable class...
+    
     properties
         seedObjects;
         uniqueObjects;
@@ -227,9 +235,8 @@ classdef ObjectGrapher < handle
                     font, fontSize);
                 
                 arrow = 'normal';
-                weight = 0;
-                fprintf(dotFile, 'edge [fontname="%s" fontsize="%d" arrowhead="%s" weight="%d"]\n', ...
-                    font, fontSize, arrow, weight);
+                fprintf(dotFile, 'edge [fontname="%s" fontsize="%d" arrowhead="%s"]\n', ...
+                    font, fontSize, arrow);
                 
                 fprintf(dotFile, '\n');
                 
@@ -243,10 +250,20 @@ classdef ObjectGrapher < handle
                 fprintf(dotFile, '\n');
                 
                 % iterate object properties to draw edges
+                %   draw special edge first time each object encountered
+                %   treat seed objects as alreay encountered
                 keys = self.uniqueObjects.keys;
+                bogus = 'kjhg';
+                keysMap = containers.Map(bogus, bogus, 'uniformValues', false);
+                keysMap.remove(bogus);
+                for ii = 1:self.seedObjects.length
+                    [contains, seedKey] = self.containsUniqueObject(self.seedObjects(ii));
+                    keysMap(seedKey) = true;
+                end
+
                 for ii = 1:length(keys)
                     object = self.uniqueObjects(keys{ii});
-                    edgesForObject(keys{ii}, object, dotFile);
+                    edgesForObject(keys{ii}, object, dotFile, keysMap);
                 end
                 
                 % close the graph
@@ -292,24 +309,34 @@ classdef ObjectGrapher < handle
                 propMap(prop) = true;
             end
             
-            function edgesForObject(name, object, dotFile)
+            function edgesForObject(name, object, dotFile, keysMap)
                 brokenObject = struct(object);
                 props = fieldnames(brokenObject);
                 n = length(props);
                 for ii = 1:n
                     p = props{ii};
-                    edgeFun = @(object, depth, path, objFcn)edgeFromNodeToObject(name, p, path, object, dotFile);
+                    edgeFun = @(object, depth, path, objFcn)edgeFromNodeToObject(name, p, path, object, dotFile, keysMap);
                     self.iterateElements(brokenObject.(p), self.maxElementDepth, {}, edgeFun);
                 end
             end
             
-            function edgeFromNodeToObject(name, prop, path, object, dotFile)
+            function edgeFromNodeToObject(name, prop, path, object, dotFile, keysMap)
                 [contains, target] = self.containsUniqueObject(object);
                 if contains
+                    
+                    if any(strcmp(keysMap.keys, target))
+                        weight = 0;
+                        constraint = 'false';
+                    else
+                        weight = 100;
+                        constraint = 'true';
+                        keysMap(target) = true;
+                    end
+                    
                     col = self.colorForString(name, .75);
                     pathStr = sprintf('%s', path{:});
-                    fprintf(dotFile, '%s:%s--%s:top [label="%s" color="%s" fontcolor="%s"]\n', ...
-                        name, prop, target, pathStr, col, col);
+                    fprintf(dotFile, '%s:%s--%s:top [label="%s" color="%s" fontcolor="%s" constraint="%s" weight="%d"]\n', ...
+                        name, prop, target, pathStr, col, col, constraint, weight);
                 end
             end
         end
