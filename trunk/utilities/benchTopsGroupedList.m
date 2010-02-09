@@ -1,5 +1,8 @@
 function benchTopsGroupedList(n, useStrings)
 % Measure add, get, and remove times for topsDataLog
+%   The type of item added matters a lot.
+%   Access times for objects--even "value" objects are terrible and
+%   increase with n.  The equivalent structs perform more like primitives.
 
 if ~nargin || isempty(n)
     n = 1000;
@@ -26,7 +29,7 @@ l = topsGroupedList;
 times.groupAdd = zeros(1,n);
 for ii = 1:n
     tic;
-    l.addItemToGroupWithMnemonic(item, many{ii}, item);
+    l.addItemToGroupWithMnemonic(item, many{ii}, many{1});
     times.groupAdd(ii) = toc;
 end
 
@@ -51,7 +54,7 @@ l = topsGroupedList;
 times.itemAdd = zeros(1,n);
 for ii = 1:n
     tic;
-    l.addItemToGroupWithMnemonic(many{ii}, group, many{ii});
+    l.addItemToGroupWithMnemonic(item, group, many{ii});
     times.itemAdd(ii) = toc;
 end
 
@@ -60,7 +63,7 @@ l = topsGroupedList;
 times.itemReplace = zeros(1,n);
 for ii = 1:n
     tic;
-    l.addItemToGroupWithMnemonic(many{ii}, group, many{ii});
+    l.addItemToGroupWithMnemonic(item, group, many{ii});
     times.itemReplace(ii) = toc;
 end
 
@@ -82,7 +85,7 @@ end
 
 % remove an item by value
 for ii = 1:n
-    l.addItemToGroupWithMnemonic(many{ii}, group, many{ii});
+    l.addItemToGroupWithMnemonic(item, group, many{ii});
 end
 times.itemRemoveByValue = zeros(1,n);
 for ii = 1:n
@@ -94,6 +97,6 @@ end
 timeCell = struct2cell(times);
 timeMat = cat(1, timeCell{:});
 plot(timeMat');
-ylim([0, .005]);
+%ylim([0, .005]);
 xlabel(label);
 legend(fieldnames(times), 'Location', 'NorthWest');
