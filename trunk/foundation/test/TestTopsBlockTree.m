@@ -31,12 +31,13 @@ classdef TestTopsBlockTree < TestCase
             self.blockTree.blockActionFcn = {@sprintf, 'block action'};
             self.blockTree.blockEndFcn = {@sprintf, 'block end'};
             
-            self.blockTree.preview;
+            self.blockTree.preview = true;
+            self.blockTree.run;
             summary = topsDataLog.getSortedDataStruct;
             assertEqual(length(summary), 3, 'wrong number of summary functions');
-            assertEqual(self.blockTree.blockStartFcn, summary(1).item, 'wrong block start function');
-            assertEqual(self.blockTree.blockActionFcn, summary(2).item, 'wrong block action function');
-            assertEqual(self.blockTree.blockEndFcn, summary(3).item, 'wrong block end function');
+            assertEqual(self.blockTree.blockStartFcn{1}, summary(1).item, 'wrong block start function');
+            assertEqual(self.blockTree.blockActionFcn{1}, summary(2).item, 'wrong block action function');
+            assertEqual(self.blockTree.blockEndFcn{1}, summary(3).item, 'wrong block end function');
         end
         
         function testPreviewChildFunctions(self)
@@ -47,9 +48,11 @@ classdef TestTopsBlockTree < TestCase
                 child.blockStartFcn = {@sprintf, 'block start'};
                 child.blockActionFcn = {@sprintf, 'block action'};
                 child.blockEndFcn = {@sprintf, 'block end'};
+                child.preview = true;
                 self.blockTree.addChild(child);
             end
-            self.blockTree.preview;
+            self.blockTree.preview = true;
+            self.blockTree.run;
             summary = topsDataLog.getSortedDataStruct;
             assertEqual(length(summary), 3*nChildren, 'wrong number of child functions logged');
         end
@@ -83,7 +86,7 @@ classdef TestTopsBlockTree < TestCase
             self.blockTree.run;
             summary = topsDataLog.getSortedDataStruct;
             for ii = 1:length(fcn)
-                assertEqual(fcn{ii}, summary(ii).item, 'functions run in wrong order');
+                assertEqual(fcn{ii}{1}, summary(ii).item, 'functions run in wrong order');
             end
         end
         
