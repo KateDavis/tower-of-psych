@@ -64,12 +64,17 @@ classdef topsBlockTree < handle
         
         % action to perform after all iterations
         blockEndFcn = {};
+
+        % true or false, whether to execute functions (false) or just
+        % traverse the tree (true).
+        preview = false;
     end
     
-    properties(Hidden)
+    properties (Hidden)
         startString = 'start';
         actionString = 'action';
         endString = 'end';
+        previewString = '(preview)';
         validIterationMethods = {'sequential', 'random'};
     end
     
@@ -104,22 +109,19 @@ classdef topsBlockTree < handle
         end
         
         % Run an experiment, starting with this block.
-        % @param doFeval true or false, whether to perform any actions
-        % (true, the default), or just traverse the tree (false).
         % @details
         % Begin traversing the tree with this block as the topmost parent.
         % The sequence of events goes like this:
         %   - This block sends a 'BlockStart' notification to any
         %   listeners.
-        %   - This block executes its blockStartFcn (if doFeval is true)
+        %   - This block executes its blockStartFcn
         %   - This block does zero or more "iterations":
-        %       - This block executes its blockActionFcn (if doFeval is
-        %       true)
+        %       - This block executes its blockActionFcn
         %       - This block calls run() on each of its children,
         %       in an order determined by this block's iterationMethod.
         %       Each child then performs the same sequence of actions as
         %       this block.
-        %   - This block executes its blockEndFcn (if doFeval is true)
+        %   - This block executes its blockEndFcn
         %   .
         % Note that the sequence of events is recursive.  Thus, the
         % behavior of run() depends on this block as well as its children,
@@ -130,20 +132,21 @@ classdef topsBlockTree < handle
         % blockActionFcns will happen first, in the order of parents before
         % children.  Then all the blockEndFcns will happen, in the order of
         % children before parents.
-        function run(self, doFeval)
-            if nargin < 2
-                doFeval = true;
-            end
-            
+        % <br><br>
+        % If this block's preview property is set to true, run() will send
+        % notifications and invoke run() on child blocks, but not invoke
+        % blockStartFcn, blockActionFcn, or blockEndFcn.  Child blocks may
+        % do normal behavior or preview behavior.
+        function run(self)
             % notify listeners, like the GUI
             self.notify('BlockStart');
             
             % start the block
-            self.fevalAndLog(self.startString, self.blockStartFcn, doFeval);
+            self.fevalAndLog(self.blockStartFcn, self.startString);
             
             % do the meat of the block
             for ii = 1:self.iterations
-                self.fevalAndLog(self.actionString, self.blockActionFcn, doFeval);
+                self.fevalAndLog(self.blockActionFcn, self.actionString);
                 
                 switch self.iterationMethod
                     case 'sequential'
@@ -153,28 +156,25 @@ classdef topsBlockTree < handle
                 end
                 
                 for jj = childSequence
-                    self.children(jj).run(doFeval);
+                    self.children(jj).run;
                 end
             end
             
             % finish the block
-            self.fevalAndLog(self.endString, self.blockEndFcn, doFeval);
+            self.fevalAndLog(self.blockEndFcn, self.endString);
         end
         
-        % Shorthand for run() method with doFeval = false.
-        function preview(self)
-            self.run(false);
-        end
-        
-        function fevalAndLog(self, note, fcn, doFeval)
+        function fevalAndLog(self, fcn, fcnName)
             if ~isempty(fcn)
-                if doFeval
-                    group = sprintf('%s:%s', self.name, note);
-                    topsDataLog.logDataInGroup(fcn, group);
-                    feval(fcn{:});
+                if self.preview
+                    group = sprintf('%s:%s%s', ...
+                        self.name, fcnName, self.previewString);
+                    topsDataLog.logDataInGroup(fcn{1}, group);
+                    
                 else
-                    group = sprintf('%s:%s(preview)', self.name, note);
-                    topsDataLog.logDataInGroup(fcn, group);
+                    group = sprintf('%s:%s', self.name, fcnName);
+                    topsDataLog.logDataInGroup(fcn{1}, group);
+                    feval(fcn{:});
                 end
             end
         end

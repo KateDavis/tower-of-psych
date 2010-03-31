@@ -1,6 +1,6 @@
 classdef topsFunctionLoop < topsGroupedList
     % @class topsFunctionLoop
-    % A loop of functions doing concurrent behaviors.
+    % Groups of functions doing concurrent behaviors.
     % topsFunctionLoop manages groups of functions that need to be called
     % over and over again.  This situation may come up when you need to do
     % things like draw graphics and check for inputs at the same time.

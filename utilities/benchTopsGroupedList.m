@@ -5,7 +5,7 @@ function benchTopsGroupedList(n, useStrings)
 %   increase with n.  The equivalent structs perform more like primitives.
 
 if ~nargin || isempty(n)
-    n = 1000;
+    n = 300;
 end
 
 if nargin > 1 && useStrings
@@ -17,6 +17,7 @@ if nargin > 1 && useStrings
     end
     label = 'using strings';
 else
+    
     item = 1;
     group = 1;
     many = num2cell(1:n);
@@ -83,16 +84,16 @@ for ii = 1:n
     times.itemRemoveByMnemonic(n-ii+1) = toc;
 end
 
-% remove an item by value
-for ii = 1:n
-    l.addItemToGroupWithMnemonic(item, group, many{ii});
-end
-times.itemRemoveByValue = zeros(1,n);
-for ii = 1:n
-    tic;
-    l.removeItemFromGroup(many{ii}, group);
-    times.itemRemoveByValue(n-ii+1) = toc;
-end
+% % remove an item by value
+% for ii = 1:n
+%     l.addItemToGroupWithMnemonic(item, group, many{ii});
+% end
+% times.itemRemoveByValue = zeros(1,n);
+% for ii = 1:n
+%     tic;
+%     l.removeItemFromGroup(many{ii}, group);
+%     times.itemRemoveByValue(n-ii+1) = toc;
+% end
 
 timeCell = struct2cell(times);
 timeMat = cat(1, timeCell{:});
