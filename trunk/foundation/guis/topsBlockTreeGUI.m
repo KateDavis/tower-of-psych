@@ -21,13 +21,13 @@ classdef topsBlockTreeGUI < topsGUI
     % You can launch topsBlockTreeGUI with the topsBlockTreeGUI()
     % constructor, or with the gui() method a topsBlockTreeGUI.
     % <br><br>
-    % topsBlockTreeGUI uses listeners to detect changes to the blocks its
+    % topsBlockTreeGUI uses listeners to detect changes to the blocks it's
     % showing.  This means that you can view your blocks as you work on
     % your experiment, and you don't have to reopen or refresh the GUI.
     % <br><br>
-    % Beware that listeners can slow Matlab down.  So if you're in a
-    % timing-critical situation, like some experiments, you might wish to
-    % close the GUI, deleting its listeners.
+    % But beware that listeners can slow Matlab down.  So if you're in a
+    % timing-critical situation, like running a real experiment, you might
+    % wish to close the GUI, deleting its listeners.
     % @ingroup foundation
     
     properties
@@ -118,7 +118,7 @@ classdef topsBlockTreeGUI < topsGUI
             args = self.getDescriptiveUIControlArgsForValue('iterations:');
             self.blockDetailGrid.newControlAtRowAndColumn( ...
                 row, [1 4], args{:});
-
+            
             
             args = self.getDescriptiveUIControlArgsForValue(block.iterations);
             self.blockDetailGrid.newControlAtRowAndColumn( ...

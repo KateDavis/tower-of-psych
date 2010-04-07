@@ -45,6 +45,31 @@ classdef TestTopsGroupedList < TestCase
             assertFalse(self.groupedList==newList, 'topsGroupedList should not be a singleton');
         end
         
+        function testSubsSyntax(self)
+            g = 'long string group';
+            mnemonics = self.stringMnemonics;
+            for ii = 1:length(mnemonics)
+                self.groupedList{g}{mnemonics{ii}} = self.items{ii};
+            end
+            
+            for ii = 1:length(mnemonics)
+                assertTrue(self.groupedList.containsMnemonicInGroup( ...
+                    mnemonics{ii}, g), ...
+                    'should have added item');
+            end
+            
+            for ii = 1:length(mnemonics)
+                item = self.groupedList{g}{mnemonics{ii}};
+                assertEqual(item, self.items{ii}, ...
+                    'should get same item that was added');
+            end
+            
+            allItemsSubs = self.groupedList{g};
+            allItemsNormal = self.groupedList.getAllItemsFromGroup(g);
+            assertEqual(allItemsSubs, allItemsNormal, ...
+                'should get same group items for subs or normal syntax');
+        end
+        
         function testAddStringGroupsStringMnemonics(self)
             % add same items to each group
             groups = self.stringGroups;

@@ -76,22 +76,18 @@ classdef TestTopsFunctionLoop < TestCase
 
         function testRunFunctionsInCorrectOrder(self)
             self.addFunctionsToGroupsInOrder;
-            self.functionLoop.runForGroupForDuration(self.orderedGroup, 0);
+            self.functionLoop.runForGroup(self.orderedGroup, 0);
             assertFalse(isempty(self.order), 'failed to execute functions');
             assertTrue(all(diff(self.order))>0, 'executed functions in wrong order');
         end
         
         function testAbortRunWithProceedFlag(self)
             abortGroup = 'abortTest';
-            self.functionLoop.addFunctionToGroupWithRank({@self.clearProceedFlag}, abortGroup, 1);
+            self.functionLoop.proceedFcn = {@false};
             self.functionLoop.addFunctionToGroupWithRank({@self.executeFunction, 1}, abortGroup, 2);
-            self.functionLoop.runForGroupForDuration(abortGroup, 0);
-            assertFalse(self.functionLoop.proceed, 'function loop proceed flag should be false');
-            assertTrue(isempty(self.order), 'function loop should have aborted early');
-        end
-        
-        function clearProceedFlag(self)
-            self.functionLoop.proceed = false;
+            self.functionLoop.runForGroup(abortGroup, 0);
+            assertEqual(length(self.order), 1, ...
+                'function loop should made only one pass');
         end
         
         function testPropertyChangeEventPosting(self)

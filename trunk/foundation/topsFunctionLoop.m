@@ -22,7 +22,7 @@ classdef topsFunctionLoop < topsGroupedList
     % built-in feval() function--hence the name--so a cell array called foo
     % would be an fevalable if it could be executed with feval(foo{:}).
     % <br><br>
-    % Besides the runForGroupForDuration() method, which actually executes
+    % Besides the runForGroup() method, which actually executes
     % functions, topsFunctionLoop relies heavily on its superclass,
     % topsGroupedList.  For example, you may wish to build several groups
     % of functions, and then combine them in various ways.  To do this, you
@@ -35,8 +35,9 @@ classdef topsFunctionLoop < topsGroupedList
     % @ingroup foundation
     
     properties (SetObservable)
-        % true or false, wheher the loop should keep running.
-        proceed = true;
+        % Any function that returns true (keep running functions) or false
+        % (stop immediately).
+        proceedFcn = {};
         
         % Any function that returns the current time as a number.
         clockFcn = @topsTimer;
@@ -116,49 +117,51 @@ classdef topsFunctionLoop < topsGroupedList
             end
         end
         
-        % Start looping through functions
+        % Loop through functions.
         % @param group a string identifying a group of functions to be run
         % concurrently
-        % @param duration the length of time to loop through functions, in
-        % the same units as clockFcn.
+        % @param timeout optional maximum time to loop through functions,
+        % in the same units as clockFcn.  Default is 0.
         % @details
         % Gets the list of functions for @a group and calls feval()
         % on each funcion in the list, in order, over and over again, until
-        % @a duration expires.
+        % @a timeout expires.
         % <br><br>
-        % Always makes complete passes through the function list.  So if
-        % @a duration expires in the middle of the loop, won't return
-        % until reaching the bottom of the list.
+        % Makes complete passes through the function list.  So if @a
+        % timeout expires in the middle of the loop, runForGroup() won't
+        % return until reaching the bottom of the list.
         % <br><br>
-        % If @a duration is missing or not finite, defaults to
-        % duration = 0.  As long as duration >= 0, will make at least one
-        % pass through the loop.
+        % As long as timeout is nonnegative, runForGroup() makes at least
+        % one pass through the loop.
         % <br><br>
-        % When the loop starts running, sets its proceed to true.  If a
-        % functions in the list sets this flag to false, the loop will
-        % abort immediately, without completing the current pass through
-        % the function list.  To set the proceed flag, a function would
-        % need to have access to this loop object, perhaps as an input
-        % argument.
-        function runForGroupForDuration(self, group, duration)
-            if nargin < 3 || isempty(duration) || ~isfinite(duration)
-                duration = 0;
+        % After each pass through the loop, runForGroup() checks the value
+        % returned by proceedFcn.  If the value is false, runForGroup()
+        % returns immediately.
+        function runForGroup(self, group, timeout)
+            if nargin < 3 || isempty(timeout) || ~isfinite(timeout)
+                timeout = 0;
             end
             
             functionList = self.getFunctionListForGroup(group);
             n = length(functionList);
             
-            self.proceed = true;
-            nowTime = feval(self.clockFcn);
-            endTime = nowTime + duration;
+            cf = self.clockFcn;
+            if isempty(self.proceedFcn)
+                pf = {@true};
+            else
+                pf = self.proceedFcn;
+            end
+            
+            nowTime = feval(cf);
+            endTime = nowTime + timeout;
             while (nowTime <= endTime)
                 for ii = 1:n
                     feval(functionList{ii}{:});
-                    if ~self.proceed
-                        return
-                    end
                 end
-                nowTime = feval(self.clockFcn);
+                nowTime = feval(cf);
+                if ~feval(pf{:})
+                    break;
+                end
             end
         end
     end
