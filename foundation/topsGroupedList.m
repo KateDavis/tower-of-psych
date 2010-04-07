@@ -92,12 +92,12 @@ classdef topsGroupedList < handle
                 self.groups = {group};
                 
                 groupIsNew = true;
-
+                
             elseif self.containsGroup(group)
                 % routine addition
                 groupMap = self.allGroupsMap(group);
                 groupMap(mnemonic) = item;
-
+                
                 groupIsNew = false;
                 
             else
@@ -105,7 +105,7 @@ classdef topsGroupedList < handle
                 groupMap = containers.Map(mnemonic, item, 'uniformValues', false);
                 self.allGroupsMap(group) = groupMap;
                 self.groups = self.allGroupsMap.keys;
-
+                
                 groupIsNew = true;
             end
             
@@ -229,6 +229,71 @@ classdef topsGroupedList < handle
             groupMap = self.allGroupsMap(group);
             item = groupMap(mnemonic);
         end
+        
+        % Get list items with {} syntax.
+        % For topsGroupedList l,
+        %   - item = l{g}{m} is the same as 
+        %       item = l.getItemFromGroupWithMnemonic(g,m)
+        %   - allItems = l{g} is the same as 
+        %       allItems = l.getAllItemsFromGroup(g)
+        %
+        %   Beware:
+        %       [allItems, allMnemonics] = l{g}
+        %   makes Matlab crash.  But 
+        %       [allItems, allMnemonics] = l.getAllItemsFromGroup(g) works. 
+        function varargout = subsref(self, info)
+            if strcmp(info(1).type, '{}')
+                
+                if length(info) == 2
+                    % item access
+                    varargout{1} = ...
+                        self.getItemFromGroupWithMnemonic( ...
+                        info(1).subs{1}, info(2).subs{1});
+                    
+                else
+                    % group access
+                    varargout{1} = ...
+                        self.getAllItemsFromGroup( ...
+                        info(1).subs{1});
+                end
+                
+            else
+                % property or method access
+                [varargout{1:nargout}] = builtin('subsref', self, info);
+            end
+        end
+        
+        % Add list items with {} syntax.
+        % For topsGroupedList l,
+        %   - l{g}{m} = item is the same as
+        %       l.addItemToGroupWithMnemonic(item, g, m)
+        function self = subsasgn(self, info, value)
+            if strcmp(info(1).type, '{}')
+                if length(info) > 1
+                    % item addition
+                    self.addItemToGroupWithMnemonic( ...
+                        value, info(1).subs{1}, info(2).subs{1});
+                end
+                
+            else
+                % property assignment
+                self = builtin('subsasgn', self, info, value);
+            end
+        end
+        
+        % Tell Matlab how many items to expect from {} syntax
+        % It's always 1
+        function n = numel(self, varargin)
+
+            % treat strings as 1 thing not an array of char
+            if nargin == 2 && ischar(varargin{1})
+                n = 1;
+            else
+                % property or method access
+                n = builtin('numel', self, varargin{:});
+            end
+        end
+        
         
         % Get all mnemonics from a group.
         % @param group the group to get mnemonics for

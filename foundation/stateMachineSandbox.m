@@ -1,6 +1,7 @@
 function sm = stateMachineSandbox
 
 sm = topsStateMachine;
+sm.name = 'sandbox machine';
 
 % each accepts state information as first input
 %   apply to all states
@@ -15,28 +16,35 @@ entryFcn = {@disp, ' entering state'};
 inputFcn = {@getStateInput};
 exitFcn = {@disp, ' exiting state'};
 
-% similar appearance to cell array definition from dotsx
-%   - function call does internal accounting
-%   - but I'm not married to this syntax
-%   - I'd love to find a syntax that speaks for itself
-%       - i.e, doesn't require user to memorize the order 
-%           and meanings of arguments or cell columns
-%       - verbose function name?  clutter?  accepts cell?
-%       - field names included in first row of cell array?
-%           - dynamic, potentially less code maintainance
-sm.addState('beginning',    0,	'middle',   entryFcn, {}, exitFcn);
-sm.addState('middle',       .1,	'end',      {}, inputFcn, {});
-sm.addState('end',          0,  '',         entryFcn, {}, exitFcn);
-sm.addState('surprise!',    0,  '',         entryFcn, {}, exitFcn);
+% similar to cell array definition from dotsx
+%   but explicit about field/column names
+%   allows shuffling and omission of fields/columns
+statesInfo = { ...
+    'name',     'timeout',  'next',     'entryFcn', 'inputFcn', 'exitFcn'; ...
+    'beginning',0,          'middle',   entryFcn,   {},         exitFcn; ...
+    'middle',   0.1,        'end',      {},         inputFcn,	{}; ...
+    'end',      0,          '',         entryFcn,   {},         exitFcn; ...
+    };
+sm.addMultipleStates(statesInfo);
+
+% alternative specification method
+%   states can be added in bunches, one at a time, etc.
+surp.name = 'surprise!';
+surp.timeout = 0;
+surp.next = '';
+surp.entryFcn = entryFcn;
+surp.inputFcn = {};
+surp.exitFcn = exitFcn;
+sm.addState(surp);
 
 % traverse from topmost state to an end
 sm.run;
 
-% same as run(), but amenable to concurrency
-sm.begin;
-while isempty(sm.endTime)
-    sm.step;
-end
+% % same as run(), but amenable to concurrency
+% sm.begin;
+% while isempty(sm.endTime)
+%     sm.step;
+% end
 
 function beginning(firstState)
 disp(sprintf('beginning with %s', firstState.name));

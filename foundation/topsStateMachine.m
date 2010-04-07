@@ -63,6 +63,11 @@ classdef topsStateMachine < handle
         % the time when state traversal ended
         endTime = [];
         
+        % struct of information about the last state encountered during
+        % traversal.  See addState() for details of the struct state
+        % information.
+        endState = struct([]);
+        
         % time when the current state was entered
         currentEntryTime = [];
         
@@ -88,6 +93,10 @@ classdef topsStateMachine < handle
         inputString = 'input';
         exitString = 'exit';
         previewString = '(preview)';
+        
+        stateFields = {'name', 'entryFcn', 'inputFcn', ...
+            'timeout', 'exitFcn', 'next'};
+        stateDefaults = {'', {}, {}, 0, {}, ''};
     end
     
     methods
@@ -96,49 +105,95 @@ classdef topsStateMachine < handle
             self.stateNameToIndex.remove(self.stateNameToIndex.keys);
         end
         
-        % Create a new state and append it to allStates.
-        % @prop name a string to identify the state
-        % @prop timeout: time that may elapse before transitioning to the
-        % @a next state, in units of clockFunction
-        % @prop next: the @a name of the state to transition to once @a
-        % timeout has elapsed
-        % @prop entryFcn a fevalable cell array to invoke whenever
-        % entering the state
-        % @prop inputFcn: a fevalable cell array to invoke after entering
-        % the state, during each call to step().  Expected to return the @a
-        % name of a state, or ''
-        % @prop exitFcn: a fevalable cell array to invoke whenever exiting
-        % the state
-        % .
+        % Add multiple states to the state machine.
+        % @param statesInfo a cell array with information defining multiple
+        % new states.
         % @details
-        % addState() argument names are identical to the fields of the
-        % allStates struct array, and have the same meanings.
+        % @a statesInfo should resemble a table, with a row for each new
+        % state a column for each state field.
         % <br><br>
-        % Each state must have its own @a name.  Other arguments may be
-        % empty, but may not be omitted.
+        % The first row of @a statesInfo shoud contain field names that
+        % correspond to the fields of allStates.  See addState() for
+        % field descriptions.  Only the @b name field is mandatory.  Fields
+        % may appear in any order.
         % <br><br>
-        % Returns the inedx into allStates of the struct that represnets
-        % the new state.
-        function allStateIndex = addState(self, name, timeout, next, entryFcn, inputFcn, exitFcn)
-            % put args into struct form
-            newState = struct();
-            newState.name = name;
-            newState.timeout = timeout;
-            newState.next = next;
-            newState.entryFcn = entryFcn;
-            newState.inputFcn = inputFcn;
-            newState.exitFcn = exitFcn;
+        % Each additional row of @a statesInfo shoud contain values aligned
+        % with the field names in the first row.  A new state will be added
+        % using each row of values.  Default values will be used where
+        % fields are omitted.  The @b name field is mandatory.
+        % <br><br>
+        % The values in the @b name column should be unique with respect to
+        % each other and any existing states.  When names collide, new
+        % states will replace existing states.
+        % <br><br>
+        % Returns an array of indexes into allStates where the new states
+        % were appended or inserted.
+        function allStateIndexes = addMultipleStates(self, statesInfo)
+            % build a stateInfo struct for each row of values
+            %   let addState validate fields and fill in defaults
+            sz = size(statesInfo);
+            allStateIndexes = zeros(1,sz(1)-1);
+            for ii = 2:sz(1)
+                newState = cell2struct(statesInfo(ii,:), statesInfo(1,:), 2);
+                allStateIndexes(ii-1) = self.addState(newState);
+            end
+        end
+        
+        % Add a new state to the state machine.
+        % @param stateInfo a struct with information defining a new
+        % state.
+        % @details
+        % @a stateInfo must have the same fiels as allStates:
+        % 	- @b name a string to identify the state
+        % 	- @b timeout time that may elapse before transitioning to the
+        % @b next state, in units of clockFunction
+        % 	- @b next the @b name of the state to transition to once @b
+        % timeout has elapsed
+        % 	- @b entryFcn a fevalable cell array to invoke whenever
+        % entering the state
+        % 	- @b inputFcn: a fevalable cell array to invoke after entering
+        % the state, during each call to step().  Expected to return a
+        % single value, which may be the @b name of a state, in which case
+        % the state machine will transition to that state immediately.  @b
+        % timeout must be nonzero for @b inputFcn to be invoked.
+        % 	- @b exitFcn: a fevalable cell array to invoke whenever exiting
+        % the state
+        %   .
+        % @details
+        % Each state must have a unique @b name.  If @a stateInfo has the
+        % same @b name as an existing state, @a stateInfo will replace the
+        % existing state.
+        % <br><br>
+        % Other fields of @a stateInfo may be omitted, in which case
+        % default values will be used.
+        % <br><br>
+        % Returns the inedx into allStates where the new state was appended
+        % or inserted.
+        function allStateIndex = addState(self, stateInfo)
+            % pick stateInfo fields that match official fields
+            infoFields = fieldnames(stateInfo);
+            infoValues = struct2cell(stateInfo);
+            [validFields, validIndices, defaultIndices] = ...
+                intersect(infoFields, self.stateFields);
+
+            % merge valid stateInfo and defaults into new struct
+            mergedValues = self.stateDefaults;
+            mergedValues(defaultIndices) = infoValues(validIndices);
+            newState = cell2struct(mergedValues, self.stateFields, 2);
             
             % append the new state to allStates
             %   add to lookup table
-            n = length(self.allStates);
-            if n < 1
+            if isempty(self.allStates)
+                allStateIndex = 1;
                 self.allStates = newState;
             else
-                self.allStates(end+1) = newState;
+                [isState, allStateIndex] = self.isStateName(newState.name);
+                if ~isState
+                    allStateIndex = length(self.allStates) + 1;
+                end
+                self.allStates(allStateIndex) = newState;
             end
-            self.stateNameToIndex(newState.name) = n+1;
-            allStateIndex = n+1;
+            self.stateNameToIndex(newState.name) = allStateIndex;
         end
         
         function [isState, allStateIndex] = isStateName(self, stateName)
@@ -195,13 +250,23 @@ classdef topsStateMachine < handle
                 
             else
                 % poll for input
-                nextName = feval(self.currentInputFcn{:});
-                if self.isStateName(nextName)
-                    self.transitionToStateWithName(nextName);
-                else
-                    return;
+                if ~isempty(self.currentInputFcn)
+                    nextName = feval(self.currentInputFcn{:});
+                    if self.isStateName(nextName)
+                        self.transitionToStateWithName(nextName);
+                    end
                 end
             end
+        end
+        
+        % true or false, whether state machine is currently stepping
+        % through states
+        function isTrav = isTraversing(self)
+            isTrav = ~isempty(self.beginTime) && isempty(self.endTime);
+        end
+        
+        function g = gui(self)
+            g = topsStateMachineGUI(self);
         end
     end
     
@@ -246,6 +311,7 @@ classdef topsStateMachine < handle
         
         % all done.  exit last state before calling endFcn
         function endTraversal(self)
+            self.endState = self.allStates(self.currentIndex);
             self.exitCurrentState;
             self.fevalInsertArgAndLog( ...
                 self.allStates(self.currentIndex), ...

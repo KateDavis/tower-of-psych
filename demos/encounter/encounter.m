@@ -244,7 +244,7 @@ for t = [charTimers, monsterTimers]
     t.beginRepetitions;
 end
 battleLoop = gameList.getItemFromGroupWithMnemonic('game', 'battleLoop');
-battleLoop.runForGroupForDuration(groupName, 600);
+battleLoop.runForGroup(groupName, 600);
 
 
 function characterWakesUp(character, gameList)
