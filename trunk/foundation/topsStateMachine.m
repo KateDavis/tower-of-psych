@@ -73,6 +73,30 @@ classdef topsStateMachine < handle
         
         % time when the current state will reach its timeout
         currentTimeoutTime = [];
+        
+        % cell array of strings, names given to functions which are invoked
+        % whenever entering any state.  sharedEntryFcnNames are parallel to
+        % sharedEntryFcns.  See addSharedFcn() for details about shared
+        % entry and exit funcions.
+        sharedEntryFcnNames = {};
+        
+        % cell array of fevalable cell arrays which are invoked whenever
+        % entering any state.  sharedEntryFcnNames are parallel to
+        % sharedEntryFcns.  See addSharedFcn() for details about shared
+        % entry and exit funcions.
+        sharedEntryFcns = {};
+        
+        % cell array of strings, names given to functions which are invoked
+        % whenever exiting any state.  sharedExitFcnNames are parallel to
+        % sharedExitFcns.  See addSharedFcn() for details about shared
+        % entry and exit funcions.
+        sharedExitFcnNames = {};
+        
+        % cell array of fevalable cell arrays which are invoked whenever
+        % exiting any state.  sharedExitFcnNames are parallel to
+        % sharedExitFcns.  See addSharedFcn() for details about shared
+        % entry and exit funcions.
+        sharedExitFcns = {};
     end
     
     properties (Hidden)
@@ -94,9 +118,9 @@ classdef topsStateMachine < handle
         exitString = 'exit';
         previewString = '(preview)';
         
-        stateFields = {'name', 'entryFcn', 'inputFcn', ...
-            'timeout', 'exitFcn', 'next'};
-        stateDefaults = {'', {}, {}, 0, {}, ''};
+        stateFields = {'name', 'next', 'timeout', ...
+            'entryFcn', 'inputFcn', 'exitFcn'};
+        stateDefaults = {'', '', 0, {}, {}, {}};
     end
     
     methods
@@ -107,7 +131,7 @@ classdef topsStateMachine < handle
         
         % Add multiple states to the state machine.
         % @param statesInfo a cell array with information defining multiple
-        % new states.
+        % states.
         % @details
         % @a statesInfo should resemble a table, with a row for each new
         % state a column for each state field.
@@ -140,10 +164,9 @@ classdef topsStateMachine < handle
         end
         
         % Add a new state to the state machine.
-        % @param stateInfo a struct with information defining a new
-        % state.
+        % @param stateInfo a struct with information defining a state.
         % @details
-        % @a stateInfo must have the same fiels as allStates:
+        % @a stateInfo should have the same fields as allStates:
         % 	- @b name a string to identify the state
         % 	- @b timeout time that may elapse before transitioning to the
         % @b next state, in units of clockFunction
@@ -167,19 +190,33 @@ classdef topsStateMachine < handle
         % Other fields of @a stateInfo may be omitted, in which case
         % default values will be used.
         % <br><br>
-        % Returns the inedx into allStates where the new state was appended
+        % Fields of stateInfo may correspond to one of the names in
+        % sharedEntryFcnNames or sharedExitFcnNames.  Values in these
+        % fields will be passed as state-specific arguments to the shared
+        % function.
+        % <br><br>
+        % Returns the index into allStates where the new state was appended
         % or inserted.
         function allStateIndex = addState(self, stateInfo)
-            % pick stateInfo fields that match official fields
+            % combine official state field names and default values with
+            % shared entry and exit functions.
+            allowedFields = cat(2, self.stateFields, ...
+                self.sharedEntryFcnNames, ...
+                self.sharedExitFcnNames);
+            allowedDefaults = cat(2, self.stateDefaults, ...
+                cell(size(self.sharedEntryFcnNames)), ...
+                cell(size(self.sharedExitFcnNames)));
+            
+            % pick stateInfo fields that match allowed fields
             infoFields = fieldnames(stateInfo);
             infoValues = struct2cell(stateInfo);
             [validFields, validIndices, defaultIndices] = ...
-                intersect(infoFields, self.stateFields);
-
+                intersect(infoFields, allowedFields);
+            
             % merge valid stateInfo and defaults into new struct
-            mergedValues = self.stateDefaults;
+            mergedValues = allowedDefaults;
             mergedValues(defaultIndices) = infoValues(validIndices);
-            newState = cell2struct(mergedValues, self.stateFields, 2);
+            newState = cell2struct(mergedValues, allowedFields, 2);
             
             % append the new state to allStates
             %   add to lookup table
@@ -195,7 +232,61 @@ classdef topsStateMachine < handle
             end
             self.stateNameToIndex(newState.name) = allStateIndex;
         end
+
+        % Add a function to be invoked during every state.
+        % @param fcn a fevalable cell array to invoke during every state
+        % @param name string name to give to @a fcn
+        % @param when the string 'entry' or 'exit' specifying when to
+        % invoke @a fcn.  For 'entry', @a fcn will be invoked just after
+        % each state's own entryFcn.  For 'exit', @a fcn will be invoked
+        % just before each state's own exitFcn.  If omitted, defaults to
+        % 'entry'.
+        % @details
+        % Adds @a fcn to the state machine's sharedEntryFcns or
+        % sharedExitFcns.  These functions are called for every state, in
+        % addition to each state's own entryFcn and exitFcn.
+        % <br><br>
+        % Each state may specify additional arguments to pass to @a fcn.
+        % These may be specified like other state data, using @a name as
+        % the state field.  See addState() and addMultipleStates() for
+        % details on specifying state data.
+        % <br><br>
+        % @a name must be unique with respect to other shared entry or exit
+        % functions.  If @a name matches the name of an existing shared
+        % function, @a fcn will replace the existing function.
+        function addSharedFcnWithName(self, fcn, name, when)
+            if nargin < 4
+                when = 'entry';
+            end
+            
+            switch when
+                case 'entry'
+                    existing = strcmp(self.sharedEntryFcnNames, name);
+                    if any(existing)
+                        index = find(existing, 1);
+                    else
+                        index = length(self.sharedEntryFcnNames) + 1;
+                    end
+                    self.sharedEntryFcnNames{index} = name;
+                    self.sharedEntryFcns{index} = fcn;
+                    
+                case 'exit'
+                    existing = strcmp(self.sharedExitFcnNames, name);
+                    if any(existing)
+                        index = find(existing, 1);
+                    else
+                        index = length(self.sharedExitFcnNames) + 1;
+                    end
+                    self.sharedExitFcnNames{index} = name;
+                    self.sharedExitFcns{index} = fcn;
+            end
+            
+            if ~isempty(self.allStates) && ~isfield(self.allStates, name)
+                [self.allStates.(name)] = deal({});
+            end
+        end
         
+        % Check whether a string is the name of a state.
         function [isState, allStateIndex] = isStateName(self, stateName)
             isState = self.stateNameToIndex.isKey(stateName);
             if isState
@@ -205,6 +296,7 @@ classdef topsStateMachine < handle
             end
         end
         
+        % Get a struct of info about a state with a given name.
         function [stateInfo, allStateIndex] = getStateInfoByName(self, stateName)
             [isState, allStateIndex] = self.isStateName(stateName);
             if isState
@@ -270,7 +362,7 @@ classdef topsStateMachine < handle
         end
     end
     
-    methods (Access = private)
+    methods (Access = protected)
         % reset all the current* properties for the given state
         function enterStateAtIndex(self, allStateIndex)
             self.currentIndex = allStateIndex;
@@ -283,6 +375,12 @@ classdef topsStateMachine < handle
                 currentState.name, ...
                 currentState.entryFcn, ...
                 self.entryString);
+            
+            if ~isempty(self.sharedEntryFcnNames)
+                self.fevalSharedAndLog(currentState, ...
+                    self.sharedEntryFcnNames, ...
+                    self.sharedEntryFcns);
+            end
         end
         
         % clear current* properties
@@ -292,6 +390,13 @@ classdef topsStateMachine < handle
             self.currentInputFcn = {};
             self.currentEntryTime = [];
             self.currentTimeoutTime = [];
+            
+            if ~isempty(self.sharedExitFcnNames)
+                self.fevalSharedAndLog(currentState, ...
+                    self.sharedExitFcnNames, ...
+                    self.sharedExitFcns);
+            end
+            
             self.fevalForStateAndLog( ...
                 currentState.name, ...
                 currentState.exitFcn, ...
@@ -351,6 +456,14 @@ classdef topsStateMachine < handle
                     topsDataLog.logDataInGroup(fcn{1}, group);
                     feval(fcn{:});
                 end
+            end
+        end
+
+        function fevalSharedAndLog(self, state, fcnNames, fcns)
+            for ii = 1:length(fcnNames)
+                stateArgs = state.(fcnNames{ii});
+                stateFcn = cat(2, fcns{ii}, stateArgs);
+                self.fevalForStateAndLog(state.name, stateFcn, fcnNames{ii});
             end
         end
     end

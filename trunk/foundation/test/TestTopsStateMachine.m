@@ -140,6 +140,46 @@ classdef TestTopsStateMachine < TestCase
                 'name input should cause branching to named state')
         end
         
+        function testStateSharedFunctions(self)
+            % add some shared functions that will get arguments from the
+            % from each state
+            sharedFcn = {@countSharedFunctionCall, self};
+            self.stateMachine.addSharedFcnWithName( ...
+                sharedFcn, 'enterWith', 'entry');
+            self.stateMachine.addSharedFcnWithName( ...
+                sharedFcn, 'exitWith', 'exit');
+            
+            % add states that "know about" the shared functions
+            enterNum = 1;
+            exitNum = 10;
+            statesInfo = { ...
+                'name',         'next',     'enterWith',	'exitWith'; ...
+                'beginning',    'middle',   {enterNum},     {exitNum}; ...
+                'middle',       'end',      {enterNum},     {exitNum}; ...
+                'end',          '',         {enterNum},     {exitNum}; ...
+                };
+            self.stateMachine.addMultipleStates(statesInfo);
+
+            % add a new shared function after the fact
+            %   the states wont know to add arguments to this one
+            extraNum = 100;
+            sharedFcn = {@countSharedFunctionCall, self, extraNum};
+            self.stateMachine.addSharedFcnWithName( ...
+                sharedFcn, 'extra', 'entry');
+            
+            self.eventCount = 0;
+            self.stateMachine.run;
+            expectedCount = length(self.stateMachine.allStates) ...
+                * (enterNum + exitNum + extraNum);
+            assertEqual(expectedCount, self.eventCount, ...
+                'wrong count of state common function calls');
+
+        end
+        
+        function countSharedFunctionCall(self, number)
+            self.eventCount = self.eventCount + number;
+        end
+        
         function testPropertyChangeEventPosting(self)
             % listen for event postings
             props = properties(self.stateMachine);
