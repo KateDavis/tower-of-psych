@@ -1,4 +1,4 @@
-classdef topsGroupedList < handle
+classdef topsGroupedList < topsFoundation
     % @class topsGroupedList
     % A structured container for values and objects.
     % topsGroupedList is a general-purpose container for holding Matlab

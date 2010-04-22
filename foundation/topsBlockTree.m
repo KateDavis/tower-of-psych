@@ -1,4 +1,4 @@
-classdef topsBlockTree < handle
+classdef topsBlockTree < topsFoundation
     % @class topsBlockTree
     % A tree-like way to organize an experiment.
     % topsBlockTree gives you a uniform, tree-like framework for organizing
@@ -37,9 +37,6 @@ classdef topsBlockTree < handle
     % @ingroup foundation
     
     properties (SetObservable)
-        % a string name for this block
-        name = '';
-        
         % any value or object you want
         userData = [];
         
