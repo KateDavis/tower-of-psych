@@ -1,4 +1,4 @@
-classdef topsStateMachine < handle
+classdef topsStateMachine < topsFoundation
     % @class topsStateMachine
     % A state machine for controlling flow through e.g. trials.
     % @details
@@ -17,9 +17,6 @@ classdef topsStateMachine < handle
     % @ingroup foundataion
     
     properties (SetObservable)
-        % a string name for this state machine
-        name = '';
-        
         % struct array of state data.  Each element represents a single
         % state.  See addState() for details about the struct fields and
         % state properties.

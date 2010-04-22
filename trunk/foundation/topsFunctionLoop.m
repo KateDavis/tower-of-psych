@@ -152,16 +152,15 @@ classdef topsFunctionLoop < topsGroupedList
                 pf = self.proceedFcn;
             end
             
+            proceed = true;
             nowTime = feval(cf);
             endTime = nowTime + timeout;
-            while (nowTime <= endTime)
+            while (nowTime <= endTime) && proceed
                 for ii = 1:n
                     feval(functionList{ii}{:});
                 end
                 nowTime = feval(cf);
-                if ~feval(pf{:})
-                    break;
-                end
+                proceed = feval(pf{:});
             end
         end
     end
