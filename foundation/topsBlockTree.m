@@ -54,13 +54,13 @@ classdef topsBlockTree < topsFoundation
         parent;
         
         % action to perform before iterating through any children
-        blockStartFcn = {};
+        blockStartFevalable = {};
         
         % action to perform before each iteration
-        blockActionFcn = {};
+        blockActionFevalable = {};
         
         % action to perform after all iterations
-        blockEndFcn = {};
+        blockEndFevalable = {};
 
         % true or false, whether to execute functions (false) or just
         % traverse the tree (true).
@@ -111,39 +111,39 @@ classdef topsBlockTree < topsFoundation
         % The sequence of events goes like this:
         %   - This block sends a 'BlockStart' notification to any
         %   listeners.
-        %   - This block executes its blockStartFcn
+        %   - This block executes its blockStartFevalable
         %   - This block does zero or more "iterations":
-        %       - This block executes its blockActionFcn
+        %       - This block executes its blockActionFevalable
         %       - This block calls run() on each of its children,
         %       in an order determined by this block's iterationMethod.
         %       Each child then performs the same sequence of actions as
         %       this block.
-        %   - This block executes its blockEndFcn
+        %   - This block executes its blockEndFevalable
         %   .
         % Note that the sequence of events is recursive.  Thus, the
         % behavior of run() depends on this block as well as its children,
         % their children, etc.
         % <br><br>
         % Also note that the recursion happens in the middle of the
-        % sequence of events.  Thus, all of the blockStartFcn and
-        % blockActionFcns will happen first, in the order of parents before
-        % children.  Then all the blockEndFcns will happen, in the order of
+        % sequence of events.  Thus, all of the blockStartFevalable and
+        % blockActionFevalables will happen first, in the order of parents before
+        % children.  Then all the blockEndFevalables will happen, in the order of
         % children before parents.
         % <br><br>
         % If this block's preview property is set to true, run() will send
         % notifications and invoke run() on child blocks, but not invoke
-        % blockStartFcn, blockActionFcn, or blockEndFcn.  Child blocks may
+        % blockStartFevalable, blockActionFevalable, or blockEndFevalable.  Child blocks may
         % do normal behavior or preview behavior.
         function run(self)
             % notify listeners, like the GUI
             self.notify('BlockStart');
             
             % start the block
-            self.fevalAndLog(self.blockStartFcn, self.startString);
+            self.fevalAndLog(self.blockStartFevalable, self.startString);
             
             % do the meat of the block
             for ii = 1:self.iterations
-                self.fevalAndLog(self.blockActionFcn, self.actionString);
+                self.fevalAndLog(self.blockActionFevalable, self.actionString);
                 
                 switch self.iterationMethod
                     case 'sequential'
@@ -158,7 +158,7 @@ classdef topsBlockTree < topsFoundation
             end
             
             % finish the block
-            self.fevalAndLog(self.blockEndFcn, self.endString);
+            self.fevalAndLog(self.blockEndFevalable, self.endString);
         end
         
         function fevalAndLog(self, fcn, fcnName)

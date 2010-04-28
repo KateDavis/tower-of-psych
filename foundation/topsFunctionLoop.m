@@ -37,10 +37,10 @@ classdef topsFunctionLoop < topsGroupedList
     properties (SetObservable)
         % Any function that returns true (keep running functions) or false
         % (stop immediately).
-        proceedFcn = {};
+        proceedFevalable = {};
         
         % Any function that returns the current time as a number.
-        clockFcn = @topsTimer;
+        clockFunction = @topsTimer;
     end
     
     methods
@@ -121,7 +121,7 @@ classdef topsFunctionLoop < topsGroupedList
         % @param group a string identifying a group of functions to be run
         % concurrently
         % @param timeout optional maximum time to loop through functions,
-        % in the same units as clockFcn.  Default is 0.
+        % in the same units as clockFunction.  Default is 0.
         % @details
         % Gets the list of functions for @a group and calls feval()
         % on each funcion in the list, in order, over and over again, until
@@ -135,7 +135,7 @@ classdef topsFunctionLoop < topsGroupedList
         % one pass through the loop.
         % <br><br>
         % After each pass through the loop, runForGroup() checks the value
-        % returned by proceedFcn.  If the value is false, runForGroup()
+        % returned by proceedFevalable.  If the value is false, runForGroup()
         % returns immediately.
         function runForGroup(self, group, timeout)
             if nargin < 3 || isempty(timeout) || ~isfinite(timeout)
@@ -145,11 +145,11 @@ classdef topsFunctionLoop < topsGroupedList
             functionList = self.getFunctionListForGroup(group);
             n = length(functionList);
             
-            cf = self.clockFcn;
-            if isempty(self.proceedFcn)
+            cf = self.clockFunction;
+            if isempty(self.proceedFevalable)
                 pf = {@true};
             else
-                pf = self.proceedFcn;
+                pf = self.proceedFevalable;
             end
             
             proceed = true;

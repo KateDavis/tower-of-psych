@@ -7,7 +7,7 @@ classdef EncounterBattleTimer < handle
         repeatInterval=inf;
         callback={};
         
-        clockFcn = @topsTimer;
+        clockFunction = @topsTimer;
     end
     
     methods
@@ -25,12 +25,12 @@ classdef EncounterBattleTimer < handle
         end
         
         function beginRepetitions(self)
-            nowTime = feval(self.clockFcn);
+            nowTime = feval(self.clockFunction);
             self.nextFire = nowTime + self.repeatInterval;
         end
         
         function didFire = tick(self)
-            nowTime = feval(self.clockFcn);
+            nowTime = feval(self.clockFunction);
             didFire = nowTime >= self.nextFire;
             
             if didFire

@@ -47,8 +47,8 @@ gameList = topsGroupedList;
 %   with functions defined below
 gameTree = topsBlockTree;
 gameTree.name = 'encounter';
-gameTree.blockStartFcn = {@gameSetup, gameList};
-gameTree.blockEndFcn = {@gameTearDown, gameList};
+gameTree.blockStartFevalable = {@gameSetup, gameList};
+gameTree.blockEndFevalable = {@gameTearDown, gameList};
 gameList.addItemToGroupWithMnemonic(gameTree, 'game', 'gameTree');
 
 
@@ -176,9 +176,9 @@ for ii = 1:length(group)
     
     battleBlock = topsBlockTree;
     battleBlock.name = group(ii).name;
-    battleBlock.blockStartFcn = {@battleSetup, battleBlock, gameList};
-    battleBlock.blockActionFcn = {@battleGo, battleBlock, gameList};
-    battleBlock.blockEndFcn = {@battleTearDown, battleBlock, gameList};
+    battleBlock.blockStartFevalable = {@battleSetup, battleBlock, gameList};
+    battleBlock.blockActionFevalable = {@battleGo, battleBlock, gameList};
+    battleBlock.blockEndFevalable = {@battleTearDown, battleBlock, gameList};
     gameTree.addChild(battleBlock);
 end
 gameList.addItemToGroupWithMnemonic('', 'game', 'activeMonsterGroup');
