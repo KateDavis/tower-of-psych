@@ -128,7 +128,7 @@ classdef topsBlockTreeGUI < topsGUI
             self.blockDetailGrid.newControlAtRowAndColumn( ...
                 row, [7 width], args{:});
             
-            props = {'blockStartFcn', 'blockActionFcn', 'blockEndFcn'};
+            props = {'blockStartFevalable', 'blockActionFevalable', 'blockEndFevalable'};
             prefixes = {block.startString, block.actionString, block.endString};
             for ii = 1:length(props)
                 % label the property

@@ -32,7 +32,7 @@ classdef topsDataLogGUI < topsGUI
     %   - The "Sliding view:" button.  When this button is pressed, the
     %   large axes will show window of data whose size is given in the
     %   nearby text field.  The time shown in the text field should have
-    %   units that match the clockFcn of the topsDataLog.
+    %   units that match the clockFunction of the topsDataLog.
     %   - The "view all" button.  When this button is pressed,
     %   the large axes will adjust their bounds to accomodate all data in
     %   the log.

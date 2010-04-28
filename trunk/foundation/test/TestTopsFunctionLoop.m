@@ -83,7 +83,7 @@ classdef TestTopsFunctionLoop < TestCase
         
         function testAbortRunWithProceedFlag(self)
             abortGroup = 'abortTest';
-            self.functionLoop.proceedFcn = {@false};
+            self.functionLoop.proceedFevalable = {@false};
             self.functionLoop.addFunctionToGroupWithRank({@self.executeFunction, 1}, abortGroup, 2);
             self.functionLoop.runForGroup(abortGroup, 0);
             assertEqual(length(self.order), 1, ...

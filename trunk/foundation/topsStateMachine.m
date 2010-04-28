@@ -5,7 +5,7 @@ classdef topsStateMachine < topsFoundation
     % Here's some of my thinking behind topsStateMachine, and why I made it
     % different from dotsx
     %   - "standard" vocab from Wikipedia, like "input"
-    %   - more function handles to hook on or ignore, like transitionFcn
+    %   - more function handles to hook on or ignore, like transitionFevalable
     %   - automatic topsDataLog'ging
     %   - allStates struct should be guiable and oh, so graphable
     %       - State diagrams!  Think of the grant proposals!
@@ -28,7 +28,7 @@ classdef topsStateMachine < topsFoundation
         % cell array will be passed to the function starting at the second
         % place.  See addState() for details of the struct state
         % information.
-        beginFcn = {};
+        beginFevalable = {};
         
         % a fevalable cell array to invoke during state transitions.
         % The function should expect as the first argument a 1x2 struct
@@ -37,7 +37,7 @@ classdef topsStateMachine < topsFoundation
         % array will be passed to the function starting at the second
         % place.  See addState() for details of the struct state
         % information.
-        transitionFcn = {};
+        transitionFevalable = {};
         
         % a fevalable cell array to invoke when state traversal ends.
         % The function should expect as the first argument a struct of
@@ -45,14 +45,14 @@ classdef topsStateMachine < topsFoundation
         % cell array will be passed to the function starting at the second
         % place.  See addState() for details of the struct state
         % information.
-        endFcn = {};
+        endFevalable = {};
         
         % true or false, whether to execute functions (false) or just
         % traverse states (true).
         preview = false;
         
         % any function that returns the current time as a number
-        clockFcn = @topsTimer;
+        clockFunction = @topsTimer;
         
         % the time when state traversal began
         beginTime = [];
@@ -72,28 +72,28 @@ classdef topsStateMachine < topsFoundation
         currentTimeoutTime = [];
         
         % cell array of strings, names given to functions which are invoked
-        % whenever entering any state.  sharedEntryFcnNames are parallel to
-        % sharedEntryFcns.  See addSharedFcn() for details about shared
+        % whenever entering any state.  sharedEntryFevalableNames are parallel to
+        % sharedEntryFevalables.  See addSharedFcn() for details about shared
         % entry and exit funcions.
-        sharedEntryFcnNames = {};
+        sharedEntryFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
-        % entering any state.  sharedEntryFcnNames are parallel to
-        % sharedEntryFcns.  See addSharedFcn() for details about shared
+        % entering any state.  sharedEntryFevalableNames are parallel to
+        % sharedEntryFevalables.  See addSharedFcn() for details about shared
         % entry and exit funcions.
-        sharedEntryFcns = {};
+        sharedEntryFevalables = {};
         
         % cell array of strings, names given to functions which are invoked
-        % whenever exiting any state.  sharedExitFcnNames are parallel to
-        % sharedExitFcns.  See addSharedFcn() for details about shared
+        % whenever exiting any state.  sharedexitFevalableNames are parallel to
+        % sharedexitFevalables.  See addSharedFcn() for details about shared
         % entry and exit funcions.
-        sharedExitFcnNames = {};
+        sharedexitFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
-        % exiting any state.  sharedExitFcnNames are parallel to
-        % sharedExitFcns.  See addSharedFcn() for details about shared
+        % exiting any state.  sharedexitFevalableNames are parallel to
+        % sharedexitFevalables.  See addSharedFcn() for details about shared
         % entry and exit funcions.
-        sharedExitFcns = {};
+        sharedexitFevalables = {};
     end
     
     properties (Hidden)
@@ -101,8 +101,8 @@ classdef topsStateMachine < topsFoundation
         currentIndex = [];
         
         % fevalable cell array, a copy of the current state's
-        % inputFcn.
-        currentInputFcn = [];
+        % input.
+        currentInputFevalable = [];
         
         % a containers.Map of state name -> allStates struct index.
         stateNameToIndex;
@@ -116,7 +116,7 @@ classdef topsStateMachine < topsFoundation
         previewString = '(preview)';
         
         stateFields = {'name', 'next', 'timeout', ...
-            'entryFcn', 'inputFcn', 'exitFcn'};
+            'entry', 'input', 'exit'};
         stateDefaults = {'', '', 0, {}, {}, {}};
     end
     
@@ -169,14 +169,14 @@ classdef topsStateMachine < topsFoundation
         % @b next state, in units of clockFunction
         % 	- @b next the @b name of the state to transition to once @b
         % timeout has elapsed
-        % 	- @b entryFcn a fevalable cell array to invoke whenever
+        % 	- @b entry a fevalable cell array to invoke whenever
         % entering the state
-        % 	- @b inputFcn: a fevalable cell array to invoke after entering
+        % 	- @b input: a fevalable cell array to invoke after entering
         % the state, during each call to step().  Expected to return a
         % single value, which may be the @b name of a state, in which case
         % the state machine will transition to that state immediately.  @b
-        % timeout must be nonzero for @b inputFcn to be invoked.
-        % 	- @b exitFcn: a fevalable cell array to invoke whenever exiting
+        % timeout must be nonzero for @b input to be invoked.
+        % 	- @b exit: a fevalable cell array to invoke whenever exiting
         % the state
         %   .
         % @details
@@ -188,7 +188,7 @@ classdef topsStateMachine < topsFoundation
         % default values will be used.
         % <br><br>
         % Fields of stateInfo may correspond to one of the names in
-        % sharedEntryFcnNames or sharedExitFcnNames.  Values in these
+        % sharedEntryFevalableNames or sharedexitFevalableNames.  Values in these
         % fields will be passed as state-specific arguments to the shared
         % function.
         % <br><br>
@@ -198,11 +198,11 @@ classdef topsStateMachine < topsFoundation
             % combine official state field names and default values with
             % shared entry and exit functions.
             allowedFields = cat(2, self.stateFields, ...
-                self.sharedEntryFcnNames, ...
-                self.sharedExitFcnNames);
+                self.sharedEntryFevalableNames, ...
+                self.sharedexitFevalableNames);
             allowedDefaults = cat(2, self.stateDefaults, ...
-                cell(size(self.sharedEntryFcnNames)), ...
-                cell(size(self.sharedExitFcnNames)));
+                cell(size(self.sharedEntryFevalableNames)), ...
+                cell(size(self.sharedexitFevalableNames)));
             
             % pick stateInfo fields that match allowed fields
             infoFields = fieldnames(stateInfo);
@@ -235,13 +235,13 @@ classdef topsStateMachine < topsFoundation
         % @param name string name to give to @a fcn
         % @param when the string 'entry' or 'exit' specifying when to
         % invoke @a fcn.  For 'entry', @a fcn will be invoked just after
-        % each state's own entryFcn.  For 'exit', @a fcn will be invoked
-        % just before each state's own exitFcn.  If omitted, defaults to
+        % each state's own entry.  For 'exit', @a fcn will be invoked
+        % just before each state's own exit.  If omitted, defaults to
         % 'entry'.
         % @details
-        % Adds @a fcn to the state machine's sharedEntryFcns or
-        % sharedExitFcns.  These functions are called for every state, in
-        % addition to each state's own entryFcn and exitFcn.
+        % Adds @a fcn to the state machine's sharedEntryFevalables or
+        % sharedexitFevalables.  These functions are called for every state, in
+        % addition to each state's own entry and exit.
         % <br><br>
         % Each state may specify additional arguments to pass to @a fcn.
         % These may be specified like other state data, using @a name as
@@ -251,31 +251,31 @@ classdef topsStateMachine < topsFoundation
         % @a name must be unique with respect to other shared entry or exit
         % functions.  If @a name matches the name of an existing shared
         % function, @a fcn will replace the existing function.
-        function addSharedFcnWithName(self, fcn, name, when)
+        function addSharedFevalableWithName(self, fcn, name, when)
             if nargin < 4
                 when = 'entry';
             end
             
             switch when
                 case 'entry'
-                    existing = strcmp(self.sharedEntryFcnNames, name);
+                    existing = strcmp(self.sharedEntryFevalableNames, name);
                     if any(existing)
                         index = find(existing, 1);
                     else
-                        index = length(self.sharedEntryFcnNames) + 1;
+                        index = length(self.sharedEntryFevalableNames) + 1;
                     end
-                    self.sharedEntryFcnNames{index} = name;
-                    self.sharedEntryFcns{index} = fcn;
+                    self.sharedEntryFevalableNames{index} = name;
+                    self.sharedEntryFevalables{index} = fcn;
                     
                 case 'exit'
-                    existing = strcmp(self.sharedExitFcnNames, name);
+                    existing = strcmp(self.sharedexitFevalableNames, name);
                     if any(existing)
                         index = find(existing, 1);
                     else
-                        index = length(self.sharedExitFcnNames) + 1;
+                        index = length(self.sharedexitFevalableNames) + 1;
                     end
-                    self.sharedExitFcnNames{index} = name;
-                    self.sharedExitFcns{index} = fcn;
+                    self.sharedexitFevalableNames{index} = name;
+                    self.sharedexitFevalables{index} = fcn;
             end
             
             if ~isempty(self.allStates) && ~isfield(self.allStates, name)
@@ -314,11 +314,11 @@ classdef topsStateMachine < topsFoundation
         % Prepare for state traversal.  Must call step() to continue
         % traversal.
         function begin(self)
-            self.beginTime = feval(self.clockFcn);
+            self.beginTime = feval(self.clockFunction);
             self.endTime = [];
             self.fevalInsertArgAndLog( ...
                 self.allStates(1), ...
-                self.beginFcn, ...
+                self.beginFevalable, ...
                 self.beginString);
             self.enterStateAtIndex(1);
         end
@@ -327,7 +327,7 @@ classdef topsStateMachine < topsFoundation
         % state.  Transition states or end traversal as it comes up.
         % Useful for traversing states concurrently with other behaviors.
         function step(self)
-            nowTime = feval(self.clockFcn);
+            nowTime = feval(self.clockFunction);
             if nowTime >= self.currentTimeoutTime
                 % timed out
                 nextName = self.allStates(self.currentIndex).next;
@@ -339,8 +339,8 @@ classdef topsStateMachine < topsFoundation
                 
             else
                 % poll for input
-                if ~isempty(self.currentInputFcn)
-                    nextName = feval(self.currentInputFcn{:});
+                if ~isempty(self.currentInputFevalable)
+                    nextName = feval(self.currentInputFevalable{:});
                     if self.isStateName(nextName)
                         self.transitionToStateWithName(nextName);
                     end
@@ -365,18 +365,18 @@ classdef topsStateMachine < topsFoundation
             self.currentIndex = allStateIndex;
             
             currentState = self.allStates(self.currentIndex);
-            self.currentInputFcn = currentState.inputFcn;
-            self.currentEntryTime = feval(self.clockFcn);
+            self.currentInputFevalable = currentState.input;
+            self.currentEntryTime = feval(self.clockFunction);
             self.currentTimeoutTime = self.currentEntryTime + currentState.timeout;
             self.fevalForStateAndLog( ...
                 currentState.name, ...
-                currentState.entryFcn, ...
+                currentState.entry, ...
                 self.entryString);
             
-            if ~isempty(self.sharedEntryFcnNames)
+            if ~isempty(self.sharedEntryFevalableNames)
                 self.fevalSharedAndLog(currentState, ...
-                    self.sharedEntryFcnNames, ...
-                    self.sharedEntryFcns);
+                    self.sharedEntryFevalableNames, ...
+                    self.sharedEntryFevalables);
             end
         end
         
@@ -384,42 +384,42 @@ classdef topsStateMachine < topsFoundation
         %   but leave currentIndex so it's checkable
         function exitCurrentState(self)
             currentState = self.allStates(self.currentIndex);
-            self.currentInputFcn = {};
+            self.currentInputFevalable = {};
             self.currentEntryTime = [];
             self.currentTimeoutTime = [];
             
-            if ~isempty(self.sharedExitFcnNames)
+            if ~isempty(self.sharedexitFevalableNames)
                 self.fevalSharedAndLog(currentState, ...
-                    self.sharedExitFcnNames, ...
-                    self.sharedExitFcns);
+                    self.sharedexitFevalableNames, ...
+                    self.sharedexitFevalables);
             end
             
             self.fevalForStateAndLog( ...
                 currentState.name, ...
-                currentState.exitFcn, ...
+                currentState.exit, ...
                 self.exitString);
         end
         
-        % call transitionFcn before exiting last and entering next state
+        % call transitionFevalable before exiting last and entering next state
         function transitionToStateWithName(self, nextName)
             nextIndex = self.stateNameToIndex(nextName);
             self.exitCurrentState;
             self.fevalInsertArgAndLog( ...
                 self.allStates([self.currentIndex, nextIndex]), ...
-                self.transitionFcn, ...
+                self.transitionFevalable, ...
                 self.transitionString);
             self.enterStateAtIndex(nextIndex);
         end
         
-        % all done.  exit last state before calling endFcn
+        % all done.  exit last state before calling endFevalable
         function endTraversal(self)
             self.endState = self.allStates(self.currentIndex);
             self.exitCurrentState;
             self.fevalInsertArgAndLog( ...
                 self.allStates(self.currentIndex), ...
-                self.endFcn, ...
+                self.endFevalable, ...
                 self.endString);
-            self.endTime = feval(self.clockFcn);
+            self.endTime = feval(self.clockFunction);
         end
         
         function fevalInsertArgAndLog(self, insert, fcn, fcnName)

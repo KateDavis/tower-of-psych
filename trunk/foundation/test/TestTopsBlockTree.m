@@ -27,17 +27,17 @@ classdef TestTopsBlockTree < TestCase
         end
         
         function testPreviewOwnFunctions(self)
-            self.blockTree.blockStartFcn = {@sprintf, 'block start'};
-            self.blockTree.blockActionFcn = {@sprintf, 'block action'};
-            self.blockTree.blockEndFcn = {@sprintf, 'block end'};
+            self.blockTree.blockStartFevalable = {@sprintf, 'block start'};
+            self.blockTree.blockActionFevalable = {@sprintf, 'block action'};
+            self.blockTree.blockEndFevalable = {@sprintf, 'block end'};
             
             self.blockTree.preview = true;
             self.blockTree.run;
             summary = topsDataLog.getSortedDataStruct;
             assertEqual(length(summary), 3, 'wrong number of summary functions');
-            assertEqual(self.blockTree.blockStartFcn{1}, summary(1).item, 'wrong block start function');
-            assertEqual(self.blockTree.blockActionFcn{1}, summary(2).item, 'wrong block action function');
-            assertEqual(self.blockTree.blockEndFcn{1}, summary(3).item, 'wrong block end function');
+            assertEqual(self.blockTree.blockStartFevalable{1}, summary(1).item, 'wrong block start function');
+            assertEqual(self.blockTree.blockActionFevalable{1}, summary(2).item, 'wrong block action function');
+            assertEqual(self.blockTree.blockEndFevalable{1}, summary(3).item, 'wrong block end function');
         end
         
         function testPreviewChildFunctions(self)
@@ -45,9 +45,9 @@ classdef TestTopsBlockTree < TestCase
             for ii = 1:nChildren
                 child = topsBlockTree;
                 child.name = 'child tree';
-                child.blockStartFcn = {@sprintf, 'block start'};
-                child.blockActionFcn = {@sprintf, 'block action'};
-                child.blockEndFcn = {@sprintf, 'block end'};
+                child.blockStartFevalable = {@sprintf, 'block start'};
+                child.blockActionFevalable = {@sprintf, 'block action'};
+                child.blockEndFevalable = {@sprintf, 'block end'};
                 child.preview = true;
                 self.blockTree.addChild(child);
             end
@@ -73,15 +73,15 @@ classdef TestTopsBlockTree < TestCase
             end
             
             % expected depth-first execution order
-            self.blockTree.blockStartFcn = fcn{1};
-            self.blockTree.blockActionFcn = fcn{2};
-            child.blockStartFcn = fcn{3};
-            child.blockActionFcn = fcn{4};
-            grandchild.blockStartFcn = fcn{5};
-            grandchild.blockActionFcn = fcn{6};
-            grandchild.blockEndFcn = fcn{7};
-            child.blockEndFcn = fcn{8};
-            self.blockTree.blockEndFcn = fcn{9};
+            self.blockTree.blockStartFevalable = fcn{1};
+            self.blockTree.blockActionFevalable = fcn{2};
+            child.blockStartFevalable = fcn{3};
+            child.blockActionFevalable = fcn{4};
+            grandchild.blockStartFevalable = fcn{5};
+            grandchild.blockActionFevalable = fcn{6};
+            grandchild.blockEndFevalable = fcn{7};
+            child.blockEndFevalable = fcn{8};
+            self.blockTree.blockEndFevalable = fcn{9};
             
             self.blockTree.run;
             summary = topsDataLog.getSortedDataStruct;

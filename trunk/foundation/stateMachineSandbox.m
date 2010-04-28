@@ -5,25 +5,25 @@ sm.name = 'sandbox machine';
 
 % each accepts state information as first input
 %   apply to all states
-sm.beginFcn = {@beginning};
-sm.transitionFcn = {@transitioning};
-sm.endFcn = {@ending};
+sm.beginFevalable = {@beginning};
+sm.transitionFevalable = {@transitioning};
+sm.endFevalable = {@ending};
 
 % each accepts only user inputs (if any)
 %   may be unique to each state
-%   inputFcn may return a state name
-entryFcn = {@disp, ' entering state'};
-inputFcn = {@getStateInput};
-exitFcn = {@disp, ' exiting state'};
+%   input may return a state name
+entry = {@disp, ' entering state'};
+input = {@getStateInput};
+exit = {@disp, ' exiting state'};
 
 % similar to cell array definition from dotsx
 %   but explicit about field/column names
 %   allows shuffling and omission of fields/columns
 statesInfo = { ...
-    'name',     'timeout',  'next',     'entryFcn', 'inputFcn', 'exitFcn'; ...
-    'beginning',0,          'middle',   entryFcn,   {},         exitFcn; ...
-    'middle',   0.1,        'end',      {},         inputFcn,	{}; ...
-    'end',      0,          '',         entryFcn,   {},         exitFcn; ...
+    'name',     'timeout',  'next',     'entry', 'input', 'exit'; ...
+    'beginning',0,          'middle',   entry,   {},         exit; ...
+    'middle',   0.1,        'end',      {},         input,	{}; ...
+    'end',      0,          '',         entry,   {},         exit; ...
     };
 sm.addMultipleStates(statesInfo);
 
@@ -32,9 +32,9 @@ sm.addMultipleStates(statesInfo);
 surp.name = 'surprise!';
 surp.timeout = 0;
 surp.next = '';
-surp.entryFcn = entryFcn;
-surp.inputFcn = {};
-surp.exitFcn = exitFcn;
+surp.entry = entry;
+surp.input = {};
+surp.exit = exit;
 sm.addState(surp);
 
 % traverse from topmost state to an end

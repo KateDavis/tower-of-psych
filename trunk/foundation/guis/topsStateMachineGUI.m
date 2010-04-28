@@ -29,7 +29,7 @@ classdef topsStateMachineGUI < topsGUI
     end
     
     properties(Hidden)
-        machineProps = {'beginFcn', 'transitionFcn', 'endFcn', 'preview'};
+        machineProps = {'beginFevalable', 'transitionFevalable', 'endFevalable', 'preview'};
         statesProp = 'allStates';
     end
     

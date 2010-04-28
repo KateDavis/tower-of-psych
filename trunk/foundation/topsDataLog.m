@@ -44,14 +44,14 @@ classdef (Sealed) topsDataLog < topsGroupedList
 
     properties
         % Any function that returns the current time as a number.
-        clockFcn = @topsTimer;
+        clockFunction = @topsTimer;
     end
     
     properties (SetAccess=private)
-        % The time of the first logged data, as reported by clockFcn
+        % The time of the first logged data, as reported by clockFunction
         earliestTime;
         
-        % The time of the last logged data, as reported by clockFcn
+        % The time of the last logged data, as reported by clockFunction
         latestTime;
     end
     
@@ -81,8 +81,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % <br><br>
         % For a few operations it makes sense to get at the log itself,
         % using this method.  For example, you might wish to change the
-        % log's clockFcn, to use some custom timer.  In that case you would
-        % get the log using this method, and set the value of log.clockFcn 
+        % log's clockFunction, to use some custom timer.  In that case you would
+        % get the log using this method, and set the value of log.clockFunction 
         % just like you would set the value of any object property.
         function log = theDataLog
             persistent theLog
@@ -148,7 +148,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % mess.
         % <br><br>
         % Otherwise, adds @a data along with the current time
-        % reported by clockFcn to @a group, in the current instance
+        % reported by clockFunction to @a group, in the current instance
         % of topsDataLog.  Then updates earliestTime and latestTime to
         % account for the the time of this log entry.
         % <br><br>
@@ -162,7 +162,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             
             assert(~isa(data, 'handle'), 'Sorry, but Matlab stinks at keeping handle objects in data files')
             
-            nowTime = feval(self.clockFcn);
+            nowTime = feval(self.clockFunction);
             self.addItemToGroupWithMnemonic(data, group, nowTime);
             
             self.earliestTime = min(self.earliestTime, nowTime);

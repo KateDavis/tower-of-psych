@@ -97,8 +97,8 @@ spotsTree = topsBlockTree;
 spotsTree.name = 'spots';
 spotsTree.iterations = taskRepetitions;
 spotsTree.iterationMethod = taskOrder;
-spotsTree.blockStartFcn = {@spotsSetup, spotsList, 'spots'};
-spotsTree.blockEndFcn = {@spotsTearDown, spotsList, 'spots'};
+spotsTree.blockStartFevalable = {@spotsSetup, spotsList, 'spots'};
+spotsTree.blockEndFevalable = {@spotsTearDown, spotsList, 'spots'};
 spotsList.addItemToGroupWithMnemonic(spotsTree, 'spots', 'spotsTopLevel');
 
 % rtTask manages the reaction time task
@@ -107,17 +107,17 @@ taskName = 'rt_task';
 rtTask = topsBlockTree;
 rtTask.name = taskName;
 rtTask.iterations = trialsInARow;
-rtTask.blockStartFcn = {@rtTaskSetup, spotsList, taskName};
-rtTask.blockEndFcn = {@rtTaskTearDown, spotsList, taskName};
+rtTask.blockStartFevalable = {@rtTaskSetup, spotsList, taskName};
+rtTask.blockEndFevalable = {@rtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(rtTask, taskName, 'rtTask');
 spotsTree.addChild(rtTask);
 
 % rtTrial manages individual reaction time trials
 rtTrial = topsBlockTree;
 rtTrial.name = 'rt_trial';
-rtTrial.blockStartFcn = {@rtTrialSetup, spotsList, taskName};
-rtTrial.blockActionFcn = {@runForGroup, spotsLoop, 'spots', 600};
-rtTrial.blockEndFcn = {@rtTrialTeardown, spotsList, taskName};
+rtTrial.blockStartFevalable = {@rtTrialSetup, spotsList, taskName};
+rtTrial.blockActionFevalable = {@runForGroup, spotsLoop, 'spots', 600};
+rtTrial.blockEndFevalable = {@rtTrialTeardown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(rtTrial, taskName, 'rtTrial');
 rtTask.addChild(rtTrial);
 
@@ -127,17 +127,17 @@ taskName = 'fvt_task';
 fvtTask = topsBlockTree;
 fvtTask.name = taskName;
 fvtTask.iterations = trialsInARow;
-fvtTask.blockStartFcn = {@fvtTaskSetup, spotsList, taskName};
-fvtTask.blockEndFcn = {@fvtTaskTearDown, spotsList, taskName};
+fvtTask.blockStartFevalable = {@fvtTaskSetup, spotsList, taskName};
+fvtTask.blockEndFevalable = {@fvtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
 spotsTree.addChild(fvtTask);
 
 % another bottom level block, to manage a fixed viewing time trial
 fvtTrial = topsBlockTree;
 fvtTrial.name = 'fvt_trial';
-fvtTrial.blockStartFcn = {@fvtTrialSetup, spotsList, taskName};
-fvtTrial.blockActionFcn = {@runForGroup, spotsLoop, 'spots', 600};
-fvtTrial.blockEndFcn = {@fvtTrialTeardown, spotsList, taskName};
+fvtTrial.blockStartFevalable = {@fvtTrialSetup, spotsList, taskName};
+fvtTrial.blockActionFevalable = {@runForGroup, spotsLoop, 'spots', 600};
+fvtTrial.blockEndFevalable = {@fvtTrialTeardown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(fvtTrial, taskName, 'fvtTrial');
 fvtTask.addChild(fvtTrial);
 

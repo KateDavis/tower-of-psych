@@ -35,9 +35,9 @@ classdef TestTopsStateMachine < TestCase
         function testCallAndLogMachineFcns(self)
             self.eventCount = 0;
             machineFcn = @(stateInfo) self.hearEvent;
-            self.stateMachine.beginFcn = {machineFcn};
-            self.stateMachine.transitionFcn = {machineFcn};
-            self.stateMachine.endFcn = {machineFcn};
+            self.stateMachine.beginFevalable = {machineFcn};
+            self.stateMachine.transitionFevalable = {machineFcn};
+            self.stateMachine.endFevalable = {machineFcn};
             
             statesInfo = { ...
                 'name',     'next'; ...
@@ -74,7 +74,7 @@ classdef TestTopsStateMachine < TestCase
             stateFcn = {@() self.hearEvent};
             
             statesInfo = { ...
-                'name',         'next',     'entryFcn', 'exitFcn'; ...
+                'name',         'next',     'entry', 'exit'; ...
                 'beginning',    'middle',   stateFcn,   stateFcn; ...
                 'middle',       'end',      stateFcn,   stateFcn; ...
                 'end',          '',         stateFcn,   stateFcn; ...
@@ -118,7 +118,7 @@ classdef TestTopsStateMachine < TestCase
             m.name = 'middle';
             m.timeout = .005;
             m.next = defaultEnd;
-            m.inputFcn = {@getNextState, self};
+            m.input = {@getNextState, self};
             self.stateMachine.addState(m);
             
             self.branchState = '';
@@ -144,9 +144,9 @@ classdef TestTopsStateMachine < TestCase
             % add some shared functions that will get arguments from the
             % from each state
             sharedFcn = {@countSharedFunctionCall, self};
-            self.stateMachine.addSharedFcnWithName( ...
+            self.stateMachine.addSharedFevalableWithName( ...
                 sharedFcn, 'enterWith', 'entry');
-            self.stateMachine.addSharedFcnWithName( ...
+            self.stateMachine.addSharedFevalableWithName( ...
                 sharedFcn, 'exitWith', 'exit');
             
             % add states that "know about" the shared functions
@@ -164,7 +164,7 @@ classdef TestTopsStateMachine < TestCase
             %   the states wont know to add arguments to this one
             extraNum = 100;
             sharedFcn = {@countSharedFunctionCall, self, extraNum};
-            self.stateMachine.addSharedFcnWithName( ...
+            self.stateMachine.addSharedFevalableWithName( ...
                 sharedFcn, 'extra', 'entry');
             
             self.eventCount = 0;
