@@ -43,6 +43,9 @@ classdef topsBlockTree < topsFoundation
         % number of times to run through this block's children
         iterations = 1;
         
+        % count of iterations while running
+        iterationCount = 0;
+        
         % how to run through this block's children--'sequential' or
         % 'random' order
         iterationMethod = 'sequential';
@@ -143,6 +146,8 @@ classdef topsBlockTree < topsFoundation
             
             % do the meat of the block
             for ii = 1:self.iterations
+                self.iterationCount = ii;
+                
                 self.fevalAndLog(self.blockActionFevalable, self.actionString);
                 
                 switch self.iterationMethod
