@@ -229,7 +229,7 @@ classdef topsStateMachine < topsFoundation
             end
             self.stateNameToIndex(newState.name) = allStateIndex;
         end
-
+        
         % Add a function to be invoked during every state.
         % @param fcn a fevalable cell array to invoke during every state
         % @param name string name to give to @a fcn
@@ -327,23 +327,22 @@ classdef topsStateMachine < topsFoundation
         % state.  Transition states or end traversal as it comes up.
         % Useful for traversing states concurrently with other behaviors.
         function step(self)
-            nowTime = feval(self.clockFunction);
-            if nowTime >= self.currentTimeoutTime
-                % timed out
+            % poll for input
+            if ~isempty(self.currentInputFevalable)
+                nextName = feval(self.currentInputFevalable{:});
+                if self.isStateName(nextName)
+                    self.transitionToStateWithName(nextName);
+                    return;
+                end
+            end
+
+            % poll for state timed out
+            if feval(self.clockFunction) >= self.currentTimeoutTime
                 nextName = self.allStates(self.currentIndex).next;
                 if isempty(nextName)
                     self.endTraversal;
                 else
                     self.transitionToStateWithName(nextName);
-                end
-                
-            else
-                % poll for input
-                if ~isempty(self.currentInputFevalable)
-                    nextName = feval(self.currentInputFevalable{:});
-                    if self.isStateName(nextName)
-                        self.transitionToStateWithName(nextName);
-                    end
                 end
             end
         end
@@ -378,6 +377,9 @@ classdef topsStateMachine < topsFoundation
                     self.sharedEntryFevalableNames, ...
                     self.sharedEntryFevalables);
             end
+            
+            % transition immediately, if possible
+            self.step;
         end
         
         % clear current* properties
@@ -455,7 +457,7 @@ classdef topsStateMachine < topsFoundation
                 end
             end
         end
-
+        
         function fevalSharedAndLog(self, state, fcnNames, fcns)
             for ii = 1:length(fcnNames)
                 stateArgs = state.(fcnNames{ii});
