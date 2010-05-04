@@ -135,8 +135,8 @@ classdef topsBlockTree < topsFoundation
         % <br><br>
         % If this block's preview property is set to true, run() will send
         % notifications and invoke run() on child blocks, but not invoke
-        % blockStartFevalable, blockActionFevalable, or blockEndFevalable.  Child blocks may
-        % do normal behavior or preview behavior.
+        % blockStartFevalable, blockActionFevalable, or blockEndFevalable.
+        % Child blocks might do normal behavior or preview behavior.
         function run(self)
             % notify listeners, like the GUI
             self.notify('BlockStart');

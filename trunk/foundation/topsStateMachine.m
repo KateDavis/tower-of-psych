@@ -379,7 +379,7 @@ classdef topsStateMachine < topsFoundation
             end
             
             % transition immediately, if possible
-            self.step;
+            %self.step;
         end
         
         % clear current* properties
