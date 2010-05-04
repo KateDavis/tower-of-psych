@@ -138,7 +138,7 @@ classdef topsFunctionLoop < topsGroupedList
         % returned by proceedFevalable.  If the value is false, runForGroup()
         % returns immediately.
         function runForGroup(self, group, timeout)
-            if nargin < 3 || isempty(timeout) || ~isfinite(timeout)
+            if nargin < 3 || isempty(timeout)
                 timeout = 0;
             end
             
