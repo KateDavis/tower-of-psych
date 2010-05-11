@@ -4,6 +4,7 @@ classdef TestTopsDataLog < TestCase
         groups;
         data;
         eventCount;
+        filename;
     end
     
     methods
@@ -15,11 +16,15 @@ classdef TestTopsDataLog < TestCase
             self.groups = {'animals', 'pizzas', 'phone books'};
             self.data = {1, {'elephant', 'sauce'}, []};
             self.eventCount = 0;
+            self.filename = '~/dataLogTest.mat';
             topsDataLog.flushAllData;
         end
         
         function tearDown(self)
             topsDataLog.flushAllData;
+            if exist(self.filename)
+                delete(self.filename)
+            end
         end
         
         function logSomeData(self)
@@ -76,6 +81,26 @@ classdef TestTopsDataLog < TestCase
             end
             assertEqual(self.eventCount, n, 'heard wrong number of FlushedTheDataLog events');
             delete(listener);
+        end
+        
+        function testToFromFile(self)
+            theLog = topsDataLog.theDataLog;
+            self.logSomeData;
+            expectedLength = theLog.length;
+            
+            topsDataLog.writeDataFile(self.filename);
+            assertTrue(exist(self.filename) > 0, ...
+                'should have created data file')
+            
+            topsDataLog.flushAllData;
+            assertEqual(theLog.length, 0, ...
+                'failed to clear log after saving file')
+            
+            topsDataLog.readDataFile(self.filename);
+            assertEqual(theLog.length, expectedLength, ...
+                'read wrong number of data from file')
+            
+            delete(self.filename);
         end
     end
 end
