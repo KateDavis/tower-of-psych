@@ -41,7 +41,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % You can also use topsDataLogGUI online, to see data as they arrive in
     % the log.
     % @ingroup foundation
-
+    
     properties
         % Any function that returns the current time as a number.
         clockFunction = @topsTimer;
@@ -82,7 +82,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % For a few operations it makes sense to get at the log itself,
         % using this method.  For example, you might wish to change the
         % log's clockFunction, to use some custom timer.  In that case you would
-        % get the log using this method, and set the value of log.clockFunction 
+        % get the log using this method, and set the value of log.clockFunction
         % just like you would set the value of any object property.
         function log = theDataLog
             persistent theLog
@@ -139,7 +139,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @param data a value or object to store in the log (but not an
         % object of the handle type).
         % @param group a string for grouping related data, such as the name
-        % of a recurring event. 
+        % of a recurring event.
         % @details
         % If @a data is a handle object, throws an error.  This is
         % because Matlab does a bad job of dealing with large numbers of
@@ -189,6 +189,87 @@ classdef (Sealed) topsDataLog < topsGroupedList
             %   from each group should be already sorted--merge k lists
             [a, order] = sort([logStruct.mnemonic]);
             logStruct = logStruct(order);
+        end
+        
+        % Write logged data to a file.
+        % @param fileWithPath optional .mat filename, which may include a
+        % path, in which to save logged data.
+        % @details
+        % Converts currently logged data to a standard Matlab struct using
+        % topsDataLog.getSortedDataStruct() and saves the struct to the
+        % given file.
+        % <br><br>
+        % If @a fileWithPath is omitted, opens a dialog for chosing a file.
+        function writeDataFile(fileWithPath)
+            self = topsDataLog.theDataLog;
+            
+            if nargin < 1 || isempty(fileWithPath) || ~ischar(fileWithPath)
+                suggestion = '~/*';
+                [f, p] = uiputfile( ...
+                    {'*.mat'}, ...
+                    'Save data log to which .mat file?', ...
+                    suggestion);
+                
+                if ischar(f)
+                    fileWithPath = fullfile(p, f);
+                else
+                    fileWithPath = '';
+                end
+            end
+            
+            if ~isempty(fileWithPath)
+                data.logStruct = topsDataLog.getSortedDataStruct;
+                data.clockFunction = self.clockFunction;
+                data.earliestTime = self.earliestTime;
+                data.latestTime = self.latestTime;
+                save(fileWithPath, '-struct', 'data');
+            end
+        end
+        
+        
+        % Read previously logged data from a file.
+        % @param fileWithPath optional .mat filename, which may include a
+        % path, from which to load logged data.
+        % @details
+        % Expects @a fileWithPath to contain previously logged data in a
+        % Matlab struct, as written by topsDataLog.writeDataFile().
+        % Populates the topsDataLog singleton with the data from the
+        % loaded struct.
+        % <br><br>
+        % If @a fileWithPath is omitted, opens a dialog for chosing a file.
+        function readDataFile(fileWithPath)
+            self = topsDataLog.theDataLog;
+            
+            if nargin < 1 || isempty(fileWithPath) || ~ischar(fileWithPath)
+                suggestion = '~/*';
+                [f, p] = uigetfile( ...
+                    {'*.mat'}, ...
+                    'Load data log from which .mat file?', ...
+                    suggestion, ...
+                    'MultiSelect', 'off');
+                
+                if ischar(f)
+                    fileWithPath = fullfile(p, f);
+                else
+                    fileWithPath = '';
+                end
+            end
+            
+            if ~isempty(fileWithPath)
+                data = load(fileWithPath);
+                if isstruct(data) && isfield(data, 'logStruct');
+                    topsDataLog.flushAllData;
+                    for ii = 1:length(data.logStruct)
+                        self.addItemToGroupWithMnemonic( ...
+                            data.logStruct(ii).item, ...
+                            data.logStruct(ii).group, ...
+                            data.logStruct(ii).mnemonic);
+                    end
+                    self.clockFunction = data.clockFunction;
+                    self.earliestTime = data.earliestTime;
+                    self.latestTime = data.latestTime;
+                end
+            end
         end
     end
 end
