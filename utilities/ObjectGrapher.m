@@ -2,14 +2,6 @@ classdef ObjectGrapher < handle
     %Crawl among objects in Matlab, generate abstract graph, render with
     %something like GraphViz
     
-    % @todo
-    % Draw the seed object(s?) in a cluster, with edges constriaining and
-    % weight 100.  Draw subsequent edges outside the cluster with edges not
-    % constraining and weight 0.
-    % Does this imply a better way to manage writing the graph file?
-    % Should be object-at-a-time, with node and edge defaults set in
-    % between.  Maybe there's a Graphable class...
-    
     properties
         seedObjects;
         uniqueObjects;
