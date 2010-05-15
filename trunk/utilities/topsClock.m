@@ -1,16 +1,16 @@
 % A stopwatch for Tower of Psych, based on tic() and toc().
 %
-% t = topsTimer
+% t = topsClock
 %
 % @details
-% Returns the time in seconds since topsTimer() was first called.
-% topsTimer() uses a private instance of Matlab's builtin tic()-toc()
+% Returns the time in seconds since topsClock() was first called.
+% topsClock() uses a private instance of Matlab's builtin tic()-toc()
 % stopwatch.
 %
 % See also, tic, toc, now, cputime
 % @ingroup utilities
 
-function t = topsTimer
+function t = topsClock
 
 persistent topsTic
 if isempty(topsTic)

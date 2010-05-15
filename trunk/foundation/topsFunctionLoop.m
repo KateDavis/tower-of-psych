@@ -40,7 +40,7 @@ classdef topsFunctionLoop < topsGroupedList
         proceedFevalable = {};
         
         % Any function that returns the current time as a number.
-        clockFunction = @topsTimer;
+        clockFunction = @topsClock;
     end
     
     methods

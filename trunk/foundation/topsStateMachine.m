@@ -52,7 +52,7 @@ classdef topsStateMachine < topsFoundation
         preview = false;
         
         % any function that returns the current time as a number
-        clockFunction = @topsTimer;
+        clockFunction = @topsClock;
         
         % the time when state traversal began
         beginTime = [];

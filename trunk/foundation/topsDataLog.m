@@ -44,7 +44,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
     
     properties
         % Any function that returns the current time as a number.
-        clockFunction = @topsTimer;
+        clockFunction = @topsClock;
     end
     
     properties (SetAccess=private)
