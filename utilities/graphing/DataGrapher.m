@@ -8,9 +8,6 @@ classdef DataGrapher < handle
     % functions generate a name for each node as well as "edges" that
     % connect nodes.  Properties of DataGrapher control the general
     % behavior of GraphViz.
-    % <br><br>
-    % One nice use of DataGrapher would be to graph the output from the
-    % Matlab profiler.
     % @ingroup utilities
     
     properties
@@ -54,7 +51,7 @@ classdef DataGrapher < handle
         
         % true or false, whether the graph should be a directed "digraph"
         % or an undirected "graph"
-        graphIsDirected = false;
+        graphIsDirected = true;
         
         % true or false whether to write edge names on the edges
         % themselves.
@@ -78,7 +75,7 @@ classdef DataGrapher < handle
         nodeAlpha = 1;
         
         % 0-255 opacity for edges
-        edgeAlpha = 1;
+        edgeAlpha = .5;
         
         % internal accounting of node and edge data
         nodes;
@@ -110,7 +107,7 @@ classdef DataGrapher < handle
             for ii = 1:length(self.inputData)
                 nodeName = feval(nodeNameFun, data, ii);
                 nodes(ii).name = nodeName;
-                nodes(ii).var = nodeName(~isspace(nodeName));
+                nodes(ii).var = nodeName(isstrprop(nodeName, 'alphanum'));
                 
                 [edges, edgeNames] = feval(edgeFun, data, ii);
                 for jj = 1:length(edges)
@@ -217,9 +214,9 @@ classdef DataGrapher < handle
                     end
                     
                     edgeString{end+1} = ...
-                        sprintf('%s:%s%s%s:%s [label="%s" color="%s"]', ...
+                        sprintf('%s:%s%s%s:%s [label="%s" color="%s" fontcolor="%s"]', ...
                         node.var, targetNode.var, edgeType, targetNode.var, 'top', ...
-                        edgeLabel, edgeColor);
+                        edgeLabel, edgeColor, edgeColor);
                 end
             end
             string = sprintf('%s\n', edgeString{:});
@@ -296,8 +293,8 @@ classdef DataGrapher < handle
             if nargin < 3
                 a = 1;
             end
-            RGB = 255*rgb;
-            A = 255*a;
+            RGB = ceil(255*rgb);
+            A = ceil(255*a);
             string = sprintf('#%02x%02x%02x%02x', ...
                 RGB(1), RGB(3), RGB(2), A);
         end
