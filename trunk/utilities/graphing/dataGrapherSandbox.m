@@ -16,7 +16,6 @@ data(3).edge = [1 2];
 dg.inputData = data;
 dg.listedEdgeNames = true;
 dg.floatingEdgeNames = true;
-dg.graphIsDirected = true;
 
 dg.writeDotFile;
 dg.generateGraph;
