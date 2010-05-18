@@ -127,51 +127,5 @@ classdef TestObjectGrapher < TestCase
             assertTrue(containsObj, 'grapher should contain unique object just added!')
             assertEqual(key, gotKey, 'grapher should return correct key for added object')
         end
-        
-        function testWriteBigDotFile(self)
-            [spotsTree, spotsList] = configureSpotsTasks;
-            og = ObjectGrapher;
-            og.addSeedObject(spotsTree);
-            og.addSeedObject(spotsList);
-            og.crawlForUniqueObjects;
-            og.writeDotFile;
-            fileWithPath = fullfile(og.dotFilePath, og.dotFile);
-            assertTrue(exist(fileWithPath, 'file') > 0, 'should have found dot file')
-            delete(fileWithPath)
-            assertFalse(exist(fileWithPath, 'file') > 0, 'should have deleted dot file')
-        end
-        
-        function testWriteDotFile(self)
-            [listSeed, n] = self.groupedListSeed;
-            og = ObjectGrapher;
-            og.addSeedObject(listSeed);
-            og.crawlForUniqueObjects;
-            og.writeDotFile;
-            fileWithPath = fullfile(og.dotFilePath, og.dotFile);
-            assertTrue(exist(fileWithPath, 'file') > 0, 'should have found dot file')
-            delete(fileWithPath)
-            assertFalse(exist(fileWithPath, 'file') > 0, 'should have deleted dot file')
-        end
-        
-        function testWriteBigImageFile(self)
-%             [spotsTree, spotsList] = configureSpotsTasks;
-%             og = ObjectGrapher;
-%             og.addSeedObject(spotsTree);
-%             og.addSeedObject(spotsList);
-%             og.crawlForUniqueObjects;
-%             og.writeDotFile;
-%             dotFile = fullfile(og.dotFilePath, og.dotFile);
-%             assertTrue(exist(dotFile, 'file') > 0, 'should have found dot file')
-%             
-%             og.writeDotImage;
-%             imageFile = fullfile(og.dotFilePath, og.imageFile);
-%             assertTrue(exist(imageFile, 'file') > 0, 'should have found image file')
-%             delete(imageFile)
-%             assertFalse(exist(imageFile, 'file') > 0, 'should have deleted image file')
-%             
-%             delete(dotFile)
-%             assertFalse(exist(dotFile , 'file') > 0, 'should have deleted dot file')
-%             
-        end
     end
 end
