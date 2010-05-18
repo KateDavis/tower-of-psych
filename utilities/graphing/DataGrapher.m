@@ -38,6 +38,11 @@ classdef DataGrapher < handle
         % Should take inputData and an index into inputData and return a
         % string name for the indexth node.
         nodeNameFunction = @DataGrapher.nodeNameFromField;
+
+        % function to generate graph node descriptions (optional)
+        % Should take inputData and an index into inputData and return a
+        % string description for the indexth node.
+        nodeDescriptionFunction;
         
         % function to generate graph edges
         % Should take inputData and an index into inputData and return an
@@ -101,17 +106,25 @@ classdef DataGrapher < handle
         % Apply nodeNameFunction and edgeFunction to the inputData.
         function nodes = parseNodes(self)
             nodeNameFun = self.nodeNameFunction;
+            descriptFun = self.nodeDescriptionFunction;
             edgeFun = self.edgeFunction;
+            
             data = self.inputData;
             
             for ii = 1:length(self.inputData)
                 nodeName = feval(nodeNameFun, data, ii);
                 nodes(ii).name = nodeName;
-                nodes(ii).var = nodeName(isstrprop(nodeName, 'alphanum'));
+                nodes(ii).var = nodeName(isstrprop(nodeName, 'alpha'));
                 
-                [edges, edgeNames] = feval(edgeFun, data, ii);
-                for jj = 1:length(edges)
-                    nodes(ii).edges(jj).target = edges(jj);
+                if isempty(descriptFun)
+                    nodes(ii).description = '';
+                else
+                    nodes(ii).description = feval(descriptFun, data, ii);
+                end
+
+                [edgeTargets, edgeNames] = feval(edgeFun, data, ii);
+                for jj = 1:length(edgeTargets)
+                    nodes(ii).edges(jj).target = edgeTargets(jj);
                     nodes(ii).edges(jj).name = edgeNames{jj};
                 end
             end
@@ -167,17 +180,21 @@ classdef DataGrapher < handle
                 nodeColor = self.composeRGB( ...
                     self.colors(cc,:), self.nodeAlpha);
                 
+                if isempty(node.description)
+                    list = {};
+                else
+                    list = {node.description};
+                end
+
                 if self.listedEdgeNames
                     for jj = 1:length(node.edges)
-                        targetNode = self.nodes(node.edges(jj).target);
-                        list{jj} = sprintf('<%s>%s', ...
-                            targetNode.var, node.edges(jj).name);
+                        edge = node.edges(jj);
+                        targetNode = self.nodes(edge.target);
+                        list{end+1} = sprintf('<%s>%s', ...
+                            targetNode.var, edge.name);
                     end
-                    nodeList = sprintf('|%s', list{:});
-                    
-                else
-                    nodeList = '';
                 end
+                nodeList = sprintf('|%s', list{:});
                 nodeLabel = sprintf('{{<top>|%s}%s}', node.name, nodeList);
                 
                 nodeString{ii} = sprintf('%s [label="%s" color="%s"]', ...
@@ -224,48 +241,52 @@ classdef DataGrapher < handle
         
         % Write a GraphViz specification to file
         function writeDotFile(self)
+            disp('Writing Dot file...')
             dotString = self.composeGraph;
             originalDir = pwd;            
             try
                 if ~exist(self.workingPath)
                     mkdir(self.workingPath);
                 end
-                cd(self.workingPath)
+                cd(self.workingPath);
                 
                 fileName = sprintf('%s.dot', self.workingFileName);
                 fid = fopen(fileName, 'w');
                 if fid >= 0
                     fwrite(fid, dotString);
-                    fclose(fid)
+                    fclose(fid);
                 end
             catch err
-                cd(originalDir)
-                rethrow(err)
+                cd(originalDir);
+                rethrow(err);
             end
-            cd(originalDir)
+            cd(originalDir);
+            disp('...done.')
         end
         
         % Feed the GraphViz specification to GraphViz and get a graph
         function generateGraph(self)
+            disp('Generating graph...')
             originalDir = pwd;
             try
                 if ~exist(self.workingPath)
                     mkdir(self.workingPath);
                 end
-                cd(self.workingPath)
+                cd(self.workingPath);
                 
                 dotFile = sprintf('%s.dot', self.workingFileName);
                 imageFile = sprintf('%s.%s', self.workingFileName, self.imageType);
                 binary = fullfile(self.graphVizPath, self.graphVisAlgorithm);
                 command = sprintf('%s -T%s -o %s %s', ...
-                    binary, self.imageType, imageFile, dotFile)
+                    binary, self.imageType, imageFile, dotFile);
+                system(command);
 
-                system(command)
             catch err
-                cd(originalDir)
-                rethrow(err)
+                cd(originalDir);
+                rethrow(err);
             end
-            cd(originalDir)
+            cd(originalDir);
+            disp('...done.')
         end
         
         % Write out property-value pairs from a struct
