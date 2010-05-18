@@ -23,7 +23,11 @@ classdef ProfilerGrapher < handle
         function self = ProfilerGrapher()
             self.dataGrapher = DataGrapher;
             self.dataGrapher.nodeNameFunction = ...
-                @ProfilerGrapher.shortNameOfFunction;
+                @ProfilerGrapher.shortNameWithType;
+
+            self.dataGrapher.nodeDescriptionFunction = ...
+                @ProfilerGrapher.totalCallsAndTime;
+
             self.dataGrapher.edgeFunction = ...
                 @ProfilerGrapher.edgeFromChildren;
         end
@@ -52,10 +56,17 @@ classdef ProfilerGrapher < handle
     end
     
     methods (Static)
-        function nodeName = shortNameOfFunction(inputData, index)
+        function nodeName = shortNameWithType(inputData, index)
             id = inputData(index);
             shortName = ProfilerGrapher.getShortFunctionName(id.FunctionName);
-            nodeName = sprintf('%s (%d)', shortName, id.NumCalls);
+            typeName = id.Type;
+            nodeName = sprintf('%s(%s)', shortName, typeName);
+        end
+
+        function description = totalCallsAndTime(inputData, index)
+            id = inputData(index);
+            description = sprintf('called %d times (%fs)', ...
+                id.NumCalls, id.TotalTime);
         end
         
         function [edgeIndexes, edgeNames] = edgeFromChildren(inputData, index)
@@ -64,15 +75,16 @@ classdef ProfilerGrapher < handle
             edgeNames = {};
             for ii = 1:length(id.Children)
                 edgeIndexes(ii) = id.Children(ii).Index;
-                edgeNames{ii} = sprintf('%.4fs (%d)', ...
-                    id.Children(ii).TotalTime, ...
-                    id.Children(ii).NumCalls);
+                edgeNames{ii} = sprintf('made %d calls (%fs)', ...
+                    id.Children(ii).NumCalls, ...
+                    id.Children(ii).TotalTime);
             end
         end
         
         function shortName = getShortFunctionName(longName)
             if all(isstrprop(longName, 'alphanum'))
                 shortName = longName;
+
             else
                 % Need to scrape out ugly names like these:
                 %
@@ -92,9 +104,7 @@ classdef ProfilerGrapher < handle
                     scopeName = scopeTokens{1}{1};
                 end
                 
-                funExp = { ...
-                    '[\.\>\/](\w+)', ...
-                    '(\w+)[\(]'};
+                funExp = {'[\\\/\>\)\.](\w+)'};
                 funTokens = {};
                 for ii = 1:length(funExp)
                     funTokens = regexp(longName, funExp{ii}, 'tokens');
@@ -105,14 +115,10 @@ classdef ProfilerGrapher < handle
                 if isempty(funTokens)
                     funName = '';
                 else
-                    funName = funTokens{1}{end};
+                    funName = funTokens{end}{1};
                 end
                 
                 shortName = sprintf('%s:%s', scopeName, funName);
-                
-                disp(' ')
-                disp(longName)
-                disp(shortName)
             end
         end
     end
