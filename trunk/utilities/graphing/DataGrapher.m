@@ -13,7 +13,7 @@ classdef DataGrapher < handle
     properties
         % file path to the GraphViz executables, like "dot" and "neato"
         graphVizPath = '/usr/local/bin';
-
+        
         % GraphViz algorithm name, "dot", "neato", "twopi", "circo", or
         % "fdp"
         graphVisAlgorithm = 'dot';
@@ -38,10 +38,10 @@ classdef DataGrapher < handle
         % Should take inputData and an index into inputData and return a
         % string name for the indexth node.
         nodeNameFunction = @DataGrapher.nodeNameFromField;
-
+        
         % function to generate graph node descriptions (optional)
         % Should take inputData and an index into inputData and return a
-        % string description for the indexth node.
+        % cell array of strings describing the indexth node.
         nodeDescriptionFunction;
         
         % function to generate graph edges
@@ -117,11 +117,11 @@ classdef DataGrapher < handle
                 nodes(ii).var = nodeName(isstrprop(nodeName, 'alpha'));
                 
                 if isempty(descriptFun)
-                    nodes(ii).description = '';
+                    nodes(ii).description = {};
                 else
                     nodes(ii).description = feval(descriptFun, data, ii);
                 end
-
+                
                 [edgeTargets, edgeNames] = feval(edgeFun, data, ii);
                 for jj = 1:length(edgeTargets)
                     nodes(ii).edges(jj).target = edgeTargets(jj);
@@ -134,7 +134,7 @@ classdef DataGrapher < handle
         % Write a string that contains a whole GraphVis specification
         function string = composeGraph(self)
             self.parseNodes;
-
+            
             if self.graphIsDirected
                 graphType = 'digraph';
             else
@@ -180,12 +180,7 @@ classdef DataGrapher < handle
                 nodeColor = self.composeRGB( ...
                     self.colors(cc,:), self.nodeAlpha);
                 
-                if isempty(node.description)
-                    list = {};
-                else
-                    list = {node.description};
-                end
-
+                list = node.description;
                 if self.listedEdgeNames
                     for jj = 1:length(node.edges)
                         edge = node.edges(jj);
@@ -211,7 +206,7 @@ classdef DataGrapher < handle
             else
                 edgeType = '--';
             end
-
+            
             edgeString = {};
             for ii = 1:length(self.nodes)
                 node = self.nodes(ii);
@@ -219,6 +214,8 @@ classdef DataGrapher < handle
                 cc = 1 + mod(ii, nColors);
                 edgeColor = self.composeRGB( ...
                     self.colors(cc,:), self.edgeAlpha);
+                edgeFontColor = self.composeRGB( ...
+                    self.colors(cc,:), 1);
                 
                 for jj = 1:length(node.edges)
                     edge = node.edges(jj);
@@ -230,10 +227,15 @@ classdef DataGrapher < handle
                         edgeLabel = '';
                     end
                     
+                    if self.listedEdgeNames
+                        source = sprintf('%s:%s', node.var, targetNode.var);
+                    else
+                        source = node.var;
+                    end
                     edgeString{end+1} = ...
-                        sprintf('%s:%s%s%s:%s [label="%s" color="%s" fontcolor="%s"]', ...
-                        node.var, targetNode.var, edgeType, targetNode.var, 'top', ...
-                        edgeLabel, edgeColor, edgeColor);
+                        sprintf('%s%s%s:%s [label="%s" color="%s" fontcolor="%s"]', ...
+                        source, edgeType, targetNode.var, 'top', ...
+                        edgeLabel, edgeColor, edgeFontColor);
                 end
             end
             string = sprintf('%s\n', edgeString{:});
@@ -243,7 +245,7 @@ classdef DataGrapher < handle
         function writeDotFile(self)
             disp('Writing Dot file...')
             dotString = self.composeGraph;
-            originalDir = pwd;            
+            originalDir = pwd;
             try
                 if ~exist(self.workingPath)
                     mkdir(self.workingPath);
@@ -280,7 +282,7 @@ classdef DataGrapher < handle
                 command = sprintf('%s -T%s -o %s %s', ...
                     binary, self.imageType, imageFile, dotFile);
                 system(command);
-
+                
             catch err
                 cd(originalDir);
                 rethrow(err);

@@ -65,7 +65,7 @@ classdef ProfilerGrapher < handle
 
         function description = totalCallsAndTime(inputData, index)
             id = inputData(index);
-            description = sprintf('called %d times (%fs)', ...
+            description{1} = sprintf('called %d times (%fs)', ...
                 id.NumCalls, id.TotalTime);
         end
         
