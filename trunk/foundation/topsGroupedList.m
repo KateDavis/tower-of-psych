@@ -6,30 +6,30 @@ classdef topsGroupedList < topsFoundation
     % structure: you must add items to "groups" of related items, and you
     % must give each item its own "mnemonic" which identifies it within a
     % group.
-    % <br><br>
+    % @details
     % Groups and mnemonics can be strings or numbers.  So a topsGroupedList
     % is something like a struct (which uses strings) or cell array (which
     % uses numbers) that contains a bunch of other structs or cell arrays.
     % But it's more flexible and better organized than that.
-    % <br><br>
+    % @details
     % One way it's more flexible is in the values that a group or mnemonic
     % is allowed to have.  Groups and mnemonics can use arbitrary strings,
     % whereas structs cannot use strings that contain dots or spaces.
     % Similarly, groups and mnemonics can have arbitrary numeric values,
     % where as cell arrays must use positive integers.
-    % <br><br>
+    % @details
     % There is one important constriant on groups and mnemonics: for each
     % instance of topsGroupedList, all groups must be identified by
     % @a either strings @a or numbers, but not a mixture of the
     % two.  Likewise, the mnemonics used in each group must be all strings
     % or all numbers.
-    % <br><br>
+    % @details
     % One way in which topsGroupedList is better organized than a random
     % collection of structs and cell arrays is that you can always "ask" it
     % what groups, mnemonics, and items it contains, and it knows where to
     % look for them.  You can also ask it @a if it contains a certain
     % group, mnemonic, or item.
-    % <br><br>
+    % @details
     % The big idea is that you can neatly list whatever data and objects
     % you need for an experiment.  As long as you give the list to your
     % other functions and objects (as an argument, for example), they can
@@ -80,7 +80,7 @@ classdef topsGroupedList < topsFoundation
         % will replace an older item.  If @a group is not already in the
         % list, it may send a NewAddition notification to any listeners
         % after adding @a item.
-        % <br><br>
+        % @details
         % Note: for each topsGroupedList, group values must be all strings or
         % all numbers.  Likewise, for each group, mnemonics must be all
         % strings or all numbers.
@@ -130,7 +130,7 @@ classdef topsGroupedList < topsFoundation
         % Searches @a group for items that isequal() to
         % @a item.  Removes all such items, along with their
         % mnemonics.
-        % <br><br>
+        % @details
         % This method is likely to be very slow.  Use
         % removeMnemonicFromGroup for better performance.
         function removeItemFromGroup(self, item, group)
@@ -191,13 +191,13 @@ classdef topsGroupedList < topsFoundation
         % in A and B will then be held redundantly in C.  The length of the
         % list will increase, even though no new items were added.  So you
         % might wish to remove A and B after the merge.
-        % <br><br>
+        % @details
         % An exception is when the destination group already exists and
         % uses some of the same mnemonics as the source groups.  In that
         % case, an item from a source group will overwrite any item in the
         % destination group that has the same mnemonic.  Thus, meging group
         % A into group A (itself) should have no effect.
-        % <br><br>
+        % @details
         % Another exception is when the source groups share some mnemonics
         % among them.  In that case, groups listed later in
         % @a soureGroups will win out, and their items will overwrite
@@ -312,7 +312,7 @@ classdef topsGroupedList < topsFoundation
         % Returns a cell array of all items from @a group.  If
         % @a group isn't in the list, returns {}.  Items will be
         % sorted  alphabetically or numerically, by mnemonic.
-        % <br><br>
+        % @details
         % Optionally returns all mnemonics from @a group, as well.
         function [items, mnemonics] = getAllItemsFromGroup(self, group)
             groupMap = self.allGroupsMap(group);

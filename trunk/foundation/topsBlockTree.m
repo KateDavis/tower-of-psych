@@ -6,7 +6,7 @@ classdef topsBlockTree < topsFoundation
     % organization--trials, sets of trials, tasks, paradigmns, whole 
     % experiments--can be represented by interconnected topsBlockTree 
     % objects, or "blocks".
-    % <br><br>
+    % @details
     % Every block can have a parent and some children, which are also
     % blocks.  You start an experiment by "running" the topmost parent
     % block.  It performs some actions and then "runs" each of its
@@ -14,17 +14,17 @@ classdef topsBlockTree < topsFoundation
     % its own children.  Those children in turn perform actions and "run"
     % their children, and so on until reaching the bottom of the tree where
     % there  is a block without any children.
-    % <br><br>
+    % @details
     % Then it's back up the tree.  On the way up, each child block performs
     % a final action.  When a parent finishes "running" all of its
     % children, it performs its own final action.  Then @a its parent
     % can finish up in the same way, and so on, until reaching the topmost
     % parent again.  At that point the experiment is done.
-    % <br><br>
+    % @details
     % Of course, that's just the structure of the experiment.  The details
     % have to be defined elsewhere and invoked when each block performs its
     % actions.
-    % <br><br>
+    % @details
     % Many psychophysics experiments use a tree structure implicitly, along
     % with a similar down-then-up flow of behavior.  topsBlockTree makes
     % the stucture and flow explicit, which offers some advantages:
@@ -126,13 +126,13 @@ classdef topsBlockTree < topsFoundation
         % Note that the sequence of events is recursive.  Thus, the
         % behavior of run() depends on this block as well as its children,
         % their children, etc.
-        % <br><br>
+        % @details
         % Also note that the recursion happens in the middle of the
         % sequence of events.  Thus, all of the blockStartFevalable and
         % blockActionFevalables will happen first, in the order of parents before
         % children.  Then all the blockEndFevalables will happen, in the order of
         % children before parents.
-        % <br><br>
+        % @details
         % If this block's preview property is set to true, run() will send
         % notifications and invoke run() on child blocks, but not invoke
         % blockStartFevalable, blockActionFevalable, or blockEndFevalable.

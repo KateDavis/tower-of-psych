@@ -5,21 +5,21 @@ classdef ScrollingControlGrid < handle
     % Like uitable, it presents rows and columns of data and controls that
     % you specify.  ScrollingControlGrid has fewer explicit features than
     % uitable and fewer arbitrary limitations.
-    % <br><br>
+    % @details
     % The basic idea is that the ScrollingControlGrid contains a
     % two-dimensional matrix of handles to uicontrol objects.  It arranges
     % all these uicontrols within a figure or uipanel, with the same row
     % and column layout as the handles in the matrix.
-    % <br><br>
+    % @details
     % The grid also provides a scroll bar so that the uicontrols can be
     % moved up and down and large numbers of uicontrols can be accomodated.
-    % <br><br>
+    % @details
     % The two-dimensional matrix of handles can contain redundant entries.
     % uicontrols with multiple entries will have their Positions stretched
     % to cover all of the individual row and column Positions.
     % ScrollingControlGrid makes no attempt to prevent collisions among
     % stretched uicontrols.
-    % <br><br>
+    % @details
     % ScrollingControlGrid can manage uicontrol objects of any 'Style' and
     % only specifies their 'Parent', 'Position', and 'Units' properties.
     % So ScrollingControlGrid should accomodate many user interface tasks
@@ -101,13 +101,13 @@ classdef ScrollingControlGrid < handle
         % property-value pairs contained in @a varargin.  In
         % addition, the new uicontrol will have its Parent property set by
         % the grid.
-        % <br><br> @a row and/or @a column may be array of
+        % @details @a row and/or @a column may be array of
         % indices. In that case, the new uicontrol's handle will be added
         % redundantly to multiple grid locations and it's appearance will
         % be stretched to cover all the individual locations.  Matlab's
         % default indexing behavior is to add the handle to all
         % combinations of row(i) and column(j) in the matrix.
-        % <br><br>
+        % @details
         % The grid won't automatically update its appearance, after adding
         % a new uicontrol.  This allows controls to be added in batches and
         % speeds up performance.  To update the grid appearance, call
@@ -147,11 +147,11 @@ classdef ScrollingControlGrid < handle
         % matrix itself.  Uses a constant height for all rows of controls,
         % as specified by the grid's rowHeight property (character units).
         % Stretches columns to fill the width of the entire grid.
-        % <br><br>
+        % @details
         % When there are too many rows to fit vertically in the grid, they
         % will run off the bottom and a slider bar will appear on the right
         % side.  It can be dragged to expose unseen controls.
-        % <br><br>
+        % @details
         % After setting the individual uicontrol Positions, sets their
         % Units property to normalized.  Thus, subsequent resizing of the
         % figure that contains the grid will cause the all the controls to

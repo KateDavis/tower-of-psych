@@ -198,7 +198,7 @@ classdef topsGUI < handle
         % @details
         % Computes the "sum" of the string and uses it as an index into the
         % standard color map.  Returns the color from the color map.
-        % <br><br>
+        % @details
         % The idea is that strings should pop out visually, and identical
         % strings should pop out together and be memorable from gui to gui.
         function col = getColorForString(self, string)
@@ -242,7 +242,7 @@ classdef topsGUI < handle
         % Matlab's path become clickable links for opening the file in
         % Matlab.  Instances of tops foundation classes also become bold,
         % clickable links, to other topsGUI subclasses.
-        % <br><br>
+        % @details
         % If there's no good way to ineract with @a value, returns
         % the same arguments as getDescriptiveUIControlArgsForValue.
         function args = getInteractiveUIControlArgsForValue(self, value)
