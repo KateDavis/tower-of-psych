@@ -6,14 +6,14 @@ classdef topsDataLogGUI < topsGUI
     % can view different time ranges.  You replay the log after an
     % experiment, or view the log online, as data stream in during an
     % experiment.
-    % <br><br>
+    % @details
     % You can also "trigger" on data groups to focus the log on key events.
     % For example, if you triggered on a data group called 'trial begin',
     % you could view data from all trials with the start time subtracted
     % out--trials would appear on top of each other.  This behavior was
     % inspired by oscilloscopes, which can trigger on a key part of a
     % waveform to emphasize the structure of what follows.
-    % <br><br>
+    % @details
     % The data log GUI has several displays and controls.  Roughly from
     % left to right they are:
     %   - The "accumulator", narrow axes on the far left.  When you trigger
@@ -54,23 +54,23 @@ classdef topsDataLogGUI < topsGUI
     % other data appear relative to this group.  You can trigger on
     % multiple data groups.  Clicking the "(no trigger)" button deactivates
     % all triggers.
-    % <br><br>
+    % @details
     % The buttons in the right column allow you to hide certain data
     % groups, since some might be uninteresting or get in the way.
     % Clicking the "(none)" button at the top of this column unhides all
     % data groups.
-    % <br><br>
+    % @details
     % You must press the "Replay:" button in order for new triggers or
     % hidden data groups to take effect.
-    % <br><br>
+    % @details
     % You can launch topsDataLogGUI with the topsDataLogGUI() constructor,
     % or with the topsDataLog.gui().
-    % <br><br>
+    % @details
     % topsDataLogGUI uses listeners to detect changes to the current data
     % log.  This means that you can view the log as work on your
     % experiment, or even during an experiment session, and you don't have
     % to reopen or refresh the GUI.
-    % <br><br>
+    % @details
     % Beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.

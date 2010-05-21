@@ -3,18 +3,18 @@ classdef topsStateMachineGUI < topsGUI
     % Overview the states of a state machine.
     % topsStateMachineGUI lists all the states and their properties for a
     % topsStateMachine, in a grid view.
-    % <br><br>
+    % @details
     % At the top right, the "run states" button allows you to invoke the
     % run() method of the state machine.
-    % <br><br>
+    % @details
     % You can launch topsStateMachineGUI with the topsStateMachineGUI()
     % constructor, or with the gui() method a topsStateMachine.
-    % <br><br>
+    % @details
     % topsStateMachineGUI uses listeners to detect changes to the state
     % machine it's showing.  This means that you can view your state
     % machine as you work on it, and you don't have to reopen or refresh
     % the GUI.
-    % <br><br>
+    % @details
     % But beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like running a real experiment, you might
     % wish to close the GUI, deleting its listeners.

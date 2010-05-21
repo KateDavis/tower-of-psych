@@ -132,21 +132,21 @@ classdef topsStateMachine < topsFoundation
         % @details
         % @a statesInfo should resemble a table, with a row for each new
         % state a column for each state field.
-        % <br><br>
+        % @details
         % The first row of @a statesInfo shoud contain field names that
         % correspond to the fields of allStates.  See addState() for
         % field descriptions.  Only the @b name field is mandatory.  Fields
         % may appear in any order.
-        % <br><br>
+        % @details
         % Each additional row of @a statesInfo shoud contain values aligned
         % with the field names in the first row.  A new state will be added
         % using each row of values.  Default values will be used where
         % fields are omitted.  The @b name field is mandatory.
-        % <br><br>
+        % @details
         % The values in the @b name column should be unique with respect to
         % each other and any existing states.  When names collide, new
         % states will replace existing states.
-        % <br><br>
+        % @details
         % Returns an array of indexes into allStates where the new states
         % were appended or inserted.
         function allStateIndexes = addMultipleStates(self, statesInfo)
@@ -183,15 +183,15 @@ classdef topsStateMachine < topsFoundation
         % Each state must have a unique @b name.  If @a stateInfo has the
         % same @b name as an existing state, @a stateInfo will replace the
         % existing state.
-        % <br><br>
+        % @details
         % Other fields of @a stateInfo may be omitted, in which case
         % default values will be used.
-        % <br><br>
+        % @details
         % Fields of stateInfo may correspond to one of the names in
         % sharedEntryFevalableNames or sharedexitFevalableNames.  Values in these
         % fields will be passed as state-specific arguments to the shared
         % function.
-        % <br><br>
+        % @details
         % Returns the index into allStates where the new state was appended
         % or inserted.
         function allStateIndex = addState(self, stateInfo)
@@ -242,12 +242,12 @@ classdef topsStateMachine < topsFoundation
         % Adds @a fcn to the state machine's sharedEntryFevalables or
         % sharedexitFevalables.  These functions are called for every state, in
         % addition to each state's own entry and exit.
-        % <br><br>
+        % @details
         % Each state may specify additional arguments to pass to @a fcn.
         % These may be specified like other state data, using @a name as
         % the state field.  See addState() and addMultipleStates() for
         % details on specifying state data.
-        % <br><br>
+        % @details
         % @a name must be unique with respect to other shared entry or exit
         % functions.  If @a name matches the name of an existing shared
         % function, @a fcn will replace the existing function.

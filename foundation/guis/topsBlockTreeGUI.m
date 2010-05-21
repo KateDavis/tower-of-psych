@@ -3,28 +3,28 @@ classdef topsBlockTreeGUI < topsGUI
     % Visualize the tree structure of an experiment.
     % topsBlockTreeGUI shows you hiererchy of topsBlockTree "blocks" that
     % make up an experiment.
-    % <br><br>
+    % @details
     % On the left it shows you a tree browser with several buttons that
     % represent individual blocks.  The topmost block is at the upper left
     % corner.  Its children are indented and displayed below.  Their
     % children are indented further, and so on.
-    % <br><br>
+    % @details
     % You can click on an individual block to view it in detail, on the
     % right.  The name of the block is at the top and its proerties are
     % displayed below.  In particular, the blocks start, action, and end
     % functions are expanded to show each function handle and arguments.
-    % <br><br>
+    % @details
     % At the top right, the "run block" button allows you to invoke the
     % run() method of the currently displayed block.  You should probably
     % only run the topmost block in this way.
-    % <br><br>
+    % @details
     % You can launch topsBlockTreeGUI with the topsBlockTreeGUI()
     % constructor, or with the gui() method a topsBlockTreeGUI.
-    % <br><br>
+    % @details
     % topsBlockTreeGUI uses listeners to detect changes to the blocks it's
     % showing.  This means that you can view your blocks as you work on
     % your experiment, and you don't have to reopen or refresh the GUI.
-    % <br><br>
+    % @details
     % But beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like running a real experiment, you might
     % wish to close the GUI, deleting its listeners.

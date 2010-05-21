@@ -3,27 +3,27 @@ classdef topsGroupedListGUI < topsGUI
     % Visualize the items stored in a grouped list.
     % topsGroupedListGUI shows you a three-column view of a
     % topsGroupedList (or subclass).
-    % <br><br>
+    % @details
     % The left column shows all the groups in the list.  The middle column
     % shows all the mnemonics in the currently selected group.  The right
     % column shows details for the item that has the currently selected
     % mnemonic.
-    % <br><br>
+    % @details
     % Simple items like numbers and strings are shown by their value.
     % Strings are color-coded with a color scheme that's standard for Tower
     % of Psych GUIS.
-    % <br><br>
+    % @details
     % Complex items like cell arrays, structs, and objects are expanded
     % into multiple rows that show their elements, fields, and properties.
     % Field and property names and are left-aligned and their values are
     % right-aligned on the next row.  Again strings, including field and
     % property names, are color-codded.
-    % <br><br>
+    % @details
     % Struct arrays and object arrays are expanded even further, with a
     % group of rows for each element of the array.  In this case rows may
     % extend beneath the visible part of the column and a slider bar will
     % appear to bring these rows into view.
-    % <br><br>
+    % @details
     % Some items, elements, field values, and property values will appear
     % in bold:
     %   - strings or function handles that can be found on Matlab's path
@@ -37,14 +37,14 @@ classdef topsGroupedListGUI < topsGUI
     % variable name, the GUI will create or overwrite a variable with that
     % name.  Otherwise, the GUI will create or overwrite a variable with
     % the name "item".
-    % <br><br>
+    % @details
     % You can launch topsGroupedListGUI with the topsGroupedListGUI()
     % constructor, or with the gui() method a topsGroupedList or subclass.
-    % <br><br>
+    % @details
     % topsGroupedListGUI uses listeners to detect changes to the list its
     % showing.  This means that you can view a list as you work on your
     % experiment, and you don't have to reopen or refresh the GUI.
-    % <br><br>
+    % @details
     % Beware that listeners can slow Matlab down.  So if you're in a
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
@@ -277,7 +277,7 @@ classdef topsGroupedListGUI < topsGUI
         % The "to workspace" button calls this method.  This method then
         % uses Matlab's built-in assignin() to put the currently shown item
         % in the base workspace (i.e. the Command Window).
-        % <br><br>
+        % @details
         % When the currently selected mnemonic is a valid variable name,
         % creates or overwrites a variable with that name.  Otherwise,
         % creates or overwrites a variable named "item".  Prints a message

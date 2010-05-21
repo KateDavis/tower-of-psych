@@ -5,28 +5,28 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % class, which means that only one can exist at a time, and you never
     % have to create one yourself.  You just call topsDataLog methods from
     % any code that needs to use the log.
-    % <br><br>
+    % @details
     % topsDataLog is a subclass of topsGroupedList, which means it
     % has all the organization and capabilities of topsGroupedList, plus
     % more.
-    % <br><br>
+    % @details
     % Thus, you must log each piece of data in a "group" of related
     % data.  The group might correspond to a recuurring event, such as
     % 'trial start'. You don't have to supply a "mnemonic" for each piece
     % of data because topsDataLog uses timestamps to identify pieces of
     % data in each group.
-    % <br><br>
+    % @details
     % In your experiment code, you can add to the log as many times as you
     % like.  If you're not sure whether some piece of data will turn out to
     % be important, you can go ahead and log it anyway.  You don't have to
     % worry about the log filling up, how to allcate space for more data,
     % or even how the data are ultimately stored.  That's the log's job.
-    % <br><br>
+    % @details
     % Other topsFoundataion classes will also add data to the log, to help
     % you keep track of details that aren't specific to your experiment.
     % For example, topsBlockTree objects makes log entries every time they
     % execute a start, action, or end function.
-    % <br><br>
+    % @details
     % With your log entries and the entries made automatically by
     % topsFoundataion classes, it should be straightforward to look at the
     % log after an experiment and get a sense of "what happened, when".
@@ -74,11 +74,11 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % instad of a class constructor.  This method will create a new
         % data log the first time it's called, and return the same data log
         % subsequently.
-        % <br><br>
+        % @details
         % For most log operations, you don't need this method.  You can
         % just use the static methods below and they will access the
         % current data log for you.
-        % <br><br>
+        % @details
         % For a few operations it makes sense to get at the log itself,
         % using this method.  For example, you might wish to change the
         % log's clockFunction, to use some custom timer.  In that case you would
@@ -100,12 +100,12 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % interface, which plots a sumary of all logged data, sorted by
         % time.  You can use this interface online, to see data as they
         % arrive in the log.
-        % <br><br>
+        % @details
         % If you provide @a alternateFlag and it has the value
         % 'asList', then gui() will launch the generic topsGroupedListGUI,
         % which lets you browse the log by groups and timestamps, and shows
         % details about each piece of data.
-        % <br><br>
+        % @details
         % Returns a handle to the new graphical interface, either
         % topsDataLogGUI or topsGroupedListGUI.
         function g = gui(alternateFlag)
@@ -121,7 +121,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % You can't create new instances of topsDataLog, but you can
         % always clear out the existing instance.  You probably should do
         % this before starting an experiment.
-        % <br><br>
+        % @details
         % Removes all data from all groups, then removes the groups
         % themselves.  Then sets earliestTime and latestTime to nan.  Then
         % sends a FlushedTheDataLog notification to any listeners.
@@ -146,12 +146,12 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % handles to the same object, and a worse job of writing and
         % reading them to disk.  Better to keep the data log out of that
         % mess.
-        % <br><br>
+        % @details
         % Otherwise, adds @a data along with the current time
         % reported by clockFunction to @a group, in the current instance
         % of topsDataLog.  Then updates earliestTime and latestTime to
         % account for the the time of this log entry.
-        % <br><br>
+        % @details
         % Since topsDataLog is a subclass of topsGroupedList,
         % logging data is a lot like adding items to a list.
         % @a group is treated just like the groups in
@@ -198,7 +198,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % Converts currently logged data to a standard Matlab struct using
         % topsDataLog.getSortedDataStruct() and saves the struct to the
         % given file.
-        % <br><br>
+        % @details
         % If @a fileWithPath is omitted, opens a dialog for chosing a file.
         function writeDataFile(fileWithPath)
             self = topsDataLog.theDataLog;
@@ -235,7 +235,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % Matlab struct, as written by topsDataLog.writeDataFile().
         % Populates the topsDataLog singleton with the data from the
         % loaded struct.
-        % <br><br>
+        % @details
         % If @a fileWithPath is omitted, opens a dialog for chosing a file.
         function readDataFile(fileWithPath)
             self = topsDataLog.theDataLog;
