@@ -27,6 +27,9 @@ classdef StateDiagramGrapher < handle
         % Constructor takes no arguments.
         function self = StateDiagramGrapher()
             self.dataGrapher = DataGrapher;
+            self.dataGrapher.workingFileName = 'stateDiagram';
+            self.dataGrapher.floatingEdgeNames = true;
+            self.dataGrapher.listedEdgeNames = false;
             self.inputHints = struct('stateName', {}, 'inputValue', {});
             
             self.dataGrapher.nodeDescriptionFunction = ...

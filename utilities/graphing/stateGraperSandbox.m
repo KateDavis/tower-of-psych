@@ -14,6 +14,11 @@ sg.dataGrapher.listedEdgeNames = false;
 sg.stateMachine = stateMachine;
 
 % is there a way to clear or automate this?
+%   - not reasonable to ask every potential input function to report its
+%   outputs
+%   - could ask each state that expects inputs to declare valid inputs
+%       - could use this to validate input function outputs
+%       - might require redundant typing.  can I avoid this?
 sg.addInputHint('may fall', gameLogic.outputTickTimeUp);
 sg.addInputHint('may fall', gameLogic.outputTickOK);
 sg.addInputHint('ratchet', gameLogic.outputRatchetLanded);

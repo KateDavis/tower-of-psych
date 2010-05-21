@@ -20,6 +20,9 @@ classdef ObjectGrapher < handle
         % avoid recursion among non-handle objects)
         maxElementDepth = 20;
         
+        % cell array of strings of class names of objects to ignore
+        ignoredClasses = {};
+        
         % a DataGrapher object for graphing the objects
         dataGrapher;
         
@@ -36,12 +39,14 @@ classdef ObjectGrapher < handle
             
             self.seedObjects = containers.Map(-1, -1, 'uniformValues', false);
             self.seedObjects.remove(self.seedObjects.keys);
-            warning('off', 'MATLAB:structOnObject');
-
+            
             self.dataGrapher = DataGrapher;
+            self.dataGrapher.workingFileName = 'objectGraph';
+            self.dataGrapher.floatingEdgeNames = false;
+            
             self.dataGrapher.nodeNameFunction = ...
                 @ObjectGrapher.classNameWithLetter;
-
+            
             self.dataGrapher.edgeFunction = ...
                 @ObjectGrapher.edgeFromReferences;
         end
@@ -86,17 +91,17 @@ classdef ObjectGrapher < handle
         
         function crawlForUniqueObjects(self)
             self.initializeUniques;
-            scanFun = @(object, depth, path, objFcn)self.scanObject(object, depth, path, objFcn);
+            scanFun = @(object, depth, refPath, objFcn)self.scanObject(object, depth, refPath, objFcn);
             seeds = self.seedObjects.values;
             for ii = 1:length(seeds)
                 self.iterateElements(seeds{ii}, self.maxElementDepth, {}, scanFun);
             end
         end
         
-        function scanObject(self, object, depth, path, objFcn)
+        function scanObject(self, object, depth, refPath, objFcn)
             % detect objectness and uniqueness
             %   drill through objects like they're structs
-            if isobject(object)
+            if ~any(strcmp(class(object), self.ignoredClasses))
                 if isa(object, 'handle')
                     
                     if self.containsUniqueObject(object)
@@ -106,7 +111,8 @@ classdef ObjectGrapher < handle
                     else
                         % recur: iterate arbitrary handle object's elements
                         self.addUniqueObject(object);
-                        self.iterateElements(struct(object), self.maxElementDepth, path, objFcn);
+                        structObj = ObjectGrapher.objectToStruct(object);
+                        self.iterateElements(structObj, self.maxElementDepth, refPath, objFcn);
                         
                     end
                 else
@@ -114,15 +120,16 @@ classdef ObjectGrapher < handle
                     %   "value" objects are unique by definition
                     %   but limit recursion on them
                     self.addUniqueObject(object);
-                    self.iterateElements(struct(object), depth-1, path, objFcn);
+                    structObj = ObjectGrapher.objectToStruct(object);
+                    self.iterateElements(structObj, depth-1, refPath, objFcn);
                 end
             end
         end
         
         function traceLinksForEdges(self)
             self.crawlForUniqueObjects;
-
-            traceFun = @(object, depth, path, objFcn)self.recordEdge(object, depth, path, objFcn);
+            
+            traceFun = @(object, depth, refPath, objFcn)self.recordEdge(object, depth, refPath, objFcn);
             k = self.uniqueObjects.keys;
             indexes = [k{:}];
             uniques = self.uniqueObjects.values;
@@ -132,44 +139,38 @@ classdef ObjectGrapher < handle
                 self.currentIndex = ii;
                 self.objectInfo(ii).class = class(uniques{ii});
                 self.objectInfo(ii).references = struct('path', {}, 'target', {});
-                self.iterateElements(struct(uniques{ii}), self.maxElementDepth, {}, traceFun);
+                structObj = ObjectGrapher.objectToStruct(uniques{ii});
+                self.iterateElements(structObj, self.maxElementDepth, {}, traceFun);
             end
             
             self.dataGrapher.inputData = self.objectInfo;
         end
         
-        function recordEdge(self, object, depth, path, objFcn)
+        function recordEdge(self, object, depth, refPath, objFcn)
             % record edge from current object to this object
             if isobject(object)
                 [contains, index] = self.containsUniqueObject(object);
                 if contains
-                    ref.path = path;
+                    ref.path = refPath;
                     ref.target = index;
                     self.objectInfo(self.currentIndex).references(end+1) = ref;
                 end
             end
         end
         
-        function iterateElements(self, object, depth, path, objFcn)
+        function iterateElements(self, object, depth, refPath, objFcn)
             % Iterate elements of complex types to find objects.
             % Keep track of path through nested types to reach object
             % Execute some function upon reaching object:
-            %   - feval(objFcn, object, depth, path, objFcn)
+            %   - feval(objFcn, object, depth, refPath, objFcn)
             %   - e.g. add to unique object list
             %   - e.g. follow references from each unique object
-            
             if depth <= 0
                 % base case: maxed out on recursion of non-handles
                 return
             end
             
-            if isstruct(object)
-                % will recur through struct fields
-                elements = struct2cell(object);
-                paths = fieldnames(object);
-                format = '.%s';
-                
-            elseif iscell(object)
+            if iscell(object)
                 % will recur through cell elements
                 elements = object;
                 paths = num2cell(1:numel(elements));
@@ -186,33 +187,51 @@ classdef ObjectGrapher < handle
                     format = '(%f)';
                 end
                 
-            elseif isobject(object) && ~isempty(object)
-                % base case: found a real object
-                %   may be array of object
-                %   objFcn may wish to recur
-                if isscalar(object)
-                    feval(objFcn, object, depth, path, objFcn);
-                else
-                    for ii = 1:numel(object)
-                        elementPath = cell(1, length(path)+1);
-                        elementPath(1:end-1) = path;
-                        elementPath{end} = sprintf('(%d)', ii);
-                        feval(objFcn, object(ii), depth, elementPath, objFcn);
+            elseif numel(object) > 1
+                
+                if isstruct(object) || isobject(object)
+                    % will recur through array elements
+                    elements = cell(1, numel(object));
+                    paths = num2cell(1:numel(elements));
+                    for ii = 1:numel(elements)
+                        elements{ii} = object(ii);
                     end
+                    format = '(%d)';
+                    
+                else
+                    % base case: primitive array, don't care about it
+                    return
                 end
-                return
+                
+            elseif isscalar(object)
+                
+                if isstruct(object)
+                    % will recur through struct fields
+                    elements = struct2cell(object);
+                    paths = fieldnames(object);
+                    format = '.%s';
+                    
+                elseif isobject(object)
+                    % base case: found a real object
+                    feval(objFcn, object, depth, refPath, objFcn);
+                    return
+                    
+                else
+                    % base case: primitive scalar, don't care about it
+                    return
+                end
                 
             else
-                % base case: not a complex type
+                % base case: something unexpected, don't care about it
                 return
             end
             
-            % recur: iterate each element
-            for ii = 1:length(elements)
-                elementPath = cell(1, length(path)+1);
-                elementPath(1:end-1) = path;
-                elementPath{end} = sprintf(format, paths{ii});
-                self.iterateElements(elements{ii}, depth-1, elementPath, objFcn);
+            % recur: iterate elements with formatted refPath
+            for jj = 1:numel(elements)
+                elementPath = cell(1, length(refPath)+1);
+                elementPath(1:end-1) = refPath;
+                elementPath{end} = sprintf(format, paths{jj});
+                self.iterateElements(elements{jj}, depth-1, elementPath, objFcn);
             end
         end
         
@@ -228,8 +247,8 @@ classdef ObjectGrapher < handle
     methods(Static)
         function nodeName = classNameWithLetter(inputData, index)
             id = inputData(index);
-            letter = char(index+double('a')-1);
-            nodeName = sprintf('%s-%s', id.class, letter);
+            letters = char(sprintf('%d', index) - '0' + 'a');
+            nodeName = sprintf('%s (%s)', id.class, letters);
         end
         
         function [edgeIndexes, edgeNames] = edgeFromReferences(inputData, index)
@@ -239,6 +258,21 @@ classdef ObjectGrapher < handle
             for ii = 1:length(id.references)
                 edgeIndexes(ii) = id.references(ii).target;
                 edgeNames{ii} = sprintf('%s', id.references(ii).path{:});
+            end
+        end
+        
+        % Put the public properties of the object into a struct
+        function structObj = objectToStruct(object)
+            metaObj = metaclass(object);
+            metaProps = [metaObj.Properties{:}];
+            propNames = {metaProps.Name};
+            isGetAllowed = strcmp({metaProps.GetAccess}, 'public');
+            isSetAllowed = strcmp({metaProps.SetAccess}, 'public');
+            allowedNames = propNames(isGetAllowed & isSetAllowed);
+            structObj = cell2struct(allowedNames, allowedNames, 2);
+            for ii = 1:length(allowedNames)
+                name = allowedNames{ii};
+                structObj.(name) = object.(name);
             end
         end
     end
