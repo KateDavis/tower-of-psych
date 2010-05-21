@@ -146,7 +146,8 @@ classdef DataGrapher < handle
             nodesWriteout = self.composeNodes;
             edgesWriteout = self.composeEdges;
             
-            string = sprintf('%s %s {\n%s\n%s\n\n%s\n\n\n%s\n\n%s\n}\n', ...
+            string = ...
+                sprintf('%s %s {\n%s\n%s\n\n%s\n\n\n%s\n\n%s\n}\n', ...
                 graphType, self.graphName, ...
                 graphHead, nodeHead, edgeHead, ...
                 nodesWriteout, edgesWriteout);
@@ -176,6 +177,11 @@ classdef DataGrapher < handle
             for ii = 1:length(self.nodes)
                 node = self.nodes(ii);
                 
+                % skip nameless nodes
+                if isempty(node.name)
+                    continue
+                end
+                
                 cc = 1 + mod(ii, nColors);
                 nodeColor = self.composeRGB( ...
                     self.colors(cc,:), self.nodeAlpha);
@@ -185,12 +191,21 @@ classdef DataGrapher < handle
                     for jj = 1:length(node.edges)
                         edge = node.edges(jj);
                         targetNode = self.nodes(edge.target);
-                        list{end+1} = sprintf('<%s>%s', ...
-                            targetNode.var, edge.name);
+                        if isempty(targetNode.name)
+                            continue
+                        end
+                        list{end+1} = sprintf('<%d>%s', ...
+                            jj, edge.name);
                     end
                 end
-                nodeList = sprintf('|%s', list{:});
-                nodeLabel = sprintf('{{<top>|%s}%s}', node.name, nodeList);
+                
+                if isempty(list)
+                    nodeList = '';
+                else
+                    nodeList = sprintf('|%s', list{:});
+                end
+                nodeLabel = sprintf('{{<top>|<name>%s}%s}', ...
+                    node.name, nodeList);
                 
                 nodeString{ii} = sprintf('%s [label="%s" color="%s"]', ...
                     node.var, nodeLabel, nodeColor);
@@ -221,6 +236,11 @@ classdef DataGrapher < handle
                     edge = node.edges(jj);
                     targetNode = self.nodes(edge.target);
                     
+                    % skip nameless target nodes
+                    if isempty(node.name) || isempty(targetNode.name)
+                        continue
+                    end
+                    
                     if self.floatingEdgeNames
                         edgeLabel = edge.name;
                     else
@@ -228,9 +248,9 @@ classdef DataGrapher < handle
                     end
                     
                     if self.listedEdgeNames
-                        source = sprintf('%s:%s', node.var, targetNode.var);
+                        source = sprintf('%s:%d', node.var, jj);
                     else
-                        source = node.var;
+                        source = sprintf('%s:name', node.var);
                     end
                     edgeString{end+1} = ...
                         sprintf('%s%s%s:%s [label="%s" color="%s" fontcolor="%s"]', ...
@@ -243,7 +263,7 @@ classdef DataGrapher < handle
         
         % Write a GraphViz specification to file
         function writeDotFile(self)
-            disp('Writing Dot file...')
+            disp('Writing .dot file...')
             dotString = self.composeGraph;
             originalDir = pwd;
             try

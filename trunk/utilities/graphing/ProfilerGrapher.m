@@ -7,12 +7,29 @@ classdef ProfilerGrapher < handle
     % to graph which functions called which, and how many times.
     % @ingroup utilities
     
+    % @todo
+    % DataGrapher can ignore and not write nodes empty names.
+    % ProfilerGrapher can go through and blank out function names that
+    % match or fail some criteria (whatever they be).  It can also clear
+    % out Children references for those nodes parents.  That way some
+    % profiler results can be ignored.
+    %
+    % So the question is, what are the criteria?  Positive or negative?
+    
     properties
         % string, a Matlab expression to eval() under the Matlab profiler
         toDo = '';
         
         % output from the Matlab profiler
         profilerInfo;
+        
+        % cell array of strings of absolute paths containing functions to
+        % ignore
+        ignoredPaths = {};
+        
+        % cell array of strings of absolute paths containing the only
+        % functions to include
+        includePaths = {};
         
         % a DataGrapher object for graphing the profiler output
         dataGrapher;
@@ -22,6 +39,7 @@ classdef ProfilerGrapher < handle
         % Constructor takes no arguments.
         function self = ProfilerGrapher()
             self.dataGrapher = DataGrapher;
+            self.dataGrapher.workingFileName = 'profilerGraph';
             self.dataGrapher.nodeNameFunction = ...
                 @ProfilerGrapher.shortNameWithType;
 
@@ -43,10 +61,33 @@ classdef ProfilerGrapher < handle
             profile('off');
             info = profile('info');
             self.profilerInfo = info;
-            self.dataGrapher.inputData = info.FunctionTable;
+        end
+        
+        function info = appplyFunctionFilter(self, info)
+            names = {info.FileName};
+
+            isIncluded = true(size(names));
+            for ii = 1:length(self.includePaths)
+                include = self.includePaths{ii};
+                n = length(include);
+                isIncluded = strncmp(include, names, n);
+            end
+            
+            isIgnored = false(size(names));
+            for ii = 1:length(self.ignoredPaths)
+                ignore = self.ignoredPaths{ii};
+                n = length(ignore);
+                isIgnored = strncmp(ignore, names, n);
+            end
+            
+            failed = isIgnored | ~isIncluded;
+            [info(failed).FunctionName] = deal('');
         end
         
         function writeDotFile(self)
+            info = self.profilerInfo.FunctionTable;
+            info = self.appplyFunctionFilter(info);
+            self.dataGrapher.inputData = info;
             self.dataGrapher.writeDotFile;
         end
         
@@ -58,9 +99,13 @@ classdef ProfilerGrapher < handle
     methods (Static)
         function nodeName = shortNameWithType(inputData, index)
             id = inputData(index);
-            shortName = ProfilerGrapher.getShortFunctionName(id.FunctionName);
-            typeName = id.Type;
-            nodeName = sprintf('%s(%s)', shortName, typeName);
+            if isempty(id.FunctionName)
+                nodeName = '';
+            else
+                shortName = ProfilerGrapher.getShortFunctionName(id.FunctionName);
+                typeName = id.Type;
+                nodeName = sprintf('%s(%s)', shortName, typeName);
+            end
         end
 
         function description = totalCallsAndTime(inputData, index)
@@ -75,7 +120,7 @@ classdef ProfilerGrapher < handle
             edgeNames = {};
             for ii = 1:length(id.Children)
                 edgeIndexes(ii) = id.Children(ii).Index;
-                edgeNames{ii} = sprintf('made %d calls (%fs)', ...
+                edgeNames{ii} = sprintf('%d calls (%fs) to', ...
                     id.Children(ii).NumCalls, ...
                     id.Children(ii).TotalTime);
             end
