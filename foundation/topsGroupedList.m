@@ -49,6 +49,7 @@ classdef topsGroupedList < topsFoundation
     properties(Hidden)
         allGroupsMap;
         sendNotifications;
+        ideasGroup = 'ideas';
     end
     
     events
@@ -115,6 +116,23 @@ classdef topsGroupedList < topsFoundation
                 ed.groupIsNew = groupIsNew;
                 ed.mnemonic = mnemonic;
                 self.notify('NewAddition', EventWithData(ed));
+            end
+        end
+        
+        % Jot down a value in the "ideas" group.
+        % @param idea a string or number representing any idea
+        % @details
+        % Returns the same @a idea that was passed in.  If the list
+        % object uses strings as group identifiers, adds @a idea to
+        % the "ideas" group, using @a idea itself as the mnemonic.
+        % @details
+        % addIdea() is an easy way to add a string or number to a list
+        % object and also store it in a local variable, without having to
+        % retype the string or number, or the variable name.
+        function idea = addIdea(self, idea)
+            gm = self.allGroupsMap;
+            if isempty(gm) || strcmp(gm.KeyType, 'char')
+                self.addItemToGroupWithMnemonic(idea, self.ideasGroup, idea);
             end
         end
         
