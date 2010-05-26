@@ -49,8 +49,11 @@ elseif islogical(value)
     if isempty(value)
         string = '[]';
     else
-        bools = {'false', 'true'};
-        boolStr = sprintf('%s ', bools{double(value) + 1});
+        m = min(n, numel(value));
+        boolCell = cell(1,m);
+        boolCell(value(1:m)) = deal({'true'});
+        boolCell(~value(1:m)) = deal({'false'});
+        boolStr = sprintf('%s ', boolCell{:});
         string = sprintf('[%s]', stringifyValue(boolStr(1:end-1), n-2));
     end
     
