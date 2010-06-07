@@ -1,18 +1,6 @@
 classdef topsStateMachine < topsFoundation
     % @class topsStateMachine
     % A state machine for controlling flow through e.g. trials.
-    % @details
-    % Here's some of my thinking behind topsStateMachine, and why I made it
-    % different from dotsx
-    %   - "standard" vocab from Wikipedia, like "input"
-    %   - more function handles to hook on or ignore, like transitionFevalable
-    %   - automatic topsDataLog'ging
-    %   - allStates struct should be guiable and oh, so graphable
-    %       - State diagrams!  Think of the grant proposals!
-    %   - states are not objects and don't readily modify themselves.
-    %       - more states, then?  Lends to explanation and visualization.
-    %   - may run() a full traversal, or step() through states concurrently
-    %   with other behaviors.
     %
     % @ingroup foundataion
     
