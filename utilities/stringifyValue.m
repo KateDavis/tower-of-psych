@@ -41,7 +41,9 @@ elseif isnumeric(value)
     if isempty(value)
         string = '[]';
     else
-        string = sprintf('[%s]', stringifyValue(num2str(value), n-2));
+        stringed = num2str(value);
+        stringed(:,end+1) = ';';
+        string = sprintf('[%s]', stringifyValue(stringed', n-2));
     end
     
 elseif islogical(value)
@@ -51,6 +53,7 @@ elseif islogical(value)
     else
         m = min(n, numel(value));
         boolCell = cell(1,m);
+        value = value';
         boolCell(value(1:m)) = deal({'true'});
         boolCell(~value(1:m)) = deal({'false'});
         boolStr = sprintf('%s ', boolCell{:});
