@@ -188,7 +188,7 @@ classdef topsGUI < handle
             set(self.figure, 'Name', title);
         end
         
-        % Toggling isBusy, shows a message in the figure title bar
+        % Toggling isBusy shows a message in the figure title bar
         function set.isBusy(self, isBusy)
             self.isBusy = isBusy;
             if isBusy
