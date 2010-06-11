@@ -125,30 +125,36 @@ classdef topsGUI < handle
         % Figure WindowScrollWheelFcn to deal out scroll events
         % the gui's scrollables array contains handles to graphical
         % children and a callback for each.  When the mouse wheel is
-        % scrolled and the cursor is insode one of the "scrollable"
-        % object's Position, passes the scroll event to the object's
-        % callback.
+        % scrolled and the current object is a scrollable or a child of a
+        % scrollable, passes the scroll event to the scrollable's callback.
         function respondToScrolling(self, figure, event)
             % determine which scrollable gets the scroll
             if isempty(self.scrollables)
                 return
             elseif length(self.scrollables) == 1
-                obj = self.scrollables.handle;
-                fcn = self.scrollables.fcn;
+                obj = self.scrollables(1).handle;
+                fcn = self.scrollables(1).fcn;
             else
-                mouse = get(self.figure, 'CurrentPoint');
-                posCell = get([self.scrollables.handle], 'Position');
-                p = vertcat(posCell{:});
-                hit = mouse(1) >= p(:,1) ...
-                    & mouse(2) >= p(:,2) ...
-                    & mouse(1) <= p(:,1)+p(:,3) ...
-                    & mouse(2) <= p(:,2)+p(:,4);
-                if any(hit)
-                    ii = find(hit, 1);
-                    obj = self.scrollables(ii).handle;
-                    fcn = self.scrollables(ii).fcn;
-                else
+                current = get(self.figure, 'CurrentObject');
+                if isempty(current)
                     return
+                    
+                else
+                    scrolls = [self.scrollables.handle];
+                    while true
+                        isScroll = current == scrolls;
+                        if any(isScroll)
+                            ii = find(isScroll, 1);
+                            obj = self.scrollables(ii).handle;
+                            fcn = self.scrollables(ii).fcn;
+                            break;
+
+                        elseif current == self.figure
+                            return
+
+                        end
+                        current = get(current, 'Parent');
+                    end
                 end
             end
             
