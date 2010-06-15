@@ -33,7 +33,7 @@ classdef TestStringifyValue < TestCase
         
         function summarizeValues(self, values)
             for ii = 1:length(values)
-                string = stringifyValue(values{ii}, self.n);
+                string = summarizeValue(values{ii}, self.n);
                 
                 assertTrue(ischar(string), 'summary must be string!')
                 assertFalse(isempty(string), ...

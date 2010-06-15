@@ -51,13 +51,13 @@ classdef topsGroupedListGUI < topsGUI
     % @ingroup foundation
     
     properties
-        % The topsGroupedList or subclass to visualize in the GUI.
+        % topsGroupedList interact with
         groupedList;
         
-        % The string or number of the currently selected group
+        % string or number identifying the currently selected group
         currentGroup;
         
-        % The string or number of the curently selected mnemonic
+        % string or number identifying the currently selected mnemonic
         currentMnemonic;
     end
     
@@ -151,7 +151,7 @@ classdef topsGroupedListGUI < topsGUI
                 self.figure, [right-width, bottom, width, yDiv-bottom]);
             self.addScrollableChild(self.itemDetailGrid.panel, ...
                 {@ScrollingControlGrid.respondToSliderOrScroll, self.itemDetailGrid});
-            self.itemDetailGrid.rowHeight = 1.2;
+            self.itemDetailGrid.rowHeight = 1.5;
         end
         
         function setCurrentGroup(self, group, button)
@@ -205,35 +205,34 @@ classdef topsGroupedListGUI < topsGUI
         end
         
         function addBrowserButtonToGridRowWithNameAndCallback(self, grid, row, name, callback)
-            if ischar(name)
-                string = name;
-                col = self.getColorForString(string);
-            else
-                string = num2str(name);
-                col = [0 0 0];
-            end
             toggle = topsText.toggleText;
+            lookFeel = self.getLookAndFeelForValue(name);
+            interactive = {'Callback', callback};
             grid.newControlAtRowAndColumn( ...
                 row, 1, ...
                 toggle{:}, ...
-                'String', string, ...
-                'Callback', callback, ...
-                'BackgroundColor', self.lightColor, ...
-                'ForegroundColor', col);
+                lookFeel{:}, ...
+                interactive{:});
         end
         
         function showDetailsForCurrentItem(self)
+            group = self.currentGroup;
+            mnemonic = self.currentMnemonic;
             item = self.groupedList.getItemFromGroupWithMnemonic( ...
-                self.currentGroup, self.currentMnemonic);
+                group, mnemonic);
             
             self.itemDetailGrid.deleteAllControls;
             width = 10;
             
             % shallow look at any item
-            args = self.getInteractiveUIControlArgsForValue(item);
+            %args = self.getInteractiveUIControlArgsForValue(item);
+            args = self.getEditableUIControlArgsForListItem( ...
+                group, mnemonic, []);
+            
             self.itemDetailGrid.newControlAtRowAndColumn(1, [1 width], args{:});
             
             % deeper look at deep items
+            subsPath = {};
             if isstruct(item) || isobject(item)
                 if isstruct(item)
                     fn = fieldnames(item);
@@ -247,20 +246,26 @@ classdef topsGroupedListGUI < topsGUI
                 for ii = 1:n
                     % delimiter for each array element
                     row = row+1;
+                    subsPath(1:2) = {'()',{ii}};
                     delimiter = sprintf('(%d of %d)', ii, n);
+                    
                     args = self.getInteractiveUIControlArgsForValue(item(ii));
+
                     self.itemDetailGrid.newControlAtRowAndColumn( ...
                         row, [1 4], args{:}, 'String', delimiter);
                     
                     for jj = 1:length(fn)
                         % field name and value
                         row = row+1;
+                        subsPath(3:4) = {'.',fn{jj}};
                         args = self.getDescriptiveUIControlArgsForValue(fn{jj});
                         self.itemDetailGrid.newControlAtRowAndColumn( ...
                             row, [2 width], args{:});
                         
                         row = row+1;
-                        args = self.getInteractiveUIControlArgsForValue(item(ii).(fn{jj}));
+                        %args = self.getInteractiveUIControlArgsForValue(item(ii).(fn{jj}));
+                        args = self.getEditableUIControlArgsForListItem( ...
+                            group, mnemonic, subsPath);
                         self.itemDetailGrid.newControlAtRowAndColumn( ...
                             row, [2 width], args{:}, 'HorizontalAlignment', 'right');
                     end
@@ -269,11 +274,31 @@ classdef topsGroupedListGUI < topsGUI
             elseif iscell(item)
                 for ii = 1:numel(item)
                     row = ii + 1;
-                    args = self.getInteractiveUIControlArgsForValue(item{ii});
+                    subsPath(1:2) = {'{}',{ii}};
+                    %args = self.getInteractiveUIControlArgsForValue(item{ii});
+                    args = self.getEditableUIControlArgsForListItem( ...
+                        group, mnemonic, subsPath);
                     self.itemDetailGrid.newControlAtRowAndColumn(row, [2 width], args{:});
                 end
             end
             self.itemDetailGrid.repositionControls;
+        end
+        
+        % Present standard controls for editing list items.
+        function args = getEditableUIControlArgsForListItem(self, group, mnemonic, subsPath)
+            if nargin < 4 || isempty(subsPath)
+                subs = [];
+            else
+                subs = substruct(subsPath{:});
+            end
+            
+            getter = {@topsGroupedListGUI.getValueOfListItem, ...
+                self.groupedList, group, mnemonic, subs};
+            setter = {@topsGroupedListGUI.setValueOfListItem, ...
+                self.groupedList, group, mnemonic, subs};
+            
+            args = self.getEditableUIControlArgsWithGetterAndSetter( ...
+                getter, setter);
         end
         
         % Send the currently displayed item to the base workspace.
@@ -312,9 +337,10 @@ classdef topsGroupedListGUI < topsGUI
         
         function hearNewListAddition(self, groupedList, event)
             logEntry = event.userData;
+            group = logEntry.group;
+            mnemonic = logEntry.mnemonic;
             
             if logEntry.groupIsNew
-                group = logEntry.group;
                 row = 1 + size(self.groupsGrid.controls, 1);
                 cb = @(obj, event)self.setCurrentGroup(group, obj);
                 self.addBrowserButtonToGridRowWithNameAndCallback( ...
@@ -322,13 +348,60 @@ classdef topsGroupedListGUI < topsGUI
                 self.groupsGrid.repositionControls;
             end
             
-            if isequal(self.currentGroup, event.userData.group)
-                mnemonic = logEntry.mnemonic;
+            if ~isequal(self.currentMnemonic, mnemonic)
                 row = 1 + size(self.mnemonicsGrid.controls, 1);
                 cb = @(obj, event)self.setCurrentMnemonic(mnemonic, obj);
                 self.addBrowserButtonToGridRowWithNameAndCallback( ...
                     self.mnemonicsGrid, row, mnemonic, cb);
                 self.mnemonicsGrid.repositionControls;
+            end
+        end
+    end
+    
+    methods (Static)
+        % Set a value from a GUI control (a callback).
+        % @param value a new value to set
+        % @param list topsGroupedList that contains the value
+        % @param group list group that contains the value
+        % @param mnemonic list group mnemonic for the value
+        % @param subs substruct-style struct to index the list item
+        % (optional)
+        % @details
+        % Replaces the item in @a list indicated by @a group and @a
+        % mnemonic with the given @a value.  If @a subs is not empty,
+        % replaces the referenced element or field of the indicated item,
+        % rather than the item itself.
+        % @details
+        % setValueOfListItem() is suitable as a topsText "setter" callback.
+        function setValueOfListItem(value, list, group, mnemonic, subs)
+            if isempty(subs)
+                item = value;
+            else
+                item = list.getItemFromGroupWithMnemonic(group, mnemonic);
+                item = subsasgn(item, subs, value);
+            end
+            list.addItemToGroupWithMnemonic(item, group, mnemonic);
+        end
+        
+        % Get a value for a GUI control (a callback).
+        % @param list topsGroupedList that contains the value
+        % @param group list group that contains the value
+        % @param mnemonic list group mnemonic for the value
+        % @param subs substruct-style struct to index the list item
+        % (optional)
+        % @details
+        % Returns the item in @a list indicated by @a group and @a
+        % mnemonic.  If @a subs is not empty, returns the referenced
+        % element or field of the indicated item, rather than the item
+        % itself.
+        % @details
+        % getValueOfListItem() is suitable as a topsText "getter" callback.
+        function value = getValueOfListItem(list, group, mnemonic, subs)
+            if isempty(subs)
+                value = list.getItemFromGroupWithMnemonic(group, mnemonic);
+            else
+                item = list.getItemFromGroupWithMnemonic(group, mnemonic);
+                value = subsref(item, subs);
             end
         end
     end

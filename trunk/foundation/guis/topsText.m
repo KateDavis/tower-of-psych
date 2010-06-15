@@ -46,14 +46,23 @@ classdef topsText
         
         function args = editText
             basic = topsText.interactiveText;
-            specific = {'ButtonDownFcn', @topsText.editbeginFevalable, ...
+            specific = {'ButtonDownFcn', @topsText.editBeginFcn, ...
                 'TooltipString', 'edit me'};
+            args = cat(2, basic, specific);
+        end
+        
+        function args = editTextWithGetterAndSetter(getter, setter)
+            basic = topsText.editText;
+            data.getter = getter;
+            data.setter = setter;
+            string = summarizeValue(feval(getter{:}));
+            specific = {'UserData', data, 'String', string};
             args = cat(2, basic, specific);
         end
         
         function clickFcn(text, event)
             topsText.toggleOn(text)
-            pause(.025);
+            drawnow;
             
             cb = get(text, 'Callback');
             if ~isempty(cb)
@@ -83,7 +92,7 @@ classdef topsText
             topsText.swapColors(text(logical([v{:}])));
             set(text, 'Value', false, 'Selected', 'off');
         end
-
+        
         function toggleOn(text)
             v = get(text, {'Value'});
             topsText.swapColors(text(~logical([v{:}])));
@@ -95,7 +104,7 @@ classdef topsText
             set(text, {'ForegroundColor', 'BackgroundColor'}, cols);
         end
         
-        function editbeginFevalable(text, event)
+        function editBeginFcn(text, event)
             set(text, 'Value', true, ...
                 'Selected', 'on', ...
                 'Style', 'edit', ...
@@ -111,11 +120,31 @@ classdef topsText
                 'Selected', 'off', ...
                 'Style', 'text', ...
                 'Enable', 'inactive', ...
-                'ButtonDownFcn', @topsText.editbeginFevalable, ...
+                'ButtonDownFcn', @topsText.editBeginFcn, ...
                 'Callback', cb);
+            
+            data = get(text, 'UserData');
+            if ~isempty(data)
+                try
+                    string = get(text, 'String');
+                    newValue = eval(string);
+                    setter = data.setter;
+                    feval(setter{1}, newValue, setter{2:end});
+                    
+                catch err
+                    disp(sprintf('%s edit failed:', mfilename))
+                    disp(err.message)
+                end
+                
+                getter = data.getter;
+                newString = summarizeValue(feval(getter{:}));
+                set(text, 'String', newString);
+            end
+            
             if ~isempty(cb)
                 feval(cb, text, event);
             end
+
             drawnow;
         end
     end
