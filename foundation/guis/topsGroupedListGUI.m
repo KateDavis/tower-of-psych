@@ -179,7 +179,7 @@ classdef topsGroupedListGUI < topsGUI
             self.groupsGrid.deleteAllControls;
             for ii = 1:length(groups)
                 cb = @(obj, event)self.setCurrentGroup(groups{ii}, obj);
-                self.addBrowserButtonToGridRowWithNameAndCallback( ...
+                self.addGridButton( ...
                     self.groupsGrid, ii, groups{ii}, cb);
             end
             self.groupsGrid.repositionControls;
@@ -194,7 +194,7 @@ classdef topsGroupedListGUI < topsGUI
             self.mnemonicsGrid.deleteAllControls;
             for ii = 1:length(mnemonics)
                 cb = @(obj, event)self.setCurrentMnemonic(mnemonics{ii}, obj);
-                self.addBrowserButtonToGridRowWithNameAndCallback( ...
+                self.addGridButton( ...
                     self.mnemonicsGrid, ii, mnemonics{ii}, cb);
             end
             self.mnemonicsGrid.repositionControls;
@@ -204,7 +204,7 @@ classdef topsGroupedListGUI < topsGUI
             end
         end
         
-        function addBrowserButtonToGridRowWithNameAndCallback(self, grid, row, name, callback)
+        function addGridButton(self, grid, row, name, callback)
             toggle = topsText.toggleText;
             lookFeel = self.getLookAndFeelForValue(name);
             interactive = {'Callback', callback};
@@ -250,7 +250,7 @@ classdef topsGroupedListGUI < topsGUI
                     delimiter = sprintf('(%d of %d)', ii, n);
                     
                     args = self.getInteractiveUIControlArgsForValue(item(ii));
-
+                    
                     self.itemDetailGrid.newControlAtRowAndColumn( ...
                         row, [1 4], args{:}, 'String', delimiter);
                     
@@ -323,9 +323,7 @@ classdef topsGroupedListGUI < topsGUI
         end
         
         function repondToResize(self, figure, event)
-            self.groupsGrid.repositionControls;
-            self.mnemonicsGrid.repositionControls;
-            self.itemDetailGrid.repositionControls;
+            self.listPanel.repondToResize(figure, event);
         end
         
         function listenToGroupedList(self, groupedList)
@@ -343,7 +341,7 @@ classdef topsGroupedListGUI < topsGUI
             if logEntry.groupIsNew
                 row = 1 + size(self.groupsGrid.controls, 1);
                 cb = @(obj, event)self.setCurrentGroup(group, obj);
-                self.addBrowserButtonToGridRowWithNameAndCallback( ...
+                self.addGridButton( ...
                     self.groupsGrid, row, group, cb);
                 self.groupsGrid.repositionControls;
             end
@@ -351,7 +349,7 @@ classdef topsGroupedListGUI < topsGUI
             if ~isequal(self.currentMnemonic, mnemonic)
                 row = 1 + size(self.mnemonicsGrid.controls, 1);
                 cb = @(obj, event)self.setCurrentMnemonic(mnemonic, obj);
-                self.addBrowserButtonToGridRowWithNameAndCallback( ...
+                self.addGridButton( ...
                     self.mnemonicsGrid, row, mnemonic, cb);
                 self.mnemonicsGrid.repositionControls;
             end
