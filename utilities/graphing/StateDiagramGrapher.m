@@ -91,7 +91,7 @@ classdef StateDiagramGrapher < handle
                 fun = id.(funName);
                 if ~isempty(fun)
                     description{end+1} = sprintf('%s: %s', ...
-                        funName, stringifyValue(fun{1}));
+                        funName, summarizeValue(fun{1}));
                 end
             end
             

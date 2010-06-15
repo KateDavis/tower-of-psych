@@ -1,6 +1,6 @@
 %Summarize various data as strings
 %
-%   string = stringifyValue(value, n)
+%   string = summarizeValue(value, n)
 %
 %   @ param value any variable to summarize
 %   @ param n optional maximum length of returned string, default is 30;
@@ -13,7 +13,7 @@
 %
 %   @ingroup utilities
 
-function string = stringifyValue(value, n)
+function string = summarizeValue(value, n)
 
 if nargin < 2
     n = 30;
@@ -43,7 +43,7 @@ elseif isnumeric(value)
     else
         stringed = num2str(value);
         stringed(:,end+1) = ';';
-        string = sprintf('[%s]', stringifyValue(stringed', n-2));
+        string = sprintf('[%s]', summarizeValue(stringed', n-2));
     end
     
 elseif islogical(value)
@@ -57,7 +57,7 @@ elseif islogical(value)
         boolCell(value(1:m)) = deal({'true'});
         boolCell(~value(1:m)) = deal({'false'});
         boolStr = sprintf('%s ', boolCell{:});
-        string = sprintf('[%s]', stringifyValue(boolStr(1:end-1), n-2));
+        string = sprintf('[%s]', summarizeValue(boolStr(1:end-1), n-2));
     end
     
 elseif iscell(value)
@@ -65,9 +65,9 @@ elseif iscell(value)
     if isempty(value)
         string = '{}';
     elseif isscalar(value)
-        string = sprintf('{%s}', stringifyValue(value{1}, n-2));
+        string = sprintf('{%s}', summarizeValue(value{1}, n-2));
     else
-        string = sprintf('{%s, ...}', stringifyValue(value{1}, n-7));
+        string = sprintf('{%s, ...}', summarizeValue(value{1}, n-7));
     end
     
 elseif isa(value, 'function_handle')
@@ -76,10 +76,10 @@ elseif isa(value, 'function_handle')
     if ~strcmp(strFun(1), '@')
         strFun = sprintf('@%s', strFun);
     end
-    string = stringifyValue(strFun, n);
+    string = summarizeValue(strFun, n);
     
 else
     % last resort, type and size
     basic = sprintf('%s[%s]', class(value), num2str(size(value)));
-    string = stringifyValue(basic, n);
+    string = summarizeValue(basic, n);
 end

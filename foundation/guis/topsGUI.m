@@ -7,18 +7,6 @@ classdef topsGUI < handle
     % which are described here briefly.
     % @ingroup foundation
     
-    % @todo
-    % From looking through mtest code, it looks like the built-in which()
-    % can report subfunctions in an mfile:
-    % subs = which('-subfun', 'configureSpotsTasks')
-    % I wonder if I can use this to link to subfunctions from uicontrols.
-    %   - mfile = which('subfunction_name') doesn't seem to work.
-    %   - can subfunctoins report their mfile?  Perhaps,
-    %   info = functions(\@subfunction)
-    %   - if not, would have to build an index of subfunctions to lookup
-    %   mfile names, which probably isn't worth it.  Would also introduce
-    %   name collisions, which is definitely not worth gettin into.
-    
     properties(Hidden)
         % Matlab figure to show gui, and delete it when closed.
         figure;
@@ -148,10 +136,10 @@ classdef topsGUI < handle
                             obj = self.scrollables(ii).handle;
                             fcn = self.scrollables(ii).fcn;
                             break;
-
+                            
                         elseif current == self.figure
                             return
-
+                            
                         end
                         current = get(current, 'Parent');
                     end
@@ -212,6 +200,29 @@ classdef topsGUI < handle
             col = self.colors(hash, :);
         end
         
+        % Subclasses can use a standard look and feel to reflect values
+        % @param value any value or object to be represented with a
+        % uicontrol
+        % @details
+        % Returns a list of standard "look and feel" arguments for GUI
+        % controls, some of which may depend on the type and value of @a
+        % value.
+        function args = getLookAndFeelForValue(self, value)
+            if ischar(value)
+                col = self.getColorForString(value);
+                bg = self.lightColor;
+            else
+                col = [0 0 0];
+                bg = get(self.figure, 'Color');
+            end
+            string = summarizeValue(value);
+            args = { ...
+                'FontWeight', 'normal', ...
+                'ForegroundColor', col, ...
+                'BackgroundColor', bg, ...
+                'String', string};
+        end
+        
         % Subclasses can present standard controls to represent values
         % @param value any value or object to be represented with a
         % uicontrol
@@ -221,20 +232,9 @@ classdef topsGUI < handle
         % example, strings get colored in using getColorForString().  Other
         % values get summarized as black strings.
         function args = getDescriptiveUIControlArgsForValue(self, value)
-            if ischar(value)
-                col = self.getColorForString(value);
-                bg = self.lightColor;
-                string = value;
-            else
-                col = [0 0 0];
-                bg = get(self.figure, 'Color');
-                string = stringifyValue(value);
-            end
             static = topsText.staticText;
-            more = {'String', string, ...
-                'BackgroundColor', bg, ...
-                'ForegroundColor', col};
-            args = cat(2, static, more);
+            lookFeel = self.getLookAndFeelForValue(value);
+            args = cat(2, static, lookFeel);
         end
         
         % Subclasses can present standard controls to interact with values
@@ -242,26 +242,15 @@ classdef topsGUI < handle
         % uicontrol
         % @details
         % Returns a list of standard arguments to represent and interact
-        % with @a value.  The arguments will reflect the type of
-        % @a value.  For example, strings get colored in using
-        % getColorForString().  Strings and function handles match files on
+        % with @a value.  Strings and function handles match files on
         % Matlab's path become clickable links for opening the file in
-        % Matlab.  Instances of tops foundation classes also become bold,
-        % clickable links, to other topsGUI subclasses.
+        % Matlab.  Objects with a gui() method, including topsFoundataion
+        % objects, also become bold links for launching object guis.
         % @details
         % If there's no good way to ineract with @a value, returns
         % the same arguments as getDescriptiveUIControlArgsForValue.
         function args = getInteractiveUIControlArgsForValue(self, value)
-            if ischar(value)
-                col = self.getColorForString(value);
-                bg = self.lightColor;
-                string = value;
-            else
-                col = [0 0 0];
-                bg = get(self.figure, 'Color');
-                string = stringifyValue(value);
-            end
-
+            callback = [];
             if isscalar(value) && any(strcmp(methods(value), 'gui'))
                 % open up one of the topsFoundataion guis
                 callback = @(obj,event) value.gui;
@@ -271,29 +260,50 @@ classdef topsGUI < handle
                 name = func2str(value);
                 if exist(name, 'file') || exist([name, '.m'], 'file')
                     callback = @(obj,event) open(name);
-                else
-                    args = self.getDescriptiveUIControlArgsForValue(value);
-                    return;
                 end
                 
             elseif ischar(value) && ~isempty(which(value))
                 % open up the m-file
                 callback = @(obj,event) open(value);
-                
-            else
-                % fallback on descripive uicontrol
-                args = self.getDescriptiveUIControlArgsForValue(value);
-                return;
             end
             
-            % 'inactive' mode actually enables the ButtonDownFcn
-            click = topsText.clickText;
-            more = {'String', string, ...
-                'FontWeight', 'bold', ...
-                'Callback', callback, ...
-                'BackgroundColor', bg, ...
-                'ForegroundColor', col};
-            args = cat(2, click, more);
+            if isempty(callback)
+                % fallback on non-interactive control
+                args = self.getDescriptiveUIControlArgsForValue(value);
+
+            else
+                click = topsText.clickText;
+                lookFeel = self.getLookAndFeelForValue(value);
+                interactive = { ...
+                    'FontWeight', 'bold', ...
+                    'Callback', callback};
+                args = cat(2, click, lookFeel, interactive);
+            end
+        end
+        
+        % Subclasses can present standard controls for editing values
+        % @param getter fevalable cell array to invoke that returns the
+        % value to be displayed
+        % @param setter fevalable cell array to invoke to set a new value
+        % from user input (should expect the new value as the first
+        % argument).
+        % @details
+        % Returns a list of standard arguments to represent and allow
+        % editing of a value.  The value displayed will reflect the return
+        % value of the @a getter fevalable.
+        % @details
+        % The user may click inside the control to type a new string, which
+        % will be passed to Matlab's built-in eval() function.  The
+        % eval() result wil be passed to the @a setter function to update
+        % the value.
+        % @details
+        % The control will not attempt to validate user inputs.  It will
+        % attempt to catch errors and display them, and only invoke the @a
+        % setter upon success.
+        function args = getEditableUIControlArgsWithGetterAndSetter(self, getter, setter)
+            editable = topsText.editTextWithGetterAndSetter(getter, setter);
+            lookFeel = self.getLookAndFeelForValue(feval(getter{:}));
+            args = cat(2, editable, lookFeel);
         end
     end
 end

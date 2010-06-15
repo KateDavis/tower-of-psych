@@ -63,7 +63,7 @@ set(table, 'Data', data);
 
 function value = makeTableReady(value)
 if ~isnumeric(value) && ~islogical(value) && ~ischar(value)
-    value = stringifyValue(value);
+    value = summarizeValue(value);
 end
 
 function tableResize(fig, event, table)
