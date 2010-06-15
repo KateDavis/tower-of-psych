@@ -3,6 +3,7 @@ classdef TestTopsGroupedListGUI < TestCase
     properties
         groupedList;
         groupedListGUI;
+        groupedListPanel;
     end
     
     methods
@@ -13,6 +14,7 @@ classdef TestTopsGroupedListGUI < TestCase
         function setUp(self)
             self.groupedList = topsGroupedList;
             self.groupedListGUI = topsGroupedListGUI(self.groupedList);
+            self.groupedListPanel = self.groupedListGUI.listPanel;
         end
         
         function tearDown(self)
@@ -30,15 +32,15 @@ classdef TestTopsGroupedListGUI < TestCase
         end
         
         function testInitialNumberOfControls(self)
-            controls = self.groupedListGUI.groupsGrid.controls;
+            controls = self.groupedListPanel.groupsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 0, 'should start with no groups controls');
             
-            controls = self.groupedListGUI.mnemonicsGrid.controls;
+            controls = self.groupedListPanel.mnemonicsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 0, 'should start with no mnemonics controls');
             
-            controls = self.groupedListGUI.itemDetailGrid.controls;
+            controls = self.groupedListPanel.itemDetailGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 0, 'should start with no item detail controls');
         end
@@ -49,7 +51,7 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic(2,1,2);
             self.groupedList.addItemToGroupWithMnemonic(3,2,3);
             
-            controls = self.groupedListGUI.groupsGrid.controls;
+            controls = self.groupedListPanel.groupsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 2, 'should now have two groups controls');
         end
@@ -59,7 +61,7 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic(2,2,2);
             self.groupedList.addItemToGroupWithMnemonic(3,3,3);
             
-            controls = self.groupedListGUI.groupsGrid.controls;
+            controls = self.groupedListPanel.groupsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 3, 'should now have three controls for numbered groups');
         end
@@ -69,7 +71,7 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic('2','2','2');
             self.groupedList.addItemToGroupWithMnemonic('3','3','3');
             
-            controls = self.groupedListGUI.groupsGrid.controls;
+            controls = self.groupedListPanel.groupsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 3, 'should now have three controls for string-named groups');
         end
@@ -80,8 +82,8 @@ classdef TestTopsGroupedListGUI < TestCase
             s.three = 'three';
             self.groupedList.addItemToGroupWithMnemonic(s, 'struct', 's');
             
-            self.groupedListGUI.setCurrentGroup('struct');
-            controls = self.groupedListGUI.itemDetailGrid.controls;
+            self.groupedListPanel.setCurrentGroup('struct');
+            controls = self.groupedListPanel.itemDetailGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize struct item');
         end
@@ -97,8 +99,8 @@ classdef TestTopsGroupedListGUI < TestCase
 
             self.groupedList.addItemToGroupWithMnemonic(s, 'struct', 's');
             
-            self.groupedListGUI.setCurrentGroup('struct');
-            controls = self.groupedListGUI.itemDetailGrid.controls;
+            self.groupedListPanel.setCurrentGroup('struct');
+            controls = self.groupedListPanel.itemDetailGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize struct item');
         end
@@ -109,8 +111,8 @@ classdef TestTopsGroupedListGUI < TestCase
             c{3} = 'three';
             self.groupedList.addItemToGroupWithMnemonic(c, 'cell', 'c');
             
-            self.groupedListGUI.setCurrentGroup('cell');
-            controls = self.groupedListGUI.itemDetailGrid.controls;
+            self.groupedListPanel.setCurrentGroup('cell');
+            controls = self.groupedListPanel.itemDetailGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize cell item');
         end
@@ -119,8 +121,8 @@ classdef TestTopsGroupedListGUI < TestCase
             o = self.groupedListGUI;
             self.groupedList.addItemToGroupWithMnemonic(o, 'object', 'o');
             
-            self.groupedListGUI.setCurrentGroup('object');
-            controls = self.groupedListGUI.itemDetailGrid.controls;
+            self.groupedListPanel.setCurrentGroup('object');
+            controls = self.groupedListPanel.itemDetailGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize object item');
         end
@@ -128,8 +130,8 @@ classdef TestTopsGroupedListGUI < TestCase
         function testSendItemToWorkspace(self)
             number = 4;
             self.groupedList.addItemToGroupWithMnemonic(number, 'numbers', 'number');
-            self.groupedListGUI.setCurrentGroup('numbers');
-            self.groupedListGUI.currentItemToBaseWorkspace;
+            self.groupedListPanel.setCurrentGroup('numbers');
+            self.groupedListPanel.currentItemToBaseWorkspace;
             numberExists = logical(evalin('base', 'exist(''number'');'));
             assertTrue(numberExists, 'should have variable "number" in base workspace');
             
