@@ -26,7 +26,14 @@ classdef topsGUI < handle
         
         % Struct array of graphical children to receive mouse scroll
         % events.
+        % @details
+        % addScrollableChild() appends elements to scrollables.
         scrollables;
+        
+        % array of handles to pushbutton uicontrol objects
+        % @details
+        % addButton() appends elements to buttons.
+        buttons;
         
         % Same offwhite color used by all subclasses.
         lightColor = [1 1 .98];
@@ -86,6 +93,8 @@ classdef topsGUI < handle
             else
                 self.figure = figure;
             end
+            self.scrollables = [];
+            self.buttons = [];
             set(self.figure, ...
                 'CloseRequestFcn', @(obj, event) delete(self), ...
                 'Renderer', 'zbuffer', ...
@@ -158,8 +167,22 @@ classdef topsGUI < handle
             end
         end
         
-        % Add a "scrollable" graphical child and a callback to the
-        % scrollables struct.
+        % Add a child to receive mouse scroll events.
+        % @param child a graphical child that may receive mouse scroll
+        % events
+        % @param scrollFcn the callback that should handle mouse scroll
+        % events, should expect @a child and a Matlab event as the first
+        % two arguments.
+        % @details
+        % topsGUI objects receive mouse scroll events from Matlab at the
+        % figure level.  When @a child or one of its parents is the
+        % figure's CurrentObject, this topsGUI will invoke the
+        % corresponding @a scrollFcn.
+        % @details
+        % It's a pain that Matlab only updates CurrentObject after a mouse
+        % click.  It's also a pain that Matlab makes it hard/slow to get
+        % the pixel positions of graphical children (esp. in batches),
+        % which makes CurrentPoint a lot less useful.
         function addScrollableChild(self, child, scrollFcn)
             s.handle = child;
             s.fcn = scrollFcn;
@@ -168,6 +191,28 @@ classdef topsGUI < handle
             else
                 self.scrollables(end+1) = s;
             end
+        end
+        
+        % Add a button with given position and callback.
+        % @param position normalized [x y w h] where to place the new
+        % button within this gui's figure.
+        % @param name string name to show on the new button
+        % @param callback to invoke when the button is pressed, should
+        % expect a handle to the button and a Matlab event as the first
+        % two arguments.
+        % @details
+        % Returns the handle to a new uicontrol pushbutton object which has
+        % this topsGUI's figure as its parent.
+        function b = addButton(self, position, name, callback)
+            b = uicontrol( ...
+                'Parent', self.figure, ...
+                'Callback', callback, ...
+                'Style', 'pushbutton', ...
+                'Units', 'normalized', ...
+                'String', name, ...
+                'Position', position, ...
+                'HorizontalAlignment', 'center');
+            self.buttons(end+1) = b;
         end
         
         % Subclass may redefine their title, which is passed to the figure
@@ -217,7 +262,6 @@ classdef topsGUI < handle
             end
             string = summarizeValue(value);
             args = { ...
-                'FontWeight', 'normal', ...
                 'ForegroundColor', col, ...
                 'BackgroundColor', bg, ...
                 'String', string};
@@ -270,14 +314,11 @@ classdef topsGUI < handle
             if isempty(callback)
                 % fallback on non-interactive control
                 args = self.getDescriptiveUIControlArgsForValue(value);
-
+                
             else
-                click = topsText.clickText;
+                click = topsText.clickTextWithCallback(callback);
                 lookFeel = self.getLookAndFeelForValue(value);
-                interactive = { ...
-                    'FontWeight', 'bold', ...
-                    'Callback', callback};
-                args = cat(2, click, lookFeel, interactive);
+                args = cat(2, click, lookFeel);
             end
         end
         
