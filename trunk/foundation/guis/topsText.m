@@ -51,7 +51,7 @@ classdef topsText
                 'TooltipString', 'toggle me'};
             args = cat(2, basic, specific);
         end
-
+        
         function args = toggleTextWithCallback(callback)
             basic = topsText.toggleText;
             specific = {'Callback', callback};
@@ -60,7 +60,8 @@ classdef topsText
         
         function args = editText
             basic = topsText.interactiveText;
-            specific = {'ButtonDownFcn', @topsText.editBeginFcn, ...
+            specific = { ...
+                'ButtonDownFcn', @topsText.editBeginFcn, ...
                 'TooltipString', 'edit me'};
             args = cat(2, basic, specific);
         end
@@ -122,6 +123,7 @@ classdef topsText
             set(text, 'Value', true, ...
                 'Selected', 'on', ...
                 'Style', 'edit', ...
+                'HorizontalAlignment', 'center', ...
                 'Enable', 'on', ...
                 'ButtonDownFcn', get(text, 'Callback'), ...
                 'Callback', @topsText.editEndFcn);
@@ -133,6 +135,7 @@ classdef topsText
             set(text, 'Value', false, ...
                 'Selected', 'off', ...
                 'Style', 'text', ...
+                'HorizontalAlignment', 'left', ...
                 'Enable', 'inactive', ...
                 'ButtonDownFcn', @topsText.editBeginFcn, ...
                 'Callback', cb);
@@ -152,13 +155,16 @@ classdef topsText
                 
                 getter = data.getter;
                 newString = summarizeValue(feval(getter{:}));
-                set(text, 'String', newString);
+                
+                if ishandle(text)
+                    set(text, 'String', newString);
+                end
             end
             
-            if ~isempty(cb)
+            if ~isempty(cb) && ishandle(text)
                 feval(cb, text, event);
             end
-
+            
             drawnow;
         end
     end

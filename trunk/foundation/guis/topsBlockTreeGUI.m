@@ -203,16 +203,15 @@ classdef topsBlockTreeGUI < topsGUI
         
         function listenToBlockTree(self, block)
             props = properties(block);
-            n = self.blockTreeCount;
             for ii = 1:length(props)
-                self.listeners(n).(props{ii}) = block.addlistener( ...
-                    props{ii}, 'PostSet', ...
+                listener = block.addlistener(props{ii}, 'PostSet', ...
                     @(source, event)self.hearBlockPropertyChange(source, event));
+                self.addListenerWithName(listener, props{ii});
             end
             
-            self.listeners(n).BlockStart = block.addlistener( ...
-                'BlockStart', ...
+            listener = block.addlistener('BlockStart', ...
                 @(source, event)self.hearBlockStart(source, event));
+            self.addListenerWithName(listener, 'BlockStart');
         end
         
         function hearBlockPropertyChange(self, metaProp, event)
