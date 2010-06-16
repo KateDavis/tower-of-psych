@@ -65,6 +65,12 @@ classdef topsGroupedListPanel < handle
         
         % ScrollingControlGrid for the "item" column at right
         itemDetailGrid;
+        
+        % uicontrol checkbox to select editable mode
+        itemEditableControl;
+        
+        % index of event listener added to parentGUI
+        listenerIndex;
     end
     
     methods
@@ -98,6 +104,22 @@ classdef topsGroupedListPanel < handle
             self.groupedList = groupedList;
             self.listenToGroupedList(groupedList);
             self.repopulateGroupsGrid;
+        end
+        
+        % Unpopulate this panel so that it uses no topsGroupedList
+        % @details
+        % Clears this panel's controls of data and unbinds them from the
+        % current groupedList.  This allows the groupedList to be deleted,
+        % and possibly swapped with another using
+        % populateWithGroupedList(), without causing an error for the panel
+        % controls
+        function unpopulate(self)
+            self.groupedList = [];
+            if ~isempty(self.listenerIndex)
+                self.parentGUI.deleteListenerWithNameAndIndex( ...
+                    'NewAddition', self.listenerIndex);
+            end
+            self.createWidgets;
         end
         
         % Create a new ui panel and add unpopulated controls to it.
@@ -160,6 +182,16 @@ classdef topsGroupedListPanel < handle
             self.parentGUI.addScrollableChild(self.mnemonicsGrid.panel, ...
                 {@ScrollingControlGrid.respondToSliderOrScroll, ...
                 self.mnemonicsGrid});
+
+            itemToBase = @(obj, event)self.currentItemToBaseWorkspace;
+            self.itemToWorkspaceButton = uicontrol( ...
+                'Parent', self.panel, ...
+                'Callback', itemToBase, ...
+                'Style', 'pushbutton', ...
+                'Units', 'normalized', ...
+                'String', 'to workspace', ...
+                'Position', [right-width-width/2, yDiv, width/2, top-yDiv], ...
+                'HorizontalAlignment', 'left');
             
             self.itemLabel = uicontrol( ...
                 'Parent', self.panel, ...
@@ -169,34 +201,47 @@ classdef topsGroupedListPanel < handle
                 'Position', [right-width, yDiv, width/2, top-yDiv], ...
                 'HorizontalAlignment', 'left');
             
-            itemToBase = @(obj, event)self.currentItemToBaseWorkspace;
-            self.itemToWorkspaceButton = uicontrol( ...
-                'Parent', self.panel, ...
-                'Callback', itemToBase, ...
-                'Style', 'pushbutton', ...
-                'Units', 'normalized', ...
-                'String', 'to workspace', ...
-                'Position', [right-width/2, yDiv, width/2, top-yDiv], ...
-                'HorizontalAlignment', 'left');
-            
             self.itemDetailGrid = ScrollingControlGrid( ...
                 self.panel, [right-width, bottom, width, yDiv-bottom]);
             self.parentGUI.addScrollableChild(self.itemDetailGrid.panel, ...
                 {@ScrollingControlGrid.respondToSliderOrScroll, ...
                 self.itemDetailGrid});
             self.itemDetailGrid.rowHeight = 1.5;
+            
+            setEditable = @(obj, event)self.setItemsAreEditable(get(obj, 'Value'));
+            self.itemEditableControl = uicontrol( ...
+                'Parent', self.panel, ...
+                'Callback', setEditable, ...
+                'Value', self.itemsAreEditable, ...
+                'Style', 'togglebutton', ...
+                'Units', 'normalized', ...
+                'String', 'edit', ...
+                'Position', [right-width/2, yDiv, width/2, top-yDiv], ...
+                'HorizontalAlignment', 'left');
+        end
+        
+        function setItemsAreEditable(self, itemsAreEditable)
+            self.itemsAreEditable = itemsAreEditable;
+        end
+        
+        function set.itemsAreEditable(self, itemsAreEditable)
+            self.itemsAreEditable = itemsAreEditable;
+            set(self.itemEditableControl, 'Value', itemsAreEditable);
+            if ~isempty(self.currentMnemonic)
+                self.showDetailsForCurrentItem;
+            end
         end
         
         function set.groupString(self, groupString)
             self.groupString = groupString;
             set(self.groupLabel, 'String', groupString);
         end
-
+        
         function set.mnemonicString(self, mnemonicString)
             self.mnemonicString = mnemonicString;
             set(self.mnemonicLabel, 'String', mnemonicString);
         end
-
+        
         function set.itemString(self, itemString)
             self.itemString = itemString;
             set(self.itemLabel, 'String', itemString);
@@ -314,24 +359,24 @@ classdef topsGroupedListPanel < handle
                     refPath(1:2) = {'()',{ii}};
                     delimiter = sprintf('(%d of %d)', ii, n);
                     
-                    args = self.getModalControlArgs( ...
-                        group, mnemonic, item, refPath);
+                    args = self.parentGUI.getDescriptiveUIControlArgsForValue(delimiter);
                     self.itemDetailGrid.newControlAtRowAndColumn( ...
-                        row, [1 4], args{:}, 'String', delimiter);
+                        row, [1 4], args{:});
                     
                     for jj = 1:length(fn)
                         % field name and value
                         row = row+1;
                         refPath(3:4) = {'.',fn{jj}};
                         args = self.parentGUI.getDescriptiveUIControlArgsForValue(fn{jj});
+                        rightSide = {'HorizontalAlignment', 'right'};
                         self.itemDetailGrid.newControlAtRowAndColumn( ...
-                            row, [2 width], args{:});
+                            row, [2 width], args{:}, rightSide{:});
                         
                         row = row+1;
                         args = self.getModalControlArgs( ...
                             group, mnemonic, item(ii).(fn{jj}), refPath);
                         self.itemDetailGrid.newControlAtRowAndColumn( ...
-                            row, [2 width], args{:}, 'HorizontalAlignment', 'right');
+                            row, [2 width], args{:});
                     end
                 end
                 
@@ -357,25 +402,27 @@ classdef topsGroupedListPanel < handle
         % creates or overwrites a variable named "item".  Prints a message
         % about which name was used.
         function currentItemToBaseWorkspace(self)
-            item = self.groupedList.getItemFromGroupWithMnemonic( ...
-                self.currentGroup, self.currentMnemonic);
-            if isvarname(self.currentMnemonic)
-                name = self.currentMnemonic;
-            else
-                name = 'item';
+            if isobject(self.groupedList)
+                item = self.groupedList.getItemFromGroupWithMnemonic( ...
+                    self.currentGroup, self.currentMnemonic);
+                if isvarname(self.currentMnemonic)
+                    name = self.currentMnemonic;
+                else
+                    name = 'item';
+                end
+                assignin('base', name, item);
+                disp(sprintf('sent "%s" to base workspace', name));
             end
-            assignin('base', name, item);
-            disp(sprintf('sent "%s" to base workspace', name));
         end
         
         function listenToGroupedList(self, groupedList)
-            self.parentGUI.deleteListeners;
-            self.parentGUI.listeners.NewAddition = ...
-                groupedList.addlistener('NewAddition', ...
-                @(source, event)self.hearNewListAddition(source, event));
+            listener = groupedList.addlistener('NewAddition', ...
+                @(source, event)self.hearNewAddition(source, event));
+            ii = self.parentGUI.addListenerWithName(listener, 'NewAddition');
+            self.listenerIndex = ii;
         end
         
-        function hearNewListAddition(self, groupedList, event)
+        function hearNewAddition(self, groupedList, event)
             logEntry = event.userData;
             group = logEntry.group;
             mnemonic = logEntry.mnemonic;
@@ -388,7 +435,10 @@ classdef topsGroupedListPanel < handle
                 self.groupsGrid.repositionControls;
             end
             
-            if ~isequal(self.currentMnemonic, mnemonic)
+            if isequal(self.currentMnemonic, mnemonic)
+                self.showDetailsForCurrentItem;
+
+            else
                 row = 1 + size(self.mnemonicsGrid.controls, 1);
                 cb = @(obj, event)self.setCurrentMnemonic(mnemonic, obj);
                 self.addGridButton( ...

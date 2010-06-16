@@ -50,7 +50,7 @@ classdef topsGUI < handle
             self.setupFigure;
         end
         
-        % Automatically closes the figure and deletes ny listeners used by
+        % Automatically closes the figure and deletes any listeners used by
         % a subclass.
         function delete(self)
             if ~isempty(self.figure) && ishandle(self.figure);
@@ -65,6 +65,28 @@ classdef topsGUI < handle
                 delete(self)
             end
         end
+        
+        % Keep track of listeners by index and name.
+        function ii = addListenerWithName(self, listener, name)
+            if isfield(self.listeners, name)
+                ii = length(self.listeners.(name)) + 1;
+                self.listeners.(name)(ii) = listener;
+
+            else
+                ii = 1;
+                self.listeners.(name) = listener;
+            end
+        end
+        
+        % Delete a listener by name and index.
+        function ii = deleteListenerWithNameAndIndex(self, name, ii)
+            if isfield(self.listeners, name)
+                if ii <= length(self.listeners.(name))
+                    delete(self.listeners.(name)(ii));
+                    self.listeners.(name)(ii) = [];
+                end
+            end
+        end        
         
         function deleteListeners(self)
             % would like to use struct2array, but
@@ -302,7 +324,10 @@ classdef topsGUI < handle
             elseif isscalar(value) && isa(value, 'function_handle')
                 % open a funciton's m-file
                 name = func2str(value);
-                if exist(name, 'file') || exist([name, '.m'], 'file')
+                mName = [name, '.m'];
+                if exist(mName, 'file')
+                    callback = @(obj,event) open(mName);
+                elseif exist(name, 'file')
                     callback = @(obj,event) open(name);
                 end
                 
