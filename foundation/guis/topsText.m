@@ -14,6 +14,7 @@ classdef topsText
                 'HitTest', 'off', ...
                 'TooltipString', '', ...
                 'HorizontalAlignment', 'left', ...
+                'FontWeight', 'normal', ...
                 };
         end
         
@@ -26,6 +27,7 @@ classdef topsText
                 'Selected', 'off', ...
                 'HitTest', 'on', ...
                 'HorizontalAlignment', 'left', ...
+                'FontWeight', 'bold', ...
                 };
         end
         
@@ -37,10 +39,22 @@ classdef topsText
             args = cat(2, basic, specific);
         end
         
+        function args = clickTextWithCallback(callback)
+            basic = topsText.clickText;
+            specific = {'Callback', callback};
+            args = cat(2, basic, specific);
+        end
+        
         function args = toggleText
             basic = topsText.interactiveText;
             specific = {'ButtonDownFcn', @topsText.toggleFcn, ...
                 'TooltipString', 'toggle me'};
+            args = cat(2, basic, specific);
+        end
+
+        function args = toggleTextWithCallback(callback)
+            basic = topsText.toggleText;
+            specific = {'Callback', callback};
             args = cat(2, basic, specific);
         end
         

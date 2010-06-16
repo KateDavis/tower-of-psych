@@ -187,6 +187,21 @@ classdef topsGroupedListPanel < handle
             self.itemDetailGrid.rowHeight = 1.5;
         end
         
+        function set.groupString(self, groupString)
+            self.groupString = groupString;
+            set(self.groupLabel, 'String', groupString);
+        end
+
+        function set.mnemonicString(self, mnemonicString)
+            self.mnemonicString = mnemonicString;
+            set(self.mnemonicLabel, 'String', mnemonicString);
+        end
+
+        function set.itemString(self, itemString)
+            self.itemString = itemString;
+            set(self.itemLabel, 'String', itemString);
+        end
+        
         function setCurrentGroup(self, group, button)
             self.currentGroup = group;
             self.repopulateMnemonicsGrid;
@@ -239,14 +254,12 @@ classdef topsGroupedListPanel < handle
         end
         
         function addGridButton(self, grid, row, name, callback)
-            toggle = topsText.toggleText;
+            toggle = topsText.toggleTextWithCallback(callback);
             lookFeel = self.parentGUI.getLookAndFeelForValue(name);
-            interactive = {'Callback', callback};
             grid.newControlAtRowAndColumn( ...
                 row, 1, ...
                 toggle{:}, ...
-                lookFeel{:}, ...
-                interactive{:});
+                lookFeel{:});
         end
         
         function args = getModalControlArgs(self, group, mnemonic, item, refPath)
