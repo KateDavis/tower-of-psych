@@ -72,16 +72,16 @@ classdef topsStateMachine < topsFoundation
         sharedEntryFevalables = {};
         
         % cell array of strings, names given to functions which are invoked
-        % whenever exiting any state.  sharedexitFevalableNames are parallel to
-        % sharedexitFevalables.  See addSharedFcn() for details about shared
+        % whenever exiting any state.  sharedExitFevalableNames are parallel to
+        % sharedExitFevalables.  See addSharedFcn() for details about shared
         % entry and exit funcions.
-        sharedexitFevalableNames = {};
+        sharedExitFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
-        % exiting any state.  sharedexitFevalableNames are parallel to
-        % sharedexitFevalables.  See addSharedFcn() for details about shared
+        % exiting any state.  sharedExitFevalableNames are parallel to
+        % sharedExitFevalables.  See addSharedFcn() for details about shared
         % entry and exit funcions.
-        sharedexitFevalables = {};
+        sharedExitFevalables = {};
     end
     
     properties (Hidden)
@@ -176,9 +176,9 @@ classdef topsStateMachine < topsFoundation
         % default values will be used.
         % @details
         % Fields of stateInfo may correspond to one of the names in
-        % sharedEntryFevalableNames or sharedexitFevalableNames.  Values in these
-        % fields will be passed as state-specific arguments to the shared
-        % function.
+        % sharedEntryFevalableNames or sharedExitFevalableNames.  Values in
+        % these fields will be passed as state-specific arguments to the
+        % shared function.
         % @details
         % Returns the index into allStates where the new state was appended
         % or inserted.
@@ -187,10 +187,10 @@ classdef topsStateMachine < topsFoundation
             % shared entry and exit functions.
             allowedFields = cat(2, self.stateFields, ...
                 self.sharedEntryFevalableNames, ...
-                self.sharedexitFevalableNames);
+                self.sharedExitFevalableNames);
             allowedDefaults = cat(2, self.stateDefaults, ...
                 cell(size(self.sharedEntryFevalableNames)), ...
-                cell(size(self.sharedexitFevalableNames)));
+                cell(size(self.sharedExitFevalableNames)));
             
             % pick stateInfo fields that match allowed fields
             infoFields = fieldnames(stateInfo);
@@ -218,6 +218,39 @@ classdef topsStateMachine < topsFoundation
             self.stateNameToIndex(newState.name) = allStateIndex;
         end
         
+        % Edit fields of an existing state.
+        % @param stateName string name of an existing state in allStates
+        % @param varargin flexible number of field-value paris to edit the
+        % fields of the @a stateName state.
+        % @details
+        % Assigns the given values to the given fields of the existing
+        % state that has the name @a stateName.  @a varargin represents a
+        % flexible number of traling arguments passed to editStateByName().
+        % The first argument in each pair should be one of the state
+        % fields in allStates.  These include the default state fields
+        % described for addField() and the names of a shared fevalables as
+        % described for addSharedFevalableWithName().  The second 
+        % argument in each pair should be a value to assign to the named
+        % field.
+        % @details
+        % Editing the @b name field of a state might cause the state
+        % machine to misbehave.
+        % @details
+        % Returns the index into allStates of the @a stateName state.  If
+        % @a stateName is not the name of an existing state, returns [].
+        function allStateIndex = editStateByName(self, stateName, varargin)
+            [isState, allStateIndex] = self.isStateName(stateName);
+            if isState
+                for ii = 1:2:length(varargin)
+                    field = varargin{ii};
+                    if isfield(self.allStates, field)
+                        self.allStates(allStateIndex).(field) = ...
+                            varargin{ii+1};
+                    end
+                end
+            end
+        end
+        
         % Add a function to be invoked during every state.
         % @param fcn a fevalable cell array to invoke during every state
         % @param name string name to give to @a fcn
@@ -228,7 +261,7 @@ classdef topsStateMachine < topsFoundation
         % 'entry'.
         % @details
         % Adds @a fcn to the state machine's sharedEntryFevalables or
-        % sharedexitFevalables.  These functions are called for every state, in
+        % sharedExitFevalables.  These functions are called for every state, in
         % addition to each state's own entry and exit.
         % @details
         % Each state may specify additional arguments to pass to @a fcn.
@@ -256,14 +289,14 @@ classdef topsStateMachine < topsFoundation
                     self.sharedEntryFevalables{index} = fcn;
                     
                 case 'exit'
-                    existing = strcmp(self.sharedexitFevalableNames, name);
+                    existing = strcmp(self.sharedExitFevalableNames, name);
                     if any(existing)
                         index = find(existing, 1);
                     else
-                        index = length(self.sharedexitFevalableNames) + 1;
+                        index = length(self.sharedExitFevalableNames) + 1;
                     end
-                    self.sharedexitFevalableNames{index} = name;
-                    self.sharedexitFevalables{index} = fcn;
+                    self.sharedExitFevalableNames{index} = name;
+                    self.sharedExitFevalables{index} = fcn;
             end
             
             if ~isempty(self.allStates) && ~isfield(self.allStates, name)
@@ -323,7 +356,7 @@ classdef topsStateMachine < topsFoundation
                     return;
                 end
             end
-
+            
             % poll for state timed out
             if feval(self.clockFunction) >= self.currentTimeoutTime
                 nextName = self.allStates(self.currentIndex).next;
@@ -378,10 +411,10 @@ classdef topsStateMachine < topsFoundation
             self.currentEntryTime = [];
             self.currentTimeoutTime = [];
             
-            if ~isempty(self.sharedexitFevalableNames)
+            if ~isempty(self.sharedExitFevalableNames)
                 self.fevalSharedAndLog(currentState, ...
-                    self.sharedexitFevalableNames, ...
-                    self.sharedexitFevalables);
+                    self.sharedExitFevalableNames, ...
+                    self.sharedExitFevalables);
             end
             
             self.fevalForStateAndLog( ...

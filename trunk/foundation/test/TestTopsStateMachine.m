@@ -99,6 +99,34 @@ classdef TestTopsStateMachine < TestCase
             end
         end
         
+        function testEditState(self)
+            stateName = 'middle';
+            timeout = 0;
+            statesInfo = { ...
+                'name',     'next',     'timeout'; ...
+                'beginning',stateName,   timeout; ...
+                stateName,	'end',      timeout; ...
+                'end',      '',         timeout; ...
+                };
+            self.stateMachine.addMultipleStates(statesInfo);
+            
+            info = self.stateMachine.getStateInfoByName(stateName);
+            assertEqual(info.timeout, timeout, ...
+                'state should have the original timeout value')
+            
+            newTimeout = 200;
+            self.stateMachine.editStateByName(stateName, ...
+                'timeout', newTimeout);
+            newInfo = self.stateMachine.getStateInfoByName(stateName);
+            assertEqual(newInfo.timeout, newTimeout, ...
+                'state should have a new timeout value')
+            
+            index = self.stateMachine.editStateByName('bogus', ...
+                'timeout', newTimeout);
+            assertTrue(isempty(index), ...
+                'editing a nonexisting state should return empty')
+        end
+        
         function testInputBranching(self)
             % a batch of boring states
             defaultEnd = 'end';
@@ -173,7 +201,6 @@ classdef TestTopsStateMachine < TestCase
                 * (enterNum + exitNum + extraNum);
             assertEqual(expectedCount, self.eventCount, ...
                 'wrong count of state common function calls');
-
         end
         
         function countSharedFunctionCall(self, number)
