@@ -161,8 +161,12 @@ classdef topsText
                 end
             end
             
-            if ~isempty(cb) && ishandle(text)
-                feval(cb, text, event);
+            if ~isempty(cb)
+                if ishandle(text)
+                    feval(cb, text, event);
+                else
+                    feval(cb, [], event);
+                end
             end
             
             drawnow;

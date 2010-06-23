@@ -323,17 +323,18 @@ classdef topsGUI < handle
                 
             elseif isscalar(value) && isa(value, 'function_handle')
                 % open a funciton's m-file
-                name = func2str(value);
-                mName = [name, '.m'];
+                mName = [func2str(value), '.m'];
                 if exist(mName, 'file')
                     callback = @(obj,event) open(mName);
-                elseif exist(name, 'file')
-                    callback = @(obj,event) open(name);
                 end
                 
-            elseif ischar(value) && ~isempty(which(value))
-                % open up the m-file
-                callback = @(obj,event) open(value);
+            elseif ischar(value)
+                % open up an m-file
+                mName = [value, '.m'];
+                if exist(mName, 'file')
+                    callback = @(obj,event) open(mName);
+                end
+
             end
             
             if isempty(callback)

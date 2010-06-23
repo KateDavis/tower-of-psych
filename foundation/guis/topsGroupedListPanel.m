@@ -71,6 +71,23 @@ classdef topsGroupedListPanel < handle
         
         % index of event listener added to parentGUI
         listenerIndex;
+        
+        % callback to get the value of an editable item
+        % @details
+        % Called from editable topsText controls, should expect a
+        % topsGroupedList, a group, and a mnemonic as the first three
+        % arguments.  Should expect [] or a substruct()-style struct as the
+        % fourth argument.
+        getterFunction = @topsGroupedListPanel.getValueOfListItem;
+        
+        % callback to set the value of an editable item
+        % @details
+        % Called from editable topsText controls, should expect a value as
+        % the first argument.  Should expect a topsGroupedList, a group,
+        % and a mnemonic as the second, third, and fourth arguments.
+        % Should expect [] or a substruct()-style struct as the fifth
+        % argument.
+        setterFunction = @topsGroupedListPanel.setValueOfListItem;
     end
     
     methods
@@ -315,9 +332,9 @@ classdef topsGroupedListPanel < handle
                     subs = substruct(refPath{:});
                 end
                 
-                getter = {@topsGroupedListPanel.getValueOfListItem, ...
+                getter = {self.getterFunction, ...
                     self.groupedList, group, mnemonic, subs};
-                setter = {@topsGroupedListPanel.setValueOfListItem, ...
+                setter = {self.setterFunction, ...
                     self.groupedList, group, mnemonic, subs};
                 
                 args = self.parentGUI.getEditableUIControlArgsWithGetterAndSetter(...
