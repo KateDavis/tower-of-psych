@@ -226,12 +226,11 @@ classdef topsStateMachine < topsFoundation
         % Assigns the given values to the given fields of the existing
         % state that has the name @a stateName.  @a varargin represents a
         % flexible number of traling arguments passed to editStateByName().
-        % The first argument in each pair should be one of the state
-        % fields in allStates.  These include the default state fields
-        % described for addField() and the names of a shared fevalables as
-        % described for addSharedFevalableWithName().  The second 
-        % argument in each pair should be a value to assign to the named
-        % field.
+        % The first argument in each pair should be one of the field names
+        % of the allStates struct, which include the default state fields
+        % described for addField() and the names of any shared fevalables
+        % as added with addSharedFevalableWithName().  The second argument
+        % in each pair should be a value to assign to the named field.
         % @details
         % Editing the @b name field of a state might cause the state
         % machine to misbehave.
