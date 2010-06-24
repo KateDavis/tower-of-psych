@@ -8,36 +8,47 @@ classdef topsGUI < handle
     % @ingroup foundation
     
     properties(Hidden)
-        % Matlab figure to show gui, and delete it when closed.
+        % Matlab figure that holds the gui
         figure;
         
-        % Toggle to indicate in the title bar that that the gui is busy.
+        % true or false, toggled to indicate when gui is busy
         isBusy = false;
+        
+        % default title for the gui
         title = 'tops GUI';
+        
+        % title to show when isBusy
         busyTitle = '(busy...)';
         
-        % Color map of colors visible against white, to give subclasses
-        % uniform appearance.
+        % colormap of colors visible against white, to give subclasses
+        % uniform appearance
         colors;
+
+        % an offwhite color used by all subclasses
+        lightColor = [1 1 .98];
         
         % struct array of listener objects used by subclass, automatically
-        % deleted.
+        % deleted
         listeners = struct();
         
-        % Struct array of graphical children to receive mouse scroll
-        % events.
+        % struct array of graphical children to receive mouse scroll
+        % events
         % @details
-        % addScrollableChild() appends elements to scrollables.
+        % Use addScrollableChild() to append elements to scrollables.
         scrollables;
         
         % array of handles to pushbutton uicontrol objects
         % @details
-        % addButton() appends elements to buttons.
+        % Use addButton() to append elements to buttons.
         buttons;
         
-        % Same offwhite color used by all subclasses.
-        lightColor = [1 1 .98];
-        
+        % length in characters of strings that summarize values displayed
+        % in the gui
+        stringSummaryLength = 22;
+    end
+    
+    properties(Hidden)
+        % a small value, but not Matlab's eps()
         biggerThanEps = 1e-6;
     end
     
@@ -282,7 +293,7 @@ classdef topsGUI < handle
                 col = [0 0 0];
                 bg = get(self.figure, 'Color');
             end
-            string = summarizeValue(value);
+            string = summarizeValue(value, self.stringSummaryLength);
             args = { ...
                 'ForegroundColor', col, ...
                 'BackgroundColor', bg, ...
