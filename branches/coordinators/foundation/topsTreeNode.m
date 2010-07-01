@@ -3,8 +3,8 @@ classdef topsBlockTree < topsFoundation
     % A tree-like way to organize an experiment.
     % topsBlockTree gives you a uniform, tree-like framework for organizing
     % the different components of an experiment.  All levels of
-    % organization--trials, sets of trials, tasks, paradigmns, whole 
-    % experiments--can be represented by interconnected topsBlockTree 
+    % organization--trials, sets of trials, tasks, paradigmns, whole
+    % experiments--can be represented by interconnected topsBlockTree
     % objects, or "blocks".
     % @details
     % Every block can have a parent and some children, which are also
@@ -30,16 +30,12 @@ classdef topsBlockTree < topsFoundation
     % the stucture and flow explicit, which offers some advantages:
     %   - You can extend your task arbitrarily, without running out of
     %   vocabulary words like "task" "block", "subblock", "trial",
-    %   "intertrial", etc.  They can all be blocks!  What's important is
-    %   how the blocks are connected.
+    %   "intertrial", etc.
     %   - You can easily view the structure of your experiment using the
     %   topsBlockTree.gui() method.
     % @ingroup foundation
     
     properties (SetObservable)
-        % any value or object you want
-        userData = [];
-        
         % number of times to run through this block's children
         iterations = 1;
         
@@ -55,26 +51,9 @@ classdef topsBlockTree < topsFoundation
         
         % a parent topsBlockTree
         parent;
-        
-        % action to perform before iterating through any children
-        blockStartFevalable = {};
-        
-        % action to perform before each iteration
-        blockActionFevalable = {};
-        
-        % action to perform after all iterations
-        blockEndFevalable = {};
-
-        % true or false, whether to execute functions (false) or just
-        % traverse the tree (true).
-        preview = false;
     end
     
     properties (Hidden)
-        startString = 'start';
-        actionString = 'action';
-        endString = 'end';
-        previewString = '(preview)';
         validIterationMethods = {'sequential', 'random'};
     end
     
@@ -83,7 +62,7 @@ classdef topsBlockTree < topsFoundation
         % iterations
         BlockStart;
     end
-   
+    
     methods
         % Constructor takes no arguments
         function self = topsBlockTree

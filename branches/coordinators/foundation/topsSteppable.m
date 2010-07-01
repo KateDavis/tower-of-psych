@@ -41,8 +41,8 @@ classdef topsSteppable < topsRunnable
         % Subclasses should extend start() to do initialization before
         % running.
         function start(self)
-            self.logAction('start');
-            self.logFeval(self.startFevalable);
+            self.logAction(self.startString);
+            self.logFeval(self.startString, self.startFevalable);
             self.isRunning = true;
         end
         
@@ -50,8 +50,8 @@ classdef topsSteppable < topsRunnable
         % @details
         % Subclasses should extend finish() to do clean up after running.
         function finish(self)
-            self.logAction('finish');
-            self.logFeval(self.finishFevalable);
+            self.logAction(self.finishString);
+            self.logFeval(self.finishString, self.finishFevalable);
             self.isRunning = false;
         end
     end

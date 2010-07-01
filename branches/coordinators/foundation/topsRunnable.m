@@ -23,6 +23,14 @@ classdef topsRunnable < topsFoundation
         isRunnning;
     end
     
+    properties (Hidden)
+        % string used for topsDataLog entry just before run()
+        startString = 'start';
+        
+        % string used for topsDataLog entry just after run()
+        finishString = 'finish';
+    end
+    
     methods
         % Do flow control.
         % @details

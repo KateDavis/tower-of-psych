@@ -26,13 +26,14 @@ classdef topsWheel < topsSteppable
         % topsWheel extends the step() method of topsSteppable.  It calls
         % step() on each of the topsSteppable objects in components.
         % @details
-        % If any of the components objects has isRunning equal to false,
+        % If any of the objects in components has isRunning equal to false,
         % this topsWheel object will set its own isRunning to false (and
         % therefore it should stop running).
         function step(self)
             for ii = 1:length(self.components)
                 self.components{ii}.step;
-                self.componentIsRunning(ii) = self.components{ii}.isRunning;
+                self.componentIsRunning(ii) = ...
+                    self.components{ii}.isRunning;
             end
             self.isRunning = all(self.componentIsRunning);
         end
@@ -59,6 +60,49 @@ classdef topsWheel < topsSteppable
                 self.components{ii}.finish;
             end
             self.componentIsRunning = false(size(self.components));
+        end
+        
+        % Add a topsSteppable object to the components array.
+        % @param steppable topsSteppable object to run concurrently with
+        % other objects in components.
+        % @param index optional index into components where to insert @a
+        % steppable
+        % @details
+        % addComponent() inserts @a steppable into this topsWheel's
+        % components array, at the given @a index.  If no @a index is
+        % given, appends @a steppable to the end of components.
+        % @details
+        % Returns as an optional output the index into components where @a
+        % steppable was inserted.
+        function index = addComponent(self, steppable, index)
+            l = length(self.components) + 1;
+            if nargin < 3 || isempty(index)
+                index = l;
+            end
+            comps = cell(1, l);
+            selector = false(1, l);
+            selector(index) = true;
+            comps{selector} = steppable;
+            comps(~selector) = self.components;
+            self.components = comps;
+        end
+        
+        % Remove a topsSteppable object from the components array.
+        % @param steppable topsSteppable object to stop running
+        % concurrently with other components.
+        % @details
+        % removeComponent() removes all instances of @a steppable from
+        % this topsWheel's components array.
+        function removeComponent(self, steppable)
+            if isempty(steppable)
+                return
+            end
+            l = length(self.components);
+            selector = false(1, l);
+            for ii = 1:l
+                selector(ii) = self.components{ii} == steppable;
+            end
+            self.components = self.components(~selector);
         end
     end
 end
