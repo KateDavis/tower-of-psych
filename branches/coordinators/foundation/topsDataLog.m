@@ -43,20 +43,20 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % @ingroup foundation
     
     properties
-        % Any function that returns the current time as a number.
+        % any function that returns the current time as a number
         clockFunction = @topsClock;
     end
     
     properties (SetAccess=private)
-        % The time of the first logged data, as reported by clockFunction
+        % the time of the first logged data, as reported by clockFunction
         earliestTime;
         
-        % The time of the last logged data, as reported by clockFunction
+        % the time of the last logged data, as reported by clockFunction
         latestTime;
     end
     
     events
-        % Notifies any listeners when all data are cleared from the log
+        % notifies any listeners when all data are cleared from the log
         FlushedTheDataLog;
     end
     
