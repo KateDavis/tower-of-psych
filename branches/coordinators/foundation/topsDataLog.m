@@ -141,7 +141,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @param group a string for grouping related data, such as the name
         % of a recurring event.
         % @details
-        % If @a data is a handle object, throws an error.  This is
+        % If @a data is a handle object, converts it to a struct.  This is
         % because Matlab does a bad job of dealing with large numbers of
         % handles to the same object, and a worse job of writing and
         % reading them to disk.  Better to keep the data log out of that
@@ -159,10 +159,13 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % for each data item.
         function logDataInGroup(data, group)
             self = topsDataLog.theDataLog;
-            
-            assert(~isa(data, 'handle'), 'Sorry, but Matlab stinks at keeping handle objects in data files')
-            
             nowTime = feval(self.clockFunction);
+            
+            if isa(data, 'handle')
+                warning('converting handle object %s to struct', ...
+                    class(data));
+                data = struct(data);
+            end
             self.addItemToGroupWithMnemonic(data, group, nowTime);
             
             self.earliestTime = min(self.earliestTime, nowTime);

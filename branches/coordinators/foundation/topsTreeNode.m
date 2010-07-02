@@ -1,172 +1,142 @@
-classdef topsBlockTree < topsFoundation
-    % @class topsBlockTree
+classdef topsTreeNode < topsRunnable
+    % @class topsTreeNode
     % A tree-like way to organize an experiment.
-    % topsBlockTree gives you a uniform, tree-like framework for organizing
+    % @details
+    % topsTreeNode gives you a uniform, tree-like framework for organizing
     % the different components of an experiment.  All levels of
     % organization--trials, sets of trials, tasks, paradigmns, whole
-    % experiments--can be represented by interconnected topsBlockTree
-    % objects, or "blocks".
+    % experiments--can be represented by interconnected topsTreeNode
+    % objects, as one large tree.
     % @details
-    % Every block can have a parent and some children, which are also
-    % blocks.  You start an experiment by "running" the topmost parent
-    % block.  It performs some actions and then "runs" each of its
-    % children.  Each child it performs its own actions and "runs" each of
-    % its own children.  Those children in turn perform actions and "run"
-    % their children, and so on until reaching the bottom of the tree where
-    % there  is a block without any children.
+    % Every node can have a parent and some children, which are also
+    % nodes.  You start an experiment by calling run() on the topmost
+    % parent node.  It may invoke a "start" function and then calls run()
+    % each of its child nodes.  Each child does the same, invoking its own
+    % "start" function and then invoking run() on each of its children.
+    % This flow of "start" and run() continues until it reaches the bottom
+    % of the tree where there is a node that has no children.
     % @details
-    % Then it's back up the tree.  On the way up, each child block performs
-    % a final action.  When a parent finishes "running" all of its
-    % children, it performs its own final action.  Then @a its parent
-    % can finish up in the same way, and so on, until reaching the topmost
-    % parent again.  At that point the experiment is done.
+    % Then it's back up the tree.  On the way up, each child may invoke its
+    % "finish" function before passing control back to its parent node.
+    % Once a parent finishes run()ning all of its children, it may invoke
+    % its own "finish" function, and so one, until the flow reaches the
+    % topmost node again.  At that point the experiment is done.
     % @details
-    % Of course, that's just the structure of the experiment.  The details
-    % have to be defined elsewhere and invoked when each block performs its
-    % actions.
+    % topsTreeNode only treats the structure of an experiment.  The details
+    % have to be defined elsewhere, as in specific "start" and "finish"
+    % functions.  Any object that has a run() method may function as a
+    % child node at the bottom of the tree (a "leaf").  topsRunnable
+    % objects like topsCallList and topsStateMachine provide rich ways to
+    % organize trial details.
     % @details
     % Many psychophysics experiments use a tree structure implicitly, along
-    % with a similar down-then-up flow of behavior.  topsBlockTree makes
+    % with a similar down-then-up flow of behavior.  topsTreeNode makes
     % the stucture and flow explicit, which offers some advantages:
-    %   - You can extend your task arbitrarily, without running out of
-    %   vocabulary words like "task" "block", "subblock", "trial",
-    %   "intertrial", etc.
-    %   - You can easily view the structure of your experiment using the
-    %   topsBlockTree.gui() method.
+    %   - You can extend your task structure arbitrarily, without running
+    %   out of vocabulary words or hard-coded concepts like "task" "block",
+    %   "subblock", "trial", "intertrial", etc.
+    %   - You can easily visualize the structure of your experiment using
+    %   the topsTreeNode.gui() method.
     % @ingroup foundation
     
     properties (SetObservable)
-        % number of times to run through this block's children
+        % number of times to run through this node's children
         iterations = 1;
         
         % count of iterations while running
         iterationCount = 0;
         
-        % how to run through this block's children--'sequential' or
+        % how to run through this node's children--'sequential' or
         % 'random' order
         iterationMethod = 'sequential';
         
-        % array of topsBlockTree children
-        children;
+        % array of topsTreeNode children
+        children = topsTreeNode.empty;
         
-        % a parent topsBlockTree
-        parent;
+        % a parent topsTreeNode
+        parent = topsTreeNode.empty;
     end
     
     properties (Hidden)
         validIterationMethods = {'sequential', 'random'};
     end
     
-    events
-        % Notifies any listeners just before performing any actions or
-        % iterations
-        BlockStart;
-    end
-    
     methods
         % Constructor takes no arguments
-        function self = topsBlockTree
-            self.children = topsBlockTree.empty;
-            self.parent = topsBlockTree.empty;
+        function self = topsTreeNode
         end
         
-        % Launch a graphical interface for this block and its children.
-        % Returns a handle to the new topsBlockTreeGUI
+        % Launch a graphical interface for this node and its children.
         function g = gui(self)
-            g = topsBlockTreeGUI(self);
+            g = [];
+            disp('Make a TreeNode gui')
         end
         
-        % Add a child beneath this block
-        % @param child a topsBlockTree to add beneath this block.
+        % Add a child beneath this node.
+        % @param child a topsTreeNode to add beneath this node.
         % @details
         % Sets the parent property of the @a child to be this
-        % block, and appends @a child to the children property of
-        % this block.
+        % node, and appends @a child to the children property of
+        % this node.
         function addChild(self, child)
             child.parent = self;
             self.children(end+1) = child;
         end
         
-        % Run an experiment, starting with this block.
+        % Recursively run(), starting with this node.
         % @details
-        % Begin traversing the tree with this block as the topmost parent.
-        % The sequence of events goes like this:
-        %   - This block sends a 'BlockStart' notification to any
+        % Begin traversing the tree with this node as the topmost parent.
+        % The sequence of events should go like this:
+        %   - This node sends a 'RunStart' notification to any
         %   listeners.
-        %   - This block executes its blockStartFevalable
-        %   - This block does zero or more "iterations":
-        %       - This block executes its blockActionFevalable
-        %       - This block calls run() on each of its children,
-        %       in an order determined by this block's iterationMethod.
+        %   - This node executes its startFevalable
+        %   - This node does zero or more "iterations":
+        %       - This node calls run() on each of its children,
+        %       in an order determined by this node's iterationMethod.
         %       Each child then performs the same sequence of actions as
-        %       this block.
-        %   - This block executes its blockEndFevalable
+        %       this node.
+        %   - This node executes its finishFevalable
         %   .
         % Note that the sequence of events is recursive.  Thus, the
-        % behavior of run() depends on this block as well as its children,
+        % behavior of run() depends on this node as well as its children,
         % their children, etc.
         % @details
         % Also note that the recursion happens in the middle of the
-        % sequence of events.  Thus, all of the blockStartFevalable and
-        % blockActionFevalables will happen first, in the order of parents before
-        % children.  Then all the blockEndFevalables will happen, in the order of
+        % sequence of events.  Thus, startFevalables will tend
+        % to happen first, in the order of parents before children.  Then
+        % finishFevalables will tend to happen last, in the order of
         % children before parents.
-        % @details
-        % If this block's preview property is set to true, run() will send
-        % notifications and invoke run() on child blocks, but not invoke
-        % blockStartFevalable, blockActionFevalable, or blockEndFevalable.
-        % Child blocks might do normal behavior or preview behavior.
         function run(self)
-            % notify listeners, like the GUI
-            self.notify('BlockStart');
+            self.logAction(self.startString);
+            self.notify('RunStart');
+            self.logFeval(self.startString, self.startFevalable);
             
-            % start the block
-            self.fevalAndLog(self.blockStartFevalable, self.startString);
-            
-            % do the meat of the block
-            for ii = 1:self.iterations
-                self.iterationCount = ii;
-                
-                self.fevalAndLog(self.blockActionFevalable, self.actionString);
-                
-                switch self.iterationMethod
-                    case 'sequential'
-                        childSequence = 1:length(self.children);
-                    case 'random'
-                        childSequence = randperm(length(self.children));
-                end
-                
-                for jj = childSequence
-                    self.children(jj).run;
-                end
-            end
-            
-            % finish the block
-            self.fevalAndLog(self.blockEndFevalable, self.endString);
-        end
-        
-        function fevalAndLog(self, fcn, fcnName)
-            if ~isempty(fcn)
-                if self.preview
-                    group = sprintf('%s:%s%s', ...
-                        self.name, fcnName, self.previewString);
-                    topsDataLog.logDataInGroup(fcn{1}, group);
+            % recursive
+            try
+                for ii = 1:self.iterations
+                    self.iterationCount = ii;
+                    switch self.iterationMethod
+                        case 'random'
+                            childSequence = randperm(length(self.children));
+                            
+                        otherwise
+                            childSequence = 1:length(self.children);
+                            
+                    end
                     
-                else
-                    group = sprintf('%s:%s', self.name, fcnName);
-                    topsDataLog.logDataInGroup(fcn{1}, group);
-                    feval(fcn{:});
+                    for jj = childSequence
+                        self.children(jj).run;
+                    end
                 end
+                
+            catch err
+                warning(err.identifier, 'In %s named %s:', ...
+                    class(self), self.name, err.message);
             end
-        end
-        
-        function set.iterationMethod(self, iterationMethod)
-            if any(strcmp(iterationMethod, self.validIterationMethods))
-                self.iterationMethod = iterationMethod;
-            else
-                warning(sprintf('%s.iterationMethod may be %s', ...
-                    mfilename, sprintf('"%s", ', self.validIterationMethods{:})));
-            end
+            
+            self.logAction(self.finishString);
+            self.notify('RunFinish');
+            self.logFeval(self.finishString, self.finishFevalable);
         end
     end
 end

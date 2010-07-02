@@ -14,13 +14,21 @@ classdef topsRunnable < topsFoundation
     
     properties (SetObservable)
         % optional fevalable cell array to invoke just before running
-        startFevalable;
+        startFevalable = {};
         
         % optional fevalable cell array to invoke just after running
-        finishFevalable;
+        finishFevalable = {};
         
         % true or false, whether this object is currently busy running
-        isRunnning;
+        isRunnning = false;
+    end
+    
+    events
+        % notifyication just before run()
+        RunStart;
+        
+        % notifyication just after run()
+        RunFinish;
     end
     
     properties (Hidden)
