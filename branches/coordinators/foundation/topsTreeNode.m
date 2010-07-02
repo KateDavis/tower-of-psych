@@ -35,8 +35,8 @@ classdef topsTreeNode < topsRunnable
     %   - You can extend your task structure arbitrarily, without running
     %   out of vocabulary words or hard-coded concepts like "task" "block",
     %   "subblock", "trial", "intertrial", etc.
-    %   - You can easily visualize the structure of your experiment using
-    %   the topsTreeNode.gui() method.
+    %   - You can visualize the structure of your experiment using the
+    %   topsTreeNode.gui() method.
     % @ingroup foundation
     
     properties (SetObservable)
@@ -64,12 +64,6 @@ classdef topsTreeNode < topsRunnable
     methods
         % Constructor takes no arguments
         function self = topsTreeNode
-        end
-        
-        % Launch a graphical interface for this node and its children.
-        function g = gui(self)
-            g = [];
-            disp('Make a TreeNode gui')
         end
         
         % Add a child beneath this node.

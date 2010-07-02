@@ -50,6 +50,12 @@ classdef topsRunnable < topsFoundation
         function run(self)
         end
         
+        % Launch a graphical interface for this node and its children.
+        function g = gui(self)
+            g = [];
+            disp(sprintf('make a gui for %!', class(self))
+        end
+        
         % Log an event of interest with topsDataLog.
         % @param actionName string name for any event of interest
         % @param actionData optional data to log along with @a actionName
