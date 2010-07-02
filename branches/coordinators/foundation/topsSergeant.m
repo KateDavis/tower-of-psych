@@ -1,15 +1,14 @@
-classdef topsWheel < topsSteppable
-    % @class topsWheel
+classdef topsSergeant < topsSteppable
+    % @class topsSergeant
     % Compose topsSteppable objects and run them concurrently.
     % @details
-    % topsWheel objects may contain other topsSteppable objects and run
-    % them concurrently.  It uses the metaphor of a turning wheel, parts of
-    % which may pass over the top over and over again, in sequence.
-    % Likewise, as a topsWheel run()s, it will step() each of its
-    % components over and over again, in sequence.  Since they will step()
-    % with the same frequency, they should appear to run all at once.  The
-    % topsWheel will stop running as soon as one of its components has
-    % isRunning equal to false.
+    % topsSergeant objects may contain other topsSteppable objects and run
+    % them concurrently.  It uses the metaphor of a drill sergeant, whose
+    % job it is to keep oters stepping at the same rate.  When a
+    % topsSergeant run()s, it will invoke step() sequentially and
+    % repeatedly for each of the steppable objects in its components array.
+    % The topsSergeant will stop running as soon as one of its components
+    % has isRunning equal to false.
     % @ingroup foundation
     
     properties
@@ -23,11 +22,12 @@ classdef topsWheel < topsSteppable
     methods
         % Do a little flow control with each object in components.
         % @details
-        % topsWheel extends the step() method of topsSteppable.  It calls
-        % step() on each of the topsSteppable objects in components.
+        % topsSergeant extends the step() method of topsSteppable.  It
+        % calls step() sequentialy for each of the topsSteppable objects in
+        % its components array.
         % @details
         % If any of the objects in components has isRunning equal to false,
-        % this topsWheel object will set its own isRunning to false (and
+        % this topsSergeant object will set its own isRunning to false (and
         % therefore it should stop running).
         function step(self)
             for ii = 1:length(self.components)
@@ -40,8 +40,9 @@ classdef topsWheel < topsSteppable
         
         % Prepare each object in components to do flow control.
         % @details
-        % topsWheel extends the start() method of topsSteppable.  It calls
-        % start() on each of the topsSteppable objects in components.
+        % topsSergeant extends the start() method of topsSteppable.  It
+        % calls start() sequentialy for each of the topsSteppable objects
+        % in its components array.
         function start(self)
             self.start@topsSteppable;
             for ii = 1:length(self.components)
@@ -52,8 +53,9 @@ classdef topsWheel < topsSteppable
         
         % Let each object in components finish doing flow control.
         % @details
-        % topsWheel extends the finish() method of topsSteppable.  It calls
-        % finish() on each of the topsSteppable objects in components.
+        % topsSergeant extends the finish() method of topsSteppable.  It calls
+        % finish() sequentialy for each of the topsSteppable objects in
+        % its components array.
         function finish(self)
             self.finish@topsSteppable;
             for ii = 1:length(self.components)
@@ -64,16 +66,16 @@ classdef topsWheel < topsSteppable
         
         % Add a topsSteppable object to the components array.
         % @param steppable topsSteppable object to run concurrently with
-        % other objects in components.
+        % other steppable objects in the components array.
         % @param index optional index into components where to insert @a
         % steppable
         % @details
-        % addComponent() inserts @a steppable into this topsWheel's
+        % addComponent() inserts @a steppable into this topsSergeant's
         % components array, at the given @a index.  If no @a index is
         % given, appends @a steppable to the end of components.
         % @details
-        % Returns as an optional output the index into components where @a
-        % steppable was inserted.
+        % Returns the index into the components array where @asteppable was
+        % inserted.
         function index = addComponent(self, steppable, index)
             l = length(self.components) + 1;
             if nargin < 3 || isempty(index)
@@ -88,11 +90,11 @@ classdef topsWheel < topsSteppable
         end
         
         % Remove a topsSteppable object from the components array.
-        % @param steppable topsSteppable object to stop running
+        % @param steppable topsSteppable object that should no longer run
         % concurrently with other components.
         % @details
         % removeComponent() removes all instances of @a steppable from
-        % this topsWheel's components array.
+        % this topsSergeant's components array.
         function removeComponent(self, steppable)
             if isempty(steppable)
                 return
