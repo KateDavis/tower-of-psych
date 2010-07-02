@@ -50,8 +50,8 @@ classdef topsTreeNode < topsRunnable
         % 'random' order
         iterationMethod = 'sequential';
         
-        % array of topsTreeNode children
-        children = topsTreeNode.empty;
+        % topsList of runnable children
+        children;
         
         % a parent topsTreeNode
         parent = topsTreeNode.empty;
@@ -64,6 +64,7 @@ classdef topsTreeNode < topsRunnable
     methods
         % Constructor takes no arguments
         function self = topsTreeNode
+            self.children = topsList;
         end
         
         % Add a child beneath this node.
@@ -73,8 +74,19 @@ classdef topsTreeNode < topsRunnable
         % node, and appends @a child to the children property of
         % this node.
         function addChild(self, child)
-            child.parent = self;
-            self.children(end+1) = child;
+            self.children.add(child);
+            if isprop(child, 'parent')
+                child.parent = self;
+            end
+        end
+        
+        % Create a new child and add it beneath this node.
+        % @details
+        % Returns a new topsTreeNode which is a child of this node and
+        % whose parent is this node.
+        function child = newChild(self)
+            child = topsTreeNode;
+            self.addChild(child);
         end
         
         % Recursively run(), starting with this node.
@@ -109,23 +121,27 @@ classdef topsTreeNode < topsRunnable
             try
                 for ii = 1:self.iterations
                     self.iterationCount = ii;
+                    nChildren = self.children.length;
                     switch self.iterationMethod
                         case 'random'
-                            childSequence = randperm(length(self.children));
+                            childSequence = randperm(nChildren);
                             
                         otherwise
-                            childSequence = 1:length(self.children);
+                            childSequence = 1:nChildren;
                             
                     end
                     
+                    children = self.children.allItems;
                     for jj = childSequence
-                        self.children(jj).run;
+                        children{jj}.run;
                     end
                 end
                 
             catch err
                 warning(err.identifier, 'In %s named %s:', ...
                     class(self), self.name, err.message);
+                
+                rethrow(err)
             end
             
             self.logAction(self.finishString);

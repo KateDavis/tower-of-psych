@@ -13,6 +13,11 @@ classdef topsSteppable < topsRunnable
     % topsSteppable objects within Matlab's single user-controled thread.
     % @ingroup foundation
     
+    properties (Hidden)
+        % string used for topsDataLog entry just before step()
+        stepString = 'step';
+    end
+    
     methods
         % Do flow control.
         % @details

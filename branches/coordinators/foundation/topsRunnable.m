@@ -20,7 +20,7 @@ classdef topsRunnable < topsFoundation
         finishFevalable = {};
         
         % true or false, whether this object is currently busy running
-        isRunnning = false;
+        isRunning = false;
     end
     
     events
@@ -43,8 +43,8 @@ classdef topsRunnable < topsFoundation
         % Do flow control.
         % @details
         % run() should take over flow-control from the caller and do custom
-        % behaviors until isRunning becomes false.  It need not attempt to
-        % return quickly.
+        % behaviors.  When it's done doing custom behaviors, the object
+        % should set its isRunning property to false.
         % @details
         % Subclasses should redefine run() to do custom behaviors.
         function run(self)
@@ -53,7 +53,7 @@ classdef topsRunnable < topsFoundation
         % Launch a graphical interface for this node and its children.
         function g = gui(self)
             g = [];
-            disp(sprintf('make a gui for %!', class(self))
+            disp(sprintf('make a gui for %!', class(self)))
         end
         
         % Log an event of interest with topsDataLog.
