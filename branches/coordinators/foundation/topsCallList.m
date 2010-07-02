@@ -44,7 +44,7 @@ classdef topsCallList < topsSteppable
             self.logAction(self.stepString);
             batch = self.fevalables.allItems;
             for ii = 1:length(batch)
-                feval(self.batch{ii}{:});
+                feval(batch{ii}{:});
             end
             self.isRunning = self.alwaysRunning;
         end

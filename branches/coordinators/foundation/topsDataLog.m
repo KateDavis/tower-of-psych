@@ -45,6 +45,9 @@ classdef (Sealed) topsDataLog < topsGroupedList
     properties
         % any function that returns the current time as a number
         clockFunction = @topsClock;
+        
+        % true or false, wether to pring log info as data are logged
+        printLogging = false;
     end
     
     properties (SetAccess=private)
@@ -167,6 +170,10 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 data = struct(data);
             end
             self.addItemToGroupWithMnemonic(data, group, nowTime);
+            
+            if self.printLogging
+                disp(sprintf('topsDataLog: %s', group))
+            end
             
             self.earliestTime = min(self.earliestTime, nowTime);
             self.latestTime = max(self.latestTime, nowTime);
