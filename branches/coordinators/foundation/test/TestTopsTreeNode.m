@@ -27,7 +27,7 @@ classdef TestTopsTreeNode < TestCase
                 'topsTreeNode should not be a singleton');
         end
         
-        function testDepthFirstFunctionOrder(self)
+        function testDepthFirstActionLogging(self)
             child = topsTreeNode;
             child.name = 'child';
             
@@ -38,8 +38,27 @@ classdef TestTopsTreeNode < TestCase
             child.addChild(grandchild);
             
             self.treeNode.run;
-            summary = topsDataLog.getSortedDataStruct;
-            summary.group
+            logInfo = topsDataLog.getSortedDataStruct;
+            actionInfo = [logInfo.item];
+            
+            expectedNames = { ...
+                self.treeNode.name, ...
+                child.name, ...
+                grandchild.name, ...
+                grandchild.name, ...
+                child.name, ...
+                self.treeNode.name};
+            runnableNames = {actionInfo.runnableName};
+            assertEqual(expectedNames, runnableNames, ...
+                'wrong node order for tree run()');
+            
+            start = self.treeNode.startString;
+            finish = self.treeNode.finishString;
+            expectedActions = {start, start, start, ...
+                finish, finish finish};
+            actions = {actionInfo.actionName};
+            assertEqual(expectedActions, actions, ...
+                'wrong action order for tree run()');
         end
         
         function testPropertyChangeEventPosting(self)

@@ -63,7 +63,12 @@ classdef topsRunnable < topsFoundation
                 actionData = [];
             end
             group = sprintf('%s:%s', self.name, actionName);
-            topsDataLog.logDataInGroup(actionData, group);
+            data = struct( ...
+                'runnableClass', class(self), ...
+                'runnableName', self.name, ...
+                'actionName', actionName, ...
+                'actionData', actionData);
+            topsDataLog.logDataInGroup(data, group);
         end
         
         % Log a function call with topsDataLog.
@@ -86,7 +91,12 @@ classdef topsRunnable < topsFoundation
         function logFeval(self, fevalName, fevalable)
             if ~isempty(fevalable)
                 group = sprintf('%s:%s', self.name, fevalName);
-                topsDataLog.logDataInGroup(fevalable{1}, group);
+                data = struct( ...
+                    'runnableClass', class(self), ...
+                    'runnableName', self.name, ...
+                    'fevalName', actionName, ...
+                    'fevalFunction', fevalable{1});
+                topsDataLog.logDataInGroup(data, group);
                 feval(fevalable{:});
             end
         end
