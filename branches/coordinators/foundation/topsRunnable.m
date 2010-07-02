@@ -53,7 +53,7 @@ classdef topsRunnable < topsFoundation
         % Launch a graphical interface for this node and its children.
         function g = gui(self)
             g = [];
-            disp(sprintf('make a gui for %!', class(self)))
+            disp(sprintf('make a gui for %s!', class(self)))
         end
         
         % Log an event of interest with topsDataLog.
