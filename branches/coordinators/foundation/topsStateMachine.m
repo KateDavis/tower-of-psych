@@ -330,7 +330,13 @@ classdef topsStateMachine < topsSteppable
         % record the finishState and finishTime.
         function finish(self)
             self.finish@topsSteppable;
-            self.finishState = self.allStates(self.currentIndex);
+            
+            if length(self.allStates) >= self.currentIndex
+                self.finishState = self.allStates(self.currentIndex);
+            else
+                self.finishState = [];
+            end
+
             self.finishTime = feval(self.clockFunction);
         end
         
@@ -370,21 +376,28 @@ classdef topsStateMachine < topsSteppable
         function enterStateAtIndex(self, allStateIndex)
             self.currentIndex = allStateIndex;
             
-            currentState = self.allStates(self.currentIndex);
-            self.currentInputFevalable = currentState.input;
-            self.currentEntryTime = feval(self.clockFunction);
-            self.currentTimeoutTime = ...
-                self.currentEntryTime + currentState.timeout;
-            
-            fevalName = sprintf('%s:%s', ...
-                self.entryString, currentState.name);
-            self.logFeval(fevalName, currentState.entry);
-            
-            if ~isempty(self.sharedEntryFevalableNames)
+            if length(self.allStates) >= allStateIndex
                 
-                self.logStateSharedFeval(currentState, ...
-                    self.sharedEntryFevalableNames, ...
-                    self.sharedEntryFevalables);
+                currentState = self.allStates(self.currentIndex);
+                self.currentInputFevalable = currentState.input;
+                self.currentEntryTime = feval(self.clockFunction);
+                self.currentTimeoutTime = ...
+                    self.currentEntryTime + currentState.timeout;
+                
+                fevalName = sprintf('%s:%s', ...
+                    self.entryString, currentState.name);
+                self.logFeval(fevalName, currentState.entry);
+                
+                if ~isempty(self.sharedEntryFevalableNames)
+                    
+                    self.logStateSharedFeval(currentState, ...
+                        self.sharedEntryFevalableNames, ...
+                        self.sharedEntryFevalables);
+                end
+
+            else
+                self.isRunning = false;
+
             end
         end
         
