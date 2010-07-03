@@ -50,7 +50,7 @@ classdef topsRunnable < topsFoundation
         function run(self)
         end
         
-        % Launch a graphical interface for this node and its children.
+        % Launch a graphical interface for this runnable.
         function g = gui(self)
             g = [];
             disp(sprintf('make a gui for %s!', class(self)))
@@ -100,7 +100,7 @@ classdef topsRunnable < topsFoundation
                 data = struct( ...
                     'runnableClass', class(self), ...
                     'runnableName', self.name, ...
-                    'fevalName', actionName, ...
+                    'fevalName', fevalName, ...
                     'fevalFunction', fevalable{1});
                 topsDataLog.logDataInGroup(data, group);
                 feval(fevalable{:});

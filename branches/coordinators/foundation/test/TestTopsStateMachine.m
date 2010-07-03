@@ -32,12 +32,12 @@ classdef TestTopsStateMachine < TestCase
                 'topsStateMachine should not be a singleton');
         end
         
-        function testCallAndLogMachineFcns(self)
+        function testCallMachineFcns(self)
             self.eventCount = 0;
             machineFcn = @(stateInfo) self.hearEvent;
-            self.stateMachine.beginFevalable = {machineFcn};
+            self.stateMachine.startFevalable = {machineFcn};
             self.stateMachine.transitionFevalable = {machineFcn};
-            self.stateMachine.endFevalable = {machineFcn};
+            self.stateMachine.finishFevalable = {machineFcn};
             
             statesInfo = { ...
                 'name',     'next'; ...
@@ -53,23 +53,9 @@ classdef TestTopsStateMachine < TestCase
             expectedCount = length(self.stateMachine.allStates) + 1;
             assertEqual(expectedCount, self.eventCount, ...
                 'state machine called wrong number of functions');
-            
-            summary = topsDataLog.getSortedDataStruct;
-            assertEqual(expectedCount, length(summary), ...
-                'state machine logged wrong number of functions');
-            
-            for ii = 1:length(summary)
-                loggedFcn = summary(ii).item{1};
-                assertEqual(loggedFcn, machineFcn, ...
-                    'state machine did not log correct function')
-                
-                loggedStateInfo = summary(ii).item{2};
-                assertTrue(isstruct(loggedStateInfo), ...
-                    'state machine should log state info with function call')
-            end
         end
         
-        function testCallAndLogStateFcns(self)
+        function testCallStateFcns(self)
             self.eventCount = 0;
             stateFcn = {@() self.hearEvent};
             
@@ -83,20 +69,10 @@ classdef TestTopsStateMachine < TestCase
             self.stateMachine.run;
             
             % expect 2n function calls for
-            %   n entry and n exit functions
+            %   n entry plus n exit functions
             expectedCount = 2*length(self.stateMachine.allStates);
             assertEqual(expectedCount, self.eventCount, ...
                 'state machine called wrong number of state functions');
-            
-            summary = topsDataLog.getSortedDataStruct;
-            assertEqual(expectedCount, length(summary), ...
-                'state machine logged wrong number of state functions');
-            
-            for ii = 1:length(summary)
-                loggedFcn = summary(ii).item;
-                assertEqual(loggedFcn, stateFcn{1}, ...
-                    'state machine did not log correct state function')
-            end
         end
         
         function testEditState(self)
@@ -151,19 +127,19 @@ classdef TestTopsStateMachine < TestCase
             
             self.branchState = '';
             self.stateMachine.run;
-            endName = self.stateMachine.endState.name;
+            endName = self.stateMachine.finishState.name;
             assertEqual(endName, defaultEnd, ...
                 'empty input should lead to default end')
             
             self.branchState = altEnd1;
             self.stateMachine.run;
-            endName = self.stateMachine.endState.name;
+            endName = self.stateMachine.finishState.name;
             assertEqual(endName, altEnd1, ...
                 'name input should cause branching to named state')
             
             self.branchState = altEnd2;
             self.stateMachine.run;
-            endName = self.stateMachine.endState.name;
+            endName = self.stateMachine.finishState.name;
             assertEqual(endName, altEnd2, ...
                 'name input should cause branching to named state')
         end

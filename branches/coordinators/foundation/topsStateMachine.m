@@ -1,4 +1,4 @@
-classdef topsStateMachine < topsFoundation
+classdef topsStateMachine < topsSteppable
     % @class topsStateMachine
     % A state machine for controlling flow through e.g. trials.
     %
@@ -10,15 +10,8 @@ classdef topsStateMachine < topsFoundation
         % state properties.
         allStates = struct([]);
         
-        % a fevalable cell array to invoke when state traversal begins.
-        % The function should expect as the first argument a struct of
-        % information about the first state.  Any other arguments in the
-        % cell array will be passed to the function starting at the second
-        % place.  See addState() for details of the struct state
-        % information.
-        beginFevalable = {};
-        
-        % a fevalable cell array to invoke during state transitions.
+        % optional fevalable cell array to invoke during state transitions
+        % @details
         % The function should expect as the first argument a 1x2 struct
         % array of information about the previous state and the next state,
         % with elements in that order. Any other arguments in the cell
@@ -27,31 +20,19 @@ classdef topsStateMachine < topsFoundation
         % information.
         transitionFevalable = {};
         
-        % a fevalable cell array to invoke when state traversal ends.
-        % The function should expect as the first argument a struct of
-        % information about the last state.  Any other arguments in the
-        % cell array will be passed to the function starting at the second
-        % place.  See addState() for details of the struct state
-        % information.
-        endFevalable = {};
-        
-        % true or false, whether to execute functions (false) or just
-        % traverse states (true).
-        preview = false;
-        
         % any function that returns the current time as a number
         clockFunction = @topsClock;
         
         % the time when state traversal began
-        beginTime = [];
+        startTime = [];
         
         % the time when state traversal ended
-        endTime = [];
+        finishTime = [];
         
         % struct of information about the last state encountered during
         % traversal.  See addState() for details of the struct state
         % information.
-        endState = struct([]);
+        finishState = struct([]);
         
         % time when the current state was entered
         currentEntryTime = [];
@@ -60,58 +41,67 @@ classdef topsStateMachine < topsFoundation
         currentTimeoutTime = [];
         
         % cell array of strings, names given to functions which are invoked
-        % whenever entering any state.  sharedEntryFevalableNames are parallel to
-        % sharedEntryFevalables.  See addSharedFcn() for details about shared
-        % entry and exit funcions.
+        % whenever entering any state.  sharedEntryFevalableNames are
+        % parallel to sharedEntryFevalables.  See addSharedFcn() for
+        % details about shared entry and exit funcions.
         sharedEntryFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
         % entering any state.  sharedEntryFevalableNames are parallel to
-        % sharedEntryFevalables.  See addSharedFcn() for details about shared
-        % entry and exit funcions.
+        % sharedEntryFevalables.  See addSharedFcn() for details about
+        % shared entry and exit funcions.
         sharedEntryFevalables = {};
         
         % cell array of strings, names given to functions which are invoked
-        % whenever exiting any state.  sharedExitFevalableNames are parallel to
-        % sharedExitFevalables.  See addSharedFcn() for details about shared
-        % entry and exit funcions.
+        % whenever exiting any state.  sharedExitFevalableNames are
+        % parallel to sharedExitFevalables.  See addSharedFcn() for details
+        % about shared entry and exit funcions.
         sharedExitFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
         % exiting any state.  sharedExitFevalableNames are parallel to
-        % sharedExitFevalables.  See addSharedFcn() for details about shared
-        % entry and exit funcions.
+        % sharedExitFevalables.  See addSharedFcn() for details about
+        % shared entry and exit funcions.
         sharedExitFevalables = {};
     end
     
     properties (Hidden)
-        % allStates index of the current state
+        % allStates array index for the current state
         currentIndex = [];
         
-        % fevalable cell array, a copy of the current state's
-        % input.
+        % copy of the current state's input fevalable
         currentInputFevalable = [];
         
-        % a containers.Map of state name -> allStates struct index.
+        % containers.Map of state name -> allStates array index.
         stateNameToIndex;
         
-        beginString = 'begin';
+        % string used for topsDataLog entry for transitionFevalable
         transitionString = 'transition';
-        endString = 'end';
-        entryString = 'enter';
-        inputString = 'input';
-        exitString = 'exit';
-        previewString = '(preview)';
         
+        % string used for topsDataLog entry during state entry
+        entryString = 'enter';
+        
+        % string used for topsDataLog entry during state exit
+        exitString = 'exit';
+        
+        % field names of allStates struct array, defining state behaviors
         stateFields = {'name', 'next', 'timeout', ...
             'entry', 'input', 'exit'};
+        
+        % default values of allStates struct array fields
         stateDefaults = {'', '', 0, {}, {}, {}};
     end
     
     methods
+        % Constructor takes no arguments.
         function self = topsStateMachine
             self.stateNameToIndex = containers.Map('a', 1, 'uniformValues', false);
             self.stateNameToIndex.remove(self.stateNameToIndex.keys);
+        end
+        
+        % Launch a graphical interface showing the states in the machine.
+        function g = gui(self)
+            g = topsStateMachineGUI(self);
         end
         
         % Add multiple states to the state machine.
@@ -323,29 +313,35 @@ classdef topsStateMachine < topsFoundation
             end
         end
         
-        % Traverse states until reaching an end, without stopping.
-        function run(self)
-            self.begin;
-            while isempty(self.endTime)
-                self.step;
-            end
-        end
-        
-        % Prepare for state traversal.  Must call step() to continue
-        % traversal.
-        function begin(self)
-            self.beginTime = feval(self.clockFunction);
-            self.endTime = [];
-            self.fevalInsertArgAndLog( ...
-                self.allStates(1), ...
-                self.beginFevalable, ...
-                self.beginString);
+        % Prepare for state traversal.
+        % @details
+        % topsStateMachine extends the start() method of topsSteppable to
+        % record the startTime and enter the first state in allStates.
+        function start(self)
+            self.start@topsSteppable;
+            self.startTime = feval(self.clockFunction);
+            self.finishTime = [];
             self.enterStateAtIndex(1);
         end
         
-        % Continue state traversal.  Check time and input for the current
-        % state.  Transition states or end traversal as it comes up.
-        % Useful for traversing states concurrently with other behaviors.
+        % Finish doing state traversal.
+        % @details
+        % topsStateMachine extends the finish() method of topsSteppable to
+        % record the finishState and finishTime.
+        function finish(self)
+            self.finish@topsSteppable;
+            self.finishState = self.allStates(self.currentIndex);
+            self.finishTime = feval(self.clockFunction);
+        end
+        
+        % Do a little flow control within the state list.
+        % @details
+        % topsStateMachine extends the step() method of topsSteppable to do
+        % state traversal.  It checks the input fevalable for the current
+        % state and if the input returns a state name, transitions to that
+        % state.  If not, it checks whether the current state's timeout has
+        % expired.  If so it transitions to the next state.  If there is no
+        % next state, traversal ends.
         function step(self)
             % poll for input
             if ~isempty(self.currentInputFevalable)
@@ -356,25 +352,16 @@ classdef topsStateMachine < topsFoundation
                 end
             end
             
-            % poll for state timed out
+            % poll for state timeout
             if feval(self.clockFunction) >= self.currentTimeoutTime
                 nextName = self.allStates(self.currentIndex).next;
                 if isempty(nextName)
-                    self.endTraversal;
+                    self.exitCurrentState;
+                    self.isRunning = false;
                 else
                     self.transitionToStateWithName(nextName);
                 end
             end
-        end
-        
-        % true or false, whether state machine is currently stepping
-        % through states
-        function isTrav = isTraversing(self)
-            isTrav = ~isempty(self.beginTime) && isempty(self.endTime);
-        end
-        
-        function g = gui(self)
-            g = topsStateMachineGUI(self);
         end
     end
     
@@ -386,103 +373,64 @@ classdef topsStateMachine < topsFoundation
             currentState = self.allStates(self.currentIndex);
             self.currentInputFevalable = currentState.input;
             self.currentEntryTime = feval(self.clockFunction);
-            self.currentTimeoutTime = self.currentEntryTime + currentState.timeout;
-            self.fevalForStateAndLog( ...
-                currentState.name, ...
-                currentState.entry, ...
-                self.entryString);
+            self.currentTimeoutTime = ...
+                self.currentEntryTime + currentState.timeout;
+            
+            fevalName = sprintf('%s:%s', ...
+                self.entryString, currentState.name);
+            self.logFeval(fevalName, currentState.entry);
             
             if ~isempty(self.sharedEntryFevalableNames)
-                self.fevalSharedAndLog(currentState, ...
+                
+                self.logStateSharedFeval(currentState, ...
                     self.sharedEntryFevalableNames, ...
                     self.sharedEntryFevalables);
             end
-            
-            % transition immediately, if possible
-            %self.step;
         end
         
         % clear current* properties
         %   but leave currentIndex so it's checkable
         function exitCurrentState(self)
             currentState = self.allStates(self.currentIndex);
+            
             self.currentInputFevalable = {};
             self.currentEntryTime = [];
             self.currentTimeoutTime = [];
             
             if ~isempty(self.sharedExitFevalableNames)
-                self.fevalSharedAndLog(currentState, ...
+                self.logStateSharedFeval(currentState, ...
                     self.sharedExitFevalableNames, ...
                     self.sharedExitFevalables);
             end
             
-            self.fevalForStateAndLog( ...
-                currentState.name, ...
-                currentState.exit, ...
-                self.exitString);
+            fevalName = sprintf('%s:%s', ...
+                self.exitString, currentState.name);
+            self.logFeval(fevalName, currentState.exit);
         end
         
         % call transitionFevalable before exiting last and entering next state
         function transitionToStateWithName(self, nextName)
             nextIndex = self.stateNameToIndex(nextName);
             self.exitCurrentState;
-            self.fevalInsertArgAndLog( ...
-                self.allStates([self.currentIndex, nextIndex]), ...
-                self.transitionFevalable, ...
-                self.transitionString);
+            
+            if ~isempty(self.transitionFevalable)
+                inserted = cell(1, numel(self.transitionFevalable) + 1);
+                inserted(1) = self.transitionFevalable(1);
+                inserted{2} = self.allStates([self.currentIndex, nextIndex]);
+                inserted(3:end) = self.transitionFevalable(2:end);
+                self.logFeval(self.transitionString, inserted)
+            end
+            
             self.enterStateAtIndex(nextIndex);
         end
         
-        % all done.  exit last state before calling endFevalable
-        function endTraversal(self)
-            self.endState = self.allStates(self.currentIndex);
-            self.exitCurrentState;
-            self.fevalInsertArgAndLog( ...
-                self.allStates(self.currentIndex), ...
-                self.endFevalable, ...
-                self.endString);
-            self.endTime = feval(self.clockFunction);
-        end
-        
-        function fevalInsertArgAndLog(self, insert, fcn, fcnName)
-            if ~isempty(fcn)
-                loggable = cell(1,2);
-                loggable(1) = fcn(1);
-                loggable{2} = insert;
-                if self.preview
-                    group = sprintf('%s:%s%s', ...
-                        self.name, fcnName, self.previewString);
-                    topsDataLog.logDataInGroup(loggable, group);
-                    
-                else
-                    group = sprintf('%s:%s', self.name, fcnName);
-                    topsDataLog.logDataInGroup(loggable, group);
-                    feval(fcn{1}, insert, fcn{2:end});
-                end
-            end
-        end
-        
-        function fevalForStateAndLog(self, stateName, fcn, fcnName)
-            if ~isempty(fcn)
-                if self.preview
-                    group = sprintf('%s.%s:%s%s', ...
-                        self.name, stateName, fcnName, self.previewString);
-                    topsDataLog.logDataInGroup(fcn{1}, group);
-                    
-                else
-                    group = sprintf('%s.%s:%s', ...
-                        self.name, stateName, fcnName);
-                    topsDataLog.logDataInGroup(fcn{1}, group);
-                    feval(fcn{:});
-                end
-            end
-        end
-        
-        function fevalSharedAndLog(self, state, fcnNames, fcns)
+        function logStateSharedFeval(self, state, fcnNames, fcns)
             for ii = 1:length(fcnNames)
                 stateArgs = state.(fcnNames{ii});
                 stateFcn = cat(2, fcns{ii}, stateArgs);
-                self.fevalForStateAndLog(state.name, stateFcn, fcnNames{ii});
+                fevalName = sprintf('%s:%s', ...
+                    fcnNames{ii}, state.name);
+                self.logFeval(fevalName, stateFcn);
             end
         end
     end
