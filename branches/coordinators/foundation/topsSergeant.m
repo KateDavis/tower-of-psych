@@ -37,11 +37,16 @@ classdef topsSergeant < topsSteppable
         % therefore it should stop running).
         function step(self)
             components = self.components.allItems;
-            for ii = 1:length(components)
-                components{ii}.step;
-                self.componentIsRunning(ii) = components{ii}.isRunning;
+            nComponents = length(components);
+            if nComponents > 0
+                for ii = 1:nComponents
+                    components{ii}.step;
+                    self.componentIsRunning(ii) = components{ii}.isRunning;
+                end
+                self.isRunning = all(self.componentIsRunning);
+            else
+                self.isRunning = false;
             end
-            self.isRunning = sum(self.componentIsRunning) > 0;
         end
         
         % Prepare each object in components to do flow control.

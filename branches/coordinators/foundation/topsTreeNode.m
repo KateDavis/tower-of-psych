@@ -138,11 +138,22 @@ classdef topsTreeNode < topsRunnable
                     end
                 end
                 
-            catch err
-                warning(err.identifier, 'In %s named %s:', ...
-                    class(self), self.name, err.message);
-                
-                rethrow(err)
+            catch recurErr
+                warning(recurErr.identifier, '%s named %s failed:', ...
+                    class(self), self.name, recurErr.message);
+
+                % attempt to clean up despite error
+                try
+                    self.logAction(self.finishString);
+                    self.notify('RunFinish');
+                    self.logFeval(self.finishString, self.finishFevalable);
+
+                catch finishErr
+                    warning(finishErr.identifier, '%s named %s failed to finish:', ...
+                        class(self), self.name, finishErr.message);
+                end
+                    
+                rethrow(recurErr)
             end
             
             self.logAction(self.finishString);

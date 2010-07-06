@@ -36,6 +36,10 @@ classdef TestTopsSergeant < TestCase
             self.order(end+1) = value;
         end
         
+        function stopRunningComponent(self, component)
+            component.isRunning = false;
+        end
+        
         function testSingleton(self)
             newLoop = topsSergeant;
             assertFalse(self.sergeant==newLoop, ...
@@ -55,6 +59,15 @@ classdef TestTopsSergeant < TestCase
                 assertEqual(self.order(ii), value, ...
                     'should have called components in the order added')
             end
+        end
+        
+        function testStopRunningWhenComponentStops(self)
+            self.sergeant.start;
+            self.sergeant.componentIsRunning = true(1, self.nComponents);
+            self.sergeant.componentIsRunning(1) = false;
+            self.sergeant.step;
+            assertFalse(self.sergeant.isRunning, ...
+                'sergeant should stop running when any component stops')
         end
         
         function testPropertyChangeEventPosting(self)
