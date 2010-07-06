@@ -40,6 +40,13 @@ classdef topsRunnable < topsFoundation
     end
     
     methods
+        % Constructor takes no arguments.
+        % @details
+        % Uses the class of this topsRunnable as the default name.
+        function self = topsRunnable
+            self.name = class(self);
+        end
+        
         % Do flow control.
         % @details
         % run() should take over flow-control from the caller and do custom

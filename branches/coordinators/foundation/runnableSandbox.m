@@ -20,11 +20,9 @@ goodbyeList.alwaysRunning = false;
 
 % make a state machine
 machine = topsStateMachine;
-machine.name = 'state machine';
 
 % make a sergeant that composes all of the above
 sarg = topsSergeant;
-sarg.name = 'sarg';
 sarg.components.add(helloList);
 sarg.components.add(machine);
 sarg.components.add(goodbyeList);

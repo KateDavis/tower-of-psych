@@ -16,7 +16,7 @@ logGUIPosition = [x 0 w 2*h];
 [spotsTree, spotsList] = configureSpotsTasks(taskPosition);
 
 % launch the blockTreeGUI
-blockGUI = topsBlockTreeGUI(spotsTree);
+blockGUI = topsTreeNodeGUI(spotsTree);
 set(blockGUI.figure, 'Position', blockGUIPosition);
 
 % launch the dataLogGUI

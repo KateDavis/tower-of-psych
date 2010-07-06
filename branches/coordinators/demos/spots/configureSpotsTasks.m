@@ -3,7 +3,7 @@ function [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
 %
 %   [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
 %
-%   spotsTree is a topsBlockTree object which organizes tasks and trials.
+%   spotsTree is a topsTreeNode object which organizes tasks and trials.
 %   spotsTree and spotsList "know about" each other.
 %
 %   spotsTree.run(); will start the "spots" experiment.
@@ -40,7 +40,7 @@ function [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
 %   Several experiment parameters may be controlled by editing values near
 %   the top of configureSpotsTasks.m.
 %
-% See also, demoSpotsTask, topsGroupedList, topsBlockTree
+% See also, demoSpotsTask, topsGroupedList, topsTreeNode
 
 % 2009 benjamin.heasly@gmail.com
 %   Seattle, WA
@@ -90,10 +90,10 @@ spotsLoop = topsFunctionLoop;
 spotsLoop.addFunctionToGroupWithRank({@drawnow}, 'spots', 1);
 spotsList.addItemToGroupWithMnemonic(spotsLoop, 'spots', 'spotsLoop');
 
-% topsBlockTree
+% topsTreeNode
 % spotsTree manages the main figure window
 %   it also will have the rt and fvt tasks as its "children"
-spotsTree = topsBlockTree;
+spotsTree = topsTreeNode;
 spotsTree.name = 'spots';
 spotsTree.iterations = taskRepetitions;
 spotsTree.iterationMethod = taskOrder;
@@ -104,7 +104,7 @@ spotsList.addItemToGroupWithMnemonic(spotsTree, 'spots', 'spotsTopLevel');
 % rtTask manages the reaction time task
 %   it will also have a reaction time *trial* as its child
 taskName = 'rt_task';
-rtTask = topsBlockTree;
+rtTask = topsTreeNode;
 rtTask.name = taskName;
 rtTask.iterations = trialsInARow;
 rtTask.blockStartFevalable = {@rtTaskSetup, spotsList, taskName};
@@ -113,7 +113,7 @@ spotsList.addItemToGroupWithMnemonic(rtTask, taskName, 'rtTask');
 spotsTree.addChild(rtTask);
 
 % rtTrial manages individual reaction time trials
-rtTrial = topsBlockTree;
+rtTrial = topsTreeNode;
 rtTrial.name = 'rt_trial';
 rtTrial.blockStartFevalable = {@rtTrialSetup, spotsList, taskName};
 rtTrial.blockActionFevalable = {@runForGroup, spotsLoop, 'spots', 600};
@@ -124,7 +124,7 @@ rtTask.addChild(rtTrial);
 % fvtTask manages the fixed viewing time task
 %   it will also have a fixed viewing time time *trial* as its child
 taskName = 'fvt_task';
-fvtTask = topsBlockTree;
+fvtTask = topsTreeNode;
 fvtTask.name = taskName;
 fvtTask.iterations = trialsInARow;
 fvtTask.blockStartFevalable = {@fvtTaskSetup, spotsList, taskName};
@@ -133,7 +133,7 @@ spotsList.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
 spotsTree.addChild(fvtTask);
 
 % another bottom level block, to manage a fixed viewing time trial
-fvtTrial = topsBlockTree;
+fvtTrial = topsTreeNode;
 fvtTrial.name = 'fvt_trial';
 fvtTrial.blockStartFevalable = {@fvtTrialSetup, spotsList, taskName};
 fvtTrial.blockActionFevalable = {@runForGroup, spotsLoop, 'spots', 600};

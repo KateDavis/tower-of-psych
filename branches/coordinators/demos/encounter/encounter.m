@@ -14,7 +14,7 @@ function [gameTree, gameList] = encounter
 %   a code project that aims to facilitate the design and running of
 %   psychophysics experimetns in Matlab.
 %
-%   gameTree is an instance of topsBlockTree.  It organizes several
+%   gameTree is an instance of topsTreeNode.  It organizes several
 %   randomly selected battle sequences.
 %
 %   gameList is an instance of topsGroupedList.  It contains all of the data
@@ -45,7 +45,7 @@ gameList = topsGroupedList;
 
 % top-level control object
 %   with functions defined below
-gameTree = topsBlockTree;
+gameTree = topsTreeNode;
 gameTree.name = 'encounter';
 gameTree.blockStartFevalable = {@gameSetup, gameList};
 gameTree.blockEndFevalable = {@gameTearDown, gameList};
@@ -174,7 +174,7 @@ for ii = 1:length(group)
     % concatenate loop modes specially for this monster group
     battleLoop.mergeGroupsIntoGroup({'battle', 'charTimers', loopName}, group(ii).name);
     
-    battleBlock = topsBlockTree;
+    battleBlock = topsTreeNode;
     battleBlock.name = group(ii).name;
     battleBlock.blockStartFevalable = {@battleSetup, battleBlock, gameList};
     battleBlock.blockActionFevalable = {@battleGo, battleBlock, gameList};

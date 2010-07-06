@@ -64,6 +64,7 @@ classdef topsTreeNode < topsRunnable
     methods
         % Constructor takes no arguments
         function self = topsTreeNode
+            self = self@topsRunnable;
             self.children = topsList;
         end
         

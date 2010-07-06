@@ -24,8 +24,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % @details
     % Other topsFoundataion classes will also add data to the log, to help
     % you keep track of details that aren't specific to your experiment.
-    % For example, topsBlockTree objects makes log entries every time they
-    % execute a start, action, or end function.
+    % For example, topsRunnable objects make log entries as they start and
+    % finish running.
     % @details
     % With your log entries and the entries made automatically by
     % topsFoundataion classes, it should be straightforward to look at the
