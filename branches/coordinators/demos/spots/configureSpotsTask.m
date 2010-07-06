@@ -83,12 +83,12 @@ spotsList.addItemToGroupWithMnemonic(trialsInARow, 'spots', 'trialsInARow');
 spotsList.addItemToGroupWithMnemonic(taskRepetitions, 'spots', 'taskRepetitions');
 spotsList.addItemToGroupWithMnemonic(taskOrder, 'spots', 'taskOrder');
 
-% topsFunctionLoop
-% function loops can multiple call functions repeatedly, during a trial
-%   spotsLoop just needs call drawnow(), over and over.
-spotsLoop = topsFunctionLoop;
-spotsLoop.addFunctionToGroupWithRank({@drawnow}, 'spots', 1);
-spotsList.addItemToGroupWithMnemonic(spotsLoop, 'spots', 'spotsLoop');
+% topsCallList
+% spotsCalls can hold function calls, with arguments, that can be
+% called as a batch.  spotsCalls just needs to call drawnow()
+spotsCalls = topsCallList;
+spotsCalls.fevalables.add({@drawnow});
+spotsList.addItemToGroupWithMnemonic(spotsCalls, 'spots', 'spotsCalls');
 
 % topsTreeNode
 % spotsTree manages the main figure window
@@ -97,49 +97,45 @@ spotsTree = topsTreeNode;
 spotsTree.name = 'spots';
 spotsTree.iterations = taskRepetitions;
 spotsTree.iterationMethod = taskOrder;
-spotsTree.blockStartFevalable = {@spotsSetup, spotsList, 'spots'};
-spotsTree.blockEndFevalable = {@spotsTearDown, spotsList, 'spots'};
+spotsTree.startFevalable = {@spotsSetup, spotsList, 'spots'};
+spotsTree.finishFevalable = {@spotsTearDown, spotsList, 'spots'};
 spotsList.addItemToGroupWithMnemonic(spotsTree, 'spots', 'spotsTopLevel');
 
 % rtTask manages the reaction time task
 %   it will also have a reaction time *trial* as its child
+rtTask = spotsTree.newChild;
 taskName = 'rt_task';
-rtTask = topsTreeNode;
 rtTask.name = taskName;
 rtTask.iterations = trialsInARow;
-rtTask.blockStartFevalable = {@rtTaskSetup, spotsList, taskName};
-rtTask.blockEndFevalable = {@rtTaskTearDown, spotsList, taskName};
+rtTask.startFevalable = {@rtTaskSetup, spotsList, taskName};
+rtTask.finishFevalable = {@rtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(rtTask, taskName, 'rtTask');
-spotsTree.addChild(rtTask);
 
 % rtTrial manages individual reaction time trials
-rtTrial = topsTreeNode;
+rtTrial = rtTask.newChild;
 rtTrial.name = 'rt_trial';
-rtTrial.blockStartFevalable = {@rtTrialSetup, spotsList, taskName};
-rtTrial.blockActionFevalable = {@runForGroup, spotsLoop, 'spots', 600};
-rtTrial.blockEndFevalable = {@rtTrialTeardown, spotsList, taskName};
+rtTrial.startFevalable = {@rtTrialSetup, spotsList, taskName};
+rtTrial.addChild(spotsCalls);
+rtTrial.finishFevalable = {@rtTrialTeardown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(rtTrial, taskName, 'rtTrial');
-rtTask.addChild(rtTrial);
 
 % fvtTask manages the fixed viewing time task
 %   it will also have a fixed viewing time time *trial* as its child
+fvtTask = spotsTree.newChild;
 taskName = 'fvt_task';
-fvtTask = topsTreeNode;
 fvtTask.name = taskName;
 fvtTask.iterations = trialsInARow;
-fvtTask.blockStartFevalable = {@fvtTaskSetup, spotsList, taskName};
-fvtTask.blockEndFevalable = {@fvtTaskTearDown, spotsList, taskName};
+fvtTask.startFevalable = {@fvtTaskSetup, spotsList, taskName};
+fvtTask.finishFevalable = {@fvtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
-spotsTree.addChild(fvtTask);
 
 % another bottom level block, to manage a fixed viewing time trial
-fvtTrial = topsTreeNode;
+fvtTrial = fvtTask.newChild;
 fvtTrial.name = 'fvt_trial';
-fvtTrial.blockStartFevalable = {@fvtTrialSetup, spotsList, taskName};
-fvtTrial.blockActionFevalable = {@runForGroup, spotsLoop, 'spots', 600};
-fvtTrial.blockEndFevalable = {@fvtTrialTeardown, spotsList, taskName};
+fvtTrial.startFevalable = {@fvtTrialSetup, spotsList, taskName};
+fvtTrial.addChild(spotsCalls);
+fvtTrial.finishFevalable = {@fvtTrialTeardown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(fvtTrial, taskName, 'fvtTrial');
-fvtTask.addChild(fvtTrial);
 
 
 %%%
@@ -223,24 +219,24 @@ delete(spots);
 %%% Functions for the rt trial (a bottom level)
 %%%
 function rtTrialSetup(spotsList, modeName)
-spotsLoop = spotsList.getItemFromGroupWithMnemonic('spots', 'spotsLoop');
+spotsCalls = spotsList.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
 spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
 redSpot = spots(ceil(rand*length(spots)));
 set(spots, ...
     'FaceColor', [0 0 1], ...
-    'ButtonDownFcn', {@rtTrialSpotCallback, spotsLoop, redSpot});
+    'ButtonDownFcn', {@rtTrialSpotCallback, spotsCalls, redSpot});
 set(redSpot, 'FaceColor', [1 0 0]);
 set(spots, 'Visible', 'on');
 drawnow;
 
-function rtTrialSpotCallback(spot, event, spotsLoop, redSpot)
+function rtTrialSpotCallback(spot, event, spotsCalls, redSpot)
 topsDataLog.logDataInGroup(get(spot, 'Position'), 'picked spot');
 if spot==redSpot
     topsDataLog.logDataInGroup([], 'correct');
 else
     topsDataLog.logDataInGroup([], 'incorrect');
 end
-spotsLoop.proceed = false;
+spotsCalls.isRunning = false;
 
 function rtTrialTeardown(spotsList, modeName)
 spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
@@ -286,28 +282,28 @@ delete(spots);
 %%% Functions for the fixed viewing time trial
 %%%
 function fvtTrialSetup(spotsList, modeName)
-spotsLoop = spotsList.getItemFromGroupWithMnemonic('spots', 'spotsLoop');
+spotsCalls = spotsList.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
 vt = spotsList.getItemFromGroupWithMnemonic('spots', 'spotViewingTime');
 
 spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
 redSpot = spots(ceil(rand*length(spots)));
 set(spots, ...
     'FaceColor', [0 0 1], ...
-    'ButtonDownFcn', {@fvtTrialSpotCallback, spotsLoop, redSpot});
+    'ButtonDownFcn', {@fvtTrialSpotCallback, spotsCalls, redSpot});
 set(redSpot, 'FaceColor', [1 0 0]);
 set(spots, 'Visible', 'on', 'HitTest', 'off');
 pause(vt);
 set(spots, 'FaceColor', [0 0 0], 'HitTest', 'on');
 drawnow;
 
-function fvtTrialSpotCallback(spot, event, spotsLoop, redSpot)
+function fvtTrialSpotCallback(spot, event, spotsCalls, redSpot)
 topsDataLog.logDataInGroup(get(spot, 'Position'), 'picked spot');
 if spot==redSpot
     topsDataLog.logDataInGroup([], 'correct');
 else
     topsDataLog.logDataInGroup([], 'incorrect');
 end
-spotsLoop.proceed = false;
+spotsCalls.isRunning = false;
 
 function fvtTrialTeardown(spotsList, modeName)
 spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');

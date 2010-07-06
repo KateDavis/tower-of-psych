@@ -46,7 +46,7 @@ classdef topsCallList < topsSteppable
             for ii = 1:length(batch)
                 feval(batch{ii}{:});
             end
-            self.isRunning = self.alwaysRunning;
+            self.isRunning = self.isRunning && self.alwaysRunning;
         end
     end
 end

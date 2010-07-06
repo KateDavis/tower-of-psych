@@ -35,6 +35,10 @@ classdef TestTopsCallList < TestCase
             self.order(end+1) = value;
         end
         
+        function stopListFromRunning(self, callList)
+            callList.isRunning = false;
+        end
+        
         function testSingleton(self)
             newLoop = topsCallList;
             assertFalse(self.callList==newLoop, ...
@@ -55,6 +59,15 @@ classdef TestTopsCallList < TestCase
                 assertEqual(self.order(ii), value, ...
                     'should have called functions in the order added')
             end
+        end
+        
+        function testRunUntilStopped(self)
+            self.callList.alwaysRunning = true;
+            self.callList.fevalables.add({@stopListFromRunning, ...
+                self, self.callList});
+            self.callList.step;
+            assertFalse(self.callList.isRunning, ...
+                'call list should have been stopped from running')
         end
         
         function testPropertyChangeEventPosting(self)
