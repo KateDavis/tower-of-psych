@@ -1,7 +1,7 @@
-function [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
+function [spotsTree, spotsList] = configureSpotsTask(figurePosition)
 %Configure tops for a demo psychophysics task, with two task types
 %
-%   [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
+%   [spotsTree, spotsList] = configureSpotsTask(figurePosition)
 %
 %   spotsTree is a topsTreeNode object which organizes tasks and trials.
 %   spotsTree and spotsList "know about" each other.
@@ -38,7 +38,7 @@ function [spotsTree, spotsList] = configureSpotsTasks(figurePosition)
 %       -the next trial begins.
 %
 %   Several experiment parameters may be controlled by editing values near
-%   the top of configureSpotsTasks.m.
+%   the top of configureSpotsTask.m.
 %
 % See also, demoSpotsTask, topsGroupedList, topsTreeNode
 

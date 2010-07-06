@@ -13,7 +13,7 @@ blockGUIPosition = [0 0 w h];
 logGUIPosition = [x 0 w 2*h];
 
 % configure the Spots Task
-[spotsTree, spotsList] = configureSpotsTasks(taskPosition);
+[spotsTree, spotsList] = configureSpotsTask(taskPosition);
 
 % launch the blockTreeGUI
 blockGUI = topsTreeNodeGUI(spotsTree);

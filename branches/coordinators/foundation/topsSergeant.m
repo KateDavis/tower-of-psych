@@ -11,7 +11,7 @@ classdef topsSergeant < topsSteppable
     % has isRunning equal to false.
     % @ingroup foundation
     
-    properties
+    properties (SetObservable)
         % topsList of steppable objects to be run() concurrently
         components;
         
