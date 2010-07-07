@@ -61,6 +61,22 @@ classdef TestTopsTreeNode < TestCase
                 'wrong action order for tree run()');
         end
         
+        function testCatchRecursionException(self)
+            errorCauser = {@stupidDoesNotExist};
+            try
+                feval(errorCauser{:})
+            catch expectedException
+                % just get the expected error
+            end
+            
+            child = self.treeNode.newChild;
+            child.startFevalable = errorCauser;
+            runner = @()self.treeNode.run;
+            assertExceptionThrown(runner, expectedException.identifier, ...
+                'treeNode should catch errors during runnung and rethrow')
+            
+        end
+        
         function testPropertyChangeEventPosting(self)
             % listen for event postings
             props = properties(self.treeNode);

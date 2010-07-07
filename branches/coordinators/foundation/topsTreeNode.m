@@ -139,7 +139,8 @@ classdef topsTreeNode < topsRunnable
                 end
                 
             catch recurErr
-                warning(recurErr.identifier, '%s named %s failed:', ...
+                warning(recurErr.identifier, ...
+                    '%s named "%s" failed:\n\t%s', ...
                     class(self), self.name, recurErr.message);
 
                 % attempt to clean up despite error
@@ -149,11 +150,11 @@ classdef topsTreeNode < topsRunnable
                     self.logFeval(self.finishString, self.finishFevalable);
 
                 catch finishErr
-                    warning(finishErr.identifier, '%s named %s failed to finish:', ...
+                    warning(finishErr.identifier, ...
+                        '%s named "%s" failed to finish:\n\t%s', ...
                         class(self), self.name, finishErr.message);
                 end
-                    
-                rethrow(recurErr)
+                rethrow(recurErr);
             end
             
             self.logAction(self.finishString);
