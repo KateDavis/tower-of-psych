@@ -129,7 +129,7 @@ fvtTask.startFevalable = {@fvtTaskSetup, spotsList, taskName};
 fvtTask.finishFevalable = {@fvtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
 
-% another bottom level block, to manage a fixed viewing time trial
+% another bottom level node, to manage a fixed viewing time trial
 fvtTrial = fvtTask.newChild;
 fvtTrial.name = 'fvt_trial';
 fvtTrial.startFevalable = {@fvtTrialSetup, spotsList, taskName};

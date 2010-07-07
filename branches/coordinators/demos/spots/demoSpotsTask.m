@@ -9,15 +9,15 @@ y = .46;
 w = .4;
 h = .4;
 taskPosition = [0 y w h];
-blockGUIPosition = [0 0 w h];
+treeGUIPosition = [0 0 w h];
 logGUIPosition = [x 0 w 2*h];
 
 % configure the Spots Task
 [spotsTree, spotsList] = configureSpotsTask(taskPosition);
 
-% launch the blockTreeGUI
-blockGUI = topsTreeNodeGUI(spotsTree);
-set(blockGUI.figure, 'Position', blockGUIPosition);
+% launch the treeNodeGUI
+treeGUI = topsTreeNodeGUI(spotsTree);
+set(treeGUI.figure, 'Position', treeGUIPosition);
 
 % launch the dataLogGUI
 topsDataLog.flushAllData;

@@ -72,7 +72,7 @@ gameList.addItemToGroupWithMnemonic(battleCalls, 'game', 'battleCalls');
 % Create an array of battler objects to represent player characters. 
 %   add character array to the gameList
 %   create a wake-up timers for character
-%   add each timer to the function loop
+%   add each timer to a call list
 Goonius = EncounterBattler;
 Goonius.name = 'Goonius';
 Goonius.attackInterval = 15;
@@ -115,7 +115,7 @@ gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
 %   make several arrays with interesting groups of monsters
 %   add each monster group to the gameList
 %   create wake-up timers for monsters in each group
-%   add each timer to the function loop
+%   add each timer to a call list
 isMonster = true;
 
 Evil = EncounterBattler(isMonster);
@@ -148,7 +148,7 @@ Robot.restoreHp;
 
 % group monsters into several overlapping groups, 
 %   add groups top-level grouped list object
-%   create a game subblock for each group, add to top-level block tree
+%   create a runnable tree node for each group, add to top-level tree node
 group(1).name = 'fools';
 group(1).monsters = [Fool.copy, Fool.copy, Fool.copy, Fool.copy];
 group(2).name = 'robot';
@@ -189,11 +189,11 @@ for ii = 1:length(group)
     sergeant.components.add(groupCalls);
     sergeant.components.add(battleCalls);
     
-    battleBlock = gameTree.newChild;
-    battleBlock.name = group(ii).name;
-    battleBlock.startFevalable = {@battleSetup, battleBlock, gameList};
-    battleBlock.addChild(sergeant);
-    battleBlock.finishFevalable = {@battleTearDown, battleBlock, gameList};
+    battleNode = gameTree.newChild;
+    battleNode.name = group(ii).name;
+    battleNode.startFevalable = {@battleSetup, battleNode, gameList};
+    battleNode.addChild(sergeant);
+    battleNode.finishFevalable = {@battleTearDown, battleNode, gameList};
 end
 gameList.addItemToGroupWithMnemonic('', 'game', 'activeMonsterGroup');
 
@@ -228,9 +228,9 @@ for ii = 1:nChars
 end
 
 
-function battleSetup(battleBlock, gameList)
+function battleSetup(battleNode, gameList)
 % position monsters in axes
-groupName = battleBlock.name;
+groupName = battleNode.name;
 monsterGroup = gameList.getItemFromGroupWithMnemonic('monsters', groupName);
 characters = gameList.getItemFromGroupWithMnemonic('game', 'characters');
 nChars = length(characters);
@@ -339,9 +339,9 @@ if all([monsterGroup.isDead])
 end
 
 
-function battleTearDown(battleBlock, gameList)
+function battleTearDown(battleNode, gameList)
 % clear monster group from axes
-groupName = battleBlock.name;
+groupName = battleNode.name;
 monsterGroup = gameList.getItemFromGroupWithMnemonic( ...
     'monsters', groupName);
 for ii = 1:length(monsterGroup)

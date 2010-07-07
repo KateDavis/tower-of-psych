@@ -40,8 +40,8 @@ classdef TestTopsCallList < TestCase
         end
         
         function testSingleton(self)
-            newLoop = topsCallList;
-            assertFalse(self.callList==newLoop, ...
+            newList = topsCallList;
+            assertFalse(self.callList==newList, ...
                 'topsCallList should not be a singleton');
         end
         

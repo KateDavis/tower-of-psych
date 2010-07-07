@@ -41,8 +41,8 @@ classdef TestTopsSergeant < TestCase
         end
         
         function testSingleton(self)
-            newLoop = topsSergeant;
-            assertFalse(self.sergeant==newLoop, ...
+            newList = topsSergeant;
+            assertFalse(self.sergeant==newList, ...
                 'topsSergeant should not be a singleton');
         end
         
