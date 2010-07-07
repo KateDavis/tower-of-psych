@@ -29,7 +29,7 @@ classdef topsCallList < topsSteppable
         fevalables;
         
         % true or false, whether to run indefinitely
-        alwaysRunning = true;
+        alwaysRunning = false;
     end
     
     methods

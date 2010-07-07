@@ -26,7 +26,7 @@ classdef topsTreeNode < topsRunnable
     % have to be defined elsewhere, as in specific "start" and "finish"
     % functions.  Any object that has a run() method may function as a
     % child node at the bottom of the tree (a "leaf").  topsRunnable
-    % objects like topsCallList and topsStateMachine provide rich ways to
+    % objects like topsCallList and topsStateMachine provide other ways to
     % organize trial details.
     % @details
     % Many psychophysics experiments use a tree structure implicitly, along

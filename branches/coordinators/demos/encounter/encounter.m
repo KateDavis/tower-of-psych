@@ -63,6 +63,7 @@ gameList.addItemToGroupWithMnemonic(characterQueue, ...
 
 % batch of functions to call, with arguments
 battleCalls = topsCallList;
+battleCalls.alwaysRunning = true;
 battleCalls.fevalables.add({@drawnow});
 battleCalls.fevalables.add({@()monsterQueue.dispatchNextFevalable});
 battleCalls.fevalables.add({@()characterQueue.dispatchNextFevalable});

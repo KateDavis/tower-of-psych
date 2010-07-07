@@ -87,6 +87,7 @@ spotsList.addItemToGroupWithMnemonic(taskOrder, 'spots', 'taskOrder');
 % spotsCalls can hold function calls, with arguments, that can be
 % called as a batch.  spotsCalls just needs to call drawnow()
 spotsCalls = topsCallList;
+spotsCalls.alwaysRunning = true;
 spotsCalls.fevalables.add({@drawnow});
 spotsList.addItemToGroupWithMnemonic(spotsCalls, 'spots', 'spotsCalls');
 
