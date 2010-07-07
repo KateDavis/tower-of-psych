@@ -44,6 +44,7 @@ classdef topsTreeNodeGUI < topsGUI
         nodeDetailGrid;
         nodeRunButton;
         nodeCount;
+        structuralProps = {'parent', 'children', 'name'};
     end
     
     methods
@@ -175,7 +176,7 @@ classdef topsTreeNodeGUI < topsGUI
             if isa(node, 'topsTreeNode')
                 % add this node
                 toggle = topsText.toggleText;
-                h = self.nodesGrid.newControlAtRowAndColumn( ...
+                self.nodesGrid.newControlAtRowAndColumn( ...
                     row, [0 1]+depth, ...
                     toggle{:}, ...
                     'String', node.name, ...
@@ -195,7 +196,7 @@ classdef topsTreeNodeGUI < topsGUI
                 
             else
                 static = topsText.staticText;
-                h = self.nodesGrid.newControlAtRowAndColumn( ...
+                self.nodesGrid.newControlAtRowAndColumn( ...
                     row, [0 1]+depth, ...
                     static{:}, ...
                     'String', node.name, ...
@@ -205,12 +206,12 @@ classdef topsTreeNodeGUI < topsGUI
         end
         
         function listenToNode(self, node)
-            % props = properties(node);
-            % for ii = 1:length(props)
-            %     listener = node.addlistener(props{ii}, 'PostSet', ...
-            %         @(source, event)self.hearNodePropertyChange(source, event));
-            %     self.addListenerWithName(listener, props{ii});
-            % end
+            props = self.structuralProps;
+            for ii = 1:length(props)
+                listener = node.addlistener(props{ii}, 'PostSet', ...
+                    @(source, event)self.hearNodePropertyChange(source, event));
+                self.addListenerWithName(listener, props{ii});
+            end
             
             listener = node.addlistener('RunStart', ...
                 @(source, event)self.hearRunStart(source, event));
@@ -218,10 +219,7 @@ classdef topsTreeNodeGUI < topsGUI
         end
         
         function hearNodePropertyChange(self, metaProp, event)
-            % rebuild when tree structure or name changes
-            if any(strcmp(metaProp.Name, {'children', 'parent', 'name'}))
-                self.repopulateNodesGrid;
-            end
+            self.repopulateNodesGrid;
             
             % redraw for currently detailed node
             if event.AffectedObject == self.currentNode

@@ -62,12 +62,17 @@ classdef topsTreeNode < topsRunnable
     end
     
     methods
-        % Constructor takes no arguments
+        % Constructor takes no arguments.
         function self = topsTreeNode
             self = self@topsRunnable;
             self.children = topsList;
         end
         
+        % Launch a graphical interface for this tree node.
+        function g = gui(self)
+            g = topsTreeNodeGUI(self);
+        end
+
         % Add a child beneath this node.
         % @param child a topsTreeNode to add beneath this node.
         % @details

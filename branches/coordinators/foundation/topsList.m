@@ -3,7 +3,7 @@ classdef topsList < handle
     % @details
     % The job of topsList is to hold items.  The user can add and remove
     % items and check whether items are already in the list.  The user may
-    % deal item indexes or not.
+    % ignore item indexes or use them explicitly.
     
     properties
         % cell array where list items are stored

@@ -1,55 +1,54 @@
-classdef TestTopsBlockTreeGUI < TestCase
+classdef TestTopsTreeNodeGUI < TestCase
     
     properties
-        blockTree;
-        blockTreeChild;
-        blockTreeGUI;
+        treeNode;
+        treeNodeChild;
+        treeNodeGUI;
     end
     
     methods
-        function self = TestTopsBlockTreeGUI(name)
+        function self = TestTopsTreeNodeGUI(name)
             self = self@TestCase(name);
         end
         
         function setUp(self)
-            self.blockTree = topsBlockTree;
-            self.blockTree.name = 'parent';
-            self.blockTreeChild = topsBlockTree;
-            self.blockTreeChild.name = 'child';
-            self.blockTree.addChild(self.blockTreeChild);
+            self.treeNode = topsTreeNode;
+            self.treeNode.name = 'parent';
+            self.treeNodeChild = self.treeNode.newChild;
+            self.treeNodeChild.name = 'child';
             
-            self.blockTreeGUI = topsBlockTreeGUI(self.blockTree);
+            self.treeNodeGUI = topsTreeNodeGUI(self.treeNode);
         end
         
         function tearDown(self)
-            delete(self.blockTreeGUI);
-            self.blockTreeGUI = [];
+            delete(self.treeNodeGUI);
+            self.treeNodeGUI = [];
             
-            delete(self.blockTree);
-            self.blockTree = [];
+            delete(self.treeNode);
+            self.treeNode = [];
             
-            delete(self.blockTreeChild);
-            self.blockTreeChild = [];
+            delete(self.treeNodeChild);
+            self.treeNodeChild = [];
         end
         
         function testSingleton(self)
-            newGui = topsBlockTreeGUI;
-            assertFalse(self.blockTreeGUI==newGui, 'topsBlockTreeGUI should not be a singleton');
+            newGui = topsTreeNodeGUI;
+            assertFalse(self.treeNodeGUI==newGui, 'topsTreeNodeGUI should not be a singleton');
             delete(newGui);
         end
         
         function testInitialNumberOfTreeControls(self)
-            controls = self.blockTreeGUI.blocksGrid.controls;
+            controls = self.treeNodeGUI.nodesGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 2, 'should be two controls--parent and child');
         end
         
         function testLaterNumberOfTreeControls(self)
-            blockTreeGrandchild = topsBlockTree;
-            blockTreeGrandchild.name = 'child';
-            self.blockTreeChild.addChild(blockTreeGrandchild);
+            treeNodeGrandchild = self.treeNodeChild.newChild;
+            treeNodeGrandchild.name = 'grandchild';
+            self.treeNode.name = 'grandparent';
             
-            controls = self.blockTreeGUI.blocksGrid.controls;
+            controls = self.treeNodeGUI.nodesGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 3, 'should be three controls--parent, child and grandchild');
         end

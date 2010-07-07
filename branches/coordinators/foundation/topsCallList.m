@@ -22,7 +22,6 @@ classdef topsCallList < topsSteppable
     % calls with Matlab's built-in feval() function--hence the name--so the
     % cell array "foo" would be an fevalable if it could be executed with
     % feval(foo{:}).
-    % @details
     % @ingroup foundation
     
     properties (SetObservable)

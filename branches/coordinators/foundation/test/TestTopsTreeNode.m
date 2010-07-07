@@ -66,7 +66,7 @@ classdef TestTopsTreeNode < TestCase
             try
                 feval(errorCauser{:})
             catch expectedException
-                % just get the expected error
+                warning('off', expectedException.identifier)
             end
             
             child = self.treeNode.newChild;
