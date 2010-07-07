@@ -11,6 +11,7 @@ classdef topsSteppable < topsRunnable
     % behavior and then return as soon as possible.  Stepping behaviors can
     % be interleaved to acheive concurrent operation of multiple
     % topsSteppable objects within Matlab's single user-controled thread.
+    % See the topsSergeant class for interleaving topsSteppable objects.
     % @ingroup foundation
     
     properties (Hidden)

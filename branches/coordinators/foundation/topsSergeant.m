@@ -4,11 +4,11 @@ classdef topsSergeant < topsSteppable
     % @details
     % topsSergeant objects may contain other topsSteppable objects and run
     % them concurrently.  It uses the metaphor of a drill sergeant, whose
-    % job it is to keep oters stepping at the same rate.  When a
-    % topsSergeant run()s, it will invoke step() sequentially and
-    % repeatedly for each of the steppable objects in its components array.
-    % The topsSergeant will stop running as soon as one of its components
-    % has isRunning equal to false.
+    % job it is to keep others stepping at the same rate.  When a
+    % topsSergeant run()s, it invokes step() sequentially and
+    % repeatedly for each of its component objects.  The topsSergeant will
+    % stop running as soon as one of its components has isRunning equal to
+    % false.
     % @ingroup foundation
     
     properties (SetObservable)

@@ -4,11 +4,10 @@ classdef topsRunnable < topsFoundation
     % @details
     % The topsRunnable superclass provides a common interface for Tower
     % of Psych classes that manage flow control.  They organize function
-    % calls and log what they call.  Some also "link up" with each other to
+    % calls and log what they call.  Some can combine with each other to
     % make complex control structures.
     % @details
-    % Any topsRunnable can be run(), to begin executing a Tower of Psych
-    % program.
+    % Any topsRunnable can be run(), to begin execution.
     % @details
     % @ingroup foundation
     
