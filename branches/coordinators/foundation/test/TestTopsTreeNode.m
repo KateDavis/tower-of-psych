@@ -69,7 +69,7 @@ classdef TestTopsTreeNode < TestCase
                 warning('off', expectedException.identifier)
             end
             
-            child = self.treeNode.newChild;
+            child = self.treeNode.newChildNode;
             child.startFevalable = errorCauser;
             runner = @()self.treeNode.run;
             assertExceptionThrown(runner, expectedException.identifier, ...

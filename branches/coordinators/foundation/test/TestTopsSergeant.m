@@ -19,7 +19,7 @@ classdef TestTopsSergeant < TestCase
             self.nComponents = 10;
             self.components = cell(1, self.nComponents);
             for ii = 1:self.nComponents
-                comp = topsSergeant;
+                comp = topsSteppable;
                 comp.startFevalable = {@countValue, self, ii};
                 self.components{ii} = comp;
             end
@@ -48,7 +48,7 @@ classdef TestTopsSergeant < TestCase
         
         function testStepComponentsEqually(self)
             for ii = 1:self.nComponents
-                self.sergeant.addComponent(self.components{ii});
+                self.sergeant.addChild(self.components{ii});
             end
             
             self.sergeant.run;
@@ -59,15 +59,6 @@ classdef TestTopsSergeant < TestCase
                 assertEqual(self.order(ii), value, ...
                     'should have called components in the order added')
             end
-        end
-        
-        function testStopRunningWhenComponentStops(self)
-            self.sergeant.start;
-            self.sergeant.componentIsRunning = true(1, self.nComponents);
-            self.sergeant.componentIsRunning(1) = false;
-            self.sergeant.step;
-            assertFalse(self.sergeant.isRunning, ...
-                'sergeant should stop running when any component stops')
         end
         
         function testPropertyChangeEventPosting(self)

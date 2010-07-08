@@ -37,9 +37,10 @@ classdef topsSteppable < topsRunnable
         
         % Do a little flow control and return as soon as possible.
         % @details
-        % Subclasses redefine step to do specific run() behaviors, a little
-        % at a time, and return as soon as possible.
+        % Subclasses should redefine step() to do specific run() behaviors,
+        % a little at a time, and return as soon as possible.
         function step(self)
+            self.isRunning = false;
         end
         
         % Prepare to do flow control.

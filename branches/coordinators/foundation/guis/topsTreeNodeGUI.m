@@ -44,7 +44,7 @@ classdef topsTreeNodeGUI < topsGUI
         nodeDetailGrid;
         nodeRunButton;
         nodeCount;
-        structuralProps = {'parent', 'children', 'name'};
+        structuralProps = {'children', 'name'};
     end
     
     methods

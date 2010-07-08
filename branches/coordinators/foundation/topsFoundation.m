@@ -76,7 +76,7 @@ classdef topsFoundation < handle
         % @details
         % Returns the modified cell array, @a c.
         function c = cellRemoveItem(self, item)
-            [indexes, selector] = self.contains(item);
+            selector = self.contains(item);
             c = c(~selector);
         end
     end

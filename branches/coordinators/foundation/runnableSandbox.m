@@ -23,26 +23,26 @@ machine = topsStateMachine;
 
 % make a sergeant that composes all of the above
 sarg = topsSergeant;
-sarg.addComponent(helloList);
-sarg.addComponent(machine);
-sarg.addComponent(goodbyeList);
+sarg.addChild(helloList);
+sarg.addChild(machine);
+sarg.addChild(goodbyeList);
 
 % make a runnable tree
 top = topsTreeNode;
 top.name = 'top';
 
-middle = top.newChild;
+middle = top.newChildNode;
 middle.name = 'middle';
 
-bottom(1) = middle.newChild;
+bottom(1) = middle.newChildNode;
 bottom(1).name = 'I have a call list';
 bottom(1).addChild(helloList);
 
-bottom(2) = middle.newChild;
+bottom(2) = middle.newChildNode;
 bottom(2).name = 'I have a state machine';
 bottom(2).addChild(machine);
 
-bottom(3) = middle.newChild;
+bottom(3) = middle.newChildNode;
 bottom(3).name = 'I have a sergeant';
 bottom(3).addChild(sarg);
 

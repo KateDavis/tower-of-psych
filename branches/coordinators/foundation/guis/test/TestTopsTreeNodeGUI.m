@@ -14,7 +14,7 @@ classdef TestTopsTreeNodeGUI < TestCase
         function setUp(self)
             self.treeNode = topsTreeNode;
             self.treeNode.name = 'parent';
-            self.treeNodeChild = self.treeNode.newChild;
+            self.treeNodeChild = self.treeNode.newChildNode;
             self.treeNodeChild.name = 'child';
             
             self.treeNodeGUI = topsTreeNodeGUI(self.treeNode);
@@ -44,7 +44,7 @@ classdef TestTopsTreeNodeGUI < TestCase
         end
         
         function testLaterNumberOfTreeControls(self)
-            treeNodeGrandchild = self.treeNodeChild.newChild;
+            treeNodeGrandchild = self.treeNodeChild.newChildNode;
             treeNodeGrandchild.name = 'grandchild';
             self.treeNode.name = 'grandparent';
             

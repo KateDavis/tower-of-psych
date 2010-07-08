@@ -1,97 +1,102 @@
-classdef topsSergeant < topsSteppable
+classdef topsSergeant < topsRunnableComposite
     % @class topsSergeant
     % Compose topsSteppable objects and run them concurrently.
     % @details
-    % topsSergeant objects may contain other topsSteppable objects and run
+    % topsSergeant objects may contain topsSteppable objects and run
     % them concurrently.  It uses the metaphor of a drill sergeant, whose
     % job it is to keep others stepping at the same rate.  When a
     % topsSergeant run()s, it invokes step() sequentially and
     % repeatedly for each of its component objects.  The topsSergeant will
-    % stop running as soon as one of its components has isRunning equal to
+    % stop running as soon as one of its children has isRunning equal to
     % false.
     % @ingroup foundation
     
     properties (SetObservable)
-        % cell array of steppable objects to be run() concurrently
-        components = {};
-        
-        % logical array reflecting isRunning for each object in components
-        componentIsRunning;
+        % logical array reflecting isRunning for each child object
+        childIsRunning;
     end
     
     methods
-        % Add a topsSteppable "component".
-        % @param steppable a topsSteppable object
-        % @param index optional index where to insert @a steppable
+        % Add a topsSteppable child beneath this object.
+        % @param child a topsSteppable to add beneath this object.
         % @details
-        % Adds the given @a steppable to the components array.
-        % If @a index is provided, inserts @a steppable at @a index and
-        % shifts other elements of components as needed.
-        % @details
-        % Returns the index into components where @a steppable was
-        % appended or insterted.
-        function index = addComponent(self, steppable, index)
-            if nargin > 2
-                self.components = topsFoundation.cellAdd( ...
-                    self.components, steppable, index);
+        % Rede the addChild() method of topsRunnableComposite to verify
+        % that @a child is a topsSteppable (or subclass) object.
+        function addChild(self, child)
+            if isa(child, 'topsSteppable')
+                self.addChild@topsRunnableComposite(child);
             else
-                self.components = topsFoundation.cellAdd( ...
-                    self.components, steppable);
+                warning('% cannot add child of class %s', ...
+                    class(self), class(child));
             end
         end
-
-        % Constructor takes no arguments.
-        function self = topsSergeant
-            self.componentIsRunning = false(0,0);
+        
+        % Interleave stepping behavior of child objects.
+        % @details
+        % Calls start() for each child object, then calls step() repeatedly
+        % and sequentially for each child, until at least one child no
+        % longer isRunning, then calls finish() for each child.
+        % @details
+        % The since all the child objects should step() the same number of
+        % times and in an interleaved fashion, they should all appear to
+        % run together.
+        function run(self)
+            self.logAction(self.startString);
+            self.notify('RunStart');
+            self.logFeval(self.startString, self.startFevalable);
+            self.startChildren;
+            
+            self.isRunning = true;
+            while self.isRunning
+                self.stepChildren;
+            end
+            
+            self.logAction(self.finishString);
+            self.notify('RunFinish');
+            self.logFeval(self.finishString, self.finishFevalable);
+            self.finishChildren;
         end
         
-        % Do a little flow control with each object in components.
+        
+        % Do a little flow control with each child object.
         % @details
-        % topsSergeant extends the step() method of topsSteppable.  It
-        % calls step() sequentialy for each of the topsSteppable objects in
-        % its components array.
+        % Calls step() once, sequentually, for each child object.
         % @details
-        % If any of the objects in components has isRunning equal to false,
-        % this topsSergeant object will set its own isRunning to false (and
+        % If any of the child objects has isRunning equal to false, this
+        % topsSergeant object will set its own isRunning to false (and
         % therefore it should stop running).
-        function step(self)
-            nComponents = length(self.components);
+        function stepChildren(self)
+            nComponents = length(self.children);
             if nComponents > 0
                 for ii = 1:nComponents
-                    self.components{ii}.step;
-                    self.componentIsRunning(ii) = ...
-                        self.components{ii}.isRunning;
+                    self.children{ii}.step;
+                    self.childIsRunning(ii) = ...
+                        self.children{ii}.isRunning;
                 end
-                self.isRunning = all(self.componentIsRunning);
+                self.isRunning = all(self.childIsRunning);
             else
                 self.isRunning = false;
             end
         end
         
-        % Prepare each object in components to do flow control.
+        % Prepare each child object to do flow control.
         % @details
-        % topsSergeant extends the start() method of topsSteppable.  It
-        % calls start() sequentialy for each of the topsSteppable objects
-        % in its components array.
-        function start(self)
-            self.start@topsSteppable;
-            for ii = 1:length(self.components)
-                self.components{ii}.start;
+        % Calls start() once, sequentually, for each child object.
+        function startChildren(self)
+            for ii = 1:length(self.children)
+                self.children{ii}.start;
             end
-            self.componentIsRunning = true(size(self.components));
+            self.childIsRunning = true(size(self.children));
         end
         
-        % Let each object in components finish doing flow control.
+        % Let each child object finish doing flow control.
         % @details
-        % topsSergeant extends the finish() method of topsSteppable.  It calls
-        % finish() sequentialy for each of the topsSteppable objects in
-        % its components array.
-        function finish(self)
-            self.finish@topsSteppable;
-            for ii = 1:length(self.components)
-                self.components{ii}.finish;
+        % Calls finish() once, sequentually, for each child object.
+        function finishChildren(self)
+            for ii = 1:length(self.children)
+                self.children{ii}.start;
             end
-            self.componentIsRunning = false(size(self.components));
+            self.childIsRunning = false(size(self.children));
         end
     end
 end
