@@ -48,7 +48,7 @@ classdef TestTopsSergeant < TestCase
         
         function testStepComponentsEqually(self)
             for ii = 1:self.nComponents
-                self.sergeant.components.add(self.components{ii});
+                self.sergeant.addComponent(self.components{ii});
             end
             
             self.sergeant.run;

@@ -25,25 +25,39 @@ classdef topsCallList < topsSteppable
     % @ingroup foundation
     
     properties (SetObservable)
-        % topsList of fevalable cell arrays to call as a batch
-        fevalables;
+        % cell array of fevalable cell arrays to call as a batch
+        fevalables = {};
         
         % true or false, whether to run indefinitely
         alwaysRunning = false;
     end
     
     methods
-        % Constructor takes no arguments.
-        function self = topsCallList
-            self.fevalables = topsList;
+        % Add an "fevalable" to the call list.
+        % @param fevalable a cell array whose contents to pass to feval()
+        % @param index optional index where to insert @a fevalable
+        % @details
+        % Adds the given @a fevalable to the list of calls in fevalables.
+        % If @a index is provided, inserts @a fevalable at @a index and
+        % shifts other elements of fevalables as needed.
+        % @details
+        % Returns the index into fevalables where @a fevalable was
+        % appended or insterted.
+        function index = addCall(self, fevalable, index)
+            if nargin > 2
+                self.fevalables = topsFoundation.cellAdd( ...
+                    self.fevalables, fevalable, index);
+            else
+                self.fevalables = topsFoundation.cellAdd( ...
+                    self.fevalables, fevalable);
+            end
         end
         
-        % Invoke fevalables in a batch.
+        % Invoke all fevalables in a batch.
         function step(self)
             self.logAction(self.stepString);
-            batch = self.fevalables.allItems;
-            for ii = 1:length(batch)
-                feval(batch{ii}{:});
+            for ii = 1:length(self.fevalables)
+                feval(self.fevalables{ii}{:});
             end
             self.isRunning = self.isRunning && self.alwaysRunning;
         end

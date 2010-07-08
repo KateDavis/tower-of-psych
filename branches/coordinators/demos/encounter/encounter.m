@@ -64,10 +64,10 @@ gameList.addItemToGroupWithMnemonic(characterQueue, ...
 % batch of functions to call, with arguments
 battleCalls = topsCallList;
 battleCalls.alwaysRunning = true;
-battleCalls.fevalables.add({@drawnow});
-battleCalls.fevalables.add({@()monsterQueue.dispatchNextFevalable});
-battleCalls.fevalables.add({@()characterQueue.dispatchNextFevalable});
-battleCalls.fevalables.add({@checkBattleStatus, gameList, battleCalls});
+battleCalls.addCall({@drawnow});
+battleCalls.addCall({@()monsterQueue.dispatchNextFevalable});
+battleCalls.addCall({@()characterQueue.dispatchNextFevalable});
+battleCalls.addCall({@checkBattleStatus, gameList, battleCalls});
 gameList.addItemToGroupWithMnemonic(battleCalls, 'game', 'battleCalls');
 
 % Create an array of battler objects to represent player characters. 
@@ -106,7 +106,7 @@ for ii = 1:length(characters)
     bt.loadForRepeatIntervalWithCallback ...
         (characters(ii).attackInterval, ...
         {@characterWakesUp, characters(ii), gameList});
-    charCalls.fevalables.add({@tick, bt});
+    charCalls.addCall({@tick, bt});
 end
 gameList.addItemToGroupWithMnemonic(charCalls, 'game', 'charCalls');
 gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
@@ -173,7 +173,7 @@ for ii = 1:length(group)
         bt.loadForRepeatIntervalWithCallback ...
             (group(ii).monsters(jj).attackInterval, ...
             {@monsterWakesUp, group(ii).monsters(jj), gameList});
-        groupCalls.fevalables.add({@tick, bt});
+        groupCalls.addCall({@tick, bt});
     end
     gameList.addItemToGroupWithMnemonic( ...
         group(ii).monsters, 'monsters', group(ii).name);
@@ -186,9 +186,9 @@ for ii = 1:length(group)
     % concurrently
     sergeant = topsSergeant;
     sergeant.name = group(ii).name;
-    sergeant.components.add(charCalls);
-    sergeant.components.add(groupCalls);
-    sergeant.components.add(battleCalls);
+    sergeant.addComponent(charCalls);
+    sergeant.addComponent(groupCalls);
+    sergeant.addComponent(battleCalls);
     
     battleNode = gameTree.newChild;
     battleNode.name = group(ii).name;

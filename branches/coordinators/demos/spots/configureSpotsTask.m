@@ -88,7 +88,7 @@ spotsList.addItemToGroupWithMnemonic(taskOrder, 'spots', 'taskOrder');
 % called as a batch.  spotsCalls just needs to call drawnow()
 spotsCalls = topsCallList;
 spotsCalls.alwaysRunning = true;
-spotsCalls.fevalables.add({@drawnow});
+spotsCalls.addCall({@drawnow});
 spotsList.addItemToGroupWithMnemonic(spotsCalls, 'spots', 'spotsCalls');
 
 % topsTreeNode

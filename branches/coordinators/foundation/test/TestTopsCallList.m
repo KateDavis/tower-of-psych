@@ -47,7 +47,7 @@ classdef TestTopsCallList < TestCase
         
         function testRunThroughCalls(self)
             for ii = 1:self.nFunctions
-                self.callList.fevalables.add(self.orderedFunctions{ii});
+                self.callList.addCall(self.orderedFunctions{ii});
             end
             
             self.callList.alwaysRunning = false;
@@ -63,7 +63,7 @@ classdef TestTopsCallList < TestCase
         
         function testRunUntilStopped(self)
             self.callList.alwaysRunning = true;
-            self.callList.fevalables.add({@stopListFromRunning, ...
+            self.callList.addCall({@stopListFromRunning, ...
                 self, self.callList});
             self.callList.step;
             assertFalse(self.callList.isRunning, ...

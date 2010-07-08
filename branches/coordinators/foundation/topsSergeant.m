@@ -12,17 +12,36 @@ classdef topsSergeant < topsSteppable
     % @ingroup foundation
     
     properties (SetObservable)
-        % topsList of steppable objects to be run() concurrently
-        components;
+        % cell array of steppable objects to be run() concurrently
+        components = {};
         
         % logical array reflecting isRunning for each object in components
         componentIsRunning;
     end
     
     methods
+        % Add a topsSteppable "component".
+        % @param steppable a topsSteppable object
+        % @param index optional index where to insert @a steppable
+        % @details
+        % Adds the given @a steppable to the components array.
+        % If @a index is provided, inserts @a steppable at @a index and
+        % shifts other elements of components as needed.
+        % @details
+        % Returns the index into components where @a steppable was
+        % appended or insterted.
+        function index = addComponent(self, steppable, index)
+            if nargin > 2
+                self.components = topsFoundation.cellAdd( ...
+                    self.components, steppable, index);
+            else
+                self.components = topsFoundation.cellAdd( ...
+                    self.components, steppable);
+            end
+        end
+
         % Constructor takes no arguments.
         function self = topsSergeant
-            self.components = topsList;
             self.componentIsRunning = false(0,0);
         end
         
@@ -36,12 +55,12 @@ classdef topsSergeant < topsSteppable
         % this topsSergeant object will set its own isRunning to false (and
         % therefore it should stop running).
         function step(self)
-            components = self.components.allItems;
-            nComponents = length(components);
+            nComponents = length(self.components);
             if nComponents > 0
                 for ii = 1:nComponents
-                    components{ii}.step;
-                    self.componentIsRunning(ii) = components{ii}.isRunning;
+                    self.components{ii}.step;
+                    self.componentIsRunning(ii) = ...
+                        self.components{ii}.isRunning;
                 end
                 self.isRunning = all(self.componentIsRunning);
             else
@@ -56,11 +75,10 @@ classdef topsSergeant < topsSteppable
         % in its components array.
         function start(self)
             self.start@topsSteppable;
-            components = self.components.allItems;
-            for ii = 1:length(components)
-                components{ii}.start;
+            for ii = 1:length(self.components)
+                self.components{ii}.start;
             end
-            self.componentIsRunning = true(size(components));
+            self.componentIsRunning = true(size(self.components));
         end
         
         % Let each object in components finish doing flow control.
@@ -70,11 +88,10 @@ classdef topsSergeant < topsSteppable
         % its components array.
         function finish(self)
             self.finish@topsSteppable;
-            components = self.components.allItems;
-            for ii = 1:length(components)
-                components{ii}.finish;
+            for ii = 1:length(self.components)
+                self.components{ii}.finish;
             end
-            self.componentIsRunning = false(size(components));
+            self.componentIsRunning = false(size(self.components));
         end
     end
 end

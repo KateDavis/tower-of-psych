@@ -8,14 +8,14 @@ theLog.printLogging = true;
 % make some call lists
 helloList = topsCallList;
 helloList.name = 'hellos';
-helloList.fevalables.add({@disp, 'Hello runnable'});
-helloList.fevalables.add({@disp, 'Hello steppable'});
+helloList.addCall({@disp, 'Hello runnable'});
+helloList.addCall({@disp, 'Hello steppable'});
 helloList.alwaysRunning = false;
 
 goodbyeList = topsCallList;
 goodbyeList.name = 'goodbyes';
-goodbyeList.fevalables.add({@disp, 'Goodbye runnable'});
-goodbyeList.fevalables.add({@disp, 'Goodbye steppable'});
+goodbyeList.addCall({@disp, 'Goodbye runnable'});
+goodbyeList.addCall({@disp, 'Goodbye steppable'});
 goodbyeList.alwaysRunning = false;
 
 % make a state machine
@@ -23,9 +23,9 @@ machine = topsStateMachine;
 
 % make a sergeant that composes all of the above
 sarg = topsSergeant;
-sarg.components.add(helloList);
-sarg.components.add(machine);
-sarg.components.add(goodbyeList);
+sarg.addComponent(helloList);
+sarg.addComponent(machine);
+sarg.addComponent(goodbyeList);
 
 % make a runnable tree
 top = topsTreeNode;

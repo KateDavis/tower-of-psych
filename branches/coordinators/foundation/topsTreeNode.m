@@ -50,8 +50,8 @@ classdef topsTreeNode < topsRunnable
         % 'random' order
         iterationMethod = 'sequential';
         
-        % topsList of runnable children
-        children;
+        % cell array of runnable children
+        children = {};
         
         % a parent topsTreeNode
         parent = topsTreeNode.empty;
@@ -62,12 +62,6 @@ classdef topsTreeNode < topsRunnable
     end
     
     methods
-        % Constructor takes no arguments.
-        function self = topsTreeNode
-            self = self@topsRunnable;
-            self.children = topsList;
-        end
-        
         % Launch a graphical interface for this tree node.
         function g = gui(self)
             g = topsTreeNodeGUI(self);
@@ -80,7 +74,7 @@ classdef topsTreeNode < topsRunnable
         % node, and appends @a child to the children property of
         % this node.
         function addChild(self, child)
-            self.children.add(child);
+            self.children = topsFoundation.cellAdd(self.children, child);
             if isprop(child, 'parent')
                 child.parent = self;
             end
@@ -127,7 +121,7 @@ classdef topsTreeNode < topsRunnable
             try
                 for ii = 1:self.iterations
                     self.iterationCount = ii;
-                    nChildren = self.children.length;
+                    nChildren = length(self.children);
                     switch self.iterationMethod
                         case 'random'
                             childSequence = randperm(nChildren);
@@ -137,9 +131,8 @@ classdef topsTreeNode < topsRunnable
                             
                     end
                     
-                    children = self.children.allItems;
                     for jj = childSequence
-                        children{jj}.run;
+                        self.children{jj}.run;
                     end
                 end
                 

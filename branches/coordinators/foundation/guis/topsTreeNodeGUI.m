@@ -188,10 +188,9 @@ classdef topsTreeNodeGUI < topsGUI
                 self.listenToNode(node);
                 
                 % recur on children
-                children = node.children.allItems;
-                for ii = 1:length(children)
+                for ii = 1:length(node.children)
                     self.nodeCount = self.nodeCount + 1;
-                    self.addNodeAtDepth(children{ii}, depth+1);
+                    self.addNodeAtDepth(node.children{ii}, depth+1);
                 end
                 
             else

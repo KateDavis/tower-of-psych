@@ -16,9 +16,9 @@ fine = {@disp, '  Fine, thanks.'};
 %% topsCallList
 % A "call list" can call a bunch of functions as a calls.  For example:
 calls = topsCallList;
-calls.fevalables.add(hello);
-calls.fevalables.add(pardon);
-calls.fevalables.add(goodbye);
+calls.addCall(hello);
+calls.addCall(pardon);
+calls.addCall(goodbye);
 
 clc
 calls.run;
@@ -45,12 +45,12 @@ machine.run;
 % topsSteppable class and its subclasses, which include topsCallList and
 % topsStateMachine.
 replies = topsCallList;
-replies.fevalables.add(howdy);
-replies.fevalables.add(fine);
+replies.addCall(howdy);
+replies.addCall(fine);
 
 sergeant = topsSergeant;
-sergeant.components.add(replies);
-sergeant.components.add(machine);
+sergeant.addComponent(replies);
+sergeant.addComponent(machine);
 
 % The sergeant will keep running until any one of its components is done.
 % For this example, we want to keep running until the state machine is
