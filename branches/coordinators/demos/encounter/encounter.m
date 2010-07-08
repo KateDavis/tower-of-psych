@@ -186,11 +186,11 @@ for ii = 1:length(group)
     % concurrently
     sergeant = topsSergeant;
     sergeant.name = group(ii).name;
-    sergeant.addComponent(charCalls);
-    sergeant.addComponent(groupCalls);
-    sergeant.addComponent(battleCalls);
+    sergeant.addChild(charCalls);
+    sergeant.addChild(groupCalls);
+    sergeant.addChild(battleCalls);
     
-    battleNode = gameTree.newChild;
+    battleNode = gameTree.newChildNode;
     battleNode.name = group(ii).name;
     battleNode.startFevalable = {@battleSetup, battleNode, gameList};
     battleNode.addChild(sergeant);

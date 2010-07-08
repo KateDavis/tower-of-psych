@@ -14,7 +14,7 @@ howdy = {@disp, '  How do you do?'};
 fine = {@disp, '  Fine, thanks.'};
 
 %% topsCallList
-% A "call list" can call a bunch of functions as a calls.  For example:
+% A "call list" can call a bunch of functions as a batch.  For example:
 calls = topsCallList;
 calls.addCall(hello);
 calls.addCall(pardon);
@@ -39,18 +39,18 @@ clc
 machine.run;
 
 %% topsSergeant
-% A "sergeant" can compose other objects and cause them to run() together.
-% Actually, it tells its components to step(), over and over again, which
-% is a lot like running.  Thus, topsSergeant only works with objects of the
-% topsSteppable class and its subclasses, which include topsCallList and
-% topsStateMachine.
+% A "sergeant" can compose other objects and make them run() together.
+% Actually, it tells its components to step() one at a time, over and over
+% again, which is a lot like running.  Thus, topsSergeant only works with
+% objects of the topsSteppable class and its subclasses, which include
+% topsCallList and topsStateMachine.
 replies = topsCallList;
 replies.addCall(howdy);
 replies.addCall(fine);
 
 sergeant = topsSergeant;
-sergeant.addComponent(replies);
-sergeant.addComponent(machine);
+sergeant.addChild(replies);
+sergeant.addChild(machine);
 
 % The sergeant will keep running until any one of its components is done.
 % For this example, we want to keep running until the state machine is
@@ -70,15 +70,15 @@ sergeant.run;
 topNode = topsTreeNode;
 
 % Add the same "calls" as above to the tree
-callsNode = topNode.newChild;
+callsNode = topNode.newChildNode;
 callsNode.addChild(calls);
 
 % Add the same state machine as above to the tree
-machineNode = topNode.newChild;
+machineNode = topNode.newChildNode;
 machineNode.addChild(machine);
 
 % Add the same "sergeant" as above to the tree
-sergeantNode = topNode.newChild;
+sergeantNode = topNode.newChildNode;
 sergeantNode.addChild(sergeant);
 
 % Run the tree, which will run all of the examples above.

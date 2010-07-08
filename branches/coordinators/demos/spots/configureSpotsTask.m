@@ -104,7 +104,7 @@ spotsList.addItemToGroupWithMnemonic(spotsTree, 'spots', 'spotsTopLevel');
 
 % rtTask manages the reaction time task
 %   it will also have a reaction time *trial* as its child
-rtTask = spotsTree.newChild;
+rtTask = spotsTree.newChildNode;
 taskName = 'rt_task';
 rtTask.name = taskName;
 rtTask.iterations = trialsInARow;
@@ -113,7 +113,7 @@ rtTask.finishFevalable = {@rtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(rtTask, taskName, 'rtTask');
 
 % rtTrial manages individual reaction time trials
-rtTrial = rtTask.newChild;
+rtTrial = rtTask.newChildNode;
 rtTrial.name = 'rt_trial';
 rtTrial.startFevalable = {@rtTrialSetup, spotsList, taskName};
 rtTrial.addChild(spotsCalls);
@@ -122,7 +122,7 @@ spotsList.addItemToGroupWithMnemonic(rtTrial, taskName, 'rtTrial');
 
 % fvtTask manages the fixed viewing time task
 %   it will also have a fixed viewing time time *trial* as its child
-fvtTask = spotsTree.newChild;
+fvtTask = spotsTree.newChildNode;
 taskName = 'fvt_task';
 fvtTask.name = taskName;
 fvtTask.iterations = trialsInARow;
@@ -131,7 +131,7 @@ fvtTask.finishFevalable = {@fvtTaskTearDown, spotsList, taskName};
 spotsList.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
 
 % another bottom level node, to manage a fixed viewing time trial
-fvtTrial = fvtTask.newChild;
+fvtTrial = fvtTask.newChildNode;
 fvtTrial.name = 'fvt_trial';
 fvtTrial.startFevalable = {@fvtTrialSetup, spotsList, taskName};
 fvtTrial.addChild(spotsCalls);
