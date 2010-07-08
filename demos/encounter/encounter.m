@@ -14,11 +14,11 @@ function [gameTree, gameList] = encounter
 %   a code project that aims to facilitate the design and running of
 %   psychophysics experimetns in Matlab.
 %
-%   gameTree is an instance of topsBlockTree.  It organizes several
+%   gameTree is an instance of topsTreeNode.  It organizes several
 %   randomly selected battle sequences.
 %
-%   gameList is an instance of topsGroupedList.  It contains all of the data
-%   and objects used in the encounter game.
+%   gameList is an instance of topsGroupedList.  It contains all of the
+%   data and objects used in the encounter game.
 %
 %   To play encounter, type the following:
 %   [gameTree, gameList] = encounter;
@@ -45,35 +45,35 @@ gameList = topsGroupedList;
 
 % top-level control object
 %   with functions defined below
-gameTree = topsBlockTree;
+gameTree = topsTreeNode;
 gameTree.name = 'encounter';
-gameTree.blockStartFevalable = {@gameSetup, gameList};
-gameTree.blockEndFevalable = {@gameTearDown, gameList};
+gameTree.startFevalable = {@gameSetup, gameList};
+gameTree.finishFevalable = {@gameTearDown, gameList};
 gameList.addItemToGroupWithMnemonic(gameTree, 'game', 'gameTree');
-
-
-% low-level control loop object
-%   with functions defined below
-battleLoop = topsFunctionLoop;
-battleLoop.addFunctionToGroupWithRank({@drawnow}, 'battle', 1);
-battleLoop.addFunctionToGroupWithRank({@checkBattleStatus, gameList, battleLoop}, 'battle', 6);
-gameList.addItemToGroupWithMnemonic(battleLoop, 'game', 'battleLoop');
 
 
 % low-level function queues for character and monster attacks
 %   add dispatch method to function queue
 monsterQueue = EncounterBattleQueue;
 characterQueue = EncounterBattleQueue;
-gameList.addItemToGroupWithMnemonic(monsterQueue, 'game', 'monsterQueue');
-gameList.addItemToGroupWithMnemonic(characterQueue, 'game', 'characterQueue');
-battleLoop.addFunctionToGroupWithRank({@()monsterQueue.dispatchNextFevalable}, 'battle', 5);
-battleLoop.addFunctionToGroupWithRank({@()characterQueue.dispatchNextFevalable}, 'battle', 2);
+gameList.addItemToGroupWithMnemonic(monsterQueue, ...
+    'game', 'monsterQueue');
+gameList.addItemToGroupWithMnemonic(characterQueue, ...
+    'game', 'characterQueue');
 
+% batch of functions to call, with arguments
+battleCalls = topsCallList;
+battleCalls.alwaysRunning = true;
+battleCalls.addCall({@drawnow});
+battleCalls.addCall({@()monsterQueue.dispatchNextFevalable});
+battleCalls.addCall({@()characterQueue.dispatchNextFevalable});
+battleCalls.addCall({@checkBattleStatus, gameList, battleCalls});
+gameList.addItemToGroupWithMnemonic(battleCalls, 'game', 'battleCalls');
 
 % Create an array of battler objects to represent player characters. 
 %   add character array to the gameList
 %   create a wake-up timers for character
-%   add each timer to the function loop
+%   add each timer to a call list
 Goonius = EncounterBattler;
 Goonius.name = 'Goonius';
 Goonius.attackInterval = 15;
@@ -99,13 +99,16 @@ characters = [Goonius, Jet, Hero];
 gameList.addItemToGroupWithMnemonic(characters, 'game', 'characters');
 gameList.addItemToGroupWithMnemonic({}, 'game', 'activeCharacter');
 
+charCalls = topsCallList;
 for ii = 1:length(characters)
     bt = EncounterBattleTimer;
     charTimers(ii) = bt;
     bt.loadForRepeatIntervalWithCallback ...
-        (characters(ii).attackInterval, {@characterWakesUp, characters(ii), gameList});
-    battleLoop.addFunctionToGroupWithRank({@()bt.tick}, 'charTimers', 3+(ii/10));
+        (characters(ii).attackInterval, ...
+        {@characterWakesUp, characters(ii), gameList});
+    charCalls.addCall({@tick, bt});
 end
+gameList.addItemToGroupWithMnemonic(charCalls, 'game', 'charCalls');
 gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
 
 
@@ -113,7 +116,7 @@ gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
 %   make several arrays with interesting groups of monsters
 %   add each monster group to the gameList
 %   create wake-up timers for monsters in each group
-%   add each timer to the function loop
+%   add each timer to a call list
 isMonster = true;
 
 Evil = EncounterBattler(isMonster);
@@ -146,40 +149,52 @@ Robot.restoreHp;
 
 % group monsters into several overlapping groups, 
 %   add groups top-level grouped list object
-%   create a game subblock for each group, add to top-level block tree
+%   create a runnable tree node for each group, add to top-level tree node
 group(1).name = 'fools';
 group(1).monsters = [Fool.copy, Fool.copy, Fool.copy, Fool.copy];
 group(2).name = 'robot';
 group(2).monsters = Robot.copy;
 group(3).name = 'bizzaro';
-group(3).monsters = [Evil.copy, Boxer.copy, Fool.copy, Evil.copy, Boxer.copy, Fool.copy];
+group(3).monsters = [ ...
+    Evil.copy, Boxer.copy, Fool.copy, Evil.copy, Boxer.copy, Fool.copy];
 group(4).name = 'dojo';
-group(4).monsters = [Evil.copy, Boxer.copy, Boxer.copy, Boxer.copy, Boxer.copy, Boxer.copy];
+group(4).monsters = [ ...
+    Evil.copy, Boxer.copy, Boxer.copy, Boxer.copy, Boxer.copy, Boxer.copy];
 group(5).name = 'ambush';
 group(5).monsters = [Hero.copy];
 
 for ii = 1:length(group)
-    loopName = sprintf('%sTimers', group(ii).name);
+    groupCalls = topsCallList;
+    groupCalls.name = group(ii).name;
     groupTimers = EncounterBattleTimer.empty;
     for jj = 1:length(group(ii).monsters)
         bt = EncounterBattleTimer;
         groupTimers(jj) = bt;
         bt.loadForRepeatIntervalWithCallback ...
-            (group(ii).monsters(jj).attackInterval, {@monsterWakesUp, group(ii).monsters(jj), gameList});
-        battleLoop.addFunctionToGroupWithRank({@()bt.tick}, loopName, 4+(jj/10));
+            (group(ii).monsters(jj).attackInterval, ...
+            {@monsterWakesUp, group(ii).monsters(jj), gameList});
+        groupCalls.addCall({@tick, bt});
     end
-    gameList.addItemToGroupWithMnemonic(group(ii).monsters, 'monsters', group(ii).name);
-    gameList.addItemToGroupWithMnemonic(groupTimers, 'monsterTimers', group(ii).name);
+    gameList.addItemToGroupWithMnemonic( ...
+        group(ii).monsters, 'monsters', group(ii).name);
+    gameList.addItemToGroupWithMnemonic( ...
+        groupTimers, 'monsterTimers', group(ii).name);
+    gameList.addItemToGroupWithMnemonic( ...
+        groupCalls, 'monsterCalls', group(ii).name);
+
+    % combine call lists that using a sergeant, which will run() them
+    % concurrently
+    sergeant = topsSergeant;
+    sergeant.name = group(ii).name;
+    sergeant.addChild(charCalls);
+    sergeant.addChild(groupCalls);
+    sergeant.addChild(battleCalls);
     
-    % concatenate loop modes specially for this monster group
-    battleLoop.mergeGroupsIntoGroup({'battle', 'charTimers', loopName}, group(ii).name);
-    
-    battleBlock = topsBlockTree;
-    battleBlock.name = group(ii).name;
-    battleBlock.blockStartFevalable = {@battleSetup, battleBlock, gameList};
-    battleBlock.blockActionFevalable = {@battleGo, battleBlock, gameList};
-    battleBlock.blockEndFevalable = {@battleTearDown, battleBlock, gameList};
-    gameTree.addChild(battleBlock);
+    battleNode = gameTree.newChildNode;
+    battleNode.name = group(ii).name;
+    battleNode.startFevalable = {@battleSetup, battleNode, gameList};
+    battleNode.addChild(sergeant);
+    battleNode.finishFevalable = {@battleTearDown, battleNode, gameList};
 end
 gameList.addItemToGroupWithMnemonic('', 'game', 'activeMonsterGroup');
 
@@ -206,15 +221,17 @@ nChars = length(characters);
 for ii = 1:nChars
     axesPos = subposition([0 0 1 1], nChars, nChars+1, ii, nChars+1);
     characters(ii).restoreHp;
-    characters(ii).makeGraphicsForAxesAtPositionWithCallback(ax, axesPos, []);
-    figurePos = subposition([.05 .025, .9, .4], 2, ceil(nChars/2), ceil(ii/2), mod(ii-1, 2)+1);
+    characters(ii).makeGraphicsForAxesAtPositionWithCallback( ...
+        ax, axesPos, []);
+    figurePos = subposition( ...
+        [.05 .025, .9, .4], 2, ceil(nChars/2), ceil(ii/2), mod(ii-1, 2)+1);
     observeProperties(characters(ii), f, figurePos);
 end
 
 
-function battleSetup(battleBlock, gameList)
+function battleSetup(battleNode, gameList)
 % position monsters in axes
-groupName = battleBlock.name;
+groupName = battleNode.name;
 monsterGroup = gameList.getItemFromGroupWithMnemonic('monsters', groupName);
 characters = gameList.getItemFromGroupWithMnemonic('game', 'characters');
 nChars = length(characters);
@@ -225,37 +242,40 @@ gameList.addItemToGroupWithMnemonic({}, 'game', 'activeCharacter');
 ax = gameList.getItemFromGroupWithMnemonic('game', 'axes');
 for ii = 1:length(monsterGroup)
     monsterGroup(ii).restoreHp;
-    axesPos = subposition([0 0 1 1], nChars, nChars+1, mod(ii-1, nChars)+1, ceil(ii/nChars));
+    axesPos = subposition([0 0 1 1], ...
+        nChars, nChars+1, mod(ii-1, nChars)+1, ceil(ii/nChars));
     cb = @(source, event) characterSelectVictim(source, event, gameList);
-    monsterGroup(ii).makeGraphicsForAxesAtPositionWithCallback(ax, axesPos, cb);
+    monsterGroup(ii).makeGraphicsForAxesAtPositionWithCallback( ...
+        ax, axesPos, cb);
 end
 gameList.addItemToGroupWithMnemonic(groupName, 'game', 'activeMonsterGroup');
-characterQueue = gameList.getItemFromGroupWithMnemonic('game', 'characterQueue');
+characterQueue = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'characterQueue');
 characterQueue.isLocked = false;
 
-
-function battleGo(battleBlock, gameList)
-groupName = battleBlock.name;
 charTimers = gameList.getItemFromGroupWithMnemonic('game', 'charTimers');
-monsterTimers = gameList.getItemFromGroupWithMnemonic('monsterTimers', groupName);
-monsterQueue = gameList.getItemFromGroupWithMnemonic('game', 'monsterQueue');
+monsterTimers = gameList.getItemFromGroupWithMnemonic( ...
+    'monsterTimers', groupName);
+monsterQueue = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'monsterQueue');
 monsterQueue.flushQueue;
 for t = [charTimers, monsterTimers]
     t.beginRepetitions;
 end
-battleLoop = gameList.getItemFromGroupWithMnemonic('game', 'battleLoop');
-battleLoop.runForGroup(groupName, 600);
 
 
 function characterWakesUp(character, gameList)
 % enqueue self to become active character
-characterQueue = gameList.getItemFromGroupWithMnemonic('game', 'characterQueue');
-characterQueue.addFevalable({@characterBecomesTheActiveCharacter, character, gameList});
+characterQueue = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'characterQueue');
+characterQueue.addFevalable( ...
+    {@characterBecomesTheActiveCharacter, character, gameList});
 
 
 function characterBecomesTheActiveCharacter(character, gameList)
 % freeze the queue to have one active character at a time
-characterQueue = gameList.getItemFromGroupWithMnemonic('game', 'characterQueue');
+characterQueue = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'characterQueue');
 characterQueue.isLocked = true;
 character.showHighlight;
 gameList.addItemToGroupWithMnemonic(character, 'game', 'activeCharacter');
@@ -263,11 +283,14 @@ gameList.addItemToGroupWithMnemonic(character, 'game', 'activeCharacter');
 
 function characterSelectVictim(monsterGraphic, event, gameList)
 % let active character, if any, attack
-activeCharacter = gameList.getItemFromGroupWithMnemonic('game', 'activeCharacter');
+activeCharacter = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'activeCharacter');
 if ~isempty(activeCharacter)
-    battlerAttacksBattler(activeCharacter, get(monsterGraphic, 'UserData'));
+    battlerAttacksBattler( ...
+        activeCharacter, get(monsterGraphic, 'UserData'));
     % unfreeze the queue for the next active character
-    characterQueue = gameList.getItemFromGroupWithMnemonic('game', 'characterQueue');
+    characterQueue = gameList.getItemFromGroupWithMnemonic( ...
+        'game', 'characterQueue');
     characterQueue.isLocked = false;
 end
 
@@ -277,7 +300,8 @@ characters = gameList.getItemFromGroupWithMnemonic('game', 'characters');
 alive = find(~[characters.isDead]);
 if ~isempty(alive)
     victim = characters(alive(ceil(rand*length(alive))));
-    monsterQueue = gameList.getItemFromGroupWithMnemonic('game', 'monsterQueue');
+    monsterQueue = gameList.getItemFromGroupWithMnemonic( ...
+        'game', 'monsterQueue');
     monsterQueue.addFevalable({@battlerAttacksBattler, monster, victim});
 end
 
@@ -290,32 +314,37 @@ victim.hideDamage;
 attacker.hideHighlight;
 
 
-function checkBattleStatus(gameList, battleLoop)
+function checkBattleStatus(gameList, battleCalls)
 % prevent eternal locking of characterQueue
-activeCharacter = gameList.getItemFromGroupWithMnemonic('game', 'activeCharacter');
+activeCharacter = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'activeCharacter');
 if ~isempty(activeCharacter) && activeCharacter.isDead
-    characterQueue = gameList.getItemFromGroupWithMnemonic('game', 'characterQueue');
+    characterQueue = gameList.getItemFromGroupWithMnemonic( ...
+        'game', 'characterQueue');
     characterQueue.isLocked = false;
 end
 % check if all characters are dead
 characters = gameList.getItemFromGroupWithMnemonic('game', 'characters');
 if all([characters.isDead])
-    battleLoop.proceed = false;
+    battleCalls.isRunning = false;
     disp('Anihiliation!')
 end
 % check if all monsters are dead
-groupName = gameList.getItemFromGroupWithMnemonic('game', 'activeMonsterGroup');
-monsterGroup = gameList.getItemFromGroupWithMnemonic('monsters', groupName);
+groupName = gameList.getItemFromGroupWithMnemonic( ...
+    'game', 'activeMonsterGroup');
+monsterGroup = gameList.getItemFromGroupWithMnemonic( ...
+    'monsters', groupName);
 if all([monsterGroup.isDead])
-    battleLoop.proceed = false;
+    battleCalls.isRunning = false;
     disp('Victory!')
 end
 
 
-function battleTearDown(battleBlock, gameList)
+function battleTearDown(battleNode, gameList)
 % clear monster group from axes
-groupName = battleBlock.name;
-monsterGroup = gameList.getItemFromGroupWithMnemonic('monsters', groupName);
+groupName = battleNode.name;
+monsterGroup = gameList.getItemFromGroupWithMnemonic( ...
+    'monsters', groupName);
 for ii = 1:length(monsterGroup)
     monsterGroup(ii).deleteGraphics;
 end

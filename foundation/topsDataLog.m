@@ -24,8 +24,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % @details
     % Other topsFoundataion classes will also add data to the log, to help
     % you keep track of details that aren't specific to your experiment.
-    % For example, topsBlockTree objects makes log entries every time they
-    % execute a start, action, or end function.
+    % For example, topsRunnable objects make log entries as they start and
+    % finish running.
     % @details
     % With your log entries and the entries made automatically by
     % topsFoundataion classes, it should be straightforward to look at the
@@ -43,20 +43,23 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % @ingroup foundation
     
     properties
-        % Any function that returns the current time as a number.
+        % any function that returns the current time as a number
         clockFunction = @topsClock;
+        
+        % true or false, wether to pring log info as data are logged
+        printLogging = false;
     end
     
     properties (SetAccess=private)
-        % The time of the first logged data, as reported by clockFunction
+        % the time of the first logged data, as reported by clockFunction
         earliestTime;
         
-        % The time of the last logged data, as reported by clockFunction
+        % the time of the last logged data, as reported by clockFunction
         latestTime;
     end
     
     events
-        % Notifies any listeners when all data are cleared from the log
+        % notifies any listeners when all data are cleared from the log
         FlushedTheDataLog;
     end
     
@@ -141,7 +144,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @param group a string for grouping related data, such as the name
         % of a recurring event.
         % @details
-        % If @a data is a handle object, throws an error.  This is
+        % If @a data is a handle object, converts it to a struct.  This is
         % because Matlab does a bad job of dealing with large numbers of
         % handles to the same object, and a worse job of writing and
         % reading them to disk.  Better to keep the data log out of that
@@ -159,11 +162,18 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % for each data item.
         function logDataInGroup(data, group)
             self = topsDataLog.theDataLog;
-            
-            assert(~isa(data, 'handle'), 'Sorry, but Matlab stinks at keeping handle objects in data files')
-            
             nowTime = feval(self.clockFunction);
+            
+            if isa(data, 'handle')
+                warning('converting handle object %s to struct', ...
+                    class(data));
+                data = struct(data);
+            end
             self.addItemToGroupWithMnemonic(data, group, nowTime);
+            
+            if self.printLogging
+                disp(sprintf('topsDataLog: %s', group))
+            end
             
             self.earliestTime = min(self.earliestTime, nowTime);
             self.latestTime = max(self.latestTime, nowTime);

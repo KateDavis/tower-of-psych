@@ -53,7 +53,9 @@ elseif islogical(value)
     else
         m = min(n, numel(value));
         boolCell = cell(1,m);
-        value = value';
+        if ndims(value) == 2
+            value = value';
+        end
         boolCell(value(1:m)) = deal({'true'});
         boolCell(~value(1:m)) = deal({'false'});
         boolStr = sprintf('%s ', boolCell{:});

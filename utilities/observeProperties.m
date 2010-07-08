@@ -16,7 +16,7 @@
 %   properties of @a object change.  For example:
 %
 %   @code
-%   tree = topsBlockTree;
+%   tree = topsTreeNode;
 %   table = observeProperties(tree);
 %   tree.name = 'new name';
 %   @endcode
