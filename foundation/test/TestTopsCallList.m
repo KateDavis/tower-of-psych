@@ -70,6 +70,16 @@ classdef TestTopsCallList < TestCase
                 'call list should have been stopped from running')
         end
         
+        function testToggleIsActive(self)
+            self.callList.addCall(self.orderedFunctions{1}, 'one');
+            self.callList.addCall(self.orderedFunctions{2}, 'two');
+            
+            self.callList.setActiveByName(false, 'two');
+            self.callList.step;
+            assertEqual(length(self.order), 1, ...
+                'should have called only one function')
+        end
+        
         function testPropertyChangeEventPosting(self)
             % listen for event postings
             props = properties(self.callList);
