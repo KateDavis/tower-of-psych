@@ -60,26 +60,39 @@ classdef topsConditions < topsRunnable
         % currentCOndition.
         currentValues = struct;
         
-        % how to pick the next condition
-        % @details
-        % pickingMethod is the string name of for how to pick the next
-        % condition.  It may have the following values:
-        %   - 'coin toss' uniform random picks without replacement and
-        %   no special limit on the number of picks
-        %   -  'counterbalanced' uniform shuffling of conditions, spread
-        %   out over some number of complete sets and finishing after the
-        %   last set.
-        %   - 'sequential' arbitrary, non-random progression through
-        %   conditions, finishing after some number of complete sets.
-        %   - 'custom' picks determined by user-supplied pickNextFevalable.
-        %   .
-        % Users should call setPickingMethod instead of manipulating
-        % pickingMethod directly.
-        pickingMethod;
-        
         % maximum number of conditions to pick, regardless of
         % pickingMethod.
         maxPicks = inf;
+        
+        % string describing how to pick the next condition
+        % @details
+        % pickingMethod is the string name of a method for picking the next
+        % condition.  See setPickingMethod() for a description of valid
+        % pickingMethods.
+        % @details
+        % Users should call setPickingMethod() instead of accessing the
+        % pickingMethod property directly.
+        pickingMethod;
+        
+        % fevalable cell array for custom picking of condition numbers
+        % @details
+        % When pickingMethod is 'custom', run() invokes customPickFevalable
+        % to pick the next condition number.  See setPickingMethod() for a
+        % description of customPickFevalable.
+        % @details
+        % Users should call setPickingMethod() instead of accessing
+        % customPickFevalable directly.
+        customPickFevalable;
+        
+        % array of condition numbers to be picked
+        % @details
+        % When pickingMethod is 'shuffled' or 'sequential',
+        % setPickingMethod() precomputes pickSequence with complete sets of
+        % condition numbers.
+        % @details
+        % Users should call setPickingMethod() instead of accessing
+        % pickSequence directly.
+        pickSequence;
         
         % true or false, whether all done picking conditions
         % @details
@@ -218,6 +231,144 @@ classdef topsConditions < topsRunnable
                     subsasgn(asgn(jj).object, asgn(jj).subs, value);
                 end
             end
+        end
+        
+        % Choose how to pick new conditions.
+        % @param pickingMethod string describing how to pick conditions.
+        % @varargin additional arguments specific to each pickingMehtod,
+        % described below.
+        % @details
+        % setPickingMethod() determines how run() will choose a new
+        % conditon number and traverse parameter values.  @a pickingMethod
+        % describes the general approach and @a varargin may supply some
+        % details.
+        % @details
+        % The valid values for @a pickingMethod are:
+        %   - 'coin-toss' uniform random picks without replacement and
+        %   no specific limit on the number of picks
+        %   -  'shuffled' uniform shuffling of conditions, spread out over
+        %   some number of complete sets.  @a varargin may contain the
+        %   number of sets to shuffle together, the default is 1.
+        %   - 'sequential' non-random, systematic progression through
+        %   conditions, finishing after some number of complete sets.  @a
+        %   varargin may contain the number of sets to shuffle together,
+        %   the default is 1.
+        %   - 'custom' user-supplied customPickFevalable determines each
+        %   condition.  @a varargin should contain an fevalable cell array.
+        %   The function should expect this topsConditions object as the
+        %   first argument.  Any additional arguments will be passed to the
+        %   function starting at the second place.  The function should
+        %   pick a new condition number, from 1 through nConditions, and
+        %   return it.  The function may set isDone to indicate that
+        %   picking is all done.
+        %   .
+        % @details
+        % If @a pickingMethod is not one of the valid values above,
+        % defaults to 'coin-toss'.
+        function setPickingMethod(self, pickingMethod, varargin)
+            self.pickSequence = [];
+            switch pickingMethod
+                case 'shuffled'
+                    if nargin == 3
+                        nSets = varargin{1};
+                    else
+                        nSets = 1;
+                    end
+                    pickSet = 1:self.nConditions;
+                    self.pickSequence = repmat(pickSet, 1, nSets);
+                    shuffle = randperm(numel(self.pickSequence));
+                    self.pickSequence = self.pickSequence(shuffle);
+                    
+                case 'sequential'
+                    if nargin == 3
+                        nSets = varargin{1};
+                    else
+                        nSets = 1;
+                    end
+                    pickSet = 1:self.nConditions;
+                    self.pickSequence = repmat(pickSet, 1, nSets);
+                    
+                case 'custom'
+                    if nargin == 3
+                        self.customPickFevalable = varargin{1};
+                    else
+                        self.customPickFevalable = {};
+                    end
+                    
+                otherwise
+                    pickingMethod = 'coin-toss';
+            end
+            self.pickingMethod = pickingMethod;
+        end
+        
+        % Log, notify, and reset() as needed.
+        % @details
+        % Extends the start() method of topsRunnable to also reset()
+        % condition picking as needed.
+        function start(self)
+            self.start@topsRunnable;
+            if self.isDone
+                self.reset;
+            end
+        end
+        
+        % Pick a new condition and assign parameter values to targets.
+        function run()
+            self.start;
+            % pickConditionNumber may set isDone
+            n = self.pickConditionNumber;
+            self.setCondition(n);
+            self.finish;
+        end
+        
+        % Log, notify, and call out as needed.
+        % @details
+        % Extends the finish() method of topsRunnable to also invoke
+        % donePickingFevalable and tell parent to stop running, when
+        % condition picking is over.
+        function finish(self)
+            if self.isDone
+                self.logFeval('donePicking', self.donePickingFevalable);
+                if isobject(self.parent) ...
+                        && isa(self.parent, 'topsRunnable')
+                    self.parent.isRunning = false;
+                end
+            end
+            self.finish@topsRunnable;
+        end
+        
+        % Pick a condition number using pickingMethod.
+        % @details
+        % Returns a new condition number picked using the pickingMethod and
+        % other details specified with setPickingMethod().  If the picking
+        % method has reached its natural conclusion, or the total number of
+        % picks is greated than maxPicks, sets isDone to true.
+        function n = pickConditionNumber(self)
+            pickCount = length(self.previousConditions) + 1;
+            switch self.pickingMethod
+                case 'shuffled'
+                    n = self.pickSequence(pickCount);
+                    donePicking = pickCount >= length(self.pickSequence);
+                    
+                case 'sequential'
+                    n = self.pickSequence(pickCount);
+                    donePicking = pickCount >= length(self.pickSequence);
+                    
+                case 'custom'
+                    picker = self.customPickFevalable;
+                    if ~isempty(picker)
+                        n = feval(picker{1}, self, picker{2:end});
+                    end
+                    % customPickFevalable may set isDone
+                    donePicking = self.isDone;
+                    
+                otherwise
+                    % includes 'coin-toss'
+                    n = ceil(rand(1,1)*self.nConditions);
+                    donePicking = false;
+            end
+            
+            self.isDone = donePicking || pickCount >= self.maxPicks;
         end
     end
 end
