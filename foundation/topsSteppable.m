@@ -42,24 +42,5 @@ classdef topsSteppable < topsRunnable
         function step(self)
             self.isRunning = false;
         end
-        
-        % Prepare to do flow control.
-        % @details
-        % Subclasses should extend start() to do initialization before
-        % running.
-        function start(self)
-            self.logAction(self.startString);
-            self.logFeval(self.startString, self.startFevalable);
-            self.isRunning = true;
-        end
-        
-        % Finish doing flow control.
-        % @details
-        % Subclasses should extend finish() to do clean up after running.
-        function finish(self)
-            self.logAction(self.finishString);
-            self.logFeval(self.finishString, self.finishFevalable);
-            self.isRunning = false;
-        end
     end
 end

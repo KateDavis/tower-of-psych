@@ -1,6 +1,6 @@
 classdef topsSergeant < topsRunnableComposite
     % @class topsSergeant
-    % Compose topsSteppable objects and run them concurrently.
+    % Composes topsSteppable objects and runs them concurrently.
     % @details
     % topsSergeant objects may contain topsSteppable objects and run
     % them concurrently.  It uses the metaphor of a drill sergeant, whose
@@ -41,20 +41,15 @@ classdef topsSergeant < topsRunnableComposite
         % times and in an interleaved fashion, they should all appear to
         % run together.
         function run(self)
-            self.logAction(self.startString);
-            self.notify('RunStart');
-            self.logFeval(self.startString, self.startFevalable);
+            self.start;
             self.startChildren;
             
-            self.isRunning = true;
             while self.isRunning
                 self.stepChildren;
             end
             
-            self.logAction(self.finishString);
-            self.notify('RunFinish');
-            self.logFeval(self.finishString, self.finishFevalable);
             self.finishChildren;
+            self.finish;
         end
         
         
