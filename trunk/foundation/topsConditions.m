@@ -214,7 +214,7 @@ classdef topsConditions < topsRunnable
         % and currentValues to topsDataLog.
         function setCondition(self, n)
             self.currentCondition = n;
-            self.previousConditions(end+1) = n
+            self.previousConditions(end+1) = n;
             
             phasic = floor((n-1)./self.subscriptCoefficients);
             subscripts = 1 + mod(phasic, self.allSizes);
