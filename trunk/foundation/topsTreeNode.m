@@ -93,22 +93,22 @@ classdef topsTreeNode < topsRunnableComposite
         % Then finishFevalables will tend to happen last, with children
         % finishing before higher nodes.
         function run(self)
-            self.logAction(self.startString);
-            self.notify('RunStart');
-            self.logFeval(self.startString, self.startFevalable);
+            self.start;
             
             % recursive
             try
-                for ii = 1:self.iterations
+                nChildren = length(self.children);
+                ii = 0;
+                while ii < self.iterations && self.isRunning
+                    ii = ii + 1;
                     self.iterationCount = ii;
-                    nChildren = length(self.children);
+
                     switch self.iterationMethod
                         case 'random'
                             childSequence = randperm(nChildren);
                             
                         otherwise
                             childSequence = 1:nChildren;
-                            
                     end
                     
                     for jj = childSequence
@@ -120,13 +120,11 @@ classdef topsTreeNode < topsRunnableComposite
                 warning(recurErr.identifier, ...
                     '%s named "%s" failed:\n\t%s', ...
                     class(self), self.name, recurErr.message);
-
+                
                 % attempt to clean up despite error
                 try
-                    self.logAction(self.finishString);
-                    self.notify('RunFinish');
-                    self.logFeval(self.finishString, self.finishFevalable);
-
+                    self.finish;
+                    
                 catch finishErr
                     warning(finishErr.identifier, ...
                         '%s named "%s" failed to finish:\n\t%s', ...
@@ -135,9 +133,7 @@ classdef topsTreeNode < topsRunnableComposite
                 rethrow(recurErr);
             end
             
-            self.logAction(self.finishString);
-            self.notify('RunFinish');
-            self.logFeval(self.finishString, self.finishFevalable);
+            self.finish;
         end
     end
 end

@@ -23,10 +23,10 @@ classdef topsRunnable < topsFoundation
     end
     
     events
-        % notifyication just before run()
+        % notification just before run()
         RunStart;
         
-        % notifyication just after run()
+        % notification just after run()
         RunFinish;
     end
     
@@ -54,6 +54,27 @@ classdef topsRunnable < topsFoundation
         % @details
         % Subclasses should redefine run() to do custom behaviors.
         function run(self)
+        end
+
+        % Log, notify, and prepare to do flow control.
+        % @details
+        % Subclasses should extend start() to do initialization before
+        % running.
+        function start(self)
+            self.logAction(self.startString);
+            self.logFeval(self.startString, self.startFevalable);
+            self.notify('RunStart');
+            self.isRunning = true;
+        end
+        
+        % Log, notify, and finish doing flow control.
+        % @details
+        % Subclasses should extend finish() to do clean up after running.
+        function finish(self)
+            self.logAction(self.finishString);
+            self.logFeval(self.finishString, self.finishFevalable);
+            self.notify('RunFinish');
+            self.isRunning = false;
         end
         
         % Launch a graphical interface for this runnable.
