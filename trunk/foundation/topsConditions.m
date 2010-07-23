@@ -210,10 +210,11 @@ classdef topsConditions < topsRunnable
         % @details
         % Sets currentCondition to the given @a n, appends @a n to the
         % history in previousConditions, and assigns appropriate values
-        % to the fields of currentValues.
+        % to the fields of currentValues.  Adds the new currentCondition
+        % and currentValues to topsDataLog.
         function setCondition(self, n)
             self.currentCondition = n;
-            self.previousConditions(end+1) = n;
+            self.previousConditions(end+1) = n
             
             phasic = floor((n-1)./self.subscriptCoefficients);
             subscripts = 1 + mod(phasic, self.allSizes);
@@ -231,6 +232,9 @@ classdef topsConditions < topsRunnable
                     subsasgn(asgn(jj).object, asgn(jj).subs, value);
                 end
             end
+            
+            self.logAction('setCondition', self.currentCondition);
+            self.logAction('setValues', self.currentValues);
         end
         
         % Choose how to pick new conditions.
@@ -266,6 +270,10 @@ classdef topsConditions < topsRunnable
         % If @a pickingMethod is not one of the valid values above,
         % defaults to 'coin-toss'.
         function setPickingMethod(self, pickingMethod, varargin)
+            if nargin < 2 || isempty(pickingMethod)
+                pickingMethod = 'coin-toss';
+            end
+            
             self.pickSequence = [];
             switch pickingMethod
                 case 'shuffled'
@@ -296,7 +304,7 @@ classdef topsConditions < topsRunnable
                     end
                     
                 otherwise
-                    pickingMethod = 'coin-toss';
+                    % includes 'coin-toss'
             end
             self.pickingMethod = pickingMethod;
         end
@@ -312,8 +320,25 @@ classdef topsConditions < topsRunnable
             end
         end
         
+        % Clear previous conditions and begin picking from scratch.
+        % @details
+        % Clears out the currentCondition and currentValues, and erases the
+        % histor of condition numbers stored in previousConditions.  Calls
+        % setPickingMethod() with the current pickingMethod, to generate a
+        % fresh pickSequence as necessary.  Sets isDone to false.
+        % @details
+        % run() and start() automatically call reset() when isDone is true,
+        % to prepare for future run() calls.
+        function reset(self)
+            self.setPickingMethod(self.pickingMethod);
+            self.currentCondition = 0;
+            self.previousConditions = [];
+            self.currentValues = struct;
+            self.isDone = false;
+        end
+        
         % Pick a new condition and assign parameter values to targets.
-        function run()
+        function run(self)
             self.start;
             % pickConditionNumber may set isDone
             n = self.pickConditionNumber;
