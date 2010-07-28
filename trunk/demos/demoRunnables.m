@@ -1,4 +1,4 @@
-% Demonstrate some key behaviors of topsRunnable and topsSteppable objects
+% Demonstrate some key behaviors of topsRunnable and topsConcurrent objects
 
 %% First, define some arbitrary behaviors in "fevalable" cell arrays
 % Using feval() for each of these cell arrays will print a message to the
@@ -38,27 +38,27 @@ machine.addMultipleStates(stateList);
 clc
 machine.run;
 
-%% topsSergeant
-% A "sergeant" can compose other objects and make them run() together.
-% Actually, it tells its components to step() one at a time, over and over
-% again, which is a lot like running.  Thus, topsSergeant only works with
-% objects of the topsSteppable class and its subclasses, which include
+%% topsConcurrentComposite
+% A topsConcurrentComposite can compose other objects and make them run() together.
+% Actually, it tells its components to runBriefly() one at a time, over and over
+% again, which is a lot like running.  Thus, topsConcurrentComposite only works with
+% objects of the topsConcurrent class and its subclasses, which include
 % topsCallList and topsStateMachine.
 replies = topsCallList;
 replies.addCall(howdy);
 replies.addCall(fine);
 
-sergeant = topsSergeant;
-sergeant.addChild(replies);
-sergeant.addChild(machine);
+concurrents = topsConcurrentComposite;
+concurrents.addChild(replies);
+concurrents.addChild(machine);
 
-% The sergeant will keep running until any one of its components is done.
+% The concurrents will keep running until any one of its components is done.
 % For this example, we want to keep running until the state machine is
 % done, so we tell the "replies" call list to keep running forever.
 replies.alwaysRunning = true;
 
 clc
-sergeant.run;
+concurrents.run;
 
 %% topsTreeNode
 % A "tree node" is a building block.  You can put many nodes together to
@@ -77,9 +77,9 @@ callsNode.addChild(calls);
 machineNode = topNode.newChildNode;
 machineNode.addChild(machine);
 
-% Add the same "sergeant" as above to the tree
-sergeantNode = topNode.newChildNode;
-sergeantNode.addChild(sergeant);
+% Add the same "concurrents" as above to the tree
+concurrentsNode = topNode.newChildNode;
+concurrentsNode.addChild(concurrents);
 
 % Run the tree, which will run all of the examples above.
 clc
@@ -94,11 +94,11 @@ topNode.run
 space = {@disp, ' '};
 callsNode.finishFevalable = space;
 machineNode.finishFevalable = space;
-sergeantNode.finishFevalable = space;
+concurrentsNode.finishFevalable = space;
 
 calls.startFevalable = {@disp, 'Calling some functions:'};
 machine.startFevalable = {@disp, 'Running some states:'};
-sergeant.startFevalable = {@disp, 'Mixing call list and state machine:'};
+concurrents.startFevalable = {@disp, 'Mixing call list and state machine:'};
 
 clc
 topNode.run

@@ -1,4 +1,4 @@
-classdef topsStateMachine < topsSteppable
+classdef topsStateMachine < topsConcurrent
     % @class topsStateMachine
     % A state machine for controlling flow through e.g. trials.
     %
@@ -150,7 +150,7 @@ classdef topsStateMachine < topsSteppable
         % 	- @b entry a fevalable cell array to invoke whenever
         % entering the state
         % 	- @b input: a fevalable cell array to invoke after entering
-        % the state, during each call to step().  Expected to return a
+        % the state, during each call to runBriefly().  Expected to return a
         % single value, which may be the @b name of a state, in which case
         % the state machine will transition to that state immediately.  @b
         % timeout must be nonzero for @b input to be invoked.
@@ -315,10 +315,10 @@ classdef topsStateMachine < topsSteppable
         
         % Prepare for state traversal.
         % @details
-        % topsStateMachine extends the start() method of topsSteppable to
+        % topsStateMachine extends the start() method of topsConcurrent to
         % record the startTime and enter the first state in allStates.
         function start(self)
-            self.start@topsSteppable;
+            self.start@topsConcurrent;
             self.startTime = feval(self.clockFunction);
             self.finishTime = [];
             self.enterStateAtIndex(1);
@@ -326,10 +326,10 @@ classdef topsStateMachine < topsSteppable
         
         % Finish doing state traversal.
         % @details
-        % topsStateMachine extends the finish() method of topsSteppable to
+        % topsStateMachine extends the finish() method of topsConcurrent to
         % record the finishState and finishTime.
         function finish(self)
-            self.finish@topsSteppable;
+            self.finish@topsConcurrent;
             
             if length(self.allStates) >= self.currentIndex
                 self.finishState = self.allStates(self.currentIndex);
@@ -342,13 +342,13 @@ classdef topsStateMachine < topsSteppable
         
         % Do a little flow control within the state list.
         % @details
-        % topsStateMachine extends the step() method of topsSteppable to do
+        % topsStateMachine extends the runBriefly() method of topsConcurrent to do
         % state traversal.  It checks the input fevalable for the current
         % state and if the input returns a state name, transitions to that
         % state.  If not, it checks whether the current state's timeout has
         % expired.  If so it transitions to the next state.  If there is no
         % next state, traversal ends.
-        function step(self)
+        function runBriefly(self)
             % poll for input
             if ~isempty(self.currentInputFevalable)
                 nextName = feval(self.currentInputFevalable{:});

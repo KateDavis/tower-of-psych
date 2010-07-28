@@ -9,20 +9,20 @@ theLog.printLogging = true;
 helloList = topsCallList;
 helloList.name = 'hellos';
 helloList.addCall({@disp, 'Hello runnable'});
-helloList.addCall({@disp, 'Hello steppable'});
+helloList.addCall({@disp, 'Hello concurrent'});
 helloList.alwaysRunning = false;
 
 goodbyeList = topsCallList;
 goodbyeList.name = 'goodbyes';
 goodbyeList.addCall({@disp, 'Goodbye runnable'});
-goodbyeList.addCall({@disp, 'Goodbye steppable'});
+goodbyeList.addCall({@disp, 'Goodbye concurrent'});
 goodbyeList.alwaysRunning = false;
 
 % make a state machine
 machine = topsStateMachine;
 
-% make a sergeant that composes all of the above
-sarg = topsSergeant;
+% compose all of the above to run concurrently
+sarg = topsConcurrentComposite;
 sarg.addChild(helloList);
 sarg.addChild(machine);
 sarg.addChild(goodbyeList);
@@ -43,7 +43,7 @@ bottom(2).name = 'I have a state machine';
 bottom(2).addChild(machine);
 
 bottom(3) = middle.newChildNode;
-bottom(3).name = 'I have a sergeant';
+bottom(3).name = 'I have a concurrent composite';
 bottom(3).addChild(sarg);
 
 top.run

@@ -65,7 +65,7 @@ classdef TestTopsCallList < TestCase
             self.callList.alwaysRunning = true;
             self.callList.addCall({@stopListFromRunning, ...
                 self, self.callList});
-            self.callList.step;
+            self.callList.runBriefly;
             assertFalse(self.callList.isRunning, ...
                 'call list should have been stopped from running')
         end
@@ -75,7 +75,7 @@ classdef TestTopsCallList < TestCase
             self.callList.addCall(self.orderedFunctions{2}, 'two');
             
             self.callList.setActiveByName(false, 'two');
-            self.callList.step;
+            self.callList.runBriefly;
             assertEqual(length(self.order), 1, ...
                 'should have called only one function')
         end
