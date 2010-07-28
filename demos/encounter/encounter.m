@@ -182,18 +182,18 @@ for ii = 1:length(group)
     gameList.addItemToGroupWithMnemonic( ...
         groupCalls, 'monsterCalls', group(ii).name);
 
-    % combine call lists that using a sergeant, which will run() them
+    % combine call lists that using a concurrent composite, which will run() them
     % concurrently
-    sergeant = topsSergeant;
-    sergeant.name = group(ii).name;
-    sergeant.addChild(charCalls);
-    sergeant.addChild(groupCalls);
-    sergeant.addChild(battleCalls);
+    concurrents = topsConcurrentComposite;
+    concurrents.name = group(ii).name;
+    concurrents.addChild(charCalls);
+    concurrents.addChild(groupCalls);
+    concurrents.addChild(battleCalls);
     
     battleNode = gameTree.newChildNode;
     battleNode.name = group(ii).name;
     battleNode.startFevalable = {@battleSetup, battleNode, gameList};
-    battleNode.addChild(sergeant);
+    battleNode.addChild(concurrents);
     battleNode.finishFevalable = {@battleTearDown, battleNode, gameList};
 end
 gameList.addItemToGroupWithMnemonic('', 'game', 'activeMonsterGroup');

@@ -1,7 +1,7 @@
-classdef TestTopsSergeant < TestCase
+classdef TestTopsConcurrentComposite < TestCase
     
     properties
-        sergeant;
+        concurrents;
         nComponents;
         components;
         order;
@@ -9,17 +9,17 @@ classdef TestTopsSergeant < TestCase
     end
     
     methods
-        function self = TestTopsSergeant(name)
+        function self = TestTopsConcurrentComposite(name)
             self = self@TestCase(name);
         end
         
         function setUp(self)
-            self.sergeant = topsSergeant;
+            self.concurrents = topsConcurrentComposite;
             
             self.nComponents = 10;
             self.components = cell(1, self.nComponents);
             for ii = 1:self.nComponents
-                comp = topsSteppable;
+                comp = topsConcurrent;
                 comp.startFevalable = {@countValue, self, ii};
                 self.components{ii} = comp;
             end
@@ -28,8 +28,8 @@ classdef TestTopsSergeant < TestCase
         end
         
         function tearDown(self)
-            delete(self.sergeant);
-            self.sergeant = [];
+            delete(self.concurrents);
+            self.concurrents = [];
         end
         
         function countValue(self, value)
@@ -41,17 +41,17 @@ classdef TestTopsSergeant < TestCase
         end
         
         function testSingleton(self)
-            newList = topsSergeant;
-            assertFalse(self.sergeant==newList, ...
-                'topsSergeant should not be a singleton');
+            newList = topsConcurrentComposite;
+            assertFalse(self.concurrents==newList, ...
+                'topsConcurrentComposite should not be a singleton');
         end
         
-        function testStepComponentsEqually(self)
+        function testRunComponentsEqually(self)
             for ii = 1:self.nComponents
-                self.sergeant.addChild(self.components{ii});
+                self.concurrents.addChild(self.components{ii});
             end
             
-            self.sergeant.run;
+            self.concurrents.run;
             
             for ii = 1:self.nComponents
                 fun = self.components{ii}.startFevalable;
@@ -63,17 +63,17 @@ classdef TestTopsSergeant < TestCase
         
         function testPropertyChangeEventPosting(self)
             % listen for event postings
-            props = properties(self.sergeant);
+            props = properties(self.concurrents);
             n = length(props);
             for ii = 1:n
-                self.sergeant.addlistener(props{ii}, 'PostSet', ...
+                self.concurrents.addlistener(props{ii}, 'PostSet', ...
                     @self.hearEvent);
             end
             
             % trigger a posting for each property
             self.eventCount = 0;
             for ii = 1:n
-                self.sergeant.(props{ii}) = self.sergeant.(props{ii});
+                self.concurrents.(props{ii}) = self.concurrents.(props{ii});
             end
             assertEqual(self.eventCount, n, ...
                 'heard wrong number of property set events');
