@@ -43,7 +43,7 @@ sm.run;
 % % same as run(), but amenable to concurrency
 % sm.begin;
 % while isempty(sm.endTime)
-%     sm.step;
+%     sm.runBriefly;
 % end
 
 function beginning(firstState)
