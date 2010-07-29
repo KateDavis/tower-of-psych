@@ -111,6 +111,9 @@ classdef topsConditions < topsRunnable
         % parent should be another topsRunnable object, or empty.  If
         % parent is a supplied, sets parent's isRunning to false when
         % isDone.
+        % @details
+        % setParent() allows parent to be set with a funciton call,
+        % including from an fevalable cell array, more easily.
         parent;
     end
     
@@ -120,11 +123,19 @@ classdef topsConditions < topsRunnable
         
         % coefficients to convert contion number to @b values indexes.
         subscriptCoefficients;
+        
+        % vasrargin details from the last call to setPickingMethod()
+        pickingMethodDetails = {};
     end
     
     methods
         % Constructor takes no arguments.
         function self = topsConditions
+        end
+        
+        % Method-based way to set the parent property.
+        function setParent(self, parent)
+            self.parent = parent;
         end
         
         % Add a parameter and set of values for condition formation.
@@ -274,6 +285,12 @@ classdef topsConditions < topsRunnable
                 pickingMethod = 'coin-toss';
             end
             
+            if nargin == 3
+                self.pickingMethodDetails = varargin;
+            else
+                self.pickingMethodDetails = {};
+            end
+            
             self.pickSequence = [];
             switch pickingMethod
                 case 'shuffled'
@@ -330,7 +347,8 @@ classdef topsConditions < topsRunnable
         % run() and start() automatically call reset() when isDone is true,
         % to prepare for future run() calls.
         function reset(self)
-            self.setPickingMethod(self.pickingMethod);
+            self.setPickingMethod( ...
+                self.pickingMethod, self.pickingMethodDetails{:});
             self.currentCondition = 0;
             self.previousConditions = [];
             self.currentValues = struct;

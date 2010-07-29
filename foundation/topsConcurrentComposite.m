@@ -13,6 +13,13 @@ classdef topsConcurrentComposite < topsRunnableComposite
     properties (SetObservable)
         % logical array reflecting isRunning for each child object
         childIsRunning;
+        
+        % count of child runBriefly() invocations during the current run()
+        runBrieflyCount;
+    end
+    
+    properties (Hidden, SetObservable = false)
+        runBrieflyString = ('runBriefly count');
     end
     
     methods
@@ -42,8 +49,10 @@ classdef topsConcurrentComposite < topsRunnableComposite
         function run(self)
             self.start;
             self.startChildren;
+            self.runBrieflyCount = 0;
             
             while self.isRunning
+                self.runBrieflyCount = self.runBrieflyCount + 1;
                 self.runChildren;
             end
             
@@ -91,6 +100,15 @@ classdef topsConcurrentComposite < topsRunnableComposite
                 self.children{ii}.start;
             end
             self.childIsRunning = false(size(self.children));
+        end
+        
+        % Log, notify, and finish doing flow control.
+        % @details
+        % Extends the finish() method of topsRunnable to also log the
+        % count of runBriefly() invocations.
+        function finish(self)
+            self.logAction(self.runBrieflyString, self.runBrieflyCount);
+            self.finish@topsRunnable;
         end
     end
 end
