@@ -46,4 +46,4 @@ bottom(3) = middle.newChildNode;
 bottom(3).name = 'I have a concurrent composite';
 bottom(3).addChild(sarg);
 
-top.run
+top.gui

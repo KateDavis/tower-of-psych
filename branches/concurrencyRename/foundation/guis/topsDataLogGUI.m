@@ -2,7 +2,7 @@ classdef topsDataLogGUI < topsGUI
     % @class topsDataLogGUI
     % Visualize data sorted by time.
     % topsDataLogGUI plots a summary of data from the current topsDataLog,
-    % sorted by time.  You can show and hide different data groups.  You 
+    % sorted by time.  You can show and hide different data groups.  You
     % can view different time ranges.  You replay the log after an
     % experiment, or view the log online, as data stream in during an
     % experiment.
@@ -75,14 +75,14 @@ classdef topsDataLogGUI < topsGUI
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
     % @ingroup foundation
-
+    
     properties(Hidden)
         viewStart=0;
         viewLength=0;
         viewIsSliding;
         replayStartTime;
         replayEndTime;
-    
+        
         groups;
         
         dataLogTexts;
@@ -109,6 +109,11 @@ classdef topsDataLogGUI < topsGUI
         groupsGrid;
         groupsWidth=4;
         stickyPeg;
+    end
+    
+    properties(Hidden)
+        % a small value, but not Matlab's eps()
+        biggerThanEps = 1e-6;
     end
     
     methods
@@ -166,11 +171,11 @@ classdef topsDataLogGUI < topsGUI
         function listenToDataLog(self)
             self.deleteListeners;
             theLog = topsDataLog.theDataLog;
-
+            
             listener = theLog.addlistener('NewAddition', ...
                 @(source, event) self.hearNewAddition(source, event));
             self.addListenerWithName(listener, 'NewAddition');
-
+            
             listener = theLog.addlistener('FlushedTheDataLog', ...
                 @(source, event) self.hearFlushedTheDataLog(source, event));
             self.addListenerWithName(listener, 'FlushedTheDataLog');

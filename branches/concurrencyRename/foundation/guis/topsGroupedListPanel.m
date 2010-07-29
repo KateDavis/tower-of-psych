@@ -225,7 +225,8 @@ classdef topsGroupedListPanel < handle
                 self.itemDetailGrid});
             self.itemDetailGrid.rowHeight = 1.5;
             
-            setEditable = @(obj, event)self.setItemsAreEditable(get(obj, 'Value'));
+            subs = substruct('.', 'itemsAreEditable');
+            setEditable = @(obj, event)subsasgn(self, subs, (get(obj, 'Value')));
             self.itemEditableControl = uicontrol( ...
                 'Parent', self.panel, ...
                 'Callback', setEditable, ...
@@ -235,10 +236,6 @@ classdef topsGroupedListPanel < handle
                 'String', 'edit', ...
                 'Position', [right-width/2, yDiv, width/2, top-yDiv], ...
                 'HorizontalAlignment', 'left');
-        end
-        
-        function setItemsAreEditable(self, itemsAreEditable)
-            self.itemsAreEditable = itemsAreEditable;
         end
         
         function set.itemsAreEditable(self, itemsAreEditable)
