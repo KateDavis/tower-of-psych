@@ -1,17 +1,17 @@
-classdef topsCallList < topsSteppable
+classdef topsCallList < topsConcurrent
     % @class topsCallList
     % A list of functions to call sequentially, as a batch.
     % topsCallList manages a list of functions to be called as a batch.
     % @details
-    % Since topsCallList extends topsSteppable, a topsCallList object can
-    % be added as one of the components of a topsSergeant object, and its
-    % batch of functions can be invoked "in step" with other steppable
+    % Since topsCallList extends topsConcurrent, a topsCallList object can
+    % be added as one of the components of a topsConcurrentComposite object, and its
+    % batch of functions can be invoked concurrently with other topsConcurrent
     % objects.
     % @details
     % A topsCallList object has no internal state to keep track of, so it
     % has no natural way to decide when it's done running.  The
     % alwaysRunning property determines whether the object should be
-    % considered running following each call to step().
+    % considered running following each call to runBriefly().
     % @details
     % topsCallList expects functions of a particular form, which it
     % calls "fevalable".  Fevalables are cell arrays that have a function
@@ -24,8 +24,8 @@ classdef topsCallList < topsSteppable
     % feval(foo{:}).
     % @details
     % By default, all of the fevalables in the call list will be called
-    % during each step().  Optionally, each call can be given a name and
-    % its step() activity can be toggled with setActiveByName().
+    % during each runBriefly().  Optionally, each call can be given a name and
+    % its runBriefly() activity can be toggled with setActiveByName().
     % @ingroup foundation
     
     properties (SetObservable)
@@ -71,10 +71,10 @@ classdef topsCallList < topsSteppable
         % Toggle whether a call is active.
         % @param name given to an fevalable during addCall()
         % @param isActive true or false, whether to invoke the named
-        % fevalable during step()
+        % fevalable during runBriefly()
         % @details
         % Determines whether the named fevalable function call in the calls
-        % struct array will be invoked during step().  If multiple calls
+        % struct array will be invoked during runBriefly().  If multiple calls
         % have the same name, @a isActive will be applied to all of them.
         function setActiveByName(self, isActive, name)
             named = strcmp({self.calls.name}, name);
@@ -82,8 +82,8 @@ classdef topsCallList < topsSteppable
         end
         
         % Invoke active calls in a batch.
-        function step(self)
-            self.logAction(self.stepString);
+        function runBriefly(self)
+            self.logAction(self.runBrieflyString);
             isActive = [self.calls.isActive];
             fevalables = {self.calls(isActive).fevalable};
             for ii = 1:length(fevalables)

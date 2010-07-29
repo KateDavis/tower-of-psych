@@ -1,12 +1,11 @@
-classdef topsSergeant < topsRunnableComposite
-    % @class topsSergeant
-    % Composes topsSteppable objects and runs them concurrently.
+classdef topsConcurrentComposite < topsRunnableComposite
+    % @class topsConcurrentComposite
+    % Composes topsConcurrent objects and runs them concurrently.
     % @details
-    % topsSergeant objects may contain topsSteppable objects and run
-    % them concurrently.  It uses the metaphor of a drill sergeant, whose
-    % job it is to keep others stepping at the same rate.  When a
-    % topsSergeant run()s, it invokes step() sequentially and
-    % repeatedly for each of its component objects.  The topsSergeant will
+    % topsConcurrentComposite objects may contain topsConcurrent objects and run
+    % them concurrently.  When a
+    % topsConcurrentComposite run()s, it invokes runBriefly() sequentially and
+    % repeatedly for each of its component objects.  The topsConcurrentComposite will
     % stop running as soon as one of its children has isRunning equal to
     % false.
     % @ingroup foundation
@@ -14,16 +13,23 @@ classdef topsSergeant < topsRunnableComposite
     properties (SetObservable)
         % logical array reflecting isRunning for each child object
         childIsRunning;
+        
+        % count of child runBriefly() invocations during the current run()
+        runBrieflyCount;
+    end
+    
+    properties (Hidden, SetObservable = false)
+        runBrieflyString = ('runBriefly count');
     end
     
     methods
-        % Add a topsSteppable child beneath this object.
-        % @param child a topsSteppable to add beneath this object.
+        % Add a topsConcurrent child beneath this object.
+        % @param child a topsConcurrent to add beneath this object.
         % @details
-        % Rede the addChild() method of topsRunnableComposite to verify
-        % that @a child is a topsSteppable (or subclass) object.
+        % Extends the addChild() method of topsRunnableComposite to verify
+        % that @a child is a topsConcurrent (or subclass) object.
         function addChild(self, child)
-            if isa(child, 'topsSteppable')
+            if isa(child, 'topsConcurrent')
                 self.addChild@topsRunnableComposite(child);
             else
                 warning('% cannot add child of class %s', ...
@@ -31,21 +37,23 @@ classdef topsSergeant < topsRunnableComposite
             end
         end
         
-        % Interleave stepping behavior of child objects.
+        % Interleave runBriefly() behavior of child objects.
         % @details
-        % Calls start() for each child object, then calls step() repeatedly
+        % Calls start() for each child object, then calls runBriefly() repeatedly
         % and sequentially for each child, until at least one child no
         % longer isRunning, then calls finish() for each child.
         % @details
-        % The since all the child objects should step() the same number of
+        % The since all the child objects should runBriefly() the same number of
         % times and in an interleaved fashion, they should all appear to
         % run together.
         function run(self)
             self.start;
             self.startChildren;
+            self.runBrieflyCount = 0;
             
             while self.isRunning
-                self.stepChildren;
+                self.runBrieflyCount = self.runBrieflyCount + 1;
+                self.runChildren;
             end
             
             self.finishChildren;
@@ -55,16 +63,16 @@ classdef topsSergeant < topsRunnableComposite
         
         % Do a little flow control with each child object.
         % @details
-        % Calls step() once, sequentually, for each child object.
+        % Calls runBriefly() once, sequentually, for each child object.
         % @details
         % If any of the child objects has isRunning equal to false, this
-        % topsSergeant object will set its own isRunning to false (and
+        % topsConcurrentComposite object will set its own isRunning to false (and
         % therefore it should stop running).
-        function stepChildren(self)
+        function runChildren(self)
             nComponents = length(self.children);
             if nComponents > 0
                 for ii = 1:nComponents
-                    self.children{ii}.step;
+                    self.children{ii}.runBriefly;
                     self.childIsRunning(ii) = ...
                         self.children{ii}.isRunning;
                 end
@@ -92,6 +100,15 @@ classdef topsSergeant < topsRunnableComposite
                 self.children{ii}.start;
             end
             self.childIsRunning = false(size(self.children));
+        end
+        
+        % Log, notify, and finish doing flow control.
+        % @details
+        % Extends the finish() method of topsRunnable to also log the
+        % count of runBriefly() invocations.
+        function finish(self)
+            self.logAction(self.runBrieflyString, self.runBrieflyCount);
+            self.finish@topsRunnable;
         end
     end
 end
