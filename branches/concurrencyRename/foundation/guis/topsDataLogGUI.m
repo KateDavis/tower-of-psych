@@ -114,12 +114,18 @@ classdef topsDataLogGUI < topsGUI
     properties(Hidden)
         % a small value, but not Matlab's eps()
         biggerThanEps = 1e-6;
+
+        % will need to make a real data log panel
+        phantomPanel;
     end
     
     methods
         function self = topsDataLogGUI()
             self = self@topsGUI;
             self.title = 'Data Log Viewer';
+
+            self.phantomPanel = topsDetailPanel;
+            self.phantomPanel.parentGUI = self;
             
             self.createWidgets;
             
@@ -183,7 +189,7 @@ classdef topsDataLogGUI < topsGUI
         
         function addNewGroup(self, group)
             self.groups{end+1} = group;
-            col = self.getColorForString(group);
+            col = self.phantomPanel.getColorForString(group);
             
             % a control for triggering, a control for hiding
             z = size(self.groupsGrid.controls);
@@ -271,9 +277,10 @@ classdef topsDataLogGUI < topsGUI
         
         function plotLogEntry(self, logEntry)
             summary = sprintf('--- %s', logEntry.group);
+            col = self.phantomPanel.getColorForString(logEntry.group);
             set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Color', self.getColorForString(logEntry.group), ...
+                'Color', col, ...
                 'Position', [0, logEntry.mnemonic], ...
                 'String', summary, ...
                 'Visible', 'on');
@@ -445,7 +452,6 @@ classdef topsDataLogGUI < topsGUI
             
             % axes for viewing
             axesOptions = { ...
-                'Color', self.lightColor, ...
                 'DrawMode', 'fast', ...
                 'HitTest', 'on', ...
                 'XTick', [], ...

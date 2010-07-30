@@ -22,10 +22,11 @@ goodbyeList.alwaysRunning = false;
 machine = topsStateMachine;
 
 % compose all of the above to run concurrently
-sarg = topsConcurrentComposite;
-sarg.addChild(helloList);
-sarg.addChild(machine);
-sarg.addChild(goodbyeList);
+concurrents = topsConcurrentComposite;
+concurrents.name = 'concurrently:';
+concurrents.addChild(helloList);
+concurrents.addChild(machine);
+concurrents.addChild(goodbyeList);
 
 % make a runnable tree
 top = topsTreeNode;
@@ -35,15 +36,13 @@ middle = top.newChildNode;
 middle.name = 'middle';
 
 bottom(1) = middle.newChildNode;
-bottom(1).name = 'I have a call list';
+bottom(1).name = 'list:';
 bottom(1).addChild(helloList);
 
 bottom(2) = middle.newChildNode;
-bottom(2).name = 'I have a state machine';
+bottom(2).name = 'state machine:';
 bottom(2).addChild(machine);
 
-bottom(3) = middle.newChildNode;
-bottom(3).name = 'I have a concurrent composite';
-bottom(3).addChild(sarg);
+middle.addChild(concurrents);
 
 top.gui

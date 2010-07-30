@@ -55,6 +55,11 @@ classdef topsRunnable < topsFoundation
         % Subclasses should redefine run() to do custom behaviors.
         function run(self)
         end
+        
+        % Show heirarchy of topsRunnable[Composite] objects.
+        function g = gui(self)
+            g = topsRunnableGUI(self);
+        end
 
         % Log, notify, and prepare to do flow control.
         % @details

@@ -31,7 +31,7 @@ classdef topsValuePanel < topsDetailPanel
             self.detailsGrid.repositionControls;
         end
         
-        % Populate this panel with details about a value.
+        %  this panel with details about a value.
         % @param value any value to represent in the panel
         % @details
         % Fills in the panel with details about @a value.  If this panel's
