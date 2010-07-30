@@ -26,6 +26,11 @@ classdef topsValuePanel < topsDetailPanel
             self = self@topsDetailPanel(varargin{:});
         end
         
+        % Let the controls grid enable/disable scrolling.
+        function repondToResize(self, figure, event)
+            self.detailsGrid.repositionControls;
+        end
+        
         % Populate this panel with details about a value.
         % @param value any value to represent in the panel
         % @details
@@ -34,6 +39,12 @@ classdef topsValuePanel < topsDetailPanel
         % the value's elements, fields, or properties.
         function populateWithValueDetails(self, value)
             self.value = value;
+            self.repopulateDetailsGrid;
+        end
+        
+        % Build new controls when detailsAreEditable changes.
+        function setEditable(self, isEditable)
+            self.setEditable@topsDetailPanel(isEditable);
             self.repopulateDetailsGrid;
         end
         
@@ -111,10 +122,6 @@ classdef topsValuePanel < topsDetailPanel
                         row, [2 self.width], args{:});
                 end
             end
-            self.detailsGrid.repositionControls;
-        end
-        
-        function repondToResize(self, figure, event)
             self.detailsGrid.repositionControls;
         end
     end

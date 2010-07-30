@@ -32,6 +32,30 @@ classdef topsDetailPanel < handle
         lightColor = [1 1 .98];
     end
     
+    properties (Hidden)
+        % callback to get the value of an editable item
+        % @details
+        % Called from editable topsText controls, should expect an object
+        % as the first argument.  Should expect [] or a substruct()-style
+        % struct as the second argument.  Should expect getSetContext as
+        % the third argument.
+        % @details
+        % Should return a value.
+        getterFunction = @topsDetailPanel.getValue;
+        
+        % callback to set the value of an editable item
+        % @details
+        % Called from editable topsText controls, should expect a value as
+        % the first argument.  Should expect an object as the second
+        % argument.  Should expect [] or a substruct()-style struct as the
+        % third argument.  Should expect getSetContext as the fourth
+        % argument.
+        setterFunction = @topsDetailPanel.setValue;
+        
+        % arbitrary data to pass to getterFunction and setterFunction
+        getSetContext;
+    end
+    
     methods
         % Constructor takes one or two arguments.
         % @param parentGUI a topsGUI to contains this panel
@@ -54,6 +78,11 @@ classdef topsDetailPanel < handle
             if ~isempty(self.parentGUI) && ishandle(self.parentGUI.figure)
                 self.createWidgets;
             end
+        end
+        
+        % Subclasses may repsond when detailsAreEditable changes.
+        function setEditable(self, isEditable)
+            self.detailsAreEditable = isEditable;
         end
         
         % Create a new ui panel within the parentGUI's figure.
@@ -200,29 +229,38 @@ classdef topsDetailPanel < handle
         
         % Create a topsText control that editable, if detailsAreEditable.
         function args = getModalControlArgs(self, object, refPath)
-            if self.detailsAreEditable && ~isempty(refPath)
+            if isempty(refPath)
+                subs = [];
+                value = object;
+            else
                 subs = substruct(refPath{:});
-                getter = {@topsDetailPanel.getValue, object, subs};
-                setter = {@topsDetailPanel.setValue, object, subs};
+                value = subsref(object, subs);
+            end
+            
+            if self.detailsAreEditable
+                getter = {self.getterFunction, ...
+                    object, subs, self.getSetContext};
+                setter = {self.setterFunction, ...
+                    object, subs, self.getSetContext};
                 args = self.getEditableUIControlArgsWithGetterAndSetter(...
                     getter, setter);
                 
             else
-                args = self.getInteractiveUIControlArgsForValue(object);
+                args = self.getInteractiveUIControlArgsForValue(value);
             end
         end
     end
     
     methods (Static)
         % Set a value using subsasgn.
-        function setValue(value, object, subs)
+        function setValue(value, object, subs, context)
             if ~isempty(subs)
                 subsasgn(object, subs, value);
             end
         end
         
         % Get a value usung subsref.
-        function value = getValue(object, subs)
+        function value = getValue(object, subs, context)
             if isempty(subs)
                 value = [];
             else
