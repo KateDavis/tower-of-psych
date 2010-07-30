@@ -56,11 +56,6 @@ classdef topsTreeNode < topsRunnableComposite
     end
     
     methods
-        % Launch a graphical interface for this tree node.
-        function g = gui(self)
-            g = topsTreeNodeGUI(self);
-        end
-        
         % Create a new topsTreeNode child and add it beneath this node.
         % @details
         % Returns a new topsTreeNode which is a child of this node.

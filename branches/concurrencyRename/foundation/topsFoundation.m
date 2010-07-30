@@ -30,13 +30,10 @@ classdef topsFoundation < handle
         % @details
         % Subclasses may overrride to return a specific topsDetailPanel
         % subclass, or let topsFoundataion generate a generic
-        % topsDetailPanel.
-        function p = guiPanel(self, parentGUI, position)
-            if nargin == 3
-                p = topsValuePanel(self, parentGUI, position);
-            else
-                p = topsValuePanel(self, parentGUI);
-            end
+        % topsValuePanel.
+        function p = guiPanel(self, varargin)
+            p = topsValuePanel(varargin{:});
+            p.populateWithValueDetails(self);
         end
     end
     

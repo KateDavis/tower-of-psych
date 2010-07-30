@@ -77,12 +77,6 @@ classdef topsRunnable < topsFoundation
             self.isRunning = false;
         end
         
-        % Launch a graphical interface for this runnable.
-        function g = gui(self)
-            g = [];
-            disp(sprintf('make a gui for %s!', class(self)))
-        end
-        
         % Log an event of interest with topsDataLog.
         % @param actionName string name for any event of interest
         % @param actionData optional data to log along with @a actionName
