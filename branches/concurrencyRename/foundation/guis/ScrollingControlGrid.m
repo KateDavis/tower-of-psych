@@ -289,7 +289,8 @@ classdef ScrollingControlGrid < handle
     end
     
     methods(Static)
-        function respondToSliderOrScroll(obj, event, self)
+        function didScroll = respondToSliderOrScroll(obj, event, self)
+            didScroll = false;
             if strcmp(get(self.slider, 'Enable'), 'on')
                 y = -get(self.slider, 'Value');
                 if isfield(event, 'VerticalScrollCount')
@@ -302,6 +303,7 @@ classdef ScrollingControlGrid < handle
                 normPos = get(self.controlPanel, 'Position');
                 normPos(2) = y;
                 set(self.controlPanel, 'Position', normPos);
+                didScroll = true;
             end
         end
         

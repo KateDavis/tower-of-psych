@@ -594,7 +594,7 @@ classdef topsDataLogGUI < topsGUI
             end
         end
         
-        function viewStartFromScrollOrSlider(obj, event, self)
+        function didScroll = viewStartFromScrollOrSlider(obj, event, self)
             frac = -get(self.viewStartSlider, 'Value');
             if isfield(event, 'VerticalScrollCount')
                 % mouse scroll event
@@ -603,6 +603,7 @@ classdef topsDataLogGUI < topsGUI
             end
             [start, length] = self.getFullReplaySize;
             self.viewStart = frac*(length-self.viewLength) + start;
+            didScroll = true;
         end
         
         function viewIsSlidingFromTogle(toggle, event, self)

@@ -66,7 +66,7 @@ classdef topsGUI < handle
             if isfield(self.listeners, name)
                 ii = length(self.listeners.(name)) + 1;
                 self.listeners.(name)(ii) = listener;
-
+                
             else
                 ii = 1;
                 self.listeners.(name) = listener;
@@ -81,7 +81,7 @@ classdef topsGUI < handle
                     self.listeners.(name)(ii) = [];
                 end
             end
-        end        
+        end
         
         function deleteListeners(self)
             % would like to use struct2array, but
@@ -145,13 +145,13 @@ classdef topsGUI < handle
             if isempty(self.scrollables)
                 return
             end
-
+            
+            n = length(self.scrollables);
             current = get(self.figure, 'CurrentObject');
-            if length(self.scrollables) == 1 || isempty(current)
+            if n == 1 || isempty(current)
                 % pick last scrollable, when it's obvious
-                obj = self.scrollables(end).handle;
-                fcn = self.scrollables(end).fcn;
-
+                self.eventToScrollableAtIndex(event, n);
+                
             else
                 % work up from the last-clicked object
                 %   and fall back on last scrollable
@@ -160,29 +160,34 @@ classdef topsGUI < handle
                     isScroll = current == scrolls;
                     if any(isScroll)
                         ii = find(isScroll, 1);
-                        obj = self.scrollables(ii).handle;
-                        fcn = self.scrollables(ii).fcn;
-                        break;
+                        didScroll = ...
+                            self.eventToScrollableAtIndex(event, ii);
+                        if ~didScroll
+                            self.eventToScrollableAtIndex(event, n);
+                        end
+                        return;
                         
                     elseif current == self.figure
-                        obj = self.scrollables(end).handle;
-                        fcn = self.scrollables(end).fcn;
-                        break;
+                        self.eventToScrollableAtIndex(event, n);
+                        return;
                         
                     end
                     current = get(current, 'Parent');
                 end
             end
-            
-            % pass the scroll event to the scrollable
+        end
+        
+        function didScroll = eventToScrollableAtIndex(self, event, ii)
+            obj = self.scrollables(ii).handle;
+            fcn = self.scrollables(ii).fcn;
             if iscell(fcn)
                 if length(fcn) > 1
-                    feval(fcn{1}, obj, event, fcn{2:end});
+                    didScroll = feval(fcn{1}, obj, event, fcn{2:end});
                 else
-                    feval(fcn{1}, obj, event);
+                    didScroll = feval(fcn{1}, obj, event);
                 end
             else
-                feval(fcn, obj, event);
+                didScroll = feval(fcn, obj, event);
             end
         end
         

@@ -233,6 +233,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 data.earliestTime = self.earliestTime;
                 data.latestTime = self.latestTime;
                 save(fileWithPath, '-struct', 'data');
+                disp(sprintf('%s wrote %s', mfilename, fileWithPath))
             end
         end
         
