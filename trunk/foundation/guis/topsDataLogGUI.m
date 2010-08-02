@@ -2,7 +2,7 @@ classdef topsDataLogGUI < topsGUI
     % @class topsDataLogGUI
     % Visualize data sorted by time.
     % topsDataLogGUI plots a summary of data from the current topsDataLog,
-    % sorted by time.  You can show and hide different data groups.  You 
+    % sorted by time.  You can show and hide different data groups.  You
     % can view different time ranges.  You replay the log after an
     % experiment, or view the log online, as data stream in during an
     % experiment.
@@ -75,14 +75,14 @@ classdef topsDataLogGUI < topsGUI
     % timing-critical situation, like some experiments, you might wish to
     % close the GUI, deleting its listeners.
     % @ingroup foundation
-
+    
     properties(Hidden)
         viewStart=0;
         viewLength=0;
         viewIsSliding;
         replayStartTime;
         replayEndTime;
-    
+        
         groups;
         
         dataLogTexts;
@@ -111,10 +111,21 @@ classdef topsDataLogGUI < topsGUI
         stickyPeg;
     end
     
+    properties(Hidden)
+        % a small value, but not Matlab's eps()
+        biggerThanEps = 1e-6;
+
+        % will need to make a real data log panel
+        phantomPanel;
+    end
+    
     methods
         function self = topsDataLogGUI()
             self = self@topsGUI;
             self.title = 'Data Log Viewer';
+
+            self.phantomPanel = topsDetailPanel;
+            self.phantomPanel.parentGUI = self;
             
             self.createWidgets;
             
@@ -166,11 +177,11 @@ classdef topsDataLogGUI < topsGUI
         function listenToDataLog(self)
             self.deleteListeners;
             theLog = topsDataLog.theDataLog;
-
+            
             listener = theLog.addlistener('NewAddition', ...
                 @(source, event) self.hearNewAddition(source, event));
             self.addListenerWithName(listener, 'NewAddition');
-
+            
             listener = theLog.addlistener('FlushedTheDataLog', ...
                 @(source, event) self.hearFlushedTheDataLog(source, event));
             self.addListenerWithName(listener, 'FlushedTheDataLog');
@@ -178,7 +189,7 @@ classdef topsDataLogGUI < topsGUI
         
         function addNewGroup(self, group)
             self.groups{end+1} = group;
-            col = self.getColorForString(group);
+            col = self.phantomPanel.getColorForString(group);
             
             % a control for triggering, a control for hiding
             z = size(self.groupsGrid.controls);
@@ -266,9 +277,10 @@ classdef topsDataLogGUI < topsGUI
         
         function plotLogEntry(self, logEntry)
             summary = sprintf('--- %s', logEntry.group);
+            col = self.phantomPanel.getColorForString(logEntry.group);
             set(self.nextText, ...
                 'Parent', self.dataLogAxes, ...
-                'Color', self.getColorForString(logEntry.group), ...
+                'Color', col, ...
                 'Position', [0, logEntry.mnemonic], ...
                 'String', summary, ...
                 'Visible', 'on');
@@ -440,7 +452,6 @@ classdef topsDataLogGUI < topsGUI
             
             % axes for viewing
             axesOptions = { ...
-                'Color', self.lightColor, ...
                 'DrawMode', 'fast', ...
                 'HitTest', 'on', ...
                 'XTick', [], ...
@@ -589,7 +600,7 @@ classdef topsDataLogGUI < topsGUI
             end
         end
         
-        function viewStartFromScrollOrSlider(obj, event, self)
+        function didScroll = viewStartFromScrollOrSlider(obj, event, self)
             frac = -get(self.viewStartSlider, 'Value');
             if isfield(event, 'VerticalScrollCount')
                 % mouse scroll event
@@ -598,6 +609,7 @@ classdef topsDataLogGUI < topsGUI
             end
             [start, length] = self.getFullReplaySize;
             self.viewStart = frac*(length-self.viewLength) + start;
+            didScroll = true;
         end
         
         function viewIsSlidingFromTogle(toggle, event, self)

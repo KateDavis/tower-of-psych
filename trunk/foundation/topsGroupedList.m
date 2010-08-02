@@ -65,10 +65,15 @@ classdef topsGroupedList < topsFoundation
             self.sendNotifications = false;
         end
         
-        % Launch a graphical interface for this list.
-        % Returns a handle to the new topsGroupedListGUI
+        % Launch a graphical interface for this topsGroupedList.
         function g = gui(self)
             g = topsGroupedListGUI(self);
+        end
+
+        % Make a topsGroupedListPanel with details about this object.
+        function p = guiPanel(self, varargin)
+            p = topsGroupedListPanel(varargin{:});
+            p.populateWithGroupedList(self);
         end
         
         % Add a new item to the list.

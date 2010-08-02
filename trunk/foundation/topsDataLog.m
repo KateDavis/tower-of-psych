@@ -95,28 +95,9 @@ classdef (Sealed) topsDataLog < topsGroupedList
             log = theLog;
         end
         
-        % Launch a graphical interface for the data log.
-        % @param alternateFlag an optional hint for picking which interface
-        % to use.
-        % @details
-        % By default, gui() launches the topsDataLogGUI graphical
-        % interface, which plots a sumary of all logged data, sorted by
-        % time.  You can use this interface online, to see data as they
-        % arrive in the log.
-        % @details
-        % If you provide @a alternateFlag and it has the value
-        % 'asList', then gui() will launch the generic topsGroupedListGUI,
-        % which lets you browse the log by groups and timestamps, and shows
-        % details about each piece of data.
-        % @details
-        % Returns a handle to the new graphical interface, either
-        % topsDataLogGUI or topsGroupedListGUI.
-        function g = gui(alternateFlag)
-            if nargin && strcmp(alternateFlag, 'asList')
-                g = topsGroupedListGUI(topsDataLog.theDataLog);
-            else
-                g = topsDataLogGUI;
-            end
+        % Launch the graphical interface for topsDataLog.
+        function g = gui(self)
+            g = topsDataLogGUI;
         end
         
         % Clear out all data from the log
@@ -233,6 +214,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 data.earliestTime = self.earliestTime;
                 data.latestTime = self.latestTime;
                 save(fileWithPath, '-struct', 'data');
+                disp(sprintf('%s wrote %s', mfilename, fileWithPath))
             end
         end
         

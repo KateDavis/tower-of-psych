@@ -7,25 +7,20 @@ classdef topsGUI < handle
     % which are described here briefly.
     % @ingroup foundation
     
-    properties(Hidden)
+    properties
         % Matlab figure that holds the gui
         figure;
         
         % true or false, toggled to indicate when gui is busy
         isBusy = false;
         
-        % default title for the gui
-        title = 'tops GUI';
-        
+        % title for the gui figure
+        title = 'topsGUI';
+    end
+    
+    properties (Hidden)
         % title to show when isBusy
         busyTitle = '(busy...)';
-        
-        % colormap of colors visible against white, to give subclasses
-        % uniform appearance
-        colors;
-
-        % an offwhite color used by all subclasses
-        lightColor = [1 1 .98];
         
         % struct array of listener objects used by subclass, automatically
         % deleted
@@ -41,28 +36,17 @@ classdef topsGUI < handle
         % @details
         % Use addButton() to append elements to buttons.
         buttons;
-        
-        % length in characters of strings that summarize values displayed
-        % in the gui
-        stringSummaryLength = 22;
-    end
-    
-    properties(Hidden)
-        % a small value, but not Matlab's eps()
-        biggerThanEps = 1e-6;
     end
     
     methods
         % Constructor takes no arguments.
-        % Generates standard color map, opens a figure with a standard
-        % appearance.
+        % Opens a figure with a standard appearance.
         function self = topsGUI
-            self.colors = spacedColors(61);
             self.setupFigure;
         end
         
         % Automatically closes the figure and deletes any listeners used by
-        % a subclass.
+        % a subclass or topsDetailPanel.
         function delete(self)
             if ~isempty(self.figure) && ishandle(self.figure);
                 delete(self.figure);
@@ -82,7 +66,7 @@ classdef topsGUI < handle
             if isfield(self.listeners, name)
                 ii = length(self.listeners.(name)) + 1;
                 self.listeners.(name)(ii) = listener;
-
+                
             else
                 ii = 1;
                 self.listeners.(name) = listener;
@@ -97,7 +81,7 @@ classdef topsGUI < handle
                     self.listeners.(name)(ii) = [];
                 end
             end
-        end        
+        end
         
         function deleteListeners(self)
             % would like to use struct2array, but
@@ -158,45 +142,52 @@ classdef topsGUI < handle
         % scrolled and the current object is a scrollable or a child of a
         % scrollable, passes the scroll event to the scrollable's callback.
         function respondToScrolling(self, figure, event)
-            % determine which scrollable gets the scroll
             if isempty(self.scrollables)
                 return
-            elseif length(self.scrollables) == 1
-                obj = self.scrollables(1).handle;
-                fcn = self.scrollables(1).fcn;
-            else
-                current = get(self.figure, 'CurrentObject');
-                if isempty(current)
-                    return
-                    
-                else
-                    scrolls = [self.scrollables.handle];
-                    while true
-                        isScroll = current == scrolls;
-                        if any(isScroll)
-                            ii = find(isScroll, 1);
-                            obj = self.scrollables(ii).handle;
-                            fcn = self.scrollables(ii).fcn;
-                            break;
-                            
-                        elseif current == self.figure
-                            return
-                            
-                        end
-                        current = get(current, 'Parent');
-                    end
-                end
             end
             
-            % pass the scroll event to the scrollable
+            n = length(self.scrollables);
+            current = get(self.figure, 'CurrentObject');
+            if n == 1 || isempty(current)
+                % pick last scrollable, when it's obvious
+                self.eventToScrollableAtIndex(event, n);
+                
+            else
+                % work up from the last-clicked object
+                %   and fall back on last scrollable
+                scrolls = [self.scrollables.handle];
+                while true
+                    isScroll = current == scrolls;
+                    if any(isScroll)
+                        ii = find(isScroll, 1);
+                        didScroll = ...
+                            self.eventToScrollableAtIndex(event, ii);
+                        if ~didScroll
+                            self.eventToScrollableAtIndex(event, n);
+                        end
+                        return;
+                        
+                    elseif current == self.figure
+                        self.eventToScrollableAtIndex(event, n);
+                        return;
+                        
+                    end
+                    current = get(current, 'Parent');
+                end
+            end
+        end
+        
+        function didScroll = eventToScrollableAtIndex(self, event, ii)
+            obj = self.scrollables(ii).handle;
+            fcn = self.scrollables(ii).fcn;
             if iscell(fcn)
                 if length(fcn) > 1
-                    feval(fcn{1}, obj, event, fcn{2:end});
+                    didScroll = feval(fcn{1}, obj, event, fcn{2:end});
                 else
-                    feval(fcn{1}, obj, event);
+                    didScroll = feval(fcn{1}, obj, event);
                 end
             else
-                feval(fcn, obj, event);
+                didScroll = feval(fcn, obj, event);
             end
         end
         
@@ -263,125 +254,6 @@ classdef topsGUI < handle
                 set(self.figure, 'Name', self.title);
             end
             drawnow;
-        end
-        
-        % Subclasses can color in string variables using standard colors
-        % @param string a string that should be colored in
-        % @details
-        % Computes the "sum" of the string and uses it as an index into the
-        % standard color map.  Returns the color from the color map.
-        % @details
-        % The idea is that strings should pop out visually, and identical
-        % strings should pop out together and be memorable from gui to gui.
-        function col = getColorForString(self, string)
-            hash = 1 + mod(sum(string), size(self.colors,1));
-            col = self.colors(hash, :);
-        end
-        
-        % Subclasses can use a standard look and feel to reflect values
-        % @param value any value or object to be represented with a
-        % uicontrol
-        % @details
-        % Returns a list of standard "look and feel" arguments for GUI
-        % controls, some of which may depend on the type and value of @a
-        % value.
-        function args = getLookAndFeelForValue(self, value)
-            if ischar(value)
-                col = self.getColorForString(value);
-                bg = self.lightColor;
-            else
-                col = [0 0 0];
-                bg = get(self.figure, 'Color');
-            end
-            string = summarizeValue(value, self.stringSummaryLength);
-            args = { ...
-                'ForegroundColor', col, ...
-                'BackgroundColor', bg, ...
-                'String', string};
-        end
-        
-        % Subclasses can present standard controls to represent values
-        % @param value any value or object to be represented with a
-        % uicontrol
-        % @details
-        % Returns a list of standard arguments to represent @a value.
-        % The arguments will reflect the type of @a value.  For
-        % example, strings get colored in using getColorForString().  Other
-        % values get summarized as black strings.
-        function args = getDescriptiveUIControlArgsForValue(self, value)
-            static = topsText.staticText;
-            lookFeel = self.getLookAndFeelForValue(value);
-            args = cat(2, static, lookFeel);
-        end
-        
-        % Subclasses can present standard controls to interact with values
-        % @param value any value or object to be interacted with, with a
-        % uicontrol
-        % @details
-        % Returns a list of standard arguments to represent and interact
-        % with @a value.  Strings and function handles match files on
-        % Matlab's path become clickable links for opening the file in
-        % Matlab.  Objects with a gui() method, including topsFoundataion
-        % objects, also become bold links for launching object guis.
-        % @details
-        % If there's no good way to ineract with @a value, returns
-        % the same arguments as getDescriptiveUIControlArgsForValue.
-        function args = getInteractiveUIControlArgsForValue(self, value)
-            callback = [];
-            if isscalar(value) && any(strcmp(methods(value), 'gui'))
-                % open up one of the topsFoundataion guis
-                callback = @(obj,event) value.gui;
-                
-            elseif isscalar(value) && isa(value, 'function_handle')
-                % open a funciton's m-file
-                mName = [func2str(value), '.m'];
-                if exist(mName, 'file')
-                    callback = @(obj,event) open(mName);
-                end
-                
-            elseif ischar(value)
-                % open up an m-file
-                mName = [value, '.m'];
-                if exist(mName, 'file')
-                    callback = @(obj,event) open(mName);
-                end
-
-            end
-            
-            if isempty(callback)
-                % fallback on non-interactive control
-                args = self.getDescriptiveUIControlArgsForValue(value);
-                
-            else
-                click = topsText.clickTextWithCallback(callback);
-                lookFeel = self.getLookAndFeelForValue(value);
-                args = cat(2, click, lookFeel);
-            end
-        end
-        
-        % Subclasses can present standard controls for editing values
-        % @param getter fevalable cell array to invoke that returns the
-        % value to be displayed
-        % @param setter fevalable cell array to invoke to set a new value
-        % from user input (should expect the new value as the first
-        % argument).
-        % @details
-        % Returns a list of standard arguments to represent and allow
-        % editing of a value.  The value displayed will reflect the return
-        % value of the @a getter fevalable.
-        % @details
-        % The user may click inside the control to type a new string, which
-        % will be passed to Matlab's built-in eval() function.  The
-        % eval() result wil be passed to the @a setter function to update
-        % the value.
-        % @details
-        % The control will not attempt to validate user inputs.  It will
-        % attempt to catch errors and display them, and only invoke the @a
-        % setter upon success.
-        function args = getEditableUIControlArgsWithGetterAndSetter(self, getter, setter)
-            editable = topsText.editTextWithGetterAndSetter(getter, setter);
-            lookFeel = self.getLookAndFeelForValue(feval(getter{:}));
-            args = cat(2, editable, lookFeel);
         end
     end
 end

@@ -55,6 +55,11 @@ classdef topsRunnable < topsFoundation
         % Subclasses should redefine run() to do custom behaviors.
         function run(self)
         end
+        
+        % Show heirarchy of topsRunnable[Composite] objects.
+        function g = gui(self)
+            g = topsRunnableGUI(self);
+        end
 
         % Log, notify, and prepare to do flow control.
         % @details
@@ -75,12 +80,6 @@ classdef topsRunnable < topsFoundation
             self.logFeval(self.finishString, self.finishFevalable);
             self.notify('RunFinish');
             self.isRunning = false;
-        end
-        
-        % Launch a graphical interface for this runnable.
-        function g = gui(self)
-            g = [];
-            disp(sprintf('make a gui for %s!', class(self)))
         end
         
         % Log an event of interest with topsDataLog.

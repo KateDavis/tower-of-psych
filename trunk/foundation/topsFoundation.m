@@ -3,11 +3,8 @@ classdef topsFoundation < handle
     % Superclass for all of the funtamental Tower of Psych classes.
     % @details
     % The topsFoundation superclass provides a common interface for Tower
-    % of Psych classes.  This includes:
-    %   - a name property so that each object can be identified
-    %   intuitively
-    %   - a gui() method so that each object can be explored interactively
-    %   .
+    % of Psych classes.  This includes naming cell array manipulation, and
+    % generating graphical interfaces.
     % @ingroup foundation
     
     properties (SetObservable)
@@ -16,9 +13,28 @@ classdef topsFoundation < handle
     end
     
     methods
-        % Launch a topsGUI graphical interface for this objet and return a
-        % handle to the gui.
-        g = gui;
+        % Make a topsGUI graphical interface for this object.
+        % @details
+        % Subclasses may overrride to return a specific topsGUI subclass,
+        % or let topsFoundataion generate a generic topsGUI.
+        function g = gui(self)
+            g = topsGUI;
+            g.title = class(self);
+            p = self.guiPanel(g);
+        end
+        
+        % Make a topsDetailPanel with details about this object.
+        % @param parentGUI a topsGUI to contain the new panel
+        % @param position optional normalized [x y w h] where to locate the
+        % new panel within @a parentGUI
+        % @details
+        % Subclasses may overrride to return a specific topsDetailPanel
+        % subclass, or let topsFoundataion generate a generic
+        % topsValuePanel.
+        function p = guiPanel(self, varargin)
+            p = topsValuePanel(varargin{:});
+            p.populateWithValueDetails(self);
+        end
     end
     
     methods (Static)

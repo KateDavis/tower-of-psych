@@ -40,7 +40,8 @@ classdef TestTopsGroupedListGUI < TestCase
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 0, 'should start with no mnemonics controls');
             
-            controls = self.groupedListPanel.itemDetailGrid.controls;
+            detailsGrid = self.groupedListPanel.itemDetailPanel.detailsGrid;
+            controls = detailsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertEqual(n, 0, 'should start with no item detail controls');
         end
@@ -83,7 +84,8 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic(s, 'struct', 's');
             
             self.groupedListPanel.setCurrentGroup('struct');
-            controls = self.groupedListPanel.itemDetailGrid.controls;
+            detailsGrid = self.groupedListPanel.itemDetailPanel.detailsGrid;
+            controls = detailsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize struct item');
         end
@@ -100,7 +102,8 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic(s, 'struct', 's');
             
             self.groupedListPanel.setCurrentGroup('struct');
-            controls = self.groupedListPanel.itemDetailGrid.controls;
+            detailsGrid = self.groupedListPanel.itemDetailPanel.detailsGrid;
+            controls = detailsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize struct item');
         end
@@ -112,7 +115,8 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic(c, 'cell', 'c');
             
             self.groupedListPanel.setCurrentGroup('cell');
-            controls = self.groupedListPanel.itemDetailGrid.controls;
+            detailsGrid = self.groupedListPanel.itemDetailPanel.detailsGrid;
+            controls = detailsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize cell item');
         end
@@ -122,7 +126,8 @@ classdef TestTopsGroupedListGUI < TestCase
             self.groupedList.addItemToGroupWithMnemonic(o, 'object', 'o');
             
             self.groupedListPanel.setCurrentGroup('object');
-            controls = self.groupedListPanel.itemDetailGrid.controls;
+            detailsGrid = self.groupedListPanel.itemDetailPanel.detailsGrid;
+            controls = detailsGrid.controls;
             n = length(unique(controls(controls>0 & ishandle(controls))));
             assertTrue(n > 1, 'should have multiple controls to summarize object item');
         end
