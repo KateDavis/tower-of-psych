@@ -31,6 +31,9 @@ classdef topsStateMachineGUI < topsGUI
     properties(Hidden)
         machineProps = {'startFevalable', 'transitionFevalable', 'finishFevalable'};
         statesProp = 'allStates';
+        
+        % will need to make a real state machine panel
+        phantomPanel;
     end
     
     methods
@@ -43,6 +46,8 @@ classdef topsStateMachineGUI < topsGUI
         function self = topsStateMachineGUI(stateMachine)
             self = self@topsGUI;
             self.title = 'State Machine Viewer';
+            self.phantomPanel = topsDetailPanel;
+            self.phantomPanel.parentGUI = self;
             self.createWidgets;
             
             if nargin
@@ -61,13 +66,13 @@ classdef topsStateMachineGUI < topsGUI
             top = .99;
             yDiv = .75;
             xDiv = .8;
-
+            
             self.statesGrid = ScrollingControlGrid( ...
                 self.figure, [left, bottom, right-left, yDiv-bottom]);
             self.addScrollableChild(self.statesGrid.panel, ...
                 {@ScrollingControlGrid.respondToSliderOrScroll, self.statesGrid});
             self.statesGrid.rowHeight = 1.2;
-
+            
             self.machineGrid = ScrollingControlGrid( ...
                 self.figure, [left, yDiv, xDiv-left, top-yDiv]);
             self.addScrollableChild(self.machineGrid.panel, ...
@@ -76,7 +81,6 @@ classdef topsStateMachineGUI < topsGUI
             
             self.machineRunButton = uicontrol( ...
                 'Parent', self.figure, ...
-                'BackgroundColor', self.lightColor, ...
                 'Callback', @(obj, event)self.runMachine, ...
                 'Style', 'pushbutton', ...
                 'Units', 'normalized', ...
@@ -90,16 +94,20 @@ classdef topsStateMachineGUI < topsGUI
             
             % add a row of widgets for each state machine property
             for ii = 1:length(self.machineProps)
-                args = self.getDescriptiveUIControlArgsForValue(self.machineProps{ii});
+                args = ...
+                    self.phantomPanel.getDescriptiveUIControlArgsForValue( ...
+                    self.machineProps{ii});
                 self.machineGrid.newControlAtRowAndColumn( ...
                     ii, 1, args{:});
                 
                 val = self.stateMachine.(self.machineProps{ii});
-                args = self.getDescriptiveUIControlArgsForValue(val);
+                args = ...
+                    self.phantomPanel.getDescriptiveUIControlArgsForValue( ...
+                    val);
                 self.machineGrid.newControlAtRowAndColumn( ...
                     ii, [2 4], args{:});
             end
-
+            
             % update the grid graphics all at once
             self.machineGrid.repositionControls;
         end
@@ -113,14 +121,18 @@ classdef topsStateMachineGUI < topsGUI
             fn = fieldnames(s);
             for ii = 1:length(fn)
                 row = 1;
-                args = self.getDescriptiveUIControlArgsForValue(fn{ii});
+                args = ...
+                    self.phantomPanel.getDescriptiveUIControlArgsForValue( ...
+                    fn{ii});
                 self.statesGrid.newControlAtRowAndColumn( ...
                     row, ii, args{:});
-
+                
                 for jj = 1:length(s)
                     row = row + 1;
                     val = s(jj).(fn{ii});
-                    args = self.getDescriptiveUIControlArgsForValue(val);
+                    args = ...
+                        self.phantomPanel.getDescriptiveUIControlArgsForValue( ...
+                        val);
                     self.statesGrid.newControlAtRowAndColumn( ...
                         row, ii, args{:});
                 end
@@ -136,10 +148,10 @@ classdef topsStateMachineGUI < topsGUI
                 listener = self.stateMachine.addlistener( ...
                     self.machineProps{ii}, 'PostSet', ...
                     @(source, event)self.hearMachinePropertyChange(source, event));
-
+                
                 self.addListenerWithName(listener, self.machineProps{ii});
             end
-
+            
             listener = self.stateMachine.addlistener( ...
                 self.statesProp, 'PostSet', ...
                 @(source, event)self.hearStatesPropertyChange(source, event));
