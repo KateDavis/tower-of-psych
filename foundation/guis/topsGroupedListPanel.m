@@ -81,6 +81,13 @@ classdef topsGroupedListPanel < topsDetailPanel
             self.listenToGroupedList(groupedList);
             self.repopulateGroupsGrid;
         end
+
+        % Sync detailsAreEditable with detail panel and "edit" button.
+        function setEditable(self, isEditable)
+            self.setEditable@topsDetailPanel(isEditable);
+            self.itemDetailPanel.setEditable(isEditable);
+            set(self.itemEditableControl, 'Value', isEditable);
+        end
         
         % Unpopulate this panel so that it uses no topsGroupedList
         % @details
@@ -162,13 +169,12 @@ classdef topsGroupedListPanel < topsDetailPanel
                 @topsGroupedListPanel.setValueOfListItem;
             self.itemDetailPanel.getSetContext = self;
             
-            dp = self.itemDetailPanel;
             setEditable = ...
-                @(obj, event)setEditable(dp, (get(obj, 'Value')));
+                @(obj, event)setEditable(self, (get(obj, 'Value')));
             self.itemEditableControl = uicontrol( ...
                 'Parent', self.panel, ...
                 'Callback', setEditable, ...
-                'Value', dp.detailsAreEditable, ...
+                'Value', self.detailsAreEditable, ...
                 'Style', 'togglebutton', ...
                 'Units', 'normalized', ...
                 'String', 'edit', ...

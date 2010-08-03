@@ -72,69 +72,87 @@ classdef topsText
             basic = topsText.editText;
             data.getter = getter;
             data.setter = setter;
-            string = summarizeValue(feval(getter{:}));
+            string = topsText.displayStringFromGetter([], getter);
             specific = {'UserData', data, 'String', string};
             args = cat(2, basic, specific);
         end
         
-        function clickFcn(text, event)
-            topsText.toggleOn(text)
+        function clickFcn(obj, event)
+            topsText.toggleOn(obj)
             drawnow;
             
-            cb = get(text, 'Callback');
+            cb = get(obj, 'Callback');
             if ~isempty(cb)
-                feval(cb, text, event);
+                feval(cb, obj, event);
             end
             
-            topsText.toggleOff(text)
+            topsText.toggleOff(obj)
             drawnow;
         end
         
-        function toggleFcn(text, event)
-            if get(text, 'Value')
-                topsText.toggleOff(text)
+        function toggleFcn(obj, event)
+            if get(obj, 'Value')
+                topsText.toggleOff(obj)
             else
-                topsText.toggleOn(text)
+                topsText.toggleOn(obj)
             end
             
-            cb = get(text, 'Callback');
+            cb = get(obj, 'Callback');
             if ~isempty(cb)
-                feval(cb, text, event);
+                feval(cb, obj, event);
             end
             drawnow;
         end
         
-        function toggleOff(text)
-            v = get(text, {'Value'});
-            topsText.swapColors(text(logical([v{:}])));
-            set(text, 'Value', false, 'Selected', 'off');
+        function toggleOff(obj)
+            v = get(obj, {'Value'});
+            topsText.swapColors(obj(logical([v{:}])));
+            set(obj, 'Value', false, 'Selected', 'off');
         end
         
-        function toggleOn(text)
-            v = get(text, {'Value'});
-            topsText.swapColors(text(~logical([v{:}])));
-            set(text, 'Value', true, 'Selected', 'on');
+        function toggleOn(obj)
+            v = get(obj, {'Value'});
+            topsText.swapColors(obj(~logical([v{:}])));
+            set(obj, 'Value', true, 'Selected', 'on');
         end
         
-        function swapColors(text)
-            cols = get(text, {'BackgroundColor', 'ForegroundColor'});
-            set(text, {'ForegroundColor', 'BackgroundColor'}, cols);
+        function swapColors(obj)
+            cols = get(obj, {'BackgroundColor', 'ForegroundColor'});
+            set(obj, {'ForegroundColor', 'BackgroundColor'}, cols);
         end
         
-        function editBeginFcn(text, event)
-            set(text, 'Value', true, ...
+        function editBeginFcn(obj, event)
+            % attempt to wrap strings in automatically ''
+            data = get(obj, 'UserData');
+            if ~isempty(data)
+                try
+                    getter = data.getter;
+                    value = feval(getter{:});
+                    if ischar(value)
+                        format = '''%s''';
+                    else
+                        format = '%s';
+                    end
+                    
+                catch err
+                    format = '%s';
+                end
+                set(obj, 'String', sprintf(format, get(obj, 'String')));
+            end
+            
+            set(obj, 'Value', true, ...
                 'Selected', 'on', ...
                 'Style', 'edit', ...
                 'HorizontalAlignment', 'center', ...
                 'Enable', 'on', ...
-                'ButtonDownFcn', get(text, 'Callback'), ...
+                'ButtonDownFcn', get(obj, 'Callback'), ...
                 'Callback', @topsText.editEndFcn);
             drawnow;
         end
         
-        function editEndFcn(text, event)
-            cb = get(text, 'ButtonDownFcn');
-            set(text, 'Value', false, ...
+        function editEndFcn(obj, event)
+            cb = get(obj, 'ButtonDownFcn');
+            set(obj, 'Value', false, ...
                 'Selected', 'off', ...
                 'Style', 'text', ...
                 'HorizontalAlignment', 'left', ...
@@ -142,10 +160,10 @@ classdef topsText
                 'ButtonDownFcn', @topsText.editBeginFcn, ...
                 'Callback', cb);
             
-            data = get(text, 'UserData');
+            data = get(obj, 'UserData');
             if ~isempty(data)
                 try
-                    string = get(text, 'String');
+                    string = get(obj, 'String');
                     newValue = eval(string);
                     setter = data.setter;
                     feval(setter{1}, newValue, setter{2:end});
@@ -156,22 +174,34 @@ classdef topsText
                 end
                 
                 getter = data.getter;
-                newString = summarizeValue(feval(getter{:}));
+                newString = topsText.displayStringFromGetter(obj, getter);
                 
-                if ishandle(text)
-                    set(text, 'String', newString);
+                if ishandle(obj)
+                    set(obj, 'String', newString);
                 end
             end
             
             if ~isempty(cb)
-                if ishandle(text)
-                    feval(cb, text, event);
+                if ishandle(obj)
+                    feval(cb, obj, event);
                 else
                     feval(cb, [], event);
                 end
             end
             
             drawnow;
+        end
+        
+        function string = displayStringFromGetter(obj, getter)
+            if ~isempty(obj) && ishandle(obj)
+                oldUnits = get(obj, 'Units');
+                set(obj, 'Units', 'characters');
+                pos = get(obj, 'Position');
+                set(obj, 'Units', oldUnits);
+                string = summarizeValue(feval(getter{:}), pos(3));
+            else
+                string = summarizeValue(feval(getter{:}));
+            end
         end
     end
 end
