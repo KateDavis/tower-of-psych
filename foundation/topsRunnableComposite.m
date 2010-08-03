@@ -7,8 +7,6 @@ classdef topsRunnableComposite < topsRunnable
     % these as "children".  topsRunnableComposite objects run() by
     % combining the run() behaviors of their children.  They may do this in
     % any way.
-    % @details
-    % topsRunnableComposite objects should
     % @ingroup foundation
     
     properties (SetObservable)
