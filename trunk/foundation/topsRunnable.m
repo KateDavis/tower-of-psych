@@ -7,7 +7,9 @@ classdef topsRunnable < topsFoundation
     % calls and log what they call.  Some can combine with each other to
     % make complex control structures.
     % @details
-    % Any topsRunnable can be run(), to begin execution.
+    % Any topsRunnable can be run(), to begin execution.  Sometimes it's
+    % caller will be set to another topsRunnable, which invoked run() on
+    % it.
     % @details
     % @ingroup foundation
     
@@ -20,6 +22,9 @@ classdef topsRunnable < topsFoundation
         
         % true or false, whether this object is currently busy running
         isRunning = false;
+        
+        % topsRunnable that invoked run() on this object, or empty
+        caller;
     end
     
     events

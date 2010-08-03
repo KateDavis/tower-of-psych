@@ -21,8 +21,8 @@ classdef topsConditions < topsRunnable
     % picking conditions from scratch.  When pickingMethod runs out of
     % conditions to pick, or when maxPicks is reached (whichever is first),
     % An object sets isDone to true and invokes donePickingFevalable.  If
-    % it has a parent topsRunnable object, it also sets isRunning to false
-    % for that object.
+    % its caller is set to a topsRunnable object, it also sets isRunning to
+    % false for that object.
     % @ingroup foundation
     
     properties (SetObservable)
@@ -105,16 +105,6 @@ classdef topsConditions < topsRunnable
         
         % optional fevalable cell array to invoke when isDone
         donePickingFevalable = {};
-        
-        % optional topsRunnable to stop running when isDone
-        % @details
-        % parent should be another topsRunnable object, or empty.  If
-        % parent is a supplied, sets parent's isRunning to false when
-        % isDone.
-        % @details
-        % setParent() allows parent to be set with a funciton call,
-        % including from an fevalable cell array, more easily.
-        parent;
     end
     
     properties (Hidden, SetObservable = false)
@@ -131,11 +121,6 @@ classdef topsConditions < topsRunnable
     methods
         % Constructor takes no arguments.
         function self = topsConditions
-        end
-        
-        % Method-based way to set the parent property.
-        function setParent(self, parent)
-            self.parent = parent;
         end
         
         % Add a parameter and set of values for condition formation.
@@ -367,14 +352,14 @@ classdef topsConditions < topsRunnable
         % Log, notify, and call out as needed.
         % @details
         % Extends the finish() method of topsRunnable to also invoke
-        % donePickingFevalable and tell parent to stop running, when
+        % donePickingFevalable and tell caller to stop running, when
         % condition picking is over.
         function finish(self)
             if self.isDone
                 self.logFeval('donePicking', self.donePickingFevalable);
-                if isobject(self.parent) ...
-                        && isa(self.parent, 'topsRunnable')
-                    self.parent.isRunning = false;
+                if isobject(self.caller) ...
+                        && isa(self.caller, 'topsRunnable')
+                    self.caller.isRunning = false;
                 end
             end
             self.finish@topsRunnable;
