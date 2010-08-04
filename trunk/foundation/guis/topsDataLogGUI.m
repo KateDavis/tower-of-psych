@@ -9,11 +9,8 @@ classdef topsDataLogGUI < topsGUI
     % @ingroup foundation
     
     properties
-        % minimum time to display in rasterAxes
-        tMin;
-        
-        % length of time to display in rasterAxes
-        tLength;
+        % [minimum maximum] time to display in rasterAxes
+        tLim;
         
         % names of data groups to display in rasterAxes
         selectedGroups;
@@ -21,14 +18,17 @@ classdef topsDataLogGUI < topsGUI
         % axes to show raster of data event times
         rasterAxes;
         
+        % line to select a pointin rasterAxes
+        rasterCursor;
+        
         % topsValuePanel to show details for a selected data point
         detailPanel;
         
-        % uicontrol to edit the minimum displayed time
-        tMinControl;
+        % uicontrol to edit tLim
+        tLimControl;
         
-        % uicontrol to edit the length of displayed time
-        tLengthControl;
+        % uicontrol to display the data log's clockFunction
+        clockFunctionControl;
         
         % uicontrol to select data groups by name
         groupsControl;
@@ -44,8 +44,7 @@ classdef topsDataLogGUI < topsGUI
             
             log = topsDataLog.theDataLog;
             
-            self.tMin = log.earliestTime;
-            self.tLength = log.latestTime - log.earliestTime;
+            self.tLim = [log.earliestTime, log.latestTime];
             self.selectedGroups = log.groups;
             
             self.createWidgets;
@@ -63,41 +62,101 @@ classdef topsDataLogGUI < topsGUI
             bottom = .01;
             
             yDiv = .5;
+            yGap = .1;
             xDiv = .5;
+            
+            width = .3;
+            height = .05;
             
             self.rasterAxes = axes( ...
                 'Parent', self.figure, ...
+                'Units', 'normalized', ...
                 'Position', [left, yDiv, right-left, top-yDiv], ...
                 'Box', 'on', ...
                 'XGrid', 'on', ...
+                'XLim', [0 1], ...
+                'YLim', [0 1], ...
                 'YTick', [], ...
                 'HitTest', 'off');
-            xlabel(self.rasterAxes, summarizeValue(log.clockFunction));;
+            
+            self.rasterCursor = line(0, -1, ...
+                'Parent', self.rasterAxes, ...
+                'Color', [0 0 0], ...
+                'LineStyle', 'none', ...
+                'Marker', 'o', ...
+                'HitTest', 'off');
             
             self.detailPanel = topsValuePanel( ...
-                self, [xDiv, bottom, right-xDiv, yDiv-bottom]);
+                self, [xDiv, bottom, right-xDiv, yDiv-yGap-bottom]);
+            self.detailPanel.stringSummaryLength = 40;
             
-            self.tMinControl;
+            editArgs = topsText.editText;
+            cb = @(obj,event)topsDataLogGUI.tLimCallback(obj,event,self);
+            self.tLimControl = uicontrol( ...
+                'Parent', self.figure, ...
+                'Units', 'normalized', ...
+                'Position', [left, yDiv-yGap, width, height], ...
+                'Callback', cb, ...
+                'String', summarizeValue(self.tLim, 30), ...
+                editArgs{:});
             
-            self.tLengthControl;
+            labelArgs = topsText.staticText;
+            self.clockFunctionControl = uicontrol( ...
+                'Parent', self.figure, ...
+                'Units', 'normalized', ...
+                'Position', [left+width, yDiv-yGap, width, height], ...
+                'String', summarizeValue(log.clockFunction), ...
+                labelArgs{:});
             
-            self.groupsControl;
+            cb = @(obj,event)topsDataLogGUI.groupsCallback(obj,event,self);
+            self.groupsControl = uicontrol( ...
+                'Parent', self.figure, ...
+                'Units', 'normalized', ...
+                'Position', [right-width, yDiv-yGap, width, height], ...
+                'Callback', cb, ...
+                'Style', 'popupmenu', ...
+                'String', {'groups'}, ...
+                'HorizontalAlignment', 'left');
             
             self.groupsGrid = ScrollingControlGrid( ...
-                self.figure, [left, bottom, xDiv-left, yDiv-bottom]);
+                self.figure, [left, bottom, xDiv-left, yDiv-yGap-bottom]);
         end
         
         function plotRaster(self)
-            log = topsDataLog.theDataLog;
-            if ~isnan(self.tMin) && ~isnan(self.tLength)
-                set(self.rasterAxes, ...
-                    'XLim', self.tMin + [0, self.tLength]);
-            end
-            
             n = numel(self.selectedGroups);
-            if n > 0
+            if n > 0 && all(isfinite(self.tLim))
+                log = topsDataLog.theDataLog;
+                tLim = self.tLim;
+                
+                cla(self.rasterAxes)
                 set(self.rasterAxes, ...
-                    'YLim', [0, n*2+1])
+                    'XLim', tLim, ...
+                    'YLim', [0, n*2+1]);
+                
+                texts = zeros(1, n);
+                lines = zeros(1, n);
+                for ii = 1:n
+                    group = self.selectedGroups{ii};
+                    groupColor = self.detailPanel.getColorForString(group);
+                    texts(ii) = text(tLim(1), 2*ii, group, ...
+                        'Parent', self.rasterAxes, ...
+                        'Color', groupColor, ...
+                        'FontSize', 9, ...
+                        'HitTest', 'off');
+                    
+                    groupData = log.getAllItemsFromGroupAsStruct(group);
+                    times = [groupData.mnemonic];
+                    rows = (ii*2-1)*ones(size(times));
+                    cb = @(obj,event)topsDataLogGUI.lineCallback( ...
+                        obj, event, self, group);
+                    lines(ii) = line(times, rows, ...
+                        'Parent', self.rasterAxes, ...
+                        'Color', groupColor, ...
+                        'LineStyle', 'none', ...
+                        'Marker', '.', ...
+                        'HitTest', 'on', ...
+                        'ButtonDownFcn', cb);
+                end
             end
         end
         
@@ -105,6 +164,46 @@ classdef topsDataLogGUI < topsGUI
         function repondToResize(self, figure, event)
             self.detailPanel.repondToResize;
             self.groupsGrid.repositionControls;
+        end
+    end
+    
+    methods (Static)
+        function tLimCallback(obj, event, self)
+            try
+                tLim = eval(get(obj, 'String'));
+                self.tLim = tLim;
+                
+                % only for test!
+                self.plotRaster
+                
+            catch err
+                disp(sprintf('%s.tLim edit failed:', mfilename))
+                disp(err)
+            end
+            set(obj, 'String', summarizeValue(self.tLim, 30));
+        end
+        
+        function groupsCallback(obj, event, self)
+            
+        end
+        
+        function lineCallback(l, event, self, group)
+            clickPoint = get(self.rasterAxes, 'CurrentPoint');
+            clickTime = clickPoint(1,1);
+            lineTimes = get(l, 'XData');
+            [nearest, nearestIndex] = min(abs(lineTimes-clickTime));
+            dataTime = lineTimes(nearestIndex);
+            
+            rows = get(l, 'YData');
+            set(self.rasterCursor, ...
+                'XData', dataTime, ...
+                'YData', rows(1));
+            
+            log = topsDataLog.theDataLog;
+            if log.containsMnemonicInGroup(dataTime, group);
+                item = log.getItemFromGroupWithMnemonic(group, dataTime);
+                self.detailPanel.populateWithValueDetails(item);
+            end
         end
     end
 end

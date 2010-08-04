@@ -170,7 +170,7 @@ classdef topsText
                     
                 catch err
                     disp(sprintf('%s edit failed:', mfilename))
-                    disp(err.message)
+                    disp(err)
                 end
                 
                 getter = data.getter;
