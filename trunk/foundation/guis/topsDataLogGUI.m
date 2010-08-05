@@ -21,6 +21,15 @@ classdef topsDataLogGUI < topsGUI
         % line to select a pointin rasterAxes
         rasterCursor;
         
+        % uicontrol to select data groups by name
+        groupsMenu;
+        
+        % uicontrol to select data groups by regular expression
+        groupsRegexp;
+        
+        % ScrollingControlGrid to show and toggle selected data groups
+        groupsGrid;
+        
         % topsValuePanel to show details for a selected data point
         detailPanel;
         
@@ -29,12 +38,6 @@ classdef topsDataLogGUI < topsGUI
         
         % uicontrol to display the data log's clockFunction
         clockFunctionControl;
-        
-        % uicontrol to select data groups by name
-        groupsControl;
-        
-        % ScrollingControlGrid to show and toggle selected data groups
-        groupsGrid;
     end
     
     properties (Hidden)
@@ -77,7 +80,7 @@ classdef topsDataLogGUI < topsGUI
             yGap = .1;
             xDiv = .5;
             
-            width = .3;
+            width = .33;
             height = .05;
             
             self.rasterAxes = axes( ...
@@ -108,27 +111,40 @@ classdef topsDataLogGUI < topsGUI
             self.tLimControl = uicontrol( ...
                 'Parent', self.figure, ...
                 'Units', 'normalized', ...
-                'Position', [left, yDiv-yGap, width, height], ...
+                'Position', [xDiv, yDiv-yGap, width, height], ...
                 'Callback', cb, ...
                 lookFeel{:}, editArgs{:});
             
-            lookFeel = self.detailPanel.getLookAndFeelForValue(log.clockFunction);
+            lookFeel = self.detailPanel.getLookAndFeelForValue( ...
+                log.clockFunction);
             labelArgs = topsText.staticText;
             self.clockFunctionControl = uicontrol( ...
                 'Parent', self.figure, ...
                 'Units', 'normalized', ...
-                'Position', [left+width, yDiv-yGap, width, height], ...
+                'Position', [right-width/2, yDiv-yGap, width/2, height], ...
                 lookFeel{:}, labelArgs{:});
             
-            cb = @(obj,event)topsDataLogGUI.groupsCallback(obj,event,self);
-            self.groupsControl = uicontrol( ...
+            cb = @(obj,event)topsDataLogGUI.groupsMenuCallback( ...
+                obj, event, self);
+            self.groupsMenu = uicontrol( ...
                 'Parent', self.figure, ...
                 'Units', 'normalized', ...
-                'Position', [right-width, yDiv-yGap, width, height], ...
+                'Position', [xDiv-width, yDiv-yGap, width, height], ...
                 'Callback', cb, ...
                 'Style', 'popupmenu', ...
                 'String', {'groups'}, ...
                 'HorizontalAlignment', 'left');
+            
+            lookFeel = self.detailPanel.getLookAndFeelForValue('regexp');
+            editArgs = topsText.editText;
+            cb = @(obj,event)topsDataLogGUI.groupsRegexpCallback( ...
+                obj, event, self);
+            self.groupsRegexp = uicontrol( ...
+                'Parent', self.figure, ...
+                'Units', 'normalized', ...
+                'Position', [left, yDiv-yGap, width/2, height], ...
+                'Callback', cb, ...
+                lookFeel{:}, editArgs{:});
             
             self.groupsGrid = ScrollingControlGrid( ...
                 self.figure, [left, bottom, xDiv-left, yDiv-yGap-bottom]);
@@ -143,11 +159,11 @@ classdef topsDataLogGUI < topsGUI
             delete(h(ishandle(h)));
             self.groupTexts = [];
             self.groupLines = [];
-
+            
             if isempty(self.groupsGrid.controls)
                 return
             end
-
+            
             toggles = self.groupsGrid.controls(:,1);
             toggleValues = get(toggles, {'Value'});
             ignoreGroups = [toggleValues{:}];
@@ -225,7 +241,7 @@ classdef topsDataLogGUI < topsGUI
             
             menu = cat(2, self.allGroups, self.noGroup, log.groups);
             value = find(strcmp(group, menu));
-            set(self.groupsControl, 'String', menu, 'Value', value);
+            set(self.groupsMenu, 'String', menu, 'Value', value);
             
             self.groupsGrid.repositionControls;
             self.plotRaster;
@@ -241,12 +257,26 @@ classdef topsDataLogGUI < topsGUI
         end
         
         function set.tLim(self, tLim)
-            self.tLim = tLim;
+            if isnumeric(tLim) && numel(tLim) >= 2
+                self.tLim = tLim([1,end]);
+            else
+                log = topsDataLog.theDataLog;
+                self.tLim = [log.earliestTime, log.latestTime];
+            end
+            
             set(self.tLimControl, ...
                 'String', summarizeValue(self.tLim, 30));
+            
             set(self.rasterAxes, ...
                 'XLim', self.tLim);
-            % also bump around group texts
+            
+            if ~isempty(self.groupTexts)
+                textPos = get(self.groupTexts, {'Position'});
+                textPosMatrix = cat(1, textPos{:});
+                textPosMatrix(:,1) = self.tLim(1);
+                newTextPos = num2cell(textPosMatrix, 2);
+                set(self.groupTexts, {'Position'}, newTextPos);
+            end
         end
         
         % Let child panes resize themselves.
@@ -260,18 +290,29 @@ classdef topsDataLogGUI < topsGUI
         function tLimCallback(obj, event, self)
             try
                 tLim = eval(get(obj, 'String'));
-                self.tLim = tLim;
-                
             catch err
                 disp(sprintf('%s.tLim edit failed:', mfilename))
                 disp(err)
+                tLim = [];
             end
+            self.tLim = tLim;
         end
         
-        function groupsCallback(obj, event, self)
+        function groupsMenuCallback(obj, event, self)
             groups = get(obj, 'String');
             index = get(obj, 'Value');
             self.selectGroup(groups{index});
+        end
+        
+        function groupsRegexpCallback(obj, event, self)
+            exp = get(obj, 'String');
+            log = topsDataLog.theDataLog;
+            matches = regexp(log.groups, exp);
+            for ii = 1:length(matches)
+                if ~isempty(matches{ii})
+                    self.selectGroup(log.groups{ii});
+                end
+            end
         end
         
         function gridCallback(obj, event, self)
