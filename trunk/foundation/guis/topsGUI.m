@@ -114,7 +114,7 @@ classdef topsGUI < handle
             self.buttons = [];
             set(self.figure, ...
                 'CloseRequestFcn', @(obj, event) delete(self), ...
-                'Renderer', 'zbuffer', ...
+                'Renderer', 'painters', ...
                 'HandleVisibility', 'on', ...
                 'MenuBar', 'none', ...
                 'Name', self.title, ...
@@ -153,8 +153,7 @@ classdef topsGUI < handle
                 self.eventToScrollableAtIndex(event, n);
                 
             else
-                % work up from the last-clicked object
-                %   and fall back on last scrollable
+                % work up in parents from the last-clicked object
                 scrolls = [self.scrollables.handle];
                 while true
                     isScroll = current == scrolls;
@@ -163,16 +162,22 @@ classdef topsGUI < handle
                         didScroll = ...
                             self.eventToScrollableAtIndex(event, ii);
                         if ~didScroll
-                            self.eventToScrollableAtIndex(event, n);
+                            break;
                         end
-                        return;
                         
                     elseif current == self.figure
-                        self.eventToScrollableAtIndex(event, n);
-                        return;
+                        break;
                         
                     end
                     current = get(current, 'Parent');
+                end
+                
+                % fall back on any scrollable, in the order added
+                for ii = 1:length(self.scrollables)
+                    didScroll = self.eventToScrollableAtIndex(event, ii);
+                    if didScroll
+                        break;
+                    end
                 end
             end
         end

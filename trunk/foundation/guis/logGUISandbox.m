@@ -11,4 +11,4 @@ data = fullfile(dataPath, dataFile);
 topsDataLog.readDataFile(data)
 log = topsDataLog.theDataLog;
 
-g = topsDataLogGUI;
+self = topsDataLogGUI;
