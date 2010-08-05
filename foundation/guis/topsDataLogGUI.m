@@ -37,20 +37,32 @@ classdef topsDataLogGUI < topsGUI
         groupsGrid;
     end
     
+    properties (Hidden)
+        % "meta group" to select all groups
+        allGroups = 'all groups';
+        
+        % "meta group" to select no group
+        noGroup = 'no group';
+        
+        % handles for data group labels
+        groupTexts;
+        
+        % handles for data group lines
+        groupLines;
+    end
+    
     methods
         function self = topsDataLogGUI()
             self = self@topsGUI;
             self.title = 'topsDataLog';
             
-            log = topsDataLog.theDataLog;
-            
-            self.tLim = [log.earliestTime, log.latestTime];
-            self.selectedGroups = log.groups;
-            
             self.createWidgets;
+            
+            log = topsDataLog.theDataLog;
+            self.tLim = [log.earliestTime, log.latestTime];
+            self.selectGroup(self.allGroups);
             self.plotRaster;
         end
-        
         
         function createWidgets(self)
             self.setupFigure;
@@ -90,6 +102,7 @@ classdef topsDataLogGUI < topsGUI
                 self, [xDiv, bottom, right-xDiv, yDiv-yGap-bottom]);
             self.detailPanel.stringSummaryLength = 40;
             
+            lookFeel = self.detailPanel.getLookAndFeelForValue(0);
             editArgs = topsText.editText;
             cb = @(obj,event)topsDataLogGUI.tLimCallback(obj,event,self);
             self.tLimControl = uicontrol( ...
@@ -97,16 +110,15 @@ classdef topsDataLogGUI < topsGUI
                 'Units', 'normalized', ...
                 'Position', [left, yDiv-yGap, width, height], ...
                 'Callback', cb, ...
-                'String', summarizeValue(self.tLim, 30), ...
-                editArgs{:});
+                lookFeel{:}, editArgs{:});
             
+            lookFeel = self.detailPanel.getLookAndFeelForValue(log.clockFunction);
             labelArgs = topsText.staticText;
             self.clockFunctionControl = uicontrol( ...
                 'Parent', self.figure, ...
                 'Units', 'normalized', ...
                 'Position', [left+width, yDiv-yGap, width, height], ...
-                'String', summarizeValue(log.clockFunction), ...
-                labelArgs{:});
+                lookFeel{:}, labelArgs{:});
             
             cb = @(obj,event)topsDataLogGUI.groupsCallback(obj,event,self);
             self.groupsControl = uicontrol( ...
@@ -120,25 +132,47 @@ classdef topsDataLogGUI < topsGUI
             
             self.groupsGrid = ScrollingControlGrid( ...
                 self.figure, [left, bottom, xDiv-left, yDiv-yGap-bottom]);
+            self.addScrollableChild( ...
+                self.groupsGrid.panel, ...
+                {@ScrollingControlGrid.respondToSliderOrScroll, ...
+                self.groupsGrid});
         end
         
         function plotRaster(self)
-            n = numel(self.selectedGroups);
+            h = [self.groupTexts, self.groupLines];
+            delete(h(ishandle(h)));
+            self.groupTexts = [];
+            self.groupLines = [];
+
+            if isempty(self.groupsGrid.controls)
+                return
+            end
+
+            toggles = self.groupsGrid.controls(:,1);
+            toggleValues = get(toggles, {'Value'});
+            ignoreGroups = [toggleValues{:}];
+            rasterGroups = self.selectedGroups(~ignoreGroups);
+            
+            n = numel(rasterGroups);
             if n > 0 && all(isfinite(self.tLim))
                 log = topsDataLog.theDataLog;
                 tLim = self.tLim;
                 
-                cla(self.rasterAxes)
                 set(self.rasterAxes, ...
                     'XLim', tLim, ...
                     'YLim', [0, n*2+1]);
+                set(self.rasterCursor, ...
+                    'XData', 0, ...
+                    'YData', -1);
                 
                 texts = zeros(1, n);
                 lines = zeros(1, n);
                 for ii = 1:n
-                    group = self.selectedGroups{ii};
+                    row = 2*(n-ii+1);
+                    
+                    group = rasterGroups{ii};
                     groupColor = self.detailPanel.getColorForString(group);
-                    texts(ii) = text(tLim(1), 2*ii, group, ...
+                    texts(ii) = text(tLim(1), row, group, ...
                         'Parent', self.rasterAxes, ...
                         'Color', groupColor, ...
                         'FontSize', 9, ...
@@ -146,7 +180,7 @@ classdef topsDataLogGUI < topsGUI
                     
                     groupData = log.getAllItemsFromGroupAsStruct(group);
                     times = [groupData.mnemonic];
-                    rows = (ii*2-1)*ones(size(times));
+                    rows = (row-1)*ones(size(times));
                     cb = @(obj,event)topsDataLogGUI.lineCallback( ...
                         obj, event, self, group);
                     lines(ii) = line(times, rows, ...
@@ -157,7 +191,62 @@ classdef topsDataLogGUI < topsGUI
                         'HitTest', 'on', ...
                         'ButtonDownFcn', cb);
                 end
+                self.groupTexts = texts;
+                self.groupLines = lines;
             end
+        end
+        
+        function selectGroup(self, group)
+            log = topsDataLog.theDataLog;
+            
+            if strcmp(group, self.allGroups)
+                self.selectedGroups = log.groups;
+                self.groupsGrid.deleteAllControls;
+                for ii = 1:length(self.selectedGroups)
+                    self.controlsForGroupAtRow(self.selectedGroups{ii}, ii);
+                end
+                
+            else
+                selector = strcmp(group, log.groups);
+                if any(selector)
+                    isSelected = any(strcmp(self.selectedGroups, group));
+                    if ~isSelected
+                        n = numel(self.selectedGroups);
+                        self.selectedGroups{n+1} = group;
+                        self.controlsForGroupAtRow(group, n+1);
+                    end
+                    
+                else
+                    self.groupsGrid.deleteAllControls;
+                    self.selectedGroups = {};
+                    group = self.noGroup;
+                end
+            end
+            
+            menu = cat(2, self.allGroups, self.noGroup, log.groups);
+            value = find(strcmp(group, menu));
+            set(self.groupsControl, 'String', menu, 'Value', value);
+            
+            self.groupsGrid.repositionControls;
+            self.plotRaster;
+            drawnow;
+        end
+        
+        function controlsForGroupAtRow(self, group, row)
+            cb = @(obj,event)topsDataLogGUI.gridCallback(obj, event, self);
+            toggle = topsText.toggleTextWithCallback(cb);
+            lookFeel = self.detailPanel.getLookAndFeelForValue(group);
+            self.groupsGrid.newControlAtRowAndColumn( ...
+                row, [1 5], toggle{:}, lookFeel{:});
+        end
+        
+        function set.tLim(self, tLim)
+            self.tLim = tLim;
+            set(self.tLimControl, ...
+                'String', summarizeValue(self.tLim, 30));
+            set(self.rasterAxes, ...
+                'XLim', self.tLim);
+            % also bump around group texts
         end
         
         % Let child panes resize themselves.
@@ -173,18 +262,20 @@ classdef topsDataLogGUI < topsGUI
                 tLim = eval(get(obj, 'String'));
                 self.tLim = tLim;
                 
-                % only for test!
-                self.plotRaster
-                
             catch err
                 disp(sprintf('%s.tLim edit failed:', mfilename))
                 disp(err)
             end
-            set(obj, 'String', summarizeValue(self.tLim, 30));
         end
         
         function groupsCallback(obj, event, self)
-            
+            groups = get(obj, 'String');
+            index = get(obj, 'Value');
+            self.selectGroup(groups{index});
+        end
+        
+        function gridCallback(obj, event, self)
+            self.plotRaster;
         end
         
         function lineCallback(l, event, self, group)

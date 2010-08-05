@@ -163,6 +163,7 @@ classdef ScrollingControlGrid < handle
             %   in character units
             z = size(self.controls);
             if ~any(z)
+                set(self.slider, 'Enable', 'off', 'Visible', 'off');
                 return;
             end
             
