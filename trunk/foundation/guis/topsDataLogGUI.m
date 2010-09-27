@@ -267,15 +267,18 @@ classdef topsDataLogGUI < topsGUI
             set(self.tLimControl, ...
                 'String', summarizeValue(self.tLim, 30));
             
-            set(self.rasterAxes, ...
-                'XLim', self.tLim);
             
-            if ~isempty(self.groupTexts)
-                textPos = get(self.groupTexts, {'Position'});
-                textPosMatrix = cat(1, textPos{:});
-                textPosMatrix(:,1) = self.tLim(1);
-                newTextPos = num2cell(textPosMatrix, 2);
-                set(self.groupTexts, {'Position'}, newTextPos);
+            if all(isfinite(self.tLim))
+                set(self.rasterAxes, ...
+                    'XLim', self.tLim);
+                
+                if ~isempty(self.groupTexts)
+                    textPos = get(self.groupTexts, {'Position'});
+                    textPosMatrix = cat(1, textPos{:});
+                    textPosMatrix(:,1) = self.tLim(1);
+                    newTextPos = num2cell(textPosMatrix, 2);
+                    set(self.groupTexts, {'Position'}, newTextPos);
+                end
             end
         end
         
