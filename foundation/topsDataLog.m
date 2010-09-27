@@ -161,18 +161,29 @@ classdef (Sealed) topsDataLog < topsGroupedList
         end
         
         % Get all data from the log.
+        % @param timeRange optional time limits for data, [atLeast atMost]
         % @details
         % Gets all data items from the current instance of topsDataLog, as
         % a struct array, using getAllItemsFromGroupAsStruct().  Sorts the
         % struct array by the time values stored in its mnemonics field.
-        function logStruct = getSortedDataStruct
+        function logStruct = getSortedDataStruct(timeRange)
             self = topsDataLog.theDataLog;
+            if nargin < 1
+                timeRange = [-inf inf];
+            end
             
             % grow a struct array, group by group
             logStruct = self.getAllItemsFromGroupAsStruct('');
             for g = self.groups
                 groupStruct = self.getAllItemsFromGroupAsStruct(g{1});
-                logStruct = cat(2, logStruct, groupStruct);
+                if ~isempty(groupStruct)
+                    groupTimes = [groupStruct.mnemonic];
+                    isInRange = groupTimes >= timeRange(1) ...
+                        & groupTimes <= timeRange(2);
+                    if any(isInRange)
+                        logStruct = cat(2, logStruct, groupStruct(isInRange));
+                    end
+                end
             end
             
             % sorting from scratch may be too slow
