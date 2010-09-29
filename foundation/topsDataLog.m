@@ -31,15 +31,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % topsFoundataion classes, it should be straightforward to look at the
     % log after an experiment and get a sense of "what happened, when".
     % The log's gui() method should make this even easier.  You can use it
-    % to launch one of two graphical interfaces:
-    %   - topsDataLog.gui launches topsDataLogGUI, which plots a summary of
-    %   all logged data, sorted by timestamps.
-    %   - topsDataLog.gui('asList') launches the generic topsGroupedListGUI,
-    %   which breaks down the data by groups and timestamps, and gives a
-    %   detailed look at each piece of data.
-    %   .
-    % You can also use topsDataLogGUI online, to see data as they arrive in
-    % the log.
+    % to launch topsDataLogGUI, which plots a raster of all logged data
+    % over time, with data groups as rows.
     % @ingroup foundation
     
     properties
@@ -56,6 +49,12 @@ classdef (Sealed) topsDataLog < topsGroupedList
         
         % the time of the last logged data, as reported by clockFunction
         latestTime;
+        
+        % the most recent time when the log was flushed
+        % @details
+        % flushAllData() sets lastFlushTime to the current time, as
+        % reported by clockFunction.
+        lastFlushTime;
     end
     
     events
@@ -67,6 +66,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         function self = topsDataLog
             self.earliestTime = nan;
             self.latestTime = nan;
+            self.lastFlushTime = nan;
         end
     end
     
@@ -116,6 +116,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             end
             self.earliestTime = nan;
             self.latestTime = nan;
+            self.lastFlushTime = feval(self.clockFunction);
             self.notify('FlushedTheDataLog');
         end
         
@@ -124,6 +125,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % object of the handle type).
         % @param group a string for grouping related data, such as the name
         % of a recurring event.
+        % @param timestamp optional time marker to use for @a data, instead
+        % of the current time.
         % @details
         % If @a data is a handle object, converts it to a struct.  This is
         % because Matlab does a bad job of dealing with large numbers of
@@ -131,37 +134,42 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % reading them to disk.  Better to keep the data log out of that
         % mess.
         % @details
-        % Otherwise, adds @a data along with the current time
-        % reported by clockFunction to @a group, in the current instance
-        % of topsDataLog.  Then updates earliestTime and latestTime to
-        % account for the the time of this log entry.
+        % Adds @a data to @a group, under the given @a timestamp, in the
+        % current instance of topsDataLog.  If @a timestamp is omitted,
+        % uses the current time reported by clockFunction.
         % @details
-        % Since topsDataLog is a subclass of topsGroupedList,
-        % logging data is a lot like adding items to a list.
-        % @a group is treated just like the groups in
-        % topsGroupedList.  The data log uses a timestamp as the mnemonic
-        % for each data item.
-        function logDataInGroup(data, group)
+        % Updates earliestTime and latestTime to account for the the time
+        % of this log entry.
+        % @details
+        % Since topsDataLog is a subclass of topsGroupedList, logging data
+        % is a lot like adding items to a list. @a group is treated just
+        % like the groups in topsGroupedList.  The data log uses a
+        % @a timestamp as the mnemonic for each data item.
+        function logDataInGroup(data, group, timestamp)
             self = topsDataLog.theDataLog;
-            nowTime = feval(self.clockFunction);
+            
+            if nargin < 3 || isempty(timestamp) || ~isnumeric(timestamp)
+                timestamp = feval(self.clockFunction);
+            end
             
             if isa(data, 'handle')
-                warning('converting handle object %s to struct', ...
-                    class(data));
+                warning('%s converting handle object %s to struct', ...
+                    mfilename, class(data));
                 data = struct(data);
             end
-            self.addItemToGroupWithMnemonic(data, group, nowTime);
+            self.addItemToGroupWithMnemonic(data, group, timestamp);
             
             if self.printLogging
                 disp(sprintf('topsDataLog: %s', group))
             end
             
-            self.earliestTime = min(self.earliestTime, nowTime);
-            self.latestTime = max(self.latestTime, nowTime);
+            self.earliestTime = min(self.earliestTime, timestamp);
+            self.latestTime = max(self.latestTime, timestamp);
         end
         
         % Get all data from the log.
-        % @param timeRange optional time limits for data, [atLeast atMost]
+        % @param timeRange optional time limits for data, of the form
+        % [laterThan asLateAs]
         % @details
         % Gets all data items from the current instance of topsDataLog, as
         % a struct array, using getAllItemsFromGroupAsStruct().  Sorts the
@@ -178,7 +186,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 groupStruct = self.getAllItemsFromGroupAsStruct(g{1});
                 if ~isempty(groupStruct)
                     groupTimes = [groupStruct.mnemonic];
-                    isInRange = groupTimes >= timeRange(1) ...
+                    isInRange = groupTimes > timeRange(1) ...
                         & groupTimes <= timeRange(2);
                     if any(isInRange)
                         logStruct = cat(2, logStruct, groupStruct(isInRange));
