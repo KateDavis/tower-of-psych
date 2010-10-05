@@ -332,5 +332,33 @@ classdef TestTopsGroupedList < TestCase
             assertEqual(self.eventCount, n, 'heard wrong number of new addition events');
             delete(listeners);
         end
+        
+        function testRegularExpressions(self)
+            wildcard = '.';
+            matches = self.groupedList.getGroupNamesMatchingExpression( ...
+                wildcard);
+            assertTrue(isempty(matches), ...
+                'empty list should match no groups to wildcard expression')
+            
+            groups = self.stringGroups;
+            mnemonics = self.stringMnemonics;
+            for g = groups
+                self.addItemsToGroupWithMnemonics(self.items, g{1}, mnemonics);
+            end
+            matches = self.groupedList.getGroupNamesMatchingExpression( ...
+                wildcard);
+            assertEqual(matches, groups,...
+                'list should match all groups to wilcard expression')
+            
+            numberList = topsGroupedList;
+            groups = self.numberGroups;
+            for g = groups
+                numberList.addItemToGroupWithMnemonic(1,g{1},1);
+            end
+            matches = numberList.getGroupNamesMatchingExpression( ...
+                wildcard);
+            assertTrue(isempty(matches), ...
+                'list should not match numeric groups to wildcard expression')
+        end
     end
 end

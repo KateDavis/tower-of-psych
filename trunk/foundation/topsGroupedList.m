@@ -384,6 +384,30 @@ classdef topsGroupedList < topsFoundation
                 isContained = any(group == [self.groups{:}]);
             end
         end
+        
+        % Get string group names that match the given regular expression.        % @param expression a regular expression to match agains group names in
+        % the list
+        % @details
+        % Compares @a expression to the names of groups in the list.
+        % Returns a cell array of strings of group names that match @a
+        % expression.  If the list uses numeric group names, returns an
+        % empty cell array.
+        % @details
+        % Regular expressions are specially formatted strings used for
+        % matching patterns in other strings.  See Matlab's builtin
+        % regexp() and "Regular Expressions" documentation.
+        function matches = getGroupNamesMatchingExpression(self, expression)
+            matches = {};
+            if iscellstr(self.groups)
+                isMatch = logical(size(self.groups));
+                locations = regexp(self.groups, expression);
+                for ii = 1:numel(self.groups)
+                    isMatch(ii) = ~isempty(locations{ii});
+                end
+                matches = self.groups(isMatch);
+            end
+        end
+        
         % Does the list contain the given group and mnemonic?
         % @param mnemonic a string or number for a menemonic that might be in
         % @a group

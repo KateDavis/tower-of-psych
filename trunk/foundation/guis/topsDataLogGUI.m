@@ -310,11 +310,9 @@ classdef topsDataLogGUI < topsGUI
         function groupsRegexpCallback(obj, event, self)
             exp = get(obj, 'String');
             log = topsDataLog.theDataLog;
-            matches = regexp(log.groups, exp);
+            matches = log.getGroupNamesMatchingExpression(exp);
             for ii = 1:length(matches)
-                if ~isempty(matches{ii})
-                    self.selectGroup(log.groups{ii});
-                end
+                self.selectGroup(matches{ii});
             end
         end
         

@@ -83,7 +83,6 @@ classdef topsCallList < topsConcurrent
         
         % Invoke active calls in a batch.
         function runBriefly(self)
-            self.logAction(self.runBrieflyString);
             isActive = [self.calls.isActive];
             fevalables = {self.calls(isActive).fevalable};
             for ii = 1:length(fevalables)
