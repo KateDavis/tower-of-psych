@@ -1,15 +1,10 @@
 % Check how long it takes to log data in topsDataLog
-%
-%   benchTopsDataLog(n)
-%
-%   @param n the length of the benchmark test.
-%
-%   @details
-%   Adds @a n pieces of data to @a n different groups in topsDataLog, for
-%   n^2 total log additions.  Records how long each addition takes and
-%   plots the results.
-%   @ingroup utilities
-
+% @param n the length of the benchmark test.
+% @details
+% Adds @a n pieces of data to @a n different groups in topsDataLog, for
+% n^2 total log additions.  Records how long each addition takes and
+% plots the results.
+% @ingroup utilities
 function benchTopsDataLog(n)
 
 groups = cell(1,n);
@@ -19,6 +14,8 @@ for ii = 1:n
     data{ii} = ii;
 end
 
+% add something just to get Matlab to load functions
+topsDataLog.logDataInGroup(data{1}, groups{1});
 topsDataLog.flushAllData;
 
 benchTimes = zeros(1, n^2);
