@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$class_event_data.html" title="EventData" alt="" coords="7,5,103,35"/>
+<area shape="rect" id="node3" href="$class_event_with_data.html" title="A way to pass arbitrary data with Matlab events." alt="" coords="152,5,280,35"/>
+</map>

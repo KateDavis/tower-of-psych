@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classtops_grouped_list_panel.html" title="Resuable 3&#45;column view for topsGroupedLists in topsGUI interfaces." alt="" coords="5,160,176,189"/>
+<area shape="rect" id="node7" href="$classtops_value_panel.html" title="Generic topsDetailPanel suitable for showing the class and size of any value." alt="" coords="200,160,325,189"/>
+<area shape="rect" id="node2" href="$classhandle.html" title="handle" alt="" coords="143,5,209,35"/>
+</map>
