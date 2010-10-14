@@ -5,15 +5,17 @@ function benchWriteMatFiles
 % linear.  This is not surprising.
 
 filename = 'benchMat.mat';
+d = [];
+save(filename, 'd');
 
-sizes = floor(linspace(0, 1e8, 10));
+sizes = floor(linspace(0, 1e7, 10));
 n = numel(sizes);
 times = zeros(1,n);
 for ii = [1 1:n]
     clear('d');
     d = zeros(1,sizes(ii));
     tic;
-    save(filename, 'd');
+    save(filename, 'd', '-append');
     times(ii) = toc;
     sizes(ii) = numel(d);
 end
