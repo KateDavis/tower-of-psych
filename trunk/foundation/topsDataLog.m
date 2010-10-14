@@ -29,7 +29,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % @details
     % With your log entries and the entries made automatically by
     % topsFoundataion classes, it should be straightforward to look at the
-    % log after an experiment and get a sense of "what happened, when".
+    % log after an experiment and get a sense of what happened and when.
     % The log's gui() method should make this even easier.  You can use it
     % to launch topsDataLogGUI, which plots a raster of all logged data
     % over time, with data groups as rows.
@@ -39,8 +39,12 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % any function that returns the current time as a number
         clockFunction = @topsClock;
         
-        % true or false, wether to pring log info as data are logged
+        % true or false, whether to print info as data are logged
         printLogging = false;
+        
+        % string name of a file to read from and write to, which may
+        % include the file path
+        fileWithPath = '';
     end
     
     properties (SetAccess=private)
@@ -55,6 +59,12 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % flushAllData() sets lastFlushTime to the current time, as
         % reported by clockFunction.
         lastFlushTime;
+        
+        % topsDataFile metadata struct for writing to disk incrementally
+        fHeader;
+        
+        % the latest time when data were written to disk
+        lastWriteTime;
     end
     
     events
@@ -67,6 +77,92 @@ classdef (Sealed) topsDataLog < topsGroupedList
             self.earliestTime = nan;
             self.latestTime = nan;
             self.lastFlushTime = nan;
+            self.lastWriteTime = -inf;
+        end
+        
+        % Write a data increment and other data to file and do accounting.
+        function writeIncrementToFile(self)
+            if isempty(self.fHeader)
+                disp(sprintf('%s: no topsDataFile header!'))
+                return;
+            end
+            
+            newRange = [self.lastWriteTime, inf];
+            newData = topsDataLog.getSortedDataStruct(newRange);
+            
+            self.lastWriteTime = self.latestTime;
+            self.fHeader.userData.clockFunction = self.clockFunction;
+            self.fHeader.userData.earliestTime = self.earliestTime;
+            self.fHeader.userData.latestTime = self.latestTime;
+            self.fHeader.userData.lastFlushTime = self.lastFlushTime;
+            self.fHeader.userData.lastWriteTime = self.lastWriteTime;
+            
+            if isempty(newData)
+                self.fHeader = topsDataFile.write(self.fHeader);
+            else
+                self.fHeader = topsDataFile.write(self.fHeader, newData);
+            end
+            disp(sprintf('%s: wrote %s', mfilename, self.fileWithPath))
+        end
+        
+        % Read a data increment and other data from file.
+        function dataStruct = readIncrementFromFile(self)
+            if isempty(self.fHeader)
+                disp(sprintf('%s: no topsDataFile header!'))
+                return;
+            end
+            
+            [self.fHeader, newData] = topsDataFile.read(self.fHeader);
+            if isempty(newData)
+                dataStruct = struct([]);
+            else
+                dataStruct = cat(2, newData{:});
+                self.populateWithDataStruct(dataStruct);
+            end
+            
+            self.clockFunction = self.fHeader.userData.clockFunction;
+            self.earliestTime = self.fHeader.userData.earliestTime;
+            self.latestTime = self.fHeader.userData.latestTime;
+            self.lastFlushTime = self.fHeader.userData.lastFlushTime;
+            self.lastWriteTime = self.fHeader.userData.lastWriteTime;
+            
+            disp(sprintf('%s: read %s', mfilename, self.fileWithPath))
+        end
+        
+        % Read an old-style data from file.
+        function dataStruct = readOldLogStructFromFile(self)
+            data = load(self.fileWithPath);
+            if isstruct(data) && isfield(data, 'logStruct');
+                topsDataLog.flushAllData;
+                self.populateWithDataStruct(data.logStruct);
+                self.clockFunction = data.clockFunction;
+                self.earliestTime = data.earliestTime;
+                self.latestTime = data.latestTime;
+
+                disp(sprintf('%s: read %s', mfilename, self.fileWithPath))
+            end
+        end
+        
+        % Populate the log groupedList with struct data.
+        function populateWithDataStruct(self, dataStruct)
+            for ii = 1:numel(dataStruct)
+                self.addItemToGroupWithMnemonic( ...
+                    dataStruct(ii).item, ...
+                    dataStruct(ii).group, ...
+                    dataStruct(ii).mnemonic);
+            end
+        end
+    end
+    
+    methods
+        % Update the topsDataFile metadata to reflect a new fileWithPath.
+        function set.fileWithPath(self, fileWithPath)
+            if ~strcmp(fileWithPath, self.fileWithPath)
+                self.fHeader = topsDataFile.newHeader( ...
+                    'fileWithPath', fileWithPath);
+                self.lastWriteTime = -inf;
+            end
+            self.fileWithPath = fileWithPath;
         end
     end
     
@@ -205,80 +301,99 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @param fileWithPath optional .mat filename, which may include a
         % path, in which to save logged data.
         % @details
-        % Converts currently logged data to a standard Matlab struct using
-        % topsDataLog.getSortedDataStruct() and saves the struct to the
-        % given file.
+        % Converts recently logged data to a standard Matlab struct using
+        % topsDataLog.getSortedDataStruct() and writes the struct to disk,
+        % via the topsDataFile class.
         % @details
-        % If @a fileWithPath is omitted, opens a dialog for chosing a file.
+        % writeDataFile() behaves differently depending on @a fileWithPath
+        % and the fileWithPath property of the current topsDataLog
+        % instance:
+        %   - If @a fileWithPath is provided, assigns @a fileWithPath to
+        %   the fileWithPath property of the current topsDataLog instance
+        %   and writes data to the given @a fileWithPath.
+        %   - If @a fileWithPath is omitted, but the current topsDataLog
+        %   instance has a non-empty fileWithPath property, writes data
+        %   according to the fileWithPath property.
+        %   - If @a fileWithPath is omitted, and the current topsDataLog
+        %   instance has an empty fileWithPath property, opens a dialog for
+        %   chosing a a file.  If a file is chosen, writes data to the
+        %   chosen file and saves the chosen file to the fileWithPath
+        %   property.
+        %   .
         function writeDataFile(fileWithPath)
             self = topsDataLog.theDataLog;
             
-            if nargin < 1 || isempty(fileWithPath) || ~ischar(fileWithPath)
+            if nargin > 0 && ~isempty(fileWithPath) && ischar(fileWithPath)
+                self.fileWithPath = fileWithPath;
+                
+            elseif isempty(self.fileWithPath)
                 suggestion = fullfile(pwd, '*');
                 [f, p] = uiputfile( ...
                     {'*.mat'}, ...
                     'Save data log to which .mat file?', ...
                     suggestion);
-                
                 if ischar(f)
-                    fileWithPath = fullfile(p, f);
-                else
-                    fileWithPath = '';
+                    self.fileWithPath = fullfile(p, f);
                 end
             end
-            
-            if ~isempty(fileWithPath)
-                data.logStruct = topsDataLog.getSortedDataStruct;
-                data.clockFunction = self.clockFunction;
-                data.earliestTime = self.earliestTime;
-                data.latestTime = self.latestTime;
-                save(fileWithPath, '-struct', 'data');
-                disp(sprintf('%s wrote %s', mfilename, fileWithPath))
+
+            if ~isempty(self.fileWithPath)
+                self.writeIncrementToFile;
             end
         end
         
         
         % Read previously logged data from a file.
         % @param fileWithPath optional .mat filename, which may include a
-        % path, from which to load logged data.
+        % path, from which to read logged data.
         % @details
-        % Expects @a fileWithPath to contain previously logged data in a
-        % Matlab struct, as written by topsDataLog.writeDataFile().
-        % Populates the topsDataLog singleton with the data from the
-        % loaded struct.
+        % Reads any previously unread data from disk, via the topsDataFile
+        % class.  Populates the current instance of topsDataLog with any
+        % new data.  May also return the new data, in a struct of the same
+        % form as topsDataLog.getSortedDataStruct().
         % @details
-        % If @a fileWithPath is omitted, opens a dialog for chosing a file.
-        function readDataFile(fileWithPath)
+        % readDataFile() behaves differently depending on @a fileWithPath
+        % and the fileWithPath property of the current topsDataLog
+        % instance:
+        %   - If @a fileWithPath is provided, assigns @a fileWithPath to
+        %   the fileWithPath property of the current topsDataLog instance
+        %   and reads data from the given @a fileWithPath.
+        %   - If @a fileWithPath is omitted, but the current topsDataLog
+        %   instance has a non-empty fileWithPath property, reads data
+        %   according to the fileWithPath property.
+        %   - If @a fileWithPath is omitted, and the current topsDataLog
+        %   instance has an empty fileWithPath property, opens a dialog for
+        %   chosing a a file.  If a file is chosen, reads data from the
+        %   chosen file and saves the chosen file to the fileWithPath
+        %   property.
+        %   .
+        function dataStruct = readDataFile(fileWithPath)
             self = topsDataLog.theDataLog;
+            dataStruct = struct([]);
             
-            if nargin < 1 || isempty(fileWithPath) || ~ischar(fileWithPath)
+            if nargin > 0 && ~isempty(fileWithPath) && ischar(fileWithPath)
+                self.fileWithPath = fileWithPath;
+                
+            elseif isempty(self.fileWithPath)
                 suggestion = fullfile(pwd, '*');
                 [f, p] = uigetfile( ...
                     {'*.mat'}, ...
                     'Load data log from which .mat file?', ...
                     suggestion, ...
                     'MultiSelect', 'off');
-                
                 if ischar(f)
-                    fileWithPath = fullfile(p, f);
-                else
-                    fileWithPath = '';
+                    self.fileWithPath = fullfile(p, f);
                 end
             end
             
-            if ~isempty(fileWithPath)
-                data = load(fileWithPath);
-                if isstruct(data) && isfield(data, 'logStruct');
-                    topsDataLog.flushAllData;
-                    for ii = 1:length(data.logStruct)
-                        self.addItemToGroupWithMnemonic( ...
-                            data.logStruct(ii).item, ...
-                            data.logStruct(ii).group, ...
-                            data.logStruct(ii).mnemonic);
-                    end
-                    self.clockFunction = data.clockFunction;
-                    self.earliestTime = data.earliestTime;
-                    self.latestTime = data.latestTime;
+            if ~isempty(self.fileWithPath)
+                % check for old-style of data file
+                %   from before topsDataFile and incremental writing
+                vars = who('-file', self.fileWithPath);
+                if any(strcmp(vars, 'logStruct'))
+                    dataStruct = self.readOldLogStructFromFile;
+                else
+                    dataStruct = self.readIncrementFromFile;
                 end
             end
         end

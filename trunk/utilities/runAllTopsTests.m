@@ -29,7 +29,12 @@ absPath = pwd;
 directoryList = dir(absPath);
 
 disp(sprintf('\n\n%s', absPath));
-didPass = runtests(absPath);
+try
+    % finding no tests causes an error
+    didPass = runtests(absPath);
+catch err
+    didPass = strcmp(err.identifier, 'xunit:runtests:noTestCasesFound');
+end
 
 clear global DOTS_TESTS_FORCE_LOCAL
 
