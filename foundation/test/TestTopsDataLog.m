@@ -16,7 +16,8 @@ classdef TestTopsDataLog < TestCase
             self.groups = {'animals', 'pizzas', 'phone books'};
             self.data = {1, {'elephant', 'sauce'}, []};
             self.eventCount = 0;
-            self.filename = '~/dataLogTest.mat';
+            [p,f] = fileparts(mfilename('fullpath'));
+            self.filename = fullfile(p, 'dataLogTest.mat');
             topsDataLog.flushAllData;
         end
         

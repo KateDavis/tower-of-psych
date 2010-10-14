@@ -1,49 +1,42 @@
-classdef TestTopsFile < TestCase
+classdef TestTopsDataFile < TestCase
     
     properties
-        filePath;
-        fileName;
+        fileWithPath;
     end
     
     methods
-        function self = TestTopsFile(name)
+        function self = TestTopsDataFile(name)
             self = self@TestCase(name);
         end
         
         function setUp(self)
             [p,n,e] = fileparts(mfilename('fullpath'));
-            self.filePath = p;
-            self.fileName = 'topsFileTest.mat';
+            self.fileWithPath = fullfile(p, 'topsDataFileTest.mat');
         end
         
         function tearDown(self)
-            nameWithPath = fullfile(self.filePath, self.fileName);
-            if exist(nameWithPath)
-                delete(nameWithPath);
+            if exist(self.fileWithPath)
+                delete(self.fileWithPath);
             end
         end
         
         function testCreate(self)
-            fHeader = topsFile.newTopsFileHeader( ...
-                'fileName', self.fileName, ...
-                'filePath', self.filePath);
+            fHeader = topsDataFile.newHeader( ...
+                'fileWithPath', self.fileWithPath);
             assertTrue(isstruct(fHeader), ...
-                'should get topsFile header metadata struct')
-            assertEqual(self.fileName, fHeader.fileName, ...
-                'should topsFile use supplied file name')
-            assertEqual(self.filePath, fHeader.filePath, ...
-                'should topsFile use supplied file path')
+                'should get topsDataFile header metadata struct')
+            assertEqual(self.fileWithPath, fHeader.fileWithPath, ...
+                'should topsDataFile use supplied file name')
         end
         
         function testWriteReadIncrements(self)
-            fHeader = topsFile.newTopsFileHeader( ...
-                'fileName', self.fileName, ...
-                'filePath', self.filePath);
+            fHeader = topsDataFile.newHeader( ...
+                'fileWithPath', self.fileWithPath);
             
             for ii = 1:10
-                fHeader = topsFile.write(fHeader, ii);
-                fHeader = topsFile.write(fHeader, -ii);
-                [fHeader, increments] = topsFile.read(fHeader);
+                fHeader = topsDataFile.write(fHeader, ii);
+                fHeader = topsDataFile.write(fHeader, -ii);
+                [fHeader, increments] = topsDataFile.read(fHeader);
                 assertEqual(numel(increments), 2, ...
                     'should read increments that were written')
                 assertEqual(increments{1}, ii, ...
@@ -51,30 +44,29 @@ classdef TestTopsFile < TestCase
                 assertEqual(increments{2}, -ii, ...
                     'should get last written increment, last')
                 
-                [fHeader, increments] = topsFile.read(fHeader);
+                [fHeader, increments] = topsDataFile.read(fHeader);
                 assertTrue(isempty(increments), ...
                     'should not reread increments that were already read')
             end
         end
         
         function testRereadData(self)
-            fHeader = topsFile.newTopsFileHeader( ...
-                'fileName', self.fileName, ...
-                'filePath', self.filePath);
+            fHeader = topsDataFile.newHeader( ...
+                'fileWithPath', self.fileWithPath);
             
             n = 10;
             for ii = 1:n
-                fHeader = topsFile.write(fHeader, ii);
+                fHeader = topsDataFile.write(fHeader, ii);
             end
-            [fHeader, increments] = topsFile.read(fHeader);
+            [fHeader, increments] = topsDataFile.read(fHeader);
             assertEqual(numel(increments), n, ...
                 'should read all increments that were written')
             
-            [fHeader, increments] = topsFile.read(fHeader);
+            [fHeader, increments] = topsDataFile.read(fHeader);
             assertTrue(isempty(increments), ...
                 'should not reread increments that were already read')
             
-            [fHeader, increments] = topsFile.read( ...
+            [fHeader, increments] = topsDataFile.read( ...
                 fHeader, fHeader.readIncrements);
             assertEqual(numel(increments), n, ...
                 'should reread specified increments')
