@@ -8,10 +8,22 @@
 % @mainpage Welcome to the Tower of Psych
 % @section intro Introduction
 % @par
-% The Tower of Psych, or tops for short, is a framework for implementing
-% and running psychophysics experiments.  It attempts to factor out
-% behavior that is common to a large number of experiments, so that
-% experimenters and labs don't have to resolve solved problems.
+% Tower of Psych, or "tops" for short, is s a project started by Ben Heasly
+% in July of 2009.  It aims to facilitate the design and development of
+% psychophysics experiments in Matlab.
 % @par
-% More to come ...
+% The idea is that a lot of psychophysics experiments have a lot of
+% organization in common, and this organization should be modeled
+% explicitly with classes.  With the model in place, a lot of data
+% collection can be automated (i.e. what happened, when?) and graphical
+% interfaces can present experiment structure visually.
+% @par
+% Tower of Psych does not attempt to solve specific research problems like
+% stimulus generation or model fitting.  Rather, these problems should be
+% solved myopically by individuals and libraries like Psychtoolbox.  Then
+% tops should integrate their solutions.
+% @par
+% The companion project [http://snow-dots.googlecode.com Snow Dots] extends
+% Tower of Psych by adding the nuts and bolts (i.e. myopic solutions) for
+% running real, tangible experiments.
 %
