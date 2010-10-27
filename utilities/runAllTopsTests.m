@@ -4,7 +4,8 @@
 %
 %   @details
 %   Run all unit test for the Tower of Psych code.  Returns true if all
-%   tests pass.  If any test fails, aborts and returns false.
+%   tests pass.  If any test fails, finishes tests in the current foler,
+%   then aborts and returns false.
 %   @ingroup utilities
 
 function didPass = runAllTopsTests

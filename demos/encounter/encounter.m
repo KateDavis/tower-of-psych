@@ -1,18 +1,17 @@
 function [gameTree, gameList] = encounter
-%Test/Demonstrate the Tower of Psych (tops) foundation classes with a game
+% Demonstrate the Tower of Psych (tops) foundation classes with a game
 %
 %   [gameTree, gameList] = encounter
 %
 %   "encounter" is a game.  It's a simplified homage to the battle seqences
-%   in the popular "Final Fantasy" Nintendo games.  You, the player,
+%   in the "Final Fantasy" Nintendo games.  In the game, you, the player,
 %   control several characters with different speeds and attack powers.
 %   Your job is to defeat monsters (by clicking on them) before they defeat
-%   you.
+%   you (by attacking periodically).
 %
-%   "encounter" is a first attempt at integrating the various control and
-%   data structures that make up the "Tower of Psych", or "tops".  tops is
-%   a code project that aims to facilitate the design and running of
-%   psychophysics experimetns in Matlab.
+%   "encounter" is a proof of concept for the control structures in the
+%   Tower of Psych, which is ultimately intended to support psychophysics
+%   experiments.
 %
 %   gameTree is an instance of topsTreeNode.  It organizes several
 %   randomly selected battle sequences.
@@ -23,11 +22,6 @@ function [gameTree, gameList] = encounter
 %   To play encounter, type the following:
 %   [gameTree, gameList] = encounter;
 %   gameTree.run;
-%
-%   For more details about tops, and about tops concepts as implemented in
-%   this "encounter" demo, read "encounter-as-tops-demo.rtf".
-%
-%   See also encounter-as-tops-demo.rtf
 
 % copyright 2009 by benjamin.heasly@gmail.com, Seattle, WA
 
@@ -100,6 +94,7 @@ gameList.addItemToGroupWithMnemonic(characters, 'game', 'characters');
 gameList.addItemToGroupWithMnemonic({}, 'game', 'activeCharacter');
 
 charCalls = topsCallList;
+charCalls.alwaysRunning = true;
 for ii = 1:length(characters)
     bt = EncounterBattleTimer;
     charTimers(ii) = bt;
@@ -165,6 +160,7 @@ group(5).monsters = [Hero.copy];
 
 for ii = 1:length(group)
     groupCalls = topsCallList;
+    groupCalls.alwaysRunning = true;
     groupCalls.name = group(ii).name;
     groupTimers = EncounterBattleTimer.empty;
     for jj = 1:length(group(ii).monsters)

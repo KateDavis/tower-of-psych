@@ -16,10 +16,10 @@ logGUIPosition = [x 0 w 2*h];
 [spotsTree, spotsList] = configureSpotsTask(taskPosition);
 
 % launch the treeNodeGUI
-treeGUI = topsTreeNodeGUI(spotsTree);
+treeGUI = spotsTree.gui;
 set(treeGUI.figure, 'Position', treeGUIPosition);
 
 % launch the dataLogGUI
 topsDataLog.flushAllData;
-logGUI = topsDataLogGUI;
+logGUI = topsDataLog.gui;
 set(logGUI.figure, 'Position', logGUIPosition);

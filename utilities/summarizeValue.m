@@ -7,12 +7,11 @@
 %
 %   @details
 %   Returns a string that describes @a value.  For simple types like
-%   strings and nubmers, the string may an exact, description.
+%   strings and nubmers, the string may an exact description.
 %   For large arrays or complex types like structs and objects, the string
 %   may only summarize @a value.
 %
 %   @ingroup utilities
-
 function string = summarizeValue(value, n)
 
 if nargin < 2
