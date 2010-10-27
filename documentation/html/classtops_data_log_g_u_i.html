@@ -107,10 +107,107 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#aa2b4a0623020e74b2296db78432a8b6b">groupLines</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">handles for data group lines <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d56b4551b45704e4925336c9dd2f25a"></a><!-- doxytag: member="topsDataLogGUI::topsDataLogGUI" ref="a8d56b4551b45704e4925336c9dd2f25a" args="()" -->
+self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a8d56b4551b45704e4925336c9dd2f25a">topsDataLogGUI</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af641cfcd0a32eed34f936e5010a9966b"></a><!-- doxytag: member="topsDataLogGUI::createWidgets" ref="af641cfcd0a32eed34f936e5010a9966b" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#af641cfcd0a32eed34f936e5010a9966b">createWidgets</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Populate the GUI figure with widgets for visualizing <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a537a90abf87f410270b1213fb6a5c133"></a><!-- doxytag: member="topsDataLogGUI::plotRaster" ref="a537a90abf87f410270b1213fb6a5c133" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a537a90abf87f410270b1213fb6a5c133">plotRaster</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Show <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> groups and timestamps as a raster. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a6d88fd6e7eca95cf5ab32b9b198cddd4">selectGroup</a> (self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> group to the list of displayed data groups and the raster display.  <a href="#a6d88fd6e7eca95cf5ab32b9b198cddd4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a160cdbba76bb45a68cca3d02e7a6be8b"></a><!-- doxytag: member="topsDataLogGUI::controlsForGroupAtRow" ref="a160cdbba76bb45a68cca3d02e7a6be8b" args="(self, group, row)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a160cdbba76bb45a68cca3d02e7a6be8b">controlsForGroupAtRow</a> (self, group, row)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a control in the list of displayed groups. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4ffebf15d78c7a7bea12dd4c4533bfb"></a><!-- doxytag: member="topsDataLogGUI::set_tLim" ref="ad4ffebf15d78c7a7bea12dd4c4533bfb" args="(self, tLim)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#ad4ffebf15d78c7a7bea12dd4c4533bfb">set_tLim</a> (self, <a class="el" href="classtops_data_log_g_u_i.html#a648c0930b1305fa669fc04261c027d17">tLim</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Validate time limits for data display and update the raster. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91f82768b1a00540fabc0f69f1e9ad90"></a><!-- doxytag: member="topsDataLogGUI::repondToResize" ref="a91f82768b1a00540fabc0f69f1e9ad90" args="(self, figure, event)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a91f82768b1a00540fabc0f69f1e9ad90">repondToResize</a> (self, <a class="el" href="classtops_g_u_i.html#aa6475710eb72a133783c35583f9436ea">figure</a>, event)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Let child panes resize themselves. <br/></td></tr>
+<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a921d3709c6a473731b5f5fee3a2c0da9"></a><!-- doxytag: member="topsDataLogGUI::tLimCallback" ref="a921d3709c6a473731b5f5fee3a2c0da9" args="(obj, event, self)" -->
+static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a921d3709c6a473731b5f5fee3a2c0da9">tLimCallback</a> (obj, event, self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Use a user input time limit for display. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#acee2e1ded02a8acfc6eb76ffd1656ed1">groupsMenuCallback</a> (obj, event, self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">(De)Select a group that was clicked on in the list of displayed groups.  <a href="#acee2e1ded02a8acfc6eb76ffd1656ed1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38125e8172455573bb0bafba78ce159b"></a><!-- doxytag: member="topsDataLogGUI::groupsRegexpCallback" ref="a38125e8172455573bb0bafba78ce159b" args="(obj, event, self)" -->
+static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a38125e8172455573bb0bafba78ce159b">groupsRegexpCallback</a> (obj, event, self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Use a user-input expression to search for matching groups. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88cc5e3d583e1a2b057177679746a8ff"></a><!-- doxytag: member="topsDataLogGUI::gridCallback" ref="a88cc5e3d583e1a2b057177679746a8ff" args="(obj, event, self)" -->
+static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a88cc5e3d583e1a2b057177679746a8ff">gridCallback</a> (obj, event, self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the raster plot of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> groups and timestamps. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a4d3d90717611fa483d6fd5306bd12d"></a><!-- doxytag: member="topsDataLogGUI::lineCallback" ref="a2a4d3d90717611fa483d6fd5306bd12d" args="(l, event, self, group)" -->
+static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log_g_u_i.html#a2a4d3d90717611fa483d6fd5306bd12d">lineCallback</a> (l, event, self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Show details for the <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> clicked on from the raster. <br/></td></tr>
 </table>
+<hr/><h2>Methods</h2>
+<a class="anchor" id="a6d88fd6e7eca95cf5ab32b9b198cddd4"></a><!-- doxytag: member="topsDataLogGUI::selectGroup" ref="a6d88fd6e7eca95cf5ab32b9b198cddd4" args="(self, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">selectGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add a <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> group to the list of displayed data groups and the raster display. </p>
+
+</div>
+</div>
+<a class="anchor" id="acee2e1ded02a8acfc6eb76ffd1656ed1"></a><!-- doxytag: member="topsDataLogGUI::groupsMenuCallback" ref="acee2e1ded02a8acfc6eb76ffd1656ed1" args="(obj, event, self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static groupsMenuCallback </td>
+          <td>(</td>
+          <td class="paramtype">obj&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">event&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>(De)Select a group that was clicked on in the list of displayed groups. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>topsDataLogGUI.m</li>
 </ul>
@@ -129,7 +226,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

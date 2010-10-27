@@ -81,6 +81,9 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#abc630c393f1e2c3dab6bf913dbdba7b3">ScrollingControlGrid</a> (<a class="el" href="class_scrolling_control_grid.html#a8985e14c4c38167deb1b8ca7e017d4ea">parent</a>, <a class="el" href="class_scrolling_control_grid.html#a73fe471e1e4a4acd5ecefed35839c295">position</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Contructor takes two optional arguments.  <a href="#abc630c393f1e2c3dab6bf913dbdba7b3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abdc24d676a4e66c0aed3ec61fdcb5435"></a><!-- doxytag: member="ScrollingControlGrid::delete" ref="abdc24d676a4e66c0aed3ec61fdcb5435" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#abdc24d676a4e66c0aed3ec61fdcb5435">delete</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Delete the display panel when this object is deleted. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#a63b29209313254681dc96781655099d0">deleteAllControls</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Deletes all uicontrols in the two-dimensional controls matrix.  <a href="#a63b29209313254681dc96781655099d0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">h&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#a6a81291239235713f8e1dac070cea193">newControlAtRowAndColumn</a> (self, row, column, varargin)</td></tr>
@@ -89,6 +92,19 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove the uicontrol at the given row and column.  <a href="#ab98dfe43c722f178dbb9e53cbd20b965"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#a6ce8d478ca0b4c05a608ea0d872e0dc7">repositionControls</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Refresh the layout of all uicontrols.  <a href="#a6ce8d478ca0b4c05a608ea0d872e0dc7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd289b1a6abbecda78f520caf385d52c"></a><!-- doxytag: member="ScrollingControlGrid::trimEdges" ref="afd289b1a6abbecda78f520caf385d52c" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#afd289b1a6abbecda78f520caf385d52c">trimEdges</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Shrink the controls matrix around valid graphics handles. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70a7cbb77b146e51474700dfc5092dbd"></a><!-- doxytag: member="ScrollingControlGrid::initPanels" ref="a70a7cbb77b146e51474700dfc5092dbd" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#a70a7cbb77b146e51474700dfc5092dbd">initPanels</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Populate the uipanel to display a scrollable grid of controls. <br/></td></tr>
+<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01c171713c7778517aaa09096a0502d7"></a><!-- doxytag: member="ScrollingControlGrid::respondToSliderOrScroll" ref="a01c171713c7778517aaa09096a0502d7" args="(obj, event, self)" -->
+static didScroll&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#a01c171713c7778517aaa09096a0502d7">respondToSliderOrScroll</a> (obj, event, self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Scroll the panel of controls. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa44291125649bf240e049162672b88ea"></a><!-- doxytag: member="ScrollingControlGrid::mergePositionRects" ref="aa44291125649bf240e049162672b88ea" args="(varargin)" -->
+static mergedPos&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scrolling_control_grid.html#aa44291125649bf240e049162672b88ea">mergePositionRects</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calculate a rectangle that bounds other rectangles. <br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
 <a class="anchor" id="abc630c393f1e2c3dab6bf913dbdba7b3"></a><!-- doxytag: member="ScrollingControlGrid::ScrollingControlGrid" ref="abc630c393f1e2c3dab6bf913dbdba7b3" args="(parent, position)" -->
@@ -145,7 +161,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div class="memdoc">
 
 <p>Deletes all uicontrols in the two-dimensional controls matrix. </p>
-<p>Calls delete() on all of the handles in the grid's controls matrix, then sets the controls matrix to []. </p>
+<p>Calls <a class="el" href="class_scrolling_control_grid.html#abdc24d676a4e66c0aed3ec61fdcb5435" title="Delete the display panel when this object is deleted.">delete()</a> on all of the handles in the grid's controls matrix, then sets the controls matrix to []. </p>
 
 </div>
 </div>
@@ -240,7 +256,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </table>
   </dd>
 </dl>
-<p>Looks for a uicontrol <a class="el" href="classhandle.html">handle</a> in the controls matrix, at <em>row</em> and <em>column</em>. Calls delete() for any <a class="el" href="classhandle.html">handle</a> it finds there. Then sets all entries in the controls matrix that match the <a class="el" href="classhandle.html">handle</a> to 0. If removing a control results in empty rows on the bottom of the grid, or empty columns on the right, these will be trimmed. </p>
+<p>Looks for a uicontrol <a class="el" href="classhandle.html">handle</a> in the controls matrix, at <em>row</em> and <em>column</em>. Calls <a class="el" href="class_scrolling_control_grid.html#abdc24d676a4e66c0aed3ec61fdcb5435" title="Delete the display panel when this object is deleted.">delete()</a> for any <a class="el" href="classhandle.html">handle</a> it finds there. Then sets all entries in the controls matrix that match the <a class="el" href="classhandle.html">handle</a> to 0. If removing a control results in empty rows on the bottom of the grid, or empty columns on the right, these will be trimmed. </p>
 
 </div>
 </div>
@@ -285,7 +301,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

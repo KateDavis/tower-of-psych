@@ -115,6 +115,8 @@ static g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top">static dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ad881016b1ea2efb19c741c0a7f5a54ce">readDataFile</a> (<a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Read previously logged data from a file.  <a href="#ad881016b1ea2efb19c741c0a7f5a54ce"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Private Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a5739cd692204c82b0cd61c5973ee3fb3">topsDataLog</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor is private.  <a href="#a5739cd692204c82b0cd61c5973ee3fb3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1a3369af694583146c1bbb180df58e7"></a><!-- doxytag: member="topsDataLog::writeIncrementToFile" ref="ab1a3369af694583146c1bbb180df58e7" args="(self)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ab1a3369af694583146c1bbb180df58e7">writeIncrementToFile</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write a data increment and other data to file and do accounting. <br/></td></tr>
@@ -128,6 +130,27 @@ dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#af587432a4e3faed866ad7d52326f9208">populateWithDataStruct</a> (self, dataStruct)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Populate the log groupedList with struct data. <br/></td></tr>
 </table>
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="a5739cd692204c82b0cd61c5973ee3fb3"></a><!-- doxytag: member="topsDataLog::topsDataLog" ref="a5739cd692204c82b0cd61c5973ee3fb3" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self <a class="el" href="classtops_data_log.html">topsDataLog</a> </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constructor is private. </p>
+<p>Use <a class="el" href="classtops_data_log.html#ab75bbca125060dca1979b53b0569f41c" title="Access the current data log &quot;singleton&quot;.">topsDataLog.theDataLog</a> to access the current instance of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. </p>
+
+</div>
+</div>
 <hr/><h2>Methods</h2>
 <a class="anchor" id="ab75bbca125060dca1979b53b0569f41c"></a><!-- doxytag: member="topsDataLog::theDataLog" ref="ab75bbca125060dca1979b53b0569f41c" args="()" -->
 <div class="memitem">
@@ -347,7 +370,7 @@ dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

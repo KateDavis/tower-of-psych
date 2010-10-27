@@ -50,17 +50,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 [<a class="el" href="group__foundation.html">Foundation</a>]</small>
 </h1><!-- doxytag: class="topsGroupedListGUI" --><!-- doxytag: inherits="topsGUI" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>Visualize the items stored in a grouped list. </p>
-<p><a class="el" href="classtops_grouped_list_g_u_i.html" title="Visualize the items stored in a grouped list.">topsGroupedListGUI</a> shows you a three-column view of a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> (or subclass).</p>
+<p><a class="el" href="classtops_grouped_list_g_u_i.html" title="Visualize the items stored in a grouped list.">topsGroupedListGUI</a> shows you a three-column view of a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> or subclass.</p>
 <p>The left column shows all the groups in the list. The middle column shows all the mnemonics in the currently selected group. The right column shows details for the item that has the currently selected mnemonic.</p>
 <p>Simple items like numbers and strings are shown by their value. Strings are color-coded with a color scheme that's standard for Tower of Psych GUIS.</p>
-<p>Complex items like cell arrays, structs, and objects are expanded into multiple rows that show their elements, fields, and properties. Field and property names and are left-aligned and their values are right-aligned on the next row. Again strings, including field and property names, are color-codded.</p>
-<p>Struct arrays and object arrays are expanded even further, with a group of rows for each element of the array. In this case rows may extend beneath the visible part of the column and a slider bar will appear to bring these rows into view.</p>
+<p>Complex items like cell arrays, structs, and objects are expanded into multiple rows that show their elements, fields, and properties. Field and property names and are right-aligned and their values are left-aligned on the next row. Field and property names, are color-codded like other strings.</p>
+<p>Struct *arrays* and object *arrays* are expanded even further, with a group of rows for each element of the array. In this case rows may extend beneath the visible part of the column and a slider bar will appear to bring these rows into view.</p>
 <p>Some items, elements, field values, and property values will appear in bold:</p>
 <ul>
 <li>strings or function handles that can be found on Matlab's path can be clicked to open them in Matlab's m-file editor.</li>
-<li>instances of Towe of Psych foundation classes can be clicked to open their respective Towe of Psych GUIs.</li>
+<li>instances of Tower of Psych foundation classes can be clicked to open their respective Tower of Psych GUIs.</li>
 </ul>
-<p>The "to workspace" button in the top right corner of the GUI lets you send the currently displayed item to Matlab's base workspace (i.e. the Command Window). If the menmonic for the current item is a valid variable name, the GUI will create or overwrite a variable with that name. Otherwise, the GUI will create or overwrite a variable with the name "item".</p>
+<p>The "to workspace" button in the top middle of the GUI lets you send the currently displayed item to Matlab's base workspace (i.e. the Command Window). If the menmonic for the current item is a valid variable name, the GUI will create or overwrite a variable with that name. Otherwise, the GUI will create or overwrite a variable with the name "item".</p>
+<p>When the "edit" toggle button in the top right of the GUI is presed, you can edit the currently displayed item. For complex types you can also edit cell elements, fields, and properties. The values within the grouped list will be altered!</p>
 <p>You can launch <a class="el" href="classtops_grouped_list_g_u_i.html" title="Visualize the items stored in a grouped list.">topsGroupedListGUI</a> with the <a class="el" href="classtops_grouped_list_g_u_i.html#a6ac097ba9f6758040acc913562c923c1" title="Constructor takes one optional argument.">topsGroupedListGUI()</a> constructor, or with the gui() method a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> or subclass.</p>
 <p><a class="el" href="classtops_grouped_list_g_u_i.html" title="Visualize the items stored in a grouped list.">topsGroupedListGUI</a> uses listeners to detect changes to the list its showing. This means that you can view a list as you work on your experiment, and you don't have to reopen or refresh the GUI.</p>
 <p>Beware that listeners can slow Matlab down. So if you're in a timing-critical situation, like some experiments, you might wish to close the GUI, deleting its listeners. </p>
@@ -138,7 +139,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

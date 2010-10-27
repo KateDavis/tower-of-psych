@@ -50,9 +50,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 [<a class="el" href="group__foundation.html">Foundation</a>]</small>
 </h1><!-- doxytag: class="topsStateMachineGUI" --><!-- doxytag: inherits="topsGUI" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>Overview the states of a state machine. </p>
-<p><a class="el" href="classtops_state_machine_g_u_i.html" title="Overview the states of a state machine.">topsStateMachineGUI</a> lists all the states and their properties for a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through e.g.">topsStateMachine</a>, in a grid view.</p>
+<p><a class="el" href="classtops_state_machine_g_u_i.html" title="Overview the states of a state machine.">topsStateMachineGUI</a> lists all the states and their properties for a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a>, in a grid view.</p>
 <p>At the top right, the "run states" button allows you to invoke the run() method of the state machine.</p>
-<p>You can launch <a class="el" href="classtops_state_machine_g_u_i.html" title="Overview the states of a state machine.">topsStateMachineGUI</a> with the <a class="el" href="classtops_state_machine_g_u_i.html#a65f0ed416196f8667d562b1289dc7283" title="Constructor takes one optional argument.">topsStateMachineGUI()</a> constructor, or with the gui() method a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through e.g.">topsStateMachine</a>.</p>
+<p>You can launch <a class="el" href="classtops_state_machine_g_u_i.html" title="Overview the states of a state machine.">topsStateMachineGUI</a> with the <a class="el" href="classtops_state_machine_g_u_i.html#a65f0ed416196f8667d562b1289dc7283" title="Constructor takes one optional argument.">topsStateMachineGUI()</a> constructor, or with the gui() method a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a>.</p>
 <p><a class="el" href="classtops_state_machine_g_u_i.html" title="Overview the states of a state machine.">topsStateMachineGUI</a> uses listeners to detect changes to the state machine it's showing. This means that you can view your state machine as you work on it, and you don't have to reopen or refresh the GUI.</p>
 <p>But beware that listeners can slow Matlab down. So if you're in a timing-critical situation, like running a real experiment, you might wish to close the GUI, deleting its listeners. </p>
 <div class="dynheader">
@@ -68,14 +68,55 @@ Inheritance diagram for topsStateMachineGUI:</div>
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac60b272602313131991dbf212979db0"></a><!-- doxytag: member="topsStateMachineGUI::stateMachine" ref="aac60b272602313131991dbf212979db0" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#aac60b272602313131991dbf212979db0">stateMachine</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">an instance of <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through e.g.">topsStateMachine</a> to view. <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> instance to view <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f20e08e53a89b959e9b10a0801ee57c"></a><!-- doxytag: member="topsStateMachineGUI::machineGrid" ref="a6f20e08e53a89b959e9b10a0801ee57c" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a6f20e08e53a89b959e9b10a0801ee57c">machineGrid</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="class_scrolling_control_grid.html" title="A grid of uicontrol objects.">ScrollingControlGrid</a> to show stateMachine properties. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2d3bd820df59c06ab517729e7c71b22"></a><!-- doxytag: member="topsStateMachineGUI::machineRunButton" ref="af2d3bd820df59c06ab517729e7c71b22" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#af2d3bd820df59c06ab517729e7c71b22">machineRunButton</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol button to invoke run() on stateMachine <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca41ca1ab4cc43d1c671be42d1777ce9"></a><!-- doxytag: member="topsStateMachineGUI::statesGrid" ref="aca41ca1ab4cc43d1c671be42d1777ce9" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#aca41ca1ab4cc43d1c671be42d1777ce9">statesGrid</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="class_scrolling_control_grid.html" title="A grid of uicontrol objects.">ScrollingControlGrid</a> to show individual state properties. <br/></td></tr>
 <tr><td colspan="2"><h2>Private Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d102b2175feacbc8e28d1a6337871d1"></a><!-- doxytag: member="topsStateMachineGUI::machineProps" ref="a4d102b2175feacbc8e28d1a6337871d1" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a4d102b2175feacbc8e28d1a6337871d1">machineProps</a> = {'startFevalable', 'transitionFevalable', 'finishFevalable'}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string names of state machine properties to display <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87d39900c7d2cac7690b840885171e2a"></a><!-- doxytag: member="topsStateMachineGUI::statesProp" ref="a87d39900c7d2cac7690b840885171e2a" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a87d39900c7d2cac7690b840885171e2a">statesProp</a> = 'allStates'</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string name of the state machine property that contains individual state data <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab53bcf847c25b61fae4848d66b622924"></a><!-- doxytag: member="topsStateMachineGUI::phantomPanel" ref="ab53bcf847c25b61fae4848d66b622924" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#ab53bcf847c25b61fae4848d66b622924">phantomPanel</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">will need to make a real state machine panel <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">invisible <a class="el" href="classtops_detail_panel.html" title="Superclass to manage each reusable, movable uipanel portion of a topsGUI graphical...">topsDetailPanel</a> used as a utility <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a65f0ed416196f8667d562b1289dc7283">topsStateMachineGUI</a> (<a class="el" href="classtops_state_machine_g_u_i.html#aac60b272602313131991dbf212979db0">stateMachine</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes one optional argument.  <a href="#a65f0ed416196f8667d562b1289dc7283"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#af641cfcd0a32eed34f936e5010a9966b">createWidgets</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Populate the GUI figure with widgets for visualizing the stateMachine.  <a href="#af641cfcd0a32eed34f936e5010a9966b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a420f5d67a5741a8502e2cc391213bad3"></a><!-- doxytag: member="topsStateMachineGUI::repopulateMachineGrid" ref="a420f5d67a5741a8502e2cc391213bad3" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a420f5d67a5741a8502e2cc391213bad3">repopulateMachineGrid</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the displayed stateMachine properties. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71564b82c3790c04a83e1da1b81acf66"></a><!-- doxytag: member="topsStateMachineGUI::repopulateStatesGrid" ref="a71564b82c3790c04a83e1da1b81acf66" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a71564b82c3790c04a83e1da1b81acf66">repopulateStatesGrid</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the displayed individual state properties. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31df52cd6f925e2b2eb5a985b6a208b1"></a><!-- doxytag: member="topsStateMachineGUI::listenToStateMachine" ref="a31df52cd6f925e2b2eb5a985b6a208b1" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a31df52cd6f925e2b2eb5a985b6a208b1">listenToStateMachine</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Register to get notifications from stateMachine. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53cc1b299b5edf1ad4c206d57e0f88ee"></a><!-- doxytag: member="topsStateMachineGUI::hearMachinePropertyChange" ref="a53cc1b299b5edf1ad4c206d57e0f88ee" args="(self, metaProp, event)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a53cc1b299b5edf1ad4c206d57e0f88ee">hearMachinePropertyChange</a> (self, metaProp, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Respond to stateMachine property changes. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2da642183d3c27a507ef312014a9f92a"></a><!-- doxytag: member="topsStateMachineGUI::hearStatesPropertyChange" ref="a2da642183d3c27a507ef312014a9f92a" args="(self, metaProp, event)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a2da642183d3c27a507ef312014a9f92a">hearStatesPropertyChange</a> (self, metaProp, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Respond to individual state property changes. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12e4ac1f078711eed67dacd60e839a14"></a><!-- doxytag: member="topsStateMachineGUI::runMachine" ref="a12e4ac1f078711eed67dacd60e839a14" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a12e4ac1f078711eed67dacd60e839a14">runMachine</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke run() on stateMachine. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af486ff02c97733ce8d7cb9c7cca506d3"></a><!-- doxytag: member="topsStateMachineGUI::hearMachineRun" ref="af486ff02c97733ce8d7cb9c7cca506d3" args="(self, machine, event)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#af486ff02c97733ce8d7cb9c7cca506d3">hearMachineRun</a> (self, machine, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Respond to when the stateMachine starts to run() (unimplemented). <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91f82768b1a00540fabc0f69f1e9ad90"></a><!-- doxytag: member="topsStateMachineGUI::repondToResize" ref="a91f82768b1a00540fabc0f69f1e9ad90" args="(self, figure, event)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine_g_u_i.html#a91f82768b1a00540fabc0f69f1e9ad90">repondToResize</a> (self, <a class="el" href="classtops_g_u_i.html#aa6475710eb72a133783c35583f9436ea">figure</a>, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Resize state machine and individual state displayed properties. <br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
 <a class="anchor" id="a65f0ed416196f8667d562b1289dc7283"></a><!-- doxytag: member="topsStateMachineGUI::topsStateMachineGUI" ref="a65f0ed416196f8667d562b1289dc7283" args="(stateMachine)" -->
@@ -105,6 +146,27 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 </div>
 </div>
+<hr/><h2>Methods</h2>
+<a class="anchor" id="af641cfcd0a32eed34f936e5010a9966b"></a><!-- doxytag: member="topsStateMachineGUI::createWidgets" ref="af641cfcd0a32eed34f936e5010a9966b" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">createWidgets </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Populate the GUI figure with widgets for visualizing the stateMachine. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>topsStateMachineGUI.m</li>
 </ul>
@@ -123,7 +185,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:18 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

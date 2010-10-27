@@ -79,7 +79,52 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a205d95864d7b38a4bef09677768e6016"></a><!-- doxytag: member="ProfilerGrapher::ProfilerGrapher" ref="a205d95864d7b38a4bef09677768e6016" args="()" -->
 self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#a205d95864d7b38a4bef09677768e6016">ProfilerGrapher</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f562e5639c578c388af49ec314b7acf"></a><!-- doxytag: member="ProfilerGrapher::runProfiler" ref="a7f562e5639c578c388af49ec314b7acf" args="(self)" -->
+info&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#a7f562e5639c578c388af49ec314b7acf">runProfiler</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Generate profiler data with the given toDo expression. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9b98286b32412573b3d1e4b775703cf"></a><!-- doxytag: member="ProfilerGrapher::appplyFunctionFilter" ref="af9b98286b32412573b3d1e4b775703cf" args="(self, info)" -->
+info&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#af9b98286b32412573b3d1e4b775703cf">appplyFunctionFilter</a> (self, info)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Filter graphed functions based on includePaths and ignoredPaths. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#ad310c219870473257a94210a6e48885d">writeDotFile</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write a GraphViz ".dot" file that represents filtered profiler output.  <a href="#ad310c219870473257a94210a6e48885d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c34984265921d788a8e4cc94ca3a18b"></a><!-- doxytag: member="ProfilerGrapher::generateGraph" ref="a9c34984265921d788a8e4cc94ca3a18b" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#a9c34984265921d788a8e4cc94ca3a18b">generateGraph</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Generate a graph image from the GraphViz ".dot" file. <br/></td></tr>
+<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae342fd57585fc3a157461eb194c7f2a6"></a><!-- doxytag: member="ProfilerGrapher::shortNameWithType" ref="ae342fd57585fc3a157461eb194c7f2a6" args="(inputData, index)" -->
+static nodeName&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#ae342fd57585fc3a157461eb194c7f2a6">shortNameWithType</a> (inputData, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a string which summarizes a function and its type. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0251ba487441fb4a643b289c30c153da"></a><!-- doxytag: member="ProfilerGrapher::totalCallsAndTime" ref="a0251ba487441fb4a643b289c30c153da" args="(inputData, index)" -->
+static description&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#a0251ba487441fb4a643b289c30c153da">totalCallsAndTime</a> (inputData, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a string which summarizes a functions's usage. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f4a493cf4ec86ebff5dd0664968f96a"></a><!-- doxytag: member="ProfilerGrapher::edgeFromChildren" ref="a8f4a493cf4ec86ebff5dd0664968f96a" args="(inputData, index)" -->
+static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#a8f4a493cf4ec86ebff5dd0664968f96a">edgeFromChildren</a> (inputData, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find graph edges corresponding to a function's children. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf0e1a68614c31f984dce86742c91b53"></a><!-- doxytag: member="ProfilerGrapher::getShortFunctionName" ref="adf0e1a68614c31f984dce86742c91b53" args="(longName)" -->
+static shortName&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_profiler_grapher.html#adf0e1a68614c31f984dce86742c91b53">getShortFunctionName</a> (longName)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clean up and shorten long, fully-qualified function names. <br/></td></tr>
 </table>
+<hr/><h2>Methods</h2>
+<a class="anchor" id="ad310c219870473257a94210a6e48885d"></a><!-- doxytag: member="ProfilerGrapher::writeDotFile" ref="ad310c219870473257a94210a6e48885d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">writeDotFile </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Write a GraphViz ".dot" file that represents filtered profiler output. </p>
+
+</div>
+</div>
 <hr/><h2>Properties and Events</h2>
 <a class="anchor" id="a55dab5040d9f81e0b3d4c42895ec9cee"></a><!-- doxytag: member="ProfilerGrapher::toDo" ref="a55dab5040d9f81e0b3d4c42895ec9cee" args="" -->
 <div class="memitem">
@@ -113,7 +158,7 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

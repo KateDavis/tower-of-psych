@@ -49,8 +49,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <small>
 [<a class="el" href="group__utilities.html">Utilities</a>]</small>
 </h1><!-- doxytag: class="StateDiagramGrapher" --><!-- doxytag: inherits="handle" --><hr/><a name="_details"></a><h2>Overview</h2>
-<p>Make <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through e.g.">topsStateMachine</a> state diagrams with the Graphviz tool. </p>
-<p><a class="el" href="class_state_diagram_grapher.html" title="Make topsStateMachine state diagrams with the Graphviz tool.">StateDiagramGrapher</a> summarizes states, actions, inputs, and transitions for a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through e.g.">topsStateMachine</a> object. It allows for input "hints" that specify possible transitions without having to run the state machine. It configures a <a class="el" href="class_data_grapher.html" title="A Matlab interface for the GraphViz graphing tool.">DataGrapher</a> to graph which states may transition to which. </p>
+<p>Make <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> state diagrams with the Graphviz tool. </p>
+<p><a class="el" href="class_state_diagram_grapher.html" title="Make topsStateMachine state diagrams with the Graphviz tool.">StateDiagramGrapher</a> summarizes states, actions, inputs, and transitions for a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> object. It allows for input "hints" that specify possible transitions without having to run the state machine. It configures a <a class="el" href="class_data_grapher.html" title="A Matlab interface for the GraphViz graphing tool.">DataGrapher</a> to graph which states may transition to which. </p>
 <div class="dynheader">
 Inheritance diagram for StateDiagramGrapher:</div>
 <div class="dynsection">
@@ -64,7 +64,7 @@ Inheritance diagram for StateDiagramGrapher:</div>
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac60b272602313131991dbf212979db0"></a><!-- doxytag: member="StateDiagramGrapher::stateMachine" ref="aac60b272602313131991dbf212979db0" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#aac60b272602313131991dbf212979db0">stateMachine</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through e.g.">topsStateMachine</a> object to summarize <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">a <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> object to summarize <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0006ab609cd329a066f8d060d242dbaa"></a><!-- doxytag: member="StateDiagramGrapher::stateInfo" ref="a0006ab609cd329a066f8d060d242dbaa" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#a0006ab609cd329a066f8d060d242dbaa">stateInfo</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct of state data and input "hints" to graph <br/></td></tr>
@@ -78,7 +78,69 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2e33ee61a541deb9cb389c9c40b4c58"></a><!-- doxytag: member="StateDiagramGrapher::StateDiagramGrapher" ref="aa2e33ee61a541deb9cb389c9c40b4c58" args="()" -->
 self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#aa2e33ee61a541deb9cb389c9c40b4c58">StateDiagramGrapher</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#a5b4c8c323dbd4cf041e52427da12764d">addInputHint</a> (self, stateName, inputValue)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a transition not in the state list to the graph.  <a href="#a5b4c8c323dbd4cf041e52427da12764d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58d26c6c04e46b3bc3e8c678dd4355bc"></a><!-- doxytag: member="StateDiagramGrapher::parseStates" ref="a58d26c6c04e46b3bc3e8c678dd4355bc" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#a58d26c6c04e46b3bc3e8c678dd4355bc">parseStates</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Parse the state list of stateMachine to prepare for graphing. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad310c219870473257a94210a6e48885d"></a><!-- doxytag: member="StateDiagramGrapher::writeDotFile" ref="ad310c219870473257a94210a6e48885d" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#ad310c219870473257a94210a6e48885d">writeDotFile</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write a GraphViz ".dot" file that specifies the state diagram. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c34984265921d788a8e4cc94ca3a18b"></a><!-- doxytag: member="StateDiagramGrapher::generateGraph" ref="a9c34984265921d788a8e4cc94ca3a18b" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#a9c34984265921d788a8e4cc94ca3a18b">generateGraph</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Generate an image with GraphVis, based on the ".dot" file. <br/></td></tr>
+<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99be432506d0442bcd200010c7d99e9f"></a><!-- doxytag: member="StateDiagramGrapher::statePropertySummary" ref="a99be432506d0442bcd200010c7d99e9f" args="(inputData, index)" -->
+static description&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#a99be432506d0442bcd200010c7d99e9f">statePropertySummary</a> (inputData, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a cell array of strings that summarizes some state data. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbea22d4614c6fb0ed719f7858b7d547"></a><!-- doxytag: member="StateDiagramGrapher::edgeFromNextAndInputHints" ref="abbea22d4614c6fb0ed719f7858b7d547" args="(inputData, index)" -->
+static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_state_diagram_grapher.html#abbea22d4614c6fb0ed719f7858b7d547">edgeFromNextAndInputHints</a> (inputData, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find edges leading away from a given state. <br/></td></tr>
 </table>
+<hr/><h2>Methods</h2>
+<a class="anchor" id="a5b4c8c323dbd4cf041e52427da12764d"></a><!-- doxytag: member="StateDiagramGrapher::addInputHint" ref="a5b4c8c323dbd4cf041e52427da12764d" args="(self, stateName, inputValue)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">addInputHint </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">stateName&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">inputValue&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add a transition not in the state list to the graph. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>stateName</em>&nbsp;</td><td>the name of the state to transition from </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>inputValue</em>&nbsp;</td><td>the name of the state to transation to (also the value returned from an input function which causes the transation to that state)</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Adds a transition to the state diagram which was is not obvious from parsing the state list alone. Allows graphing of representative conditional transitions. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>StateDiagramGrapher.m</li>
 </ul>
@@ -97,7 +159,7 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

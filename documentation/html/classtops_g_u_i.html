@@ -87,12 +87,18 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments.  <a href="#ae1c5a78f24488187fd16473d6b36c9d3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#abdc24d676a4e66c0aed3ec61fdcb5435">delete</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Automatically closes the figure and deletes any listeners used by a subclass or <a class="el" href="classtops_detail_panel.html" title="Superclass to manage each reusable, movable uipanel portion of a topsGUI graphical...">topsDetailPanel</a>.  <a href="#abdc24d676a4e66c0aed3ec61fdcb5435"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7986457ccc1ed05991f9495d14a72ed"></a><!-- doxytag: member="topsGUI::figureClose" ref="ac7986457ccc1ed05991f9495d14a72ed" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#ac7986457ccc1ed05991f9495d14a72ed">figureClose</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Delete this <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> object when its figure closes. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0090a3d3837642509f15fe7650c20281"></a><!-- doxytag: member="topsGUI::addListenerWithName" ref="a0090a3d3837642509f15fe7650c20281" args="(self, listener, name)" -->
 ii&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#a0090a3d3837642509f15fe7650c20281">addListenerWithName</a> (self, listener, name)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Keep track of listeners by index and name. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae364b557e2dd8dcd7385ad7f6e654072"></a><!-- doxytag: member="topsGUI::deleteListenerWithNameAndIndex" ref="ae364b557e2dd8dcd7385ad7f6e654072" args="(self, name, ii)" -->
 ii&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#ae364b557e2dd8dcd7385ad7f6e654072">deleteListenerWithNameAndIndex</a> (self, name, ii)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Delete a listener by name and index. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f2c642b9828f03e9786d4327f82dbd3"></a><!-- doxytag: member="topsGUI::deleteListeners" ref="a9f2c642b9828f03e9786d4327f82dbd3" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#a9f2c642b9828f03e9786d4327f82dbd3">deleteListeners</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Un-register to receive notifications from displayed objects. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#a9754dbc960c754244276e9011f1e6647">setupFigure</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a figure or clear existing figure.  <a href="#a9754dbc960c754244276e9011f1e6647"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91f82768b1a00540fabc0f69f1e9ad90"></a><!-- doxytag: member="topsGUI::repondToResize" ref="a91f82768b1a00540fabc0f69f1e9ad90" args="(self, figure, event)" -->
@@ -103,6 +109,9 @@ ii&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classt
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Figure WindowKeyPressFcn for subclasses to redefine. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#a4e2d2d8ac4cc4a95376624352c9c9695">respondToScrolling</a> (self, <a class="el" href="classtops_g_u_i.html#aa6475710eb72a133783c35583f9436ea">figure</a>, event)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Figure WindowScrollWheelFcn to deal out scroll events the gui's scrollables array contains handles to graphical children and a callback for each.  <a href="#a4e2d2d8ac4cc4a95376624352c9c9695"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a963b87c3132fb636a5d049e2fa48f01d"></a><!-- doxytag: member="topsGUI::eventToScrollableAtIndex" ref="a963b87c3132fb636a5d049e2fa48f01d" args="(self, event, ii)" -->
+didScroll&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#a963b87c3132fb636a5d049e2fa48f01d">eventToScrollableAtIndex</a> (self, event, ii)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pass a mouse wheel scroll event to a registered object. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#abf78b9ac0047f70e2208c498050c3461">addScrollableChild</a> (self, child, scrollFcn)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a child to receive mouse scroll events.  <a href="#abf78b9ac0047f70e2208c498050c3461"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">b&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#ac08b8111e2fd83041f783e47f54dbef0">addButton</a> (self, position, name, callback)</td></tr>
@@ -112,7 +121,7 @@ ii&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classt
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Subclass may redefine their title, which is passed to the figure. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5829cf32613fb04cc6701ce500076b3a"></a><!-- doxytag: member="topsGUI::set_isBusy" ref="a5829cf32613fb04cc6701ce500076b3a" args="(self, isBusy)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_g_u_i.html#a5829cf32613fb04cc6701ce500076b3a">set_isBusy</a> (self, <a class="el" href="classtops_g_u_i.html#a7dd38bf71fa439890a59ab2c4c8c6699">isBusy</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Toggling isBusy shows a message in the figure title bar. <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Shows a message in the figure title bar when busy. <br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
 <a class="anchor" id="ae1c5a78f24488187fd16473d6b36c9d3"></a><!-- doxytag: member="topsGUI::topsGUI" ref="ae1c5a78f24488187fd16473d6b36c9d3" args="()" -->
@@ -363,7 +372,7 @@ ii&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classt
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Oct 22 18:11:32 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 26 22:30:17 2010 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
