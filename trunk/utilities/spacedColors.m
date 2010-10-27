@@ -1,4 +1,4 @@
-%Colormap with evenly-spaced colors that show up against white
+% Colormap with evenly-spaced colors that show up against white
 %
 %   colors = spacedColors(n)
 %
@@ -17,7 +17,6 @@
 %
 %   See also colormap colorcube
 %   @ingroup utilities
-
 function colors = spacedColors(n)
 
 % define a whiteness index, w = r + g + b, 

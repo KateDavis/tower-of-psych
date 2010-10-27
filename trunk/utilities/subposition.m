@@ -1,4 +1,4 @@
-% Rectangular sub-region of a rectangle.
+% Get a rectangular sub-region of a rectangle.
 %
 % subpos = subposition(position, r, c, ii, jj)
 %
@@ -16,9 +16,7 @@
 % operates on position rectangles (that is, arrays) rather than figures and
 % axes objects.
 % @ingroup utilities
-
 function subpos = subposition(position, r, c, ii, jj)
 w = position(3)/c;
 h = position(4)/r;
 subpos = [position(1)+(jj-1)*w, position(2)+(ii-1)*h, w, h];
-end
