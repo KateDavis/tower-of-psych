@@ -1,6 +1,7 @@
 classdef EventWithData < event.EventData
     % @class EventWithData
     % A way to pass arbitrary data with Matlab events.
+    % @details
     % It's outrageous that Matlab's default EventData class has no property
     % to hold arbitrary data, or no suitable default subclass.
     % EventWithData adds this "userData" property.
@@ -12,7 +13,7 @@ classdef EventWithData < event.EventData
     end
     
     methods
-        % Constructor takes one optional argument
+        % Constructor takes one optional argument.
         % @param userData arbitrary data to pass with the event
         function self = EventWithData(userData)
             self = self@event.EventData;

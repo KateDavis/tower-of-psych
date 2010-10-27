@@ -18,6 +18,7 @@ classdef topsConcurrentComposite < topsRunnableComposite
     end
     
     properties (Hidden, SetObservable = false)
+        % string name for topsDataLog entries about runBriefly invokations
         runBrieflyString = 'runBriefly count';
     end
     

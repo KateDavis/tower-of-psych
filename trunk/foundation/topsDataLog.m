@@ -73,6 +73,10 @@ classdef (Sealed) topsDataLog < topsGroupedList
     end
     
     methods (Access = private)
+        % Constructor is private.
+        % @details 
+        % Use topsDataLog.theDataLog to access the current instance of
+        % topsDataLog.
         function self = topsDataLog
             self.earliestTime = nan;
             self.latestTime = nan;

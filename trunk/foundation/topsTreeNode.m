@@ -52,6 +52,7 @@ classdef topsTreeNode < topsRunnableComposite
     end
     
     properties (Hidden)
+        % cell array of strings for supported iterationMethods
         validIterationMethods = {'sequential', 'random'};
     end
     
