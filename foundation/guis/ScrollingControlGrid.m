@@ -67,6 +67,7 @@ classdef ScrollingControlGrid < handle
             self.initPanels;
         end
         
+        % Delete the display panel when this object is deleted.
         function delete(self)
             if ishandle(self.panel) && self.panel > 0
                 delete(self.panel)
@@ -209,7 +210,8 @@ classdef ScrollingControlGrid < handle
                 set(self.slider, 'Enable', 'off', 'Visible', 'off');
             end
         end
-
+        
+        % Shrink the controls matrix around valid graphics handles.
         function trimEdges(self)
             % trim empty edge rows and columns
             z = size(self.controls);
@@ -234,6 +236,7 @@ classdef ScrollingControlGrid < handle
             self.controls = self.controls(:,keepColumn);
         end
         
+        % Populate the uipanel to display a scrollable grid of controls.
         function initPanels(self)
             h = [self.slider, self.panel, self.controlPanel, self.controls];
             delete(h(ishandle(h)));
@@ -290,6 +293,7 @@ classdef ScrollingControlGrid < handle
     end
     
     methods(Static)
+        % Scroll the panel of controls.
         function didScroll = respondToSliderOrScroll(obj, event, self)
             didScroll = false;
             if strcmp(get(self.slider, 'Enable'), 'on')
@@ -308,6 +312,7 @@ classdef ScrollingControlGrid < handle
             end
         end
         
+        % Calculate a rectangle that bounds other rectangles.
         function mergedPos = mergePositionRects(varargin)
             % take cell array of [x,y,w,h] position rects
             p = vertcat(varargin{:});

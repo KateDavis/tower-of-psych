@@ -21,18 +21,28 @@ classdef topsStateMachineGUI < topsGUI
     % @ingroup foundation
     
     properties
-        % an instance of topsStateMachine to view.
+        % topsStateMachine instance to view
         stateMachine;
+        
+        % ScrollingControlGrid to show stateMachine properties
         machineGrid;
+        
+        % uicontrol button to invoke run() on stateMachine
         machineRunButton;
+        
+        % ScrollingControlGrid to show individual state properties
         statesGrid;
     end
     
     properties(Hidden)
+        % string names of state machine properties to display
         machineProps = {'startFevalable', 'transitionFevalable', 'finishFevalable'};
+        
+        % string name of the state machine property that contains
+        % individual state data
         statesProp = 'allStates';
         
-        % will need to make a real state machine panel
+        % invisible topsDetailPanel used as a utility
         phantomPanel;
     end
     
@@ -59,6 +69,8 @@ classdef topsStateMachineGUI < topsGUI
             end
         end
         
+        % Populate the GUI figure with widgets for visualizing the
+        % stateMachine.
         function createWidgets(self)
             left = .01;
             right = .99;
@@ -89,6 +101,7 @@ classdef topsStateMachineGUI < topsGUI
                 'HorizontalAlignment', 'left');
         end
         
+        % Update the displayed stateMachine properties.
         function repopulateMachineGrid(self)
             self.machineGrid.deleteAllControls;
             
@@ -112,6 +125,7 @@ classdef topsStateMachineGUI < topsGUI
             self.machineGrid.repositionControls;
         end
         
+        % Update the displayed individual state properties.
         function repopulateStatesGrid(self)
             self.statesGrid.deleteAllControls;
             
@@ -142,6 +156,7 @@ classdef topsStateMachineGUI < topsGUI
             self.statesGrid.repositionControls;
         end
         
+        % Register to get notifications from stateMachine.
         function listenToStateMachine(self)
             
             for ii = 1:length(self.machineProps)
@@ -158,28 +173,34 @@ classdef topsStateMachineGUI < topsGUI
             self.addListenerWithName(listener, self.statesProp);
         end
         
+        % Respond to stateMachine property changes
         function hearMachinePropertyChange(self, metaProp, event)
             % rebuild when machine data change
             self.repopulateMachineGrid;
         end
         
+        % Respond to individual state property changes.
         function hearStatesPropertyChange(self, metaProp, event)
             % rebuild when state data change
             self.repopulateStatesGrid;
         end
         
+        % Invoke run() on stateMachine.
         function runMachine(self)
             self.stateMachine.run;
         end
         
+        % Respond to when the stateMachine starts to run() (unimplemented).
         function hearMachineRun(self, machine, event)
             % somehow trace state traversal
             %   when to drawnow?
             %   print a list of states?
         end
         
+        % Resize state machine and individual state displayed properties.
         function repondToResize(self, figure, event)
             % attempt to resize with characters, rather than normalized
+            self.machineGrid.repositionControls;
             self.statesGrid.repositionControls;
         end
     end

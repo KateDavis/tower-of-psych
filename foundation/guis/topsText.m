@@ -1,9 +1,10 @@
 classdef topsText
     % @class topsText
     % Standard uicontrol args for text with static, clickable, toggle, and
-    % edit behaviors
+    % edit, and get/set binding behaviors.
     
     methods (Static)
+        % Get uicontrol args for topsText static text.
         function args = staticText
             args = { ...
                 'Style', 'text', ...
@@ -19,6 +20,7 @@ classdef topsText
                 };
         end
         
+        % Get uicontrol args for all topsText interavtive texts.
         function args = interactiveText
             args = { ...
                 'Style', 'text', ...
@@ -33,6 +35,7 @@ classdef topsText
                 };
         end
         
+        % Get uicontrol args for topsText clickable text.
         function args = clickText
             basic = topsText.interactiveText;
             specific = { ...
@@ -41,12 +44,15 @@ classdef topsText
             args = cat(2, basic, specific);
         end
         
+        % Get uicontrol args for topsText clickable text which invokes a
+        % callback.
         function args = clickTextWithCallback(callback)
             basic = topsText.clickText;
             specific = {'Callback', callback};
             args = cat(2, basic, specific);
         end
         
+        % Get uicontrol args for topsText togglable text.
         function args = toggleText
             basic = topsText.interactiveText;
             specific = {'ButtonDownFcn', @topsText.toggleFcn, ...
@@ -54,12 +60,15 @@ classdef topsText
             args = cat(2, basic, specific);
         end
         
+        % Get uicontrol args for topsText togglable text which invokes a
+        % callback.
         function args = toggleTextWithCallback(callback)
             basic = topsText.toggleText;
             specific = {'Callback', callback};
             args = cat(2, basic, specific);
         end
-        
+
+        % Get uicontrol args for topsText editable text.
         function args = editText
             basic = topsText.interactiveText;
             specific = { ...
@@ -68,6 +77,12 @@ classdef topsText
             args = cat(2, basic, specific);
         end
         
+        % Get uicontrol args for topsText editable which invokes get and
+        % set callbacks.
+        % @param getter function handle to return a value to display in the
+        % text widget
+        % @param setter function handle to apply a user input value
+        % elsewhere
         function args = editTextWithGetterAndSetter(getter, setter)
             basic = topsText.editText;
             data.getter = getter;
@@ -77,6 +92,7 @@ classdef topsText
             args = cat(2, basic, specific);
         end
         
+        % topsText callback used for clicking behavior.
         function clickFcn(obj, event)
             topsText.toggleOn(obj)
             drawnow;
@@ -90,6 +106,7 @@ classdef topsText
             drawnow;
         end
         
+        % topsText callback used for toggling behavior.
         function toggleFcn(obj, event)
             if get(obj, 'Value')
                 topsText.toggleOff(obj)
@@ -104,23 +121,27 @@ classdef topsText
             drawnow;
         end
         
+        % topsText callback used for toggling off.
         function toggleOff(obj)
             v = get(obj, {'Value'});
             topsText.swapColors(obj(logical([v{:}])));
             set(obj, 'Value', false, 'Selected', 'off');
         end
         
+        % topsText callback used for toggling on.
         function toggleOn(obj)
             v = get(obj, {'Value'});
             topsText.swapColors(obj(~logical([v{:}])));
             set(obj, 'Value', true, 'Selected', 'on');
         end
         
+        % topsText callback used for selection highlighting behavior.
         function swapColors(obj)
             cols = get(obj, {'BackgroundColor', 'ForegroundColor'});
             set(obj, {'ForegroundColor', 'BackgroundColor'}, cols);
         end
         
+        % topsText callback used for accepting edit inputs.
         function editBeginFcn(obj, event)
             % attempt to wrap strings in automatically ''
             data = get(obj, 'UserData');
@@ -150,6 +171,7 @@ classdef topsText
             drawnow;
         end
         
+        % topsText callback used for finishing edit inputs.
         function editEndFcn(obj, event)
             cb = get(obj, 'ButtonDownFcn');
             set(obj, 'Value', false, ...
@@ -192,6 +214,7 @@ classdef topsText
             drawnow;
         end
         
+        % topsText callback used to display text edit results.
         function string = displayStringFromGetter(obj, getter)
             if ~isempty(obj) && ishandle(obj)
                 oldUnits = get(obj, 'Units');

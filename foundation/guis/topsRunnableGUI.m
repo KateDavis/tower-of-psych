@@ -31,23 +31,34 @@ classdef topsRunnableGUI < topsGUI
     % @ingroup foundation
     
     properties
-        % The topmost topsRunnable object to visualize in the GUI.
+        % topmost topsRunnable object to visualize in the GUI
         topLevelRunnable;
         
-        % The topsRunnable object whose details are currently displayed.
+        % topsRunnable object whose details are currently displayed
         currentRunnable;
     end
     
     properties(Hidden)
+        % ScrollingControlGrid to display heirarchy of topsRunnable objects
         heirarchyGrid;
+
+        % topsDetailPanel to display details the selected topsRunnable
+        % object
         detailsPanel;
+
+        % uicontrol button to invoke run() on the selected topsRunnable
+        % object
         runButton;
+        
+        % the number of topsRunnable objects displayed
         runnablesCount;
+        
+        % properties that affect the heirarchy of topsRunnable objects
         structuralProps = {'children', 'name'};
     end
     
     methods
-        % Constructor takes one optional argument
+        % Constructor takes one optional argument.
         % @param topLevelRunnable a topsRunnable object to visualize, along
         % with any children
         % @details
@@ -66,6 +77,8 @@ classdef topsRunnableGUI < topsGUI
             end
         end
         
+        % Populate the GUI figure with widgets for visualizing topsRunnable
+        % objects.
         function createWidgets(self)
             left = 0;
             right = 1;
@@ -97,6 +110,7 @@ classdef topsRunnableGUI < topsGUI
                 'HorizontalAlignment', 'center');
         end
         
+        % Show details for the selected topsRunnable object.
         function detailsForRunnable(self, runnable, button)
             self.currentRunnable = runnable;
             
@@ -109,11 +123,12 @@ classdef topsRunnableGUI < topsGUI
             self.detailsPanel.populateWithValueDetails(runnable);
         end
         
-        % Invoke the run() method of the current runnable.
+        % Invoke run() on the selected topsRunnable object.
         function runCurrentRunnable(self)
             self.currentRunnable.run;
         end
         
+        % Update the displayed heirarchy of topsRunnable objects.
         function repopulateHeirarchyGrid(self)
             % delete all listeners and controls
             self.deleteListeners;
@@ -125,6 +140,7 @@ classdef topsRunnableGUI < topsGUI
             self.heirarchyGrid.repositionControls;
         end
         
+        % Add one topsRunnable object to the displayed heirarchy.
         function addRunnableAtDepth(self, runnable, depth, format)
             if nargin < 4 || isempty(format)
                 format = '%s';
@@ -170,6 +186,7 @@ classdef topsRunnableGUI < topsGUI
             end
         end
         
+        % Register to receive notifications from a topsRunnable object.
         function listenToRunnable(self, runnable)
             props = intersect(self.structuralProps, properties(runnable));
             for ii = 1:length(props)
@@ -184,6 +201,7 @@ classdef topsRunnableGUI < topsGUI
             self.addListenerWithName(listener, 'RunStart');
         end
         
+        % Respond when a topsRunnable object property changes
         function hearRunnablePropertyChange(self, metaProp, event)
             self.repopulateHeirarchyGrid;
             
@@ -193,10 +211,12 @@ classdef topsRunnableGUI < topsGUI
             end
         end
         
+        % Show details for a topsRunnable object when it starts to run().
         function hearRunStart(self, runnable, event)
             self.detailsForRunnable(runnable);
         end
         
+        % Resize the heirarchy and details of topsRunnable objects.
         function repondToResize(self, figure, event)
             self.heirarchyGrid.repositionControls;
             self.detailsPanel.repondToResize;

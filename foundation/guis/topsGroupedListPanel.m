@@ -81,7 +81,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             self.listenToGroupedList(groupedList);
             self.repopulateGroupsGrid;
         end
-
+        
         % Sync detailsAreEditable with detail panel and "edit" button.
         function setEditable(self, isEditable)
             self.setEditable@topsDetailPanel(isEditable);
@@ -182,21 +182,25 @@ classdef topsGroupedListPanel < topsDetailPanel
                 'HorizontalAlignment', 'left');
         end
         
+        % Update the displayed group column name.
         function set.groupString(self, groupString)
             self.groupString = groupString;
             set(self.groupLabel, 'String', groupString);
         end
         
+        % Update the displayed mnemonic column name.
         function set.mnemonicString(self, mnemonicString)
             self.mnemonicString = mnemonicString;
             set(self.mnemonicLabel, 'String', mnemonicString);
         end
         
+        % Update the displayed item column name.
         function set.itemString(self, itemString)
             self.itemString = itemString;
             set(self.itemLabel, 'String', itemString);
         end
         
+        % Display mnemonics for a list group.
         function setCurrentGroup(self, group, button)
             self.currentGroup = group;
             self.repopulateMnemonicsGrid;
@@ -207,6 +211,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             end
         end
         
+        % Display details for an item with a given mnemonic.
         function setCurrentMnemonic(self, mnemonic, button)
             self.currentMnemonic = mnemonic;
             
@@ -221,6 +226,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             end
         end
         
+        % Update the diplayed list groups.
         function repopulateGroupsGrid(self)
             groups = self.groupedList.groups;
             self.groupsGrid.deleteAllControls;
@@ -236,6 +242,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             end
         end
         
+        % Update the displayed group mnemonics.
         function repopulateMnemonicsGrid(self)
             mnemonics = self.groupedList.getAllMnemonicsFromGroup( ...
                 self.currentGroup);
@@ -252,6 +259,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             end
         end
         
+        % Add a control to the groups, mnemonics, or item detail column.
         function addGridButton(self, grid, row, name, callback)
             toggle = topsText.toggleTextWithCallback(callback);
             lookFeel = self.getLookAndFeelForValue(name);
@@ -284,6 +292,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             end
         end
         
+        % Register to receive notifications from groupedList.
         function listenToGroupedList(self, groupedList)
             listener = groupedList.addlistener('NewAddition', ...
                 @(source, event)self.hearNewAddition(source, event));
@@ -291,6 +300,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             self.listenerIndex = ii;
         end
         
+        % Respond when an item is added to groupedList.
         function hearNewAddition(self, groupedList, event)
             logEntry = event.userData;
             group = logEntry.group;
@@ -318,6 +328,7 @@ classdef topsGroupedListPanel < topsDetailPanel
             end
         end
         
+        % Resize the groups, mnemonics, and item detail columns.
         function repondToResize(self, figure, event)
             self.groupsGrid.repositionControls;
             self.mnemonicsGrid.repositionControls;

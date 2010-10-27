@@ -55,6 +55,7 @@ classdef topsDataLogGUI < topsGUI
     end
     
     methods
+        % Constructor takes no arguments.
         function self = topsDataLogGUI()
             self = self@topsGUI;
             self.title = 'topsDataLog';
@@ -67,6 +68,7 @@ classdef topsDataLogGUI < topsGUI
             self.plotRaster;
         end
         
+        % Populate the GUI figure with widgets for visualizing topsDataLog.
         function createWidgets(self)
             self.setupFigure;
             log = topsDataLog.theDataLog;
@@ -154,6 +156,7 @@ classdef topsDataLogGUI < topsGUI
                 self.groupsGrid});
         end
         
+        % Show topsDataLog groups and timestamps as a raster.
         function plotRaster(self)
             h = [self.groupTexts, self.groupLines];
             delete(h(ishandle(h)));
@@ -212,6 +215,8 @@ classdef topsDataLogGUI < topsGUI
             end
         end
         
+        % Add a topsDataLog group to the list of displayed data groups and
+        % the raster display.
         function selectGroup(self, group)
             log = topsDataLog.theDataLog;
             
@@ -248,6 +253,7 @@ classdef topsDataLogGUI < topsGUI
             drawnow;
         end
         
+        % Create a control in the list of displayed groups.
         function controlsForGroupAtRow(self, group, row)
             cb = @(obj,event)topsDataLogGUI.gridCallback(obj, event, self);
             toggle = topsText.toggleTextWithCallback(cb);
@@ -256,6 +262,7 @@ classdef topsDataLogGUI < topsGUI
                 row, [1 5], toggle{:}, lookFeel{:});
         end
         
+        % Validate time limits for data display and update the raster.
         function set.tLim(self, tLim)
             if isnumeric(tLim) && numel(tLim) >= 2
                 self.tLim = tLim([1,end]);
@@ -290,6 +297,7 @@ classdef topsDataLogGUI < topsGUI
     end
     
     methods (Static)
+        % Use a user input time limit for display.
         function tLimCallback(obj, event, self)
             try
                 tLim = eval(get(obj, 'String'));
@@ -301,12 +309,15 @@ classdef topsDataLogGUI < topsGUI
             self.tLim = tLim;
         end
         
+        % (De)Select a group that was clicked on in the list of displayed
+        % groups.
         function groupsMenuCallback(obj, event, self)
             groups = get(obj, 'String');
             index = get(obj, 'Value');
             self.selectGroup(groups{index});
         end
         
+        % Use a user-input expression to search for matching groups.
         function groupsRegexpCallback(obj, event, self)
             exp = get(obj, 'String');
             log = topsDataLog.theDataLog;
@@ -316,10 +327,12 @@ classdef topsDataLogGUI < topsGUI
             end
         end
         
+        % Update the raster plot of topsDataLog groups and timestamps.
         function gridCallback(obj, event, self)
             self.plotRaster;
         end
         
+        % Show details for the topsDataLog clicked on from the raster.
         function lineCallback(l, event, self, group)
             clickPoint = get(self.rasterAxes, 'CurrentPoint');
             clickTime = clickPoint(1,1);

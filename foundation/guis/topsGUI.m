@@ -55,6 +55,7 @@ classdef topsGUI < handle
             self.deleteListeners;
         end
         
+        % Delete this topsGUI object when its figure closes.
         function figureClose(self)
             if isvalid(self)
                 delete(self)
@@ -83,6 +84,7 @@ classdef topsGUI < handle
             end
         end
         
+        % Un-register to receive notifications from displayed objects.
         function deleteListeners(self)
             % would like to use struct2array, but
             % cannot concatenate event.listener withevent.proplistener
@@ -182,6 +184,7 @@ classdef topsGUI < handle
             end
         end
         
+        % Pass a mouse wheel scroll event to a registered object.
         function didScroll = eventToScrollableAtIndex(self, event, ii)
             obj = self.scrollables(ii).handle;
             fcn = self.scrollables(ii).fcn;
@@ -244,13 +247,13 @@ classdef topsGUI < handle
             self.buttons(end+1) = b;
         end
         
-        % Subclass may redefine their title, which is passed to the figure
+        % Subclass may redefine their title, which is passed to the figure.
         function set.title(self, title)
             self.title = title;
             set(self.figure, 'Name', title);
         end
         
-        % Toggling isBusy shows a message in the figure title bar
+        % Shows a message in the figure title bar when busy.
         function set.isBusy(self, isBusy)
             self.isBusy = isBusy;
             if isBusy
