@@ -41,11 +41,12 @@ clc
 machine.run;
 
 %% topsConcurrentComposite
-% A topsConcurrentComposite can compose other objects and make them run() together.
-% Actually, it tells its components to runBriefly() one at a time, over and over
-% again, which is a lot like running.  Thus, topsConcurrentComposite only works with
-% objects of the topsConcurrent class and its subclasses, which include
-% topsCallList and topsStateMachine.
+% A topsConcurrentComposite can compose other objects and make them run()
+% together.  Actually, it tells its components to runBriefly() one at a
+% time, over and over again, which is a lot like running.  Thus,
+% topsConcurrentComposite only works with objects of the topsConcurrent
+% class and its subclasses, which include topsCallList and
+% topsStateMachine.
 replies = topsCallList;
 replies.name = 'call other functions';
 replies.addCall(howdy);
