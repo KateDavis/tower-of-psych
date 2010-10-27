@@ -1,4 +1,4 @@
-% Check performance of different data structures
+% Check performance of different Matlab data structures.
 %
 %   benchStructVsMap(n)
 %
@@ -9,8 +9,11 @@
 %   how long it takes to add the values, and how long it takes to access
 %   them.  Plots a summary in the gcf() figure.
 %   @ingroup utilities
-
 function benchStructVsMap(n)
+
+if nargin < 1
+    n = 10000;
+end
 
 % Add and retreive the same keys and data with struct vs containers.Map
 keys = cell(1,n);

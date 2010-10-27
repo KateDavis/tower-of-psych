@@ -50,6 +50,7 @@ classdef ProfilerGrapher < handle
                 @ProfilerGrapher.edgeFromChildren;
         end
         
+        % Generate profiler data with the given toDo expression.
         function info = runProfiler(self)
             profile('on');
             try
@@ -63,6 +64,7 @@ classdef ProfilerGrapher < handle
             self.profilerInfo = info;
         end
         
+        % Filter graphed functions based on includePaths and ignoredPaths.
         function info = appplyFunctionFilter(self, info)
             names = {info.FileName};
 
@@ -84,6 +86,8 @@ classdef ProfilerGrapher < handle
             [info(failed).FunctionName] = deal('');
         end
         
+        % Write a GraphViz ".dot" file that represents filtered profiler
+        % output.
         function writeDotFile(self)
             info = self.profilerInfo.FunctionTable;
             info = self.appplyFunctionFilter(info);
@@ -91,12 +95,14 @@ classdef ProfilerGrapher < handle
             self.dataGrapher.writeDotFile;
         end
         
+        % Generate a graph image from the GraphViz ".dot" file.
         function generateGraph(self)
             self.dataGrapher.generateGraph;
         end
     end
     
     methods (Static)
+        % Make a string which summarizes a function and its type.
         function nodeName = shortNameWithType(inputData, index)
             id = inputData(index);
             if isempty(id.FunctionName)
@@ -108,12 +114,14 @@ classdef ProfilerGrapher < handle
             end
         end
 
+        % Make a string which summarizes a functions's usage.
         function description = totalCallsAndTime(inputData, index)
             id = inputData(index);
             description{1} = sprintf('called %d times (%fs)', ...
                 id.NumCalls, id.TotalTime);
         end
         
+        % Find graph edges corresponding to a function's children.
         function [edgeIndexes, edgeNames] = edgeFromChildren(inputData, index)
             id = inputData(index);
             edgeIndexes = [];
@@ -126,6 +134,7 @@ classdef ProfilerGrapher < handle
             end
         end
         
+        % Clean up and shorten long, fully-qualified function names.
         function shortName = getShortFunctionName(longName)
             if all(isstrprop(longName, 'alphanum'))
                 shortName = longName;

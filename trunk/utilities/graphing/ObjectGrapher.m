@@ -9,11 +9,11 @@ classdef ObjectGrapher < handle
     
     properties
         % containers.Map of objects, where to start looking for object
-        % references.
+        % references
         seedObjects;
         
         % containers.Map of unique objects found while following
-        % references.
+        % references
         uniqueObjects;
         
         % maximum number of references to follow from before stopping (to
@@ -29,11 +29,12 @@ classdef ObjectGrapher < handle
         % struct of object and reference data to graph
         objectInfo;
         
-        % index into uniqueObjects of the last object found;
+        % index into uniqueObjects of the last object found
         currentIndex;
     end
     
     methods
+        % Constructor takes no arguments.
         function self = ObjectGrapher
             self.initializeUniques;
             
@@ -51,21 +52,25 @@ classdef ObjectGrapher < handle
                 @ObjectGrapher.edgeFromReferences;
         end
         
+        % Clear the list of unique objects.
         function initializeUniques(self)
             self.uniqueObjects = containers.Map(-1, -1, 'uniformValues', false);
             self.uniqueObjects.remove(self.uniqueObjects.keys);
         end
         
+        % Use the given object to start looking for object references.
         function addSeedObject(self, object)
             n = self.seedObjects.length + 1;
             self.seedObjects(n) = object;
         end
         
+        % Append a new object to the list of unique objects.
         function n = addUniqueObject(self, object)
             n = self.uniqueObjects.length + 1;
             self.uniqueObjects(n) = object;
         end
         
+        % Determine whether the given object has already been encountered.
         function [contains, index] = containsUniqueObject(self, object)
             contains = false;
             index = [];
@@ -89,6 +94,7 @@ classdef ObjectGrapher < handle
             end
         end
         
+        % Look for unique objects, starting with seedObjects.
         function crawlForUniqueObjects(self)
             self.initializeUniques;
             scanFun = @(object, depth, refPath, objFcn)self.scanObject(object, depth, refPath, objFcn);
@@ -98,6 +104,7 @@ classdef ObjectGrapher < handle
             end
         end
         
+        % Determine whether the given object is unique.
         function scanObject(self, object, depth, refPath, objFcn)
             % detect objectness and uniqueness
             %   drill through objects like they're structs
@@ -126,6 +133,7 @@ classdef ObjectGrapher < handle
             end
         end
         
+        % Locate graph edges based on object references.
         function traceLinksForEdges(self)
             self.crawlForUniqueObjects;
             
@@ -146,6 +154,7 @@ classdef ObjectGrapher < handle
             self.dataGrapher.inputData = self.objectInfo;
         end
         
+        % Store a graph edge between two objects.
         function recordEdge(self, object, depth, refPath, objFcn)
             % record edge from current object to this object
             if isobject(object)
@@ -158,6 +167,7 @@ classdef ObjectGrapher < handle
             end
         end
         
+        % Folow references from one object to other objects.
         function iterateElements(self, object, depth, refPath, objFcn)
             % Iterate elements of complex types to find objects.
             % Keep track of path through nested types to reach object
@@ -235,22 +245,28 @@ classdef ObjectGrapher < handle
             end
         end
         
+        % Write a GraphViz ".dot" file which represents object references.
         function writeDotFile(self)
             self.dataGrapher.writeDotFile;
         end
         
+        % Generate an image based on the GraphViz ".dot" file.
         function generateGraph(self)
             self.dataGrapher.generateGraph;
         end
     end
     
     methods(Static)
+        % Make a name for an object based on its class name an a "serial
+        % letter".
         function nodeName = classNameWithLetter(inputData, index)
             id = inputData(index);
             letters = char(sprintf('%d', index) - '0' + 'a');
             nodeName = sprintf('%s (%s)', id.class, letters);
         end
         
+        % Get graph edges based on an object and its references to other
+        % obects.
         function [edgeIndexes, edgeNames] = edgeFromReferences(inputData, index)
             id = inputData(index);
             edgeIndexes = [];
@@ -261,7 +277,7 @@ classdef ObjectGrapher < handle
             end
         end
         
-        % Put the public properties of the object into a struct
+        % Put the public properties of the object into a struct.
         function structObj = objectToStruct(object)
             metaObj = metaclass(object);
             metaProps = [metaObj.Properties{:}];
