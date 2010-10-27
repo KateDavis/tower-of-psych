@@ -1,25 +1,38 @@
+% Demonstrate some key behaviors of the topsStateMachine class.
+% @details
+% Returns a the topsStateMachine object used in the demo.  The gui() method
+% of the object will let you visualize its state data.
+% @code
+% sm = demoStateMachine;
+% ...
+% sm.gui
+% @endcode
+function sm = demoStateMachine
 
-function sm = stateMachineSandbox
-
+% Create a state machine object and give it a name
 sm = topsStateMachine;
 sm.name = 'sandbox machine';
 
-% each accepts state information as first input
-%   apply to all states
-sm.beginFevalable = {@beginning};
-sm.transitionFevalable = {@transitioning};
-sm.endFevalable = {@ending};
+% chose functions to call before and after doing state traversal
+sm.startFevalable = {@disp, 'starting state traversal'};
+sm.finishFevalable = {@disp, 'finished state traversal'};
 
-% each accepts only user inputs (if any)
-%   may be unique to each state
-%   input may return a state name
+% choose a function to call when transitioning between states
+%   should expect a 1x2 struct array of "to" and "from" state data
+sm.transitionFevalable = {@transitioning};
+
+% define some functions to be called when entering or exiting a state
 entry = {@disp, ' entering state'};
-input = {@getStateInput};
 exit = {@disp, ' exiting state'};
 
-% similar to cell array definition from dotsx
-%   but explicit about field/column names
-%   allows shuffling and omission of fields/columns
+% define a function which returns a value from user input
+%   if the returned value is a state name, it will cause a transitions to
+%   the named state.
+input = {@getStateInput};
+
+% define four states with cell array syntax.
+%   Each row specifies a state, each column specifies values for a property
+%   of the states.
 statesInfo = { ...
     'name',     'timeout',  'next',     'entry', 'input',   'exit'; ...
     'beginning',0,          'middle',   entry,   {},        exit; ...
@@ -28,8 +41,8 @@ statesInfo = { ...
     };
 sm.addMultipleStates(statesInfo);
 
-% alternative specification method
-%   states can be added in bunches, one at a time, etc.
+% define a fifth state with struct syntax.  The struct specifies a single
+% state.  The struct fields specify property valus for the state.
 surp.name = 'surprise!';
 surp.timeout = 0;
 surp.next = '';
@@ -38,25 +51,15 @@ surp.input = {};
 surp.exit = exit;
 sm.addState(surp);
 
-% traverse from topmost state to an end
+% traverse the five states, or a subset of them.
 sm.run;
 
-% % same as run(), but amenable to concurrency
-% sm.begin;
-% while isempty(sm.endTime)
-%     sm.runBriefly;
-% end
-
-function beginning(firstState)
-disp(sprintf('beginning with %s', firstState.name));
-
+% An arbitrary function to call between states.
 function transitioning(transitionStates)
 disp(sprintf('transitioning from %s to %s', ...
     transitionStates(1).name, transitionStates(2).name));
 
-function ending(lastState)
-disp(sprintf('ended with %s', lastState.name));
-
+% A function to get user input for one state.
 function stateName = getStateInput
 disp (' ---')
 stateName = input(' which state next? ', 's');
