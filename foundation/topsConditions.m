@@ -108,10 +108,10 @@ classdef topsConditions < topsRunnable
     end
     
     properties (Hidden, SetObservable = false)
-        % array of sizes for each parameter's @b values.
+        % array of sizes for each parameter's @b values
         allSizes;
         
-        % coefficients to convert contion number to @b values indexes.
+        % coefficients to convert contion number to @b values indexes
         subscriptCoefficients;
         
         % vasrargin details from the last call to setPickingMethod()

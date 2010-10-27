@@ -1,13 +1,20 @@
 classdef topsStateMachine < topsConcurrent
     % @class topsStateMachine
-    % A state machine for controlling flow through e.g. trials.
+    % A state machine for controlling flow through predefined states.
+    % @details
+    % topsStateMachine may contain arbitrary states to be traversed when it
+    % run()s.  Each state may invoke functions and transition to other
+    % states with specified timing.  State traversal may be deterministic,
+    % or may be conditional and branching based on an arbitrary functions.
     %
     % @ingroup foundataion
     
     properties (SetObservable)
-        % struct array of state data.  Each element represents a single
-        % state.  See addState() for details about the struct fields and
-        % state properties.
+        % struct array of data for each state
+        % @details
+        % Each element of allStates represents a single state.  See
+        % addState() for details about the struct fields and state
+        % properties.
         allStates = struct([]);
         
         % optional fevalable cell array to invoke during state transitions
@@ -30,8 +37,9 @@ classdef topsStateMachine < topsConcurrent
         finishTime = [];
         
         % struct of information about the last state encountered during
-        % traversal.  See addState() for details of the struct state
-        % information.
+        % traversal.
+        % @details
+        % See addState() for details of the struct state information.
         finishState = struct([]);
         
         % time when the current state was entered
@@ -40,28 +48,36 @@ classdef topsStateMachine < topsConcurrent
         % time when the current state will reach its timeout
         currentTimeoutTime = [];
         
-        % cell array of strings, names given to functions which are invoked
-        % whenever entering any state.  sharedEntryFevalableNames are
-        % parallel to sharedEntryFevalables.  See addSharedFcn() for
-        % details about shared entry and exit funcions.
+        % cell array of string names given to functions which are invoked
+        % whenever entering any state.
+        % @details
+        % sharedEntryFevalableNames are parallel to sharedEntryFevalables.
+        % See addSharedFcn() for details about shared entry and exit
+        % funcions.
         sharedEntryFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
-        % entering any state.  sharedEntryFevalableNames are parallel to
-        % sharedEntryFevalables.  See addSharedFcn() for details about
-        % shared entry and exit funcions.
+        % entering any state.
+        % @details
+        % sharedEntryFevalableNames are parallel to sharedEntryFevalables.
+        % See addSharedFcn() for details about shared entry and exit
+        % funcions.
         sharedEntryFevalables = {};
         
         % cell array of strings, names given to functions which are invoked
-        % whenever exiting any state.  sharedExitFevalableNames are
-        % parallel to sharedExitFevalables.  See addSharedFcn() for details
-        % about shared entry and exit funcions.
+        % whenever exiting any state.
+        % @details
+        % sharedExitFevalableNames are parallel to sharedExitFevalables.
+        % See addSharedFcn() for details about shared entry and exit
+        % funcions.
         sharedExitFevalableNames = {};
         
         % cell array of fevalable cell arrays which are invoked whenever
-        % exiting any state.  sharedExitFevalableNames are parallel to
-        % sharedExitFevalables.  See addSharedFcn() for details about
-        % shared entry and exit funcions.
+        % exiting any state.
+        % @details
+        % sharedExitFevalableNames are parallel to sharedExitFevalables.
+        % See addSharedFcn() for details about shared entry and exit
+        % funcions.
         sharedExitFevalables = {};
     end
     
@@ -336,7 +352,7 @@ classdef topsStateMachine < topsConcurrent
             else
                 self.finishState = [];
             end
-
+            
             self.finishTime = feval(self.clockFunction);
         end
         
@@ -394,10 +410,10 @@ classdef topsStateMachine < topsConcurrent
                         self.sharedEntryFevalableNames, ...
                         self.sharedEntryFevalables);
                 end
-
+                
             else
                 self.isRunning = false;
-
+                
             end
         end
         
@@ -437,6 +453,7 @@ classdef topsStateMachine < topsConcurrent
             self.enterStateAtIndex(nextIndex);
         end
         
+        % Add an entry to topsDataLog for an fevalable shared among states.
         function logStateSharedFeval(self, state, fcnNames, fcns)
             for ii = 1:length(fcnNames)
                 stateArgs = state.(fcnNames{ii});
