@@ -1,8 +1,8 @@
 classdef topsGroupedListGUI < topsGUI
     % @class topsGroupedListGUI
     % Visualize the items stored in a grouped list.
-    % topsGroupedListGUI shows you a three-column view of a
-    % topsGroupedList (or subclass).
+    % topsGroupedListGUI shows you a three-column view of a topsGroupedList
+    % or subclass.
     % @details
     % The left column shows all the groups in the list.  The middle column
     % shows all the mnemonics in the currently selected group.  The right
@@ -15,11 +15,11 @@ classdef topsGroupedListGUI < topsGUI
     % @details
     % Complex items like cell arrays, structs, and objects are expanded
     % into multiple rows that show their elements, fields, and properties.
-    % Field and property names and are left-aligned and their values are
-    % right-aligned on the next row.  Again strings, including field and
-    % property names, are color-codded.
+    % Field and property names and are right-aligned and their values are
+    % left-aligned on the next row.  Field and property names, are
+    % color-codded like other strings.
     % @details
-    % Struct arrays and object arrays are expanded even further, with a
+    % Struct *arrays* and object *arrays* are expanded even further, with a
     % group of rows for each element of the array.  In this case rows may
     % extend beneath the visible part of the column and a slider bar will
     % appear to bring these rows into view.
@@ -28,15 +28,20 @@ classdef topsGroupedListGUI < topsGUI
     % in bold:
     %   - strings or function handles that can be found on Matlab's path
     %   can be clicked to open them in Matlab's m-file editor.
-    %   - instances of Towe of Psych foundation classes can be clicked to
-    %   open their respective Towe of Psych GUIs.
+    %   - instances of Tower of Psych foundation classes can be clicked to
+    %   open their respective Tower of Psych GUIs.
     %   .
-    % The "to workspace" button in the top right corner of the GUI lets you
+    % The "to workspace" button in the top middle of the GUI lets you
     % send the currently displayed item to Matlab's base workspace (i.e.
     % the Command Window).  If the menmonic for the current item is a valid
     % variable name, the GUI will create or overwrite a variable with that
     % name.  Otherwise, the GUI will create or overwrite a variable with
     % the name "item".
+    % @details
+    % When the "edit" toggle button in the top right of the GUI is presed,
+    % you can edit the currently displayed item.  For complex types you can
+    % also edit cell elements, fields, and properties.  The values within
+    % the grouped list will be altered!
     % @details
     % You can launch topsGroupedListGUI with the topsGroupedListGUI()
     % constructor, or with the gui() method a topsGroupedList or subclass.
