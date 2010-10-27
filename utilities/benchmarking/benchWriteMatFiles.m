@@ -3,6 +3,11 @@ function benchWriteMatFiles
 %
 % With Matlab 7.11.0.584 (R2010b) on a MACI64, overwrite time was quite
 % linear.  This is not surprising.
+%
+% With MATLAB 7.8.0.347 (R2009a) on a MACI (32 bit), overwrite time was
+% quite linear, as well.
+%
+% @ingroup utilities
 
 filename = 'benchMat.mat';
 d = [];

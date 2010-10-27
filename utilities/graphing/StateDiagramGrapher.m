@@ -39,19 +39,30 @@ classdef StateDiagramGrapher < handle
                 @StateDiagramGrapher.edgeFromNextAndInputHints;
         end
         
+        % Add a transition not in the state list to the graph.
+        % @param stateName the name of the state to transition from
+        % @param inputValue the name of the state to transation to (also
+        % the value returned from an input function which causes the
+        % transation to that state)
+        % @details
+        % Adds a transition to the state diagram which was is not obvious
+        % from parsing the state list alone.  Allows graphing of
+        % representative conditional transitions.
         function addInputHint(self, stateName, inputValue)
             hint.stateName = stateName;
             hint.inputValue = inputValue;
             self.inputHints(end+1) = hint;
         end
         
+        % Parse the state list of stateMachine to prepare for graphing.
         function parseStates(self)
             info = self.stateMachine.allStates;
             [info.inputHint] = deal({});
             stateNames = {info.name};
             
             for ii = 1:length(self.inputHints)
-                whichState = strcmp(stateNames, self.inputHints(ii).stateName);
+                whichState = ...
+                    strcmp(stateNames, self.inputHints(ii).stateName);
                 if any(whichState)
                     iv = self.inputHints(ii).inputValue;
                     if iscell(iv)
@@ -72,16 +83,19 @@ classdef StateDiagramGrapher < handle
             self.dataGrapher.inputData = info;
         end
         
+        % Write a GraphViz ".dot" file that specifies the state diagram.
         function writeDotFile(self)
             self.dataGrapher.writeDotFile;
         end
         
+        % Generate an image with GraphVis, based on the ".dot" file.
         function generateGraph(self)
             self.dataGrapher.generateGraph;
         end
     end
     
     methods (Static)
+        % Create a cell array of strings that summarizes some state data.
         function description = statePropertySummary(inputData, index)
             id = inputData(index);
             description = {};
@@ -104,7 +118,9 @@ classdef StateDiagramGrapher < handle
             end
         end
         
-        function [edgeIndexes, edgeNames] = edgeFromNextAndInputHints(inputData, index)
+        % Find edges leading away from a given state.
+        function [edgeIndexes, edgeNames] = edgeFromNextAndInputHints( ...
+                inputData, index)
             id = inputData(index);
             stateNames = {inputData.name};
             edgeIndexes = [];
@@ -118,7 +134,8 @@ classdef StateDiagramGrapher < handle
             for ii = 1:length(id.inputHint)
                 hintName = id.inputHint{ii};
                 if ~isempty(hintName)
-                    edgeIndexes(end+1) = find(strcmp(stateNames, hintName), 1);
+                    edgeIndexes(end+1) = ...
+                        find(strcmp(stateNames, hintName), 1);
                     edgeNames{end+1} = hintName;
                 end
             end

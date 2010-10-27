@@ -131,7 +131,7 @@ classdef DataGrapher < handle
             self.nodes = nodes;
         end
         
-        % Write a string that contains a whole GraphVis specification
+        % Write a string that contains a whole GraphVis specification.
         function string = composeGraph(self)
             self.parseNodes;
             
@@ -153,25 +153,25 @@ classdef DataGrapher < handle
                 nodesWriteout, edgesWriteout);
         end
         
-        % Write a string that contains graph properties
+        % Write a string that contains graph properties.
         function string = composeGraphHeader(self)
             string = self.composeProperties(self.graphProperties, ...
                 sprintf('\n'));
         end
         
-        % Write a string that contains default node properties
+        % Write a string that contains default node properties.
         function string = composeNodeHeader(self)
             propsString = self.composeProperties(self.nodeProperties, ' ');
             string = sprintf('node [%s]', propsString);
         end
         
-        % Write a string that contains default edge properties
+        % Write a string that contains default edge properties.
         function string = composeEdgeHeader(self)
             propsString = self.composeProperties(self.edgeProperties, ' ');
             string = sprintf('edge [%s]', propsString);
         end
         
-        % Write a string that specifies nodes
+        % Write a string that specifies nodes.
         function string = composeNodes(self)
             nColors = size(self.colors, 1);
             for ii = 1:length(self.nodes)
@@ -213,7 +213,7 @@ classdef DataGrapher < handle
             string = sprintf('%s\n', nodeString{:});
         end
         
-        % Write a string that specifies edges
+        % Write a string that specifies edges.
         function string = composeEdges(self)
             nColors = size(self.colors, 1);
             if self.graphIsDirected
@@ -261,7 +261,7 @@ classdef DataGrapher < handle
             string = sprintf('%s\n', edgeString{:});
         end
         
-        % Write a GraphViz specification to file
+        % Write a GraphViz specification to file.
         function writeDotFile(self)
             disp('Writing .dot file...')
             dotString = self.composeGraph;
@@ -286,7 +286,7 @@ classdef DataGrapher < handle
             disp('...done.')
         end
         
-        % Feed the GraphViz specification to GraphViz and get a graph
+        % Feed the GraphViz specification to GraphViz and get a graph.
         function generateGraph(self)
             disp('Generating graph...')
             originalDir = pwd;
@@ -311,7 +311,7 @@ classdef DataGrapher < handle
             disp('...done.')
         end
         
-        % Write out property-value pairs from a struct
+        % Write out property-value pairs from a struct.
         function string = composeProperties(self, propStruct, delimiter)
             string = '';
             props = fieldnames(propStruct);
@@ -331,7 +331,7 @@ classdef DataGrapher < handle
             end
         end
         
-        % Write out a hex string for an RGB[A] color
+        % Write out a hex string for an RGB[A] color.
         function string = composeRGB(self, rgb, a)
             if nargin < 3
                 a = 1;
@@ -344,12 +344,12 @@ classdef DataGrapher < handle
     end
     
     methods (Static)
-        % Default node names from the "name" field
+        % Default node names from the "name" field.
         function nodeName = nodeNameFromField(inputData, index)
             nodeName = inputData(index).name;
         end
         
-        % Default edges from "edge" field, and trivial edge names
+        % Default edges from "edge" field, and trivial edge names.
         function [edgeIndexes, edgeNames] = edgeFromField(inputData, index)
             edgeIndexes = inputData(index).edge;
             edgeNames = cell(size(edgeIndexes));

@@ -1,24 +1,26 @@
+% Try graphing states from the dotris game topsStateMachine
 clear
 clear classes
 clc
 
-% should use a tops-only example
+% configure the full dotris game
 [tree, list] = configureDotris;
 stateMachine = list{'control objects'}{'game machine'};
 gameLogic = list{'control objects'}{'game logic'};
 queryable = list{'input objects'}{'using'};
 
+% create the state diagram grapher object
 sg = StateDiagramGrapher;
 sg.dataGrapher.floatingEdgeNames = true;
 sg.dataGrapher.listedEdgeNames = false;
 sg.stateMachine = stateMachine;
 
-% is there a way to clear or automate this?
-%   - not reasonable to ask every potential input function to report its
-%   outputs
-%   - could ask each state that expects inputs to declare valid inputs
-%       - could use this to validate input function outputs
-%       - might require redundant typing.  can I avoid this?
+% Specify state transitions that are conditional and not obvious from
+% parsing the state list.
+%
+% I don't know a good way to automate this without constraining state
+% machine behavior or requiring a lot of extra typing to specify valid
+% conditional state transitions.
 sg.addInputHint('may fall', gameLogic.outputTickTimeUp);
 sg.addInputHint('may fall', gameLogic.outputTickOK);
 sg.addInputHint('ratchet', gameLogic.outputRatchetLanded);
@@ -35,6 +37,7 @@ classGroup = queryable.classifications{'pause'};
 classStruct = [classGroup{:}];
 sg.addInputHint('pause', {classStruct.output});
 
+% Generate the state diagram
 sg.parseStates;
 sg.writeDotFile;
 sg.generateGraph;

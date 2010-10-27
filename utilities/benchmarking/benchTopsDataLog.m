@@ -7,6 +7,10 @@
 % @ingroup utilities
 function benchTopsDataLog(n)
 
+if nargin < 1
+    n = 100;
+end
+
 groups = cell(1,n);
 data = cell(1,n);
 for ii = 1:n
