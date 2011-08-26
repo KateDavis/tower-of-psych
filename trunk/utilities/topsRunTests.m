@@ -2,8 +2,8 @@
 % @param fileFilter optional regular expression to filter test files
 % @details
 % Runs unit tests for Tower of Psych.  Searches the current folder and
-% subfolders for files whose names begin or entd with "test" or "Test", and
-% executes any matlab u-unit tests they define. If @a fileFilter is
+% subfolders for files whose names begin or end with "test" or "Test", and
+% executes any Matlab xunit tests they define. If @a fileFilter is
 % supplied, limits tests to those files that match @a fileFilter.
 % @details
 % Attempts to avoid sequential effects by invoking multiple "clear"
@@ -17,6 +17,7 @@
 % foundationPassed = topsRunTests('foundation');
 % @ingroup utilities
 function didPass = topsRunTests(fileFilter)
+initialFolder = pwd();
 tic();
 close all
 evalin('base', 'clear all global');
@@ -26,8 +27,6 @@ evalin('base', 'clear mex');
 if nargin < 1
     fileFilter = '';
 end
-
-initialFolder = pwd();
 fileList = findFiles(initialFolder, fileFilter);
 nFiles = numel(fileList);
 
