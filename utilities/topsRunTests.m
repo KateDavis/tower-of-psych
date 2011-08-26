@@ -34,17 +34,20 @@ disp(sprintf('\nRUNNING UNIT TESTS FROM %d FILES\n', nFiles));
 
 didPass = true;
 for ii = 1:nFiles
-    close all
-    evalin('base', 'clear all global');
-    evalin('base', 'clear mex');
-    drawnow();
     
     [filePath, fileName] = fileparts(fileList{ii});
     if ~isempty(regexpi(fileName, '^test')) ...
             || ~isempty(regexpi(fileName, 'test$'))
+        
         cd(filePath);
         suite = TestSuite.fromName(fileName);
         if ~isempty(suite.TestComponents)
+            
+            close all
+            evalin('base', 'clear all global');
+            evalin('base', 'clear mex');
+            drawnow();
+            
             disp(sprintf('\nRUNNING UNIT TESTS FROM FILE %d/%d:\n%s', ...
                 ii, nFiles, fileList{ii}));
             didPass = suite.run();
