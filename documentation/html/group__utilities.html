@@ -61,8 +61,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Check how long it takes to log data in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#ga6c0d4b658d69732eaf1a45cc8826b2aa"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">table&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__utilities.html#gaeab0194b992e54c45c1f0e4b08b4ff6a">observeProperties</a> (object, fig, position)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Visualize properties of a Matlab object.  <a href="#gaeab0194b992e54c45c1f0e4b08b4ff6a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">didPass&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__utilities.html#ga0441aee7a4cc64a17c30095e03651caf">runAllTopsTests</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke mtest's runtests() for all of the tops directories.  <a href="#ga0441aee7a4cc64a17c30095e03651caf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">colors&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__utilities.html#ga20c2a9d88cc69e34da72b43b2defa10b">spacedColors</a> (n)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Colormap with evenly-spaced colors that show up against white.  <a href="#ga20c2a9d88cc69e34da72b43b2defa10b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">subpos&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__utilities.html#gabcc16a599bb7fdff575e590104793d9d">subposition</a> (position, r, c, ii, jj)</td></tr>
@@ -71,6 +69,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Summarize various data as strings.  <a href="#ga38022a3fa45f2d291ec5c21fdb529746"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__utilities.html#ga547e1669d76d42bc46d33a7c65705be8">topsClock</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A clock function based on Matlab's built in tic() and toc().  <a href="#ga547e1669d76d42bc46d33a7c65705be8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">didPass&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__utilities.html#ga3ec01118c129c781ee8152f206a9f6b6">topsRunTests</a> (fileFilter)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke Tower of Psych unit tests at or below the current folder.  <a href="#ga3ec01118c129c781ee8152f206a9f6b6"></a><br/></td></tr>
 </table>
 <hr/><h2>Function Documentation</h2>
 <a class="anchor" id="ga5d0d1dfb3f1fd823fd5ed6543fecaf07"></a><!-- doxytag: member="benchStructVsMap.m::benchStructVsMap" ref="ga5d0d1dfb3f1fd823fd5ed6543fecaf07" args="(n)" -->
@@ -173,27 +173,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       table = <a class="code" href="group__utilities.html#gaeab0194b992e54c45c1f0e4b08b4ff6a" title="Visualize properties of a Matlab object.">observeProperties</a>(tree);
       tree.name = <span class="stringliteral">&apos;new name&apos;</span>;
 </pre></div><p> The table should display the value 'new name'. </p>
-
-</div>
-</div>
-<a class="anchor" id="ga0441aee7a4cc64a17c30095e03651caf"></a><!-- doxytag: member="runAllTopsTests.m::runAllTopsTests" ref="ga0441aee7a4cc64a17c30095e03651caf" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">didPass runAllTopsTests </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Invoke mtest's runtests() for all of the tops directories. </p>
-<p>didPass = runAllTopsTests</p>
-<p>Run all unit test for the Tower of Psych code. Returns true if all tests pass. If any test fails, finishes tests in the current foler, then aborts and returns false. </p>
 
 </div>
 </div>
@@ -336,6 +315,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 </div>
 </div>
+<a class="anchor" id="ga3ec01118c129c781ee8152f206a9f6b6"></a><!-- doxytag: member="topsRunTests.m::topsRunTests" ref="ga3ec01118c129c781ee8152f206a9f6b6" args="(fileFilter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">didPass topsRunTests </td>
+          <td>(</td>
+          <td class="paramtype">fileFilter&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Invoke Tower of Psych unit tests at or below the current folder. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>fileFilter</em>&nbsp;</td><td>optional regular expression to filter test files</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Runs unit tests for Tower of Psych. Searches the current folder and subfolders for files whose names begin or end with "test" or "Test", and executes any Matlab xunit tests they define. If <em>fileFilter</em> is supplied, limits tests to those files that match <em>fileFilter</em>.</p>
+<p>Attempts to avoid sequential effects by invoking multiple "clear" statements between test files.</p>
+<p>If all unit tests are successful, returns true. If any unit test fails, aborts and returns false.</p>
+<p>Here are some examples: everythingPassed = <a class="el" href="group__utilities.html#ga3ec01118c129c781ee8152f206a9f6b6" title="Invoke Tower of Psych unit tests at or below the current folder.">topsRunTests()</a>; foundationPassed = topsRunTests('foundation'); </p>
+
+</div>
+</div>
 </div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -351,7 +360,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Oct 27 22:13:25 2010 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 4 16:49:05 2011 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
