@@ -54,7 +54,12 @@ classdef topsValuePanel < topsDetailPanel
             
             if isobject(self.detailsGrid)
                 self.detailsGrid.deleteAllControls;
+                
             else
+                if ~isempty(self.detailsGrid)
+                    self.parentGUI.removeScrollableChild( ...
+                        self.detailsGrid.panel);
+                end
                 self.detailsGrid = ScrollingControlGrid(self.panel);
                 self.parentGUI.addScrollableChild( ...
                     self.detailsGrid.panel, ...

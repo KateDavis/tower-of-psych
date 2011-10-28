@@ -111,7 +111,8 @@ classdef topsStateMachine < topsConcurrent
     methods
         % Constructor takes no arguments.
         function self = topsStateMachine
-            self.stateNameToIndex = containers.Map('a', 1, 'uniformValues', false);
+            self.stateNameToIndex = containers.Map( ...
+                'a', 1, 'uniformValues', false);
             self.stateNameToIndex.remove(self.stateNameToIndex.keys);
         end
         
@@ -149,7 +150,8 @@ classdef topsStateMachine < topsConcurrent
             sz = size(statesInfo);
             allStateIndexes = zeros(1,sz(1)-1);
             for ii = 2:sz(1)
-                newState = cell2struct(statesInfo(ii,:), statesInfo(1,:), 2);
+                newState = cell2struct( ...
+                    statesInfo(ii,:), statesInfo(1,:), 2);
                 allStateIndexes(ii-1) = self.addState(newState);
             end
         end
@@ -166,10 +168,10 @@ classdef topsStateMachine < topsConcurrent
         % 	- @b entry a fevalable cell array to invoke whenever
         % entering the state
         % 	- @b input: a fevalable cell array to invoke after entering
-        % the state, during each call to runBriefly().  Expected to return a
-        % single value, which may be the @b name of a state, in which case
-        % the state machine will transition to that state immediately.  @b
-        % timeout must be nonzero for @b input to be invoked.
+        % the state, during each call to runBriefly().  Expected to return
+        % a single value, which may be the @b name of a state, in which
+        % case the state machine will transition to that state immediately.
+        % @b timeout must be nonzero for @b input to be invoked.
         % 	- @b exit: a fevalable cell array to invoke whenever exiting
         % the state
         %   .
@@ -266,8 +268,8 @@ classdef topsStateMachine < topsConcurrent
         % 'entry'.
         % @details
         % Adds @a fcn to the state machine's sharedEntryFevalables or
-        % sharedExitFevalables.  These functions are called for every state, in
-        % addition to each state's own entry and exit.
+        % sharedExitFevalables.  These functions are called for every
+        % state, in addition to each state's own entry and exit.
         % @details
         % Each state may specify additional arguments to pass to @a fcn.
         % These may be specified like other state data, using @a name as
@@ -284,7 +286,8 @@ classdef topsStateMachine < topsConcurrent
             
             switch when
                 case 'entry'
-                    existing = strcmp(self.sharedEntryFevalableNames, name);
+                    existing = strcmp( ...
+                        self.sharedEntryFevalableNames, name);
                     if any(existing)
                         index = find(existing, 1);
                     else
@@ -320,7 +323,8 @@ classdef topsStateMachine < topsConcurrent
         end
         
         % Get a struct of info about a state with a given name.
-        function [stateInfo, allStateIndex] = getStateInfoByName(self, stateName)
+        function [stateInfo, allStateIndex] = getStateInfoByName( ...
+                self, stateName)
             [isState, allStateIndex] = self.isStateName(stateName);
             if isState
                 stateInfo = self.allStates(allStateIndex);
@@ -358,12 +362,12 @@ classdef topsStateMachine < topsConcurrent
         
         % Do a little flow control within the state list.
         % @details
-        % topsStateMachine extends the runBriefly() method of topsConcurrent to do
-        % state traversal.  It checks the input fevalable for the current
-        % state and if the input returns a state name, transitions to that
-        % state.  If not, it checks whether the current state's timeout has
-        % expired.  If so it transitions to the next state.  If there is no
-        % next state, traversal ends.
+        % topsStateMachine extends the runBriefly() method of
+        % topsConcurrent to do state traversal.  It checks the input
+        % fevalable for the current state and if the input returns a state
+        % name, transitions to that state.  If not, it checks whether the
+        % current state's timeout has expired.  If so it transitions to the
+        % next state.  If there is no next state, traversal ends.
         function runBriefly(self)
             % poll for input
             if ~isempty(self.currentInputFevalable)
@@ -437,7 +441,7 @@ classdef topsStateMachine < topsConcurrent
             self.logFeval(fevalName, currentState.exit);
         end
         
-        % call transitionFevalable before exiting last and entering next state
+        % Invoke transitionFevalable before exiting previous state.
         function transitionToStateWithName(self, nextName)
             nextIndex = self.stateNameToIndex(nextName);
             self.exitCurrentState;
@@ -445,7 +449,8 @@ classdef topsStateMachine < topsConcurrent
             if ~isempty(self.transitionFevalable)
                 inserted = cell(1, numel(self.transitionFevalable) + 1);
                 inserted(1) = self.transitionFevalable(1);
-                inserted{2} = self.allStates([self.currentIndex, nextIndex]);
+                inserted{2} = self.allStates( ...
+                    [self.currentIndex, nextIndex]);
                 inserted(3:end) = self.transitionFevalable(2:end);
                 self.logFeval(self.transitionString, inserted)
             end

@@ -6,8 +6,8 @@ classdef topsConditions < topsRunnable
     % computes all the combinations of parameter values.  It can traverse
     % conditions by number, and apply parameter values to various objects
     % automatically.  Since topsConditions is a topsRunnable subclass, it
-    % allows traversal of conditions to control the flow and duration
-    % through an experiment.
+    % can control the flow of an experiment based on the traversal of
+    % conditions.
     % @details
     % Each time a topsConditions object run()s, it will pick a new
     % condition, which is a unique combination of parameter values.  Each
@@ -20,13 +20,13 @@ classdef topsConditions < topsRunnable
     % trancends multiple calls to run().  Thus, it must be reset() to begin
     % picking conditions from scratch.  When pickingMethod runs out of
     % conditions to pick, or when maxPicks is reached (whichever is first),
-    % An object sets isDone to true and invokes donePickingFevalable.  If
+    % an object sets isDone to true and invokes donePickingFevalable.  If
     % its caller is set to a topsRunnable object, it also sets isRunning to
     % false for that object.
     % @ingroup foundation
     
     properties (SetObservable)
-        % struct of parameter names value sets, and assignment targets
+        % struct array of parameter names, values and assignment targets
         % @details
         % Each field name of allParameters is the name of an arbitrary
         % parameter. Each field contains another struct with the fields:
