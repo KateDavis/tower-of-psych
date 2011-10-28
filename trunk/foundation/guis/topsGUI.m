@@ -224,6 +224,14 @@ classdef topsGUI < handle
                 self.scrollables(end+1) = s;
             end
         end
+
+        % Remove a child so it no longer receives mouse scroll events.
+        % @param child a graphical child that was added with
+        % addScrollableChild()
+        function removeScrollableChild(self, child)
+            scrollableHandles = [self.scrollables.handle];
+            self.scrollables(scrollableHandles == child) = [];
+        end
         
         % Add a button with given position and callback.
         % @param position normalized [x y w h] where to place the new
