@@ -98,7 +98,7 @@ classdef topsTreeNode < topsRunnableComposite
                 while ii < self.iterations && self.isRunning
                     ii = ii + 1;
                     self.iterationCount = ii;
-
+                    
                     switch self.iterationMethod
                         case 'random'
                             childSequence = randperm(nChildren);
