@@ -174,10 +174,14 @@ classdef topsDataFile
         % @details
         % Returns @a fHeader, which may have been modified with new
         % metadata.
-        function fHeader = write(fHeader, newIncrement)            
-            if ~exist(fHeader.fileWithPath)
+        function fHeader = write(fHeader, newIncrement)
+            fid = fopen(fHeader.fileWithPath, 'r');
+            if fid < 0
                 % create the file
+                disp('rewrite')
                 save(fHeader.fileWithPath, 'fHeader');
+            else
+                fclose(fid);
             end
             
             if nargin > 1
