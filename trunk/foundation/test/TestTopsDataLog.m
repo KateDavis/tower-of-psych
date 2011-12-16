@@ -86,17 +86,23 @@ classdef TestTopsDataLog < TestCase
         
         function testToFromFile(self)
             theLog = topsDataLog.theDataLog;
-            self.logSomeData;
-            expectedLength = theLog.length;
             
+            % should be safe to write a file before logging data
             topsDataLog.writeDataFile(self.filename);
             assertTrue(exist(self.filename) > 0, ...
                 'should have created data file')
             
-            topsDataLog.flushAllData;
+            % add data to log in memory
+            self.logSomeData();
+            expectedLength = theLog.length;
+
+            % write data to disk and clear data in memory
+            topsDataLog.writeDataFile(self.filename);
+            topsDataLog.flushAllData();
             assertEqual(theLog.length, 0, ...
                 'failed to clear log after saving file')
             
+            % recover data from disk
             topsDataLog.readDataFile(self.filename);
             assertEqual(theLog.length, expectedLength, ...
                 'read wrong number of data from file')

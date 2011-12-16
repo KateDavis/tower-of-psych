@@ -94,7 +94,9 @@ classdef (Sealed) topsDataLog < topsGroupedList
             newRange = [self.lastWriteTime, inf];
             newData = topsDataLog.getSortedDataStruct(newRange);
             
-            self.lastWriteTime = self.latestTime;
+            if isfinite(self.latestTime)
+                self.lastWriteTime = self.latestTime;
+            end
             self.fHeader.userData.clockFunction = self.clockFunction;
             self.fHeader.userData.earliestTime = self.earliestTime;
             self.fHeader.userData.latestTime = self.latestTime;
@@ -342,7 +344,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             end
 
             if ~isempty(self.fileWithPath)
-                self.writeIncrementToFile;
+                self.writeIncrementToFile();
             end
         end
         
@@ -395,9 +397,9 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 %   from before topsDataFile and incremental writing
                 vars = who('-file', self.fileWithPath);
                 if any(strcmp(vars, 'logStruct'))
-                    dataStruct = self.readOldLogStructFromFile;
+                    dataStruct = self.readOldLogStructFromFile();
                 else
-                    dataStruct = self.readIncrementFromFile;
+                    dataStruct = self.readIncrementFromFile();
                 end
             end
         end
