@@ -178,7 +178,6 @@ classdef topsDataFile
             fid = fopen(fHeader.fileWithPath, 'r');
             if fid < 0
                 % create the file
-                disp('rewrite')
                 save(fHeader.fileWithPath, 'fHeader');
             else
                 fclose(fid);
