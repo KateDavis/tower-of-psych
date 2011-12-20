@@ -116,7 +116,8 @@ classdef topsRunnable < topsFoundation
         % funciton call of interest has occurred, and then call the
         % function.  The log entry will contain the name of this
         % topsRunnable object, concatenated with @a fevalName.  It will
-        % store the function handle from the first element of @a fevalable.
+        % convert the function handle from the first element of @a
+        % fevalable to a string and store the string.
         % @details
         % The log entry will not store any of the arguments from the second
         % or later elements of @a fevalable.  This is because the arguments
@@ -128,11 +129,15 @@ classdef topsRunnable < topsFoundation
         function logFeval(self, fevalName, fevalable)
             if ~isempty(fevalable)
                 group = sprintf('%s:%s', self.name, fevalName);
+                func = fevalable{1};
+                if isa(func, 'function_handle')
+                    func = func2str(func);
+                end
                 data = struct( ...
                     'runnableClass', class(self), ...
                     'runnableName', self.name, ...
                     'fevalName', fevalName, ...
-                    'fevalFunction', fevalable{1});
+                    'fevalFunction', func);
                 topsDataLog.logDataInGroup(data, group);
                 feval(fevalable{:});
             end
