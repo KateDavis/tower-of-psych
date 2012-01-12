@@ -36,3 +36,5 @@ Tower of Psych will also implement object grouping behavior.
 It will be up to users to group objects together that have members in common.
 
 Aggregated objects won't have to know anything about topsGroup or how grouping is accomplished.  Aggregated objects may be referred to by topsGroup instance, and an internal key or index.
+
+One open question: if aggregated objects are really naive, what will be a good way to access an individual object (say, for removal from the group)?  Matlab does not support objects as Map keys, or expose comparable object pointers.  This implies searching for objects by equality.  Maybe this is the default behavior.  If performance matters, an object's key can be returned for future use.
