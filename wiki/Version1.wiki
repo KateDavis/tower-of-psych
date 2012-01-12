@@ -12,4 +12,71 @@ This page contains my laundry list of changes to Tower of Psych.
 
 <wiki:toc max_depth="4" />
 
-hang on...
+===January2010===
+The first goal is to complete the changes in the January2012 milestone.
+
+===GUIs===
+The topsGUI code evolved into a mess.  I want to clean it up so that it can become more useful.
+
+  * ScrollingControlGrid -> topsControlGrid
+  * Need to refactor GUI code for use cases and clarity, cause it's a mess
+  * Fewer GUIs?
+  * GUIs need to show relevant data, rather than automatic data
+  * Make awesome "pueblo" color scheme
+  * Figure out how to re-summarize text, as widget resizes
+ (big - 3 days)
+
+===Member Access===
+  * I want to agree across the code base on on hidden vs. protected member access, as a point of code style
+ (small)
+  
+===Demos===
+  * Move encounter/ and spots/ into tasks/ folder
+ (small)
+
+===Foundation===
+  * EventWithData -> topsEvent
+ (small)
+
+===Utilities===
+Several of the utilities/ functions can be cleaned up or organized
+
+  * Retain spacedColors, but implement "pueblo" as well
+  * summarizeValue may truncate internally
+  * bench* -> benchmark*, retain all as points of interest
+  * _Grapher -> tops_Grapher
+  * GrapherSandbox -> demo_Grapher, comment, move to demos/graphing/
+ (small)
+
+===Tests===
+  * Rename tests to agree with 1.0
+  * TestStringifyValue -> TestSummarizeValue
+ (small)
+
+===Wiki===
+The wiki should be filled out and brought into agreement with the code and docs
+
+  * Replace aboutTowerOfPsych with ComponentsAndConcepts page
+    * component descriptions
+    * checkout links for component folders
+    * sweet diagram
+ (big - 1 day)
+
+===Docs===
+  * Doc front page as TOC, not as intro
+  * Focus on classes and functions as API/reference
+  * Remove confusing nav tabs
+ (small)
+
+===Issues===
+  * Close issues solved in 1.0
+  * _No-Solve other issues with a note (did on 8 Jan)_
+ (small)
+
+===Main Page===
+  * Short intro, components
+  * Short status
+  * Link to aboutTowerOfPsych wiki page
+  * Shouts out to related projects
+  * Check out link for Version 1
+ (small)
