@@ -1,6 +1,6 @@
 #summary Goals and progress towards Version 1!
 
-I'm going to try for a major revision, called Version 1.  I expect to finish it by April, 2012.  My big goals for 1.0 are:
+I'm aiming for a major revision, called Version 1.  I expect to finish it by April, 2012.  My big goals for 1.0 are:
 
   * Good agreement among project areas, including code base, documentation, and project site.
   * Resolution of outstanding project issues, removal of stale issues
@@ -44,8 +44,8 @@ Several of the utilities/ functions can be cleaned up or organized.
   * Retain spacedColors, but implement "pueblo" as well
   * summarizeValue may truncate internally
   * bench* -> benchmark*, retain all as points of interest
-  * _Grapher -> tops_Grapher
-  * GrapherSandbox -> demo_Grapher, comment, move to demos/graphing/
+  * "Grapher" -> "tops_Grapher"
+  * "GrapherSandbox" -> "demo_Grapher", comment, move to demos/graphing/
  (small)
 
 ===Tests===
