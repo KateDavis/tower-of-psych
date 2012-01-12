@@ -43,7 +43,7 @@ Several of the utilities/ functions can be cleaned up or organized.
 
   * Retain spacedColors, but implement "pueblo" as well
   * summarizeValue may truncate internally
-  * bench* -> benchmark*, retain all as points of interest
+  * "bench_" -> "benchmark_", retain all as points of interest
   * "Grapher" -> "tops_Grapher"
   * "GrapherSandbox" -> "demo_Grapher", comment, move to demos/graphing/
  (small)
