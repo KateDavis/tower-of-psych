@@ -1,0 +1,38 @@
+#summary Tower of Psych milestones for January 2012
+
+"January2012" will be the third formal milestone for the Tower of Psych project.  It will correspond to the repository tag called January2012:
+{{{
+http://tower-of-psych.googlecode.com/svn/tags/January2012
+}}}
+
+[http://tower-of-psych.googlecode.com/svn-history/r632/documentation/html/index.html Documentation contemporary with January2012] will be available.
+
+January2012 will receive bug fixes, but new API and feature changes will go in the trunk, to be included in a later milestone.
+
+*Note: this repository tag doesn't exist yet, but it will in January.*
+
+<wiki:toc max_depth="4" />
+
+===Overview===
+January2012 implements two features: classification for spatial data, and aggregation of objects into groups for doing operations in batches.
+
+===Classification===
+Tower of Psych will implement classes for modeling and classifying spatial data (or any data treated as spatial).
+
+  * topsDimension will model a discrete, finite spatial dimensions
+  * topsSpace will aggregate Dimensions to define a discrete, finite space
+  * topsRegion will model a region within a Space
+  * topsClassification will classify spatial data based on Regions within a Space
+
+topsStateMachine will make use of topsClassification.  Each state may have its own Classification, allowing it to respond to inputs in a state-dependent way.  This functionality will supplement state input functions.
+
+StateMachineGrapher will be able to "peek" at Classifications used by topsStateMachine, in order to produce rich graphs.
+
+===Grouping===
+Tower of Psych will also implement object grouping behavior.
+
+  * topsGroup will aggregate arbitrary objects and do member access and invocation in batches.
+
+It will be up to users to group objects together that have members in common.
+
+Aggregated objects won't have to know anything about topsGroup or how grouping is accomplished.  Aggregated objects may be referred to by topsGroup instance, and an internal key or index.
