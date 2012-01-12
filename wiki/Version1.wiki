@@ -1,6 +1,6 @@
-#summary Goals and progress towards version 1.0!
+#summary Goals and progress towards Version 1!
 
-I'm going to try for a major revision, called Version 1.  I expect to finish it by April, 2012.  The big goals for 1.0 are:
+I'm going to try for a major revision, called Version 1.  I expect to finish it by April, 2012.  My big goals for 1.0 are:
 
   * Good agreement among project areas, including code base, documentation, and project site.
   * Resolution of outstanding project issues, removal of stale issues
