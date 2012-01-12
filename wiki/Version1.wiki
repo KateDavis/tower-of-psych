@@ -1,0 +1,15 @@
+#summary Goals and progress towards version 1.0!
+
+I'm going to try for a major revision, called Version 1.  I expect to finish it by April, 2012.  The big goals for 1.0 are:
+
+  * Good agreement among project areas, including code base, documentation, and project site.
+  * Resolution of outstanding project issues, removal of stale issues
+  * Good explanation of project components, and how to access components individually, without requiring [http://idioms.thefreedictionary.com/whole+enchilada the whole enchelada]
+  * Installer to easily get Version 1 by name (no need to know about repository tags, trunk etc.)
+  * Expectation of long-term stability
+
+This page contains my laundry list of changes to Tower of Psych.
+
+<wiki:toc max_depth="4" />
+
+hang on...
