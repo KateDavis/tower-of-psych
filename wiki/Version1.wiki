@@ -13,7 +13,7 @@ This page contains my laundry list of changes to Tower of Psych.
 <wiki:toc max_depth="4" />
 
 ===January2010===
-The first goal is to complete the changes in the January2012 milestone.
+The first goal is to complete the changes in the [January2012] milestone.
 
 ===GUIs===
 The topsGUI code evolved into a mess.  I want to clean it up so that it can become more useful.
