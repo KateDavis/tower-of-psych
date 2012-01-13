@@ -19,8 +19,8 @@ January2012 implements two features: classification for spatial data, and aggreg
 ===Classification===
 Tower of Psych will implement classes for modeling and classifying spatial data (or any data treated as spatial).
 
-  * topsDimension will model a discrete, finite spatial dimensions
-  * topsSpace will aggregate Dimensions to define a discrete, finite space
+  * _topsDimension will model discrete, finite spatial dimensions (did on 13 Jan)_
+  * _topsSpace will aggregate Dimensions to define a discrete, finite space (did on 13 Jan)_
   * topsRegion will model a region within a Space
   * topsClassification will classify spatial data based on Regions within a Space
 
