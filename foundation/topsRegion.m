@@ -137,16 +137,13 @@ classdef topsRegion
             end
             
             % set points in the logical selector
+            self.selector(:) = false;
             if any(dimSelector)
                 % set partitioned region to true
                 spaceInds = {self.space.dimensions.indices};
                 spaceInds{dimInd} = find(dimSelector);
                 asignStruct = substruct('()', spaceInds);
                 self.selector = subsasgn(self.selector, asignStruct, true);
-                
-            else
-                % found nothing to partition, set all to false
-                self.selector(:) = false;
             end
             
             % describe this partition
