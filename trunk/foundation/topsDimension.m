@@ -19,6 +19,9 @@ classdef topsDimension
         
         % number of points along the dimension
         nPoints = 0;
+
+        % indexes along the dimension, 1 through nPoints
+        indices = [];
         
         % the smallest value
         minimum = 0;
@@ -64,6 +67,7 @@ classdef topsDimension
         function self = setPoints(self, minimum, maximum, nPoints)
             self.points = linspace(minimum, maximum, nPoints);
             self.nPoints = nPoints;
+            self.indices = 1:nPoints;
             if self.nPoints > 1
                 self.minimum = minimum;
                 self.maximum = maximum;

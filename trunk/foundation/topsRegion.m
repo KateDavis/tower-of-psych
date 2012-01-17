@@ -139,8 +139,9 @@ classdef topsRegion
             % set points in the logical selector
             if any(dimSelector)
                 % set partitioned region to true
-                subInds = {find(dimSelector)};
-                asignStruct = substruct('()', subInds);
+                spaceInds = {self.space.dimensions.indices};
+                spaceInds{dimInd} = find(dimSelector);
+                asignStruct = substruct('()', spaceInds);
                 self.selector = subsasgn(self.selector, asignStruct, true);
                 
             else
@@ -149,8 +150,8 @@ classdef topsRegion
             end
             
             % describe this partition
-            self.description = sprintf('%s%s%.2f', ...
-                dimName, comparison, value);
+            self.description = sprintf('%s%s%s', ...
+                dimName, comparison, num2str(value));
             self.nPoints = sum(self.selector(:));
         end
         
@@ -180,19 +181,28 @@ classdef topsRegion
             % use the first region as a template for the complex region
             complex = regions(1);
             
+            % clear simple partition info
+            complex.partitionDimension = '';
+            complex.partitionValue = [];
+            complex.partitionComparison = '';
+            
             % concatenate selectors along a higher dimension
-            grandN = 1 + numel(self.space.dimensions);
+            grandN = 1 + numel(complex.space.dimensions);
             grandSelector = cat(grandN, regions.selector);
             
             % collapse along the higher dimension to with specified logic
             switch operator
                 case 'intersection'
                     complex.selector = all(grandSelector, grandN);
-                    format = '%s%&';
+                    format = '%s&';
                     
                 case 'union'
                     complex.selector = any(grandSelector, grandN);
-                    format = '%s%|';
+                    format = '%s|';
+                    
+                otherwise
+                    disp(sprintf('unknown operator "%s"', operator))
+                    return;
             end
             
             % invert the combination results?
@@ -201,18 +211,13 @@ classdef topsRegion
             end
             
             % describe the combination
-            complex.nPoints = sum(self.selector(:));
+            complex.nPoints = sum(complex.selector(:));
             nameCat = sprintf(format, regions.name);
             if isInverted
-                complex.description = sprintf('(%s)', nameCat(1:end-1));
-            else
                 complex.description = sprintf('!(%s)', nameCat(1:end-1));
+            else
+                complex.description = sprintf('(%s)', nameCat(1:end-1));
             end
-            
-            % clear simple partition info
-            complex.partitionDimension = '';
-            complex.partitionValue = [];
-            complex.partitionComparison = '';
         end
         
         % Make rectangular partitions.
@@ -251,13 +256,13 @@ classdef topsRegion
             % combine the partitions into one region
             regions = [xGE, xLE, yGE, yLE];
             isInverted = nargin >= 5 && strcmp(inOut, 'out');
-            self = regions.combine('intersetction', isInverted);
+            self = regions.combine('intersection', isInverted);
             
-            rectName = sprintf('%.2f ', rect);
+            rectName = num2str(rect);
             if isInverted
-                self.description = sprintf('out[%s]', rectName(1:end-1));
+                self.description = sprintf('out[%s]', rectName);
             else
-                self.description = sprintf('in[%s]', rectName(1:end-1));
+                self.description = sprintf('in[%s]', rectName);
             end
         end
     end
