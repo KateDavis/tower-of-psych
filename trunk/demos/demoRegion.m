@@ -7,8 +7,8 @@ close all
 % x ranges 1-100 and has 100 sample points
 % y also ranges 1-100 and has 100 sample points
 % z ranges 1-3 and has 3 sample points
-dims(1) = topsDimension('x', 0, 100, 100);
-dims(2) = topsDimension('y', 0, 100, 100);
+dims(1) = topsDimension('x', 1, 100, 100);
+dims(2) = topsDimension('y', 1, 100, 100);
 dims(3) = topsDimension('z', 1, 3, 3);
 
 % aggregate the dimensions into a space
