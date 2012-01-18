@@ -47,7 +47,8 @@ classdef TestTopsCallList < TestCase
         
         function testRunThroughCalls(self)
             for ii = 1:self.nFunctions
-                self.callList.addCall(self.orderedFunctions{ii});
+                name = sprintf('%d', ii);
+                self.callList.addCall(self.orderedFunctions{ii}, name);
             end
             
             self.callList.alwaysRunning = false;

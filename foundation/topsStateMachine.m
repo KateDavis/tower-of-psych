@@ -48,37 +48,15 @@ classdef topsStateMachine < topsConcurrent
         % time when the current state will reach its timeout
         currentTimeoutTime = [];
         
-        % cell array of string names given to functions which are invoked
-        % whenever entering any state.
-        % @details
-        % sharedEntryFevalableNames are parallel to sharedEntryFevalables.
-        % See addSharedFcn() for details about shared entry and exit
-        % funcions.
-        sharedEntryFevalableNames = {};
+        % struct array of shared fevalables and names
+        sharedEntry = struct( ...
+            'name', {}, ...
+            'fevalable', {});
         
-        % cell array of fevalable cell arrays which are invoked whenever
-        % entering any state.
-        % @details
-        % sharedEntryFevalableNames are parallel to sharedEntryFevalables.
-        % See addSharedFcn() for details about shared entry and exit
-        % funcions.
-        sharedEntryFevalables = {};
-        
-        % cell array of strings, names given to functions which are invoked
-        % whenever exiting any state.
-        % @details
-        % sharedExitFevalableNames are parallel to sharedExitFevalables.
-        % See addSharedFcn() for details about shared entry and exit
-        % funcions.
-        sharedExitFevalableNames = {};
-        
-        % cell array of fevalable cell arrays which are invoked whenever
-        % exiting any state.
-        % @details
-        % sharedExitFevalableNames are parallel to sharedExitFevalables.
-        % See addSharedFcn() for details about shared entry and exit
-        % funcions.
-        sharedExitFevalables = {};
+        % struct array of shared fevalables and names
+        sharedExit = struct( ...
+            'name', {}, ...
+            'fevalable', {});
     end
     
     properties (Hidden)
@@ -184,9 +162,8 @@ classdef topsStateMachine < topsConcurrent
         % default values will be used.
         % @details
         % Fields of stateInfo may correspond to one of the names in
-        % sharedEntryFevalableNames or sharedExitFevalableNames.  Values in
-        % these fields will be passed as state-specific arguments to the
-        % shared function.
+        % sharedEntry or sharedExit.  Values in these fields will be
+        % passed as state-specific arguments to the shared fevalable.
         % @details
         % Returns the index into allStates where the new state was appended
         % or inserted.
@@ -194,11 +171,11 @@ classdef topsStateMachine < topsConcurrent
             % combine official state field names and default values with
             % shared entry and exit functions.
             allowedFields = cat(2, self.stateFields, ...
-                self.sharedEntryFevalableNames, ...
-                self.sharedExitFevalableNames);
+                self.sharedEntry.name, ...
+                self.sharedExit.name);
             allowedDefaults = cat(2, self.stateDefaults, ...
-                cell(size(self.sharedEntryFevalableNames)), ...
-                cell(size(self.sharedExitFevalableNames)));
+                cell(size(self.sharedEntry)), ...
+                cell(size(self.sharedExit)));
             
             % pick stateInfo fields that match allowed fields
             infoFields = fieldnames(stateInfo);
@@ -236,9 +213,9 @@ classdef topsStateMachine < topsConcurrent
         % flexible number of traling arguments passed to editStateByName().
         % The first argument in each pair should be one of the field names
         % of the allStates struct, which include the default state fields
-        % described for addField() and the names of any shared fevalables
-        % as added with addSharedFevalableWithName().  The second argument
-        % in each pair should be a value to assign to the named field.
+        % described for addField() and the names of any sharedEntry or
+        % sharedExit fevalables.  The second argument in each pair should
+        % be a value to assign to the named field.
         % @details
         % Editing the @b name field of a state might cause the state
         % machine to misbehave.
@@ -259,52 +236,45 @@ classdef topsStateMachine < topsConcurrent
         end
         
         % Add a function to be invoked during every state.
-        % @param fcn a fevalable cell array to invoke during every state
+        % @param fevalable fevalable cell array to invoke for every state
         % @param name string name to give to @a fcn
         % @param when the string 'entry' or 'exit' specifying when to
-        % invoke @a fcn.  For 'entry', @a fcn will be invoked just after
-        % each state's own entry.  For 'exit', @a fcn will be invoked
-        % just before each state's own exit.  If omitted, defaults to
-        % 'entry'.
+        % invoke @a fevalable.  For 'entry', @a fevalable will be invoked
+        % just after each state's own entry.  For 'exit', @a fevalable will
+        % be invoked just before each state's own exit.
         % @details
-        % Adds @a fcn to the state machine's sharedEntryFevalables or
-        % sharedExitFevalables.  These functions are called for every
+        % Adds @a fevalable to the state machine's sharedEntry or
+        % sharedExit fevalables.  These functions are called for every
         % state, in addition to each state's own entry and exit.
         % @details
-        % Each state may specify additional arguments to pass to @a fcn.
-        % These may be specified like other state data, using @a name as
-        % the state field.  See addState() and addMultipleStates() for
-        % details on specifying state data.
+        % Each state may specify additional arguments to pass to @a
+        % fevalable. These may be specified like other state data, using @a
+        % name as the state field.  See addState() and addMultipleStates()
+        % for details on specifying state data.
         % @details
-        % @a name must be unique with respect to other shared entry or exit
-        % functions.  If @a name matches the name of an existing shared
-        % function, @a fcn will replace the existing function.
-        function addSharedFevalableWithName(self, fcn, name, when)
+        % @a name must be unique with respect to other sharedEntry or
+        % sharedExit fevalables.  If @a name matches an existing
+        % sharedEntry or sharedExit, @a fevalable will replace the existing
+        % function.
+        function addSharedFevalableWithName(self, fevalable, name, when)
             if nargin < 4
                 when = 'entry';
             end
             
             switch when
                 case 'entry'
-                    existing = strcmp( ...
-                        self.sharedEntryFevalableNames, name);
-                    if any(existing)
-                        index = find(existing, 1);
-                    else
-                        index = length(self.sharedEntryFevalableNames) + 1;
-                    end
-                    self.sharedEntryFevalableNames{index} = name;
-                    self.sharedEntryFevalables{index} = fcn;
+                    % new or existing name?
+                    index = topsFoundation.findStructName( ...
+                        self.sharedEntry, name);
+                    self.sharedEntry(index).name = name;
+                    self.sharedEntry(index).fevalable = fevalable;
                     
                 case 'exit'
-                    existing = strcmp(self.sharedExitFevalableNames, name);
-                    if any(existing)
-                        index = find(existing, 1);
-                    else
-                        index = length(self.sharedExitFevalableNames) + 1;
-                    end
-                    self.sharedExitFevalableNames{index} = name;
-                    self.sharedExitFevalables{index} = fcn;
+                    % new or existing name?
+                    index = topsFoundation.findStructName( ...
+                        self.sharedExit, name);
+                    self.sharedExit(index).name = name;
+                    self.sharedExit(index).fevalable = fevalable;
             end
             
             if ~isempty(self.allStates) && ~isfield(self.allStates, name)
@@ -408,11 +378,9 @@ classdef topsStateMachine < topsConcurrent
                     self.entryString, currentState.name);
                 self.logFeval(fevalName, currentState.entry);
                 
-                if ~isempty(self.sharedEntryFevalableNames)
-                    
-                    self.logStateSharedFeval(currentState, ...
-                        self.sharedEntryFevalableNames, ...
-                        self.sharedEntryFevalables);
+                if ~isempty(self.sharedEntry)
+                    self.logStateSharedFeval(...
+                        currentState, self.sharedEntry);
                 end
                 
             else
@@ -430,10 +398,8 @@ classdef topsStateMachine < topsConcurrent
             self.currentEntryTime = [];
             self.currentTimeoutTime = [];
             
-            if ~isempty(self.sharedExitFevalableNames)
-                self.logStateSharedFeval(currentState, ...
-                    self.sharedExitFevalableNames, ...
-                    self.sharedExitFevalables);
+            if ~isempty(self.sharedExit)
+                self.logStateSharedFeval(currentState, self.sharedExit);
             end
             
             fevalName = sprintf('%s:%s', ...
@@ -459,12 +425,13 @@ classdef topsStateMachine < topsConcurrent
         end
         
         % Add an entry to topsDataLog for an fevalable shared among states.
-        function logStateSharedFeval(self, state, fcnNames, fcns)
-            for ii = 1:length(fcnNames)
-                stateArgs = state.(fcnNames{ii});
-                stateFcn = cat(2, fcns{ii}, stateArgs);
-                fevalName = sprintf('%s:%s', ...
-                    fcnNames{ii}, state.name);
+        function logStateSharedFeval(self, state, shared)
+            for ii = 1:numel(shared)
+                name = shared(ii).name;
+                fevalable = shared(ii).fevalable;
+                stateArgs = state.(name);
+                stateFcn = cat(2, fevalable, stateArgs);
+                fevalName = sprintf('%s:%s', name, state.name);
                 self.logFeval(fevalName, stateFcn);
             end
         end
