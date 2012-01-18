@@ -149,7 +149,7 @@ classdef topsClassification < topsFoundation
             % rebuild the data space
             self.buildOutputTable();
         end
-                
+        
         % Update source samples.
         % @details
         % Retrieves new samples for each data source, using the
@@ -188,7 +188,7 @@ classdef topsClassification < topsFoundation
             subscripts = self.space.subscriptsForValues(samples);
             tableIndex = self.space.indexForSubscripts(subscripts);
             
-            % retrieve the output for the indexed spatial region
+            % retrieve the output mapped from the indexed spatial region
             outputIndex = self.outputTable(tableIndex);
             if outputIndex > 0
                 value = self.outputs(outputIndex).value;
@@ -200,22 +200,38 @@ classdef topsClassification < topsFoundation
     methods (Access = protected)
         % Rebuild the data space.
         % @details
-        % Invalidate the outputTable.
+        % Invalidate now-stale outputs and reallocate the outputTable.
         function buildSpace(self)
-            
-            self.clearOutputTable();
+            dimensions = [self.sources.dimension];
+            self.space = topsSpace(self.name, dimensions);
+            self.clearOutputs;
         end
         
         % Clear out the outputTable lookuptable.
-        function clearOutputTable(self)
+        function self.clearOutputs(self)
             % clear elements but preserve field names
             selector = true(size(self.outputs));
             self.outputs = self.outputs(~selector);
+            self.outputTable = [];
         end
         
         % Rebuild the outputTable lookuptable.
         function buildOutputTable(self)
+            nOutputs = numel(self.outputs);
             
+            % try to conserver space for this large lookup table
+            if nOutputs <= intmax('uint8')
+                intClass = 'uint8';
+            else
+                intClass = 'uint32';
+            end
+            self.outputTable = zeros(self.space.nDimPoints, intClass);
+            
+            % fill in output indexes throughout the table
+            for ii = 1:nOutputs
+                selector = self.outputs(ii).region.selector;
+                self.outputTable(selector) = ii;
+            end
         end
     end
 end
