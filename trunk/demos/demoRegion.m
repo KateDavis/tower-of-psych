@@ -1,5 +1,5 @@
 function demoRegion()
-% How to define regions in space and view them.
+% How to define regions in space with topsRegion, and view them.
 close all
 
 %% define 3 independent dimensions
@@ -27,18 +27,18 @@ middle = middle.setRectangle('x', 'y', [25 25 50 50], 'in');
 % view the space from the x-y plane
 %   the z dimension is treated as RGB color
 %   the "selector" is true in the rectangular region, so it appears white
-subplot(2,2,1)
-image(middle.selector)
-title(sprintf('"%s" %s', middle.name, middle.description))
+subplot(2,2,1);
+image(middle.selector);
+title(sprintf('"%s" %s', middle.name, middle.description));
 
 %% Define an edge region around the space
 %   this region will be 10 pixels wide, all around x and y
 %   it's an inverted rectangle
 edge = topsRegion('edge', space);
 edge = edge.setRectangle('x', 'y', [10 10 80 80], 'out');
-subplot(2,2,2)
-image(edge.selector)
-title(sprintf('"%s" %s', edge.name, edge.description))
+subplot(2,2,2);
+image(edge.selector);
+title(sprintf('"%s" %s', edge.name, edge.description));
 
 %% Define a ring region between the middle and the edge
 %   this region is the gap between the middle and the edge
@@ -47,9 +47,9 @@ isInverted = true;
 regions = [middle, edge];
 ring = regions.combine('union', isInverted);
 ring.name = 'ring';
-subplot(2,2,3)
-image(ring.selector)
-title(sprintf('"%s" %s', ring.name, ring.description))
+subplot(2,2,3);
+image(ring.selector);
+title(sprintf('"%s" %s', ring.name, ring.description));
 
 %% Define a slice through the z dimension, for color
 %   the z dimension is perpendicular to the x-y viewing plane
@@ -62,6 +62,6 @@ orange = orange.setPartition('z', 3, '!=');
 regions = [orange, ring];
 orangeRing = regions.combine('intersection');
 orangeRing.name = 'orange ring';
-subplot(2,2,4)
-image(orangeRing.selector)
-title(sprintf('%s: %s', orangeRing.name, orangeRing.description))
+subplot(2,2,4);
+image(orangeRing.selector);
+title(sprintf('%s: %s', orangeRing.name, orangeRing.description));

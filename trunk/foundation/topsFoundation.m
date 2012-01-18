@@ -95,5 +95,28 @@ classdef topsFoundation < handle
             selector = self.contains(item);
             c = c(~selector);
         end
+        
+        % Where is the given name in the given struct array?
+        % @param s a struct array with a "name" field
+        % @param a "name" value that might be in the struct array
+        % @details
+        % Assumes that @a s is a struct array with a "name" field.
+        % Searches the elements of @a s for the given @a name.  Returns the
+        % index of the first occurence of @a name.  If @a name was not
+        % found, returns numel(@a s) plus 1.  Returns as a second output a
+        % logical selector for the elements of @a s, set to true where @a
+        % name was found.
+        function [index, selector] = findStructName(s, name)
+            index = numel(s) + 1;
+            selector = false(1, numel(s));
+            
+            if isstruct(s) && isfield(s, 'name')
+                names = {s.name};
+                selector = strcmp(name, names);
+                if any(selector)
+                    index = find(selector, 1, 'first');
+                end
+            end
+        end
     end
 end

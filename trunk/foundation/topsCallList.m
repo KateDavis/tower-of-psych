@@ -32,7 +32,10 @@ classdef topsCallList < topsConcurrent
     
     properties (SetObservable)
         % struct array with fevalable cell arrays to call as a batch
-        calls;
+        calls = struct( ...
+            'name', {}, ...
+            'fevalable', {}, ...
+            'isActive', {});
         
         % true or false, whether to run indefinitely
         alwaysRunning = false;
@@ -46,14 +49,12 @@ classdef topsCallList < topsConcurrent
     methods
         % Add an "fevalable" to the call list.
         % @param fevalable a cell array with contents to pass to feval()
-        % @param name optional string name to assign to @a fevalable
+        % @param name unique name to assign to @a fevalable
         % @details
         % Appends or inserts the given @a fevalable to the calls struct
-        % array.  If @a name is provided, @a fevalable can be referred to
-        % later by @a name.  It will replace any existing fevalable with
-        % the same name.  If @a name is omitted, addCall() assigns a
-        % generic name and appends @a fevalable to the end of the calls
-        % array.
+        % array.  @a name should be unique so that @a fevalable can be
+        % referred to later by @a name.  It will replace any existing
+        % fevalable with the same @a name will be replaced.
         % @details
         % Returns the index into the calls struct array where @a fevalable
         % was appended or inserted.
@@ -62,36 +63,13 @@ classdef topsCallList < topsConcurrent
                 name = self.defaultName;
             end
             
-            newCall = struct( ...
-                'fevalable', {fevalable}, ...
-                'name', name, ...
-                'isActive', true);
-            
-            if isempty(self.calls)
-                % initialize the calls struct array
-                index = 1;
-                self.calls = newCall;
-                
-            else
-                if strcmp(name, self.defaultName);
-                    % append with the default name
-                    index = numel(self.calls) + 1;
-                    
-                else
-                    names = {self.calls.name};
-                    isReplacement = strcmp(name, names);
-                    if any(isReplacement)
-                        % replace by matching name
-                        index = find(isReplacement, 1, 'first');
-                        
-                    else
-                        % append with the new name
-                        index = numel(self.calls) + 1;
-                    end
-                end
-                
-                self.calls(index) = newCall;
-            end
+            % is this a new name or a replacement?
+            index = topsFoundation.findStructName(self.calls, name);
+
+            % insert or append the new call
+            self.calls(index).name = name;
+            self.calls(index).fevalable = fevalable;
+            self.calls(index).isActive = true;
         end
         
         % Toggle whether a call is active.
