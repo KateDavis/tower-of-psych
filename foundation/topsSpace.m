@@ -86,9 +86,11 @@ classdef topsSpace
             subscripts = ...
                 1 + round((values - self.minimums) ./ self.granularities);
             
-            % clip integers at 1 and nPoints for each dimension
-            subscripts = min([subscripts; self.nDimPoints], [], 1);
-            subscripts = max([subscripts; ones(size(subscripts))], [], 1);
+            % clip subscripts at 1 and nPoints for each dimension
+            isHigh = subscripts > self.nDimPoints;
+            subscripts(isHigh) = self.nDimPoints(isHigh);
+            isLow = subscripts < 1;
+            subscripts(isLow) = 1;
         end
         
         % Get dimension values from subscripts.

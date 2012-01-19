@@ -19,7 +19,7 @@ classdef topsDimension
         
         % number of points along the dimension
         nPoints = 0;
-
+        
         % indexes along the dimension, 1 through nPoints
         indices = [];
         
@@ -30,7 +30,7 @@ classdef topsDimension
         maximum = 0;
         
         % mean interval between neighboring points
-        granularity = 0;
+        granularity = 1;
     end
     
     methods
@@ -75,7 +75,7 @@ classdef topsDimension
             else
                 self.minimum = self.points(1);
                 self.maximum = self.points(1);
-                self.granularity = 0;
+                self.granularity = 1;
             end
         end
     end
