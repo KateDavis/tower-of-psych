@@ -13,6 +13,17 @@ classdef topsFoundation < handle
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsFoundation(name)
+            if nargin >= 1
+                self.name = name;
+            end
+        end
+        
+        
         % Make a topsGUI graphical interface for this object.
         % @details
         % Subclasses may overrride to return a specific topsGUI subclass,

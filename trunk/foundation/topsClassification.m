@@ -46,6 +46,16 @@ classdef topsClassification < topsFoundation
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsClassification(name)
+            if nargin >= 1
+                self.name = name;
+            end
+        end
+        
         % Add a data source.
         % @param name unique name for the data source
         % @param sampleFunction function_handle that returns a sample
@@ -170,7 +180,7 @@ classdef topsClassification < topsFoundation
         % Returns as a second output the name of the output.  @a doUpdate
         % is optional.  If provided and true, invokes updateSamples()
         % before performing classification.
-        function [value, name] = getClassification(self, doUpdate)
+        function [value, name] = getOutput(self, doUpdate)
             value = self.defaultOutput;
             name = self.defaultOutputName;
             
@@ -208,7 +218,7 @@ classdef topsClassification < topsFoundation
         end
         
         % Clear out the outputTable lookuptable.
-        function self.clearOutputs(self)
+        function clearOutputs(self)
             % clear elements but preserve field names
             selector = true(size(self.outputs));
             self.outputs = self.outputs(~selector);
