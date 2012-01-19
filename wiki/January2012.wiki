@@ -22,11 +22,13 @@ Tower of Psych will implement classes for modeling and classifying spatial data 
   * topsDimension will model discrete, finite spatial dimensions _(did on 13 Jan)_
   * topsSpace will aggregate Dimensions to define a discrete, finite space _(did on 13 Jan)_
   * topsRegion will model a region within a Space _(did on 17 Jan)_
-  * topsClassification will classify spatial data based on Regions within a Space
+  * topsClassification will classify spatial data based on Regions within a Space _(did on 18 Jan)_
 
-topsStateMachine will make use of topsClassification.  Each state may have its own Classification, allowing it to respond to inputs in a state-dependent way.  This functionality will supplement state input functions.
+topsStateMachine will make use of topsClassification.  Each state may have its own Classification, allowing it to respond to inputs in a state-dependent way.  This functionality will supplement state input functions.  _(did on 19 Jan)_
 
-StateMachineGrapher will be able to "peek" at Classifications used by topsStateMachine, in order to produce rich graphs.
+StateDiagramGrapher will be able to peek at Classifications used by topsStateMachine, in order to produce rich graphs.  _(did on 19 Jan)_
+
+*As of r253, this new Classification stuff is done.*
 
 ===Grouping===
 Tower of Psych will also implement object grouping behavior.
@@ -37,4 +39,4 @@ It will be up to users to group objects together that have members in common.
 
 Aggregated objects won't have to know anything about topsGroup or how grouping is accomplished.  Aggregated objects may be referred to by topsGroup instance, and an internal key or index.
 
-One open question: if aggregated objects are really naive, what will be a good way to access an individual object (say, for removal from the group)?  Matlab does not support objects as Map keys, or expose comparable object pointers.  This implies searching for objects by equality.  Maybe this is the default behavior.  If performance matters, an object's key can be returned for future use.
+One open question: if aggregated objects are really naive, what will be a good way to access an individual object (say, for removal from the group)?  Matlab does not support objects as Map keys, or expose hashable object pointers.  This implies _searching_ for objects by equality.  Maybe this is the default behavior.  If performance matters, maybe an object's key can be returned for future use.
