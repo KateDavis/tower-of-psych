@@ -5,7 +5,8 @@ classdef topsStateMachine < topsConcurrent
     % topsStateMachine may contain arbitrary states to be traversed when it
     % run()s.  Each state may invoke functions and transition to other
     % states with specified timing.  State traversal may be deterministic,
-    % or may be conditional and branching based on an arbitrary functions.
+    % or may be conditional and branching based on classifications or input
+    % functions.
     %
     % @ingroup foundataion
     
@@ -64,7 +65,10 @@ classdef topsStateMachine < topsConcurrent
         currentIndex = [];
         
         % copy of the current state's input fevalable
-        currentInputFevalable = [];
+        currentInput = {};
+
+        % copy of the current state's classification
+        currentClassification = [];
         
         % containers.Map of state name -> allStates array index.
         stateNameToIndex;
@@ -80,10 +84,10 @@ classdef topsStateMachine < topsConcurrent
         
         % field names of allStates struct array, defining state behaviors
         stateFields = {'name', 'next', 'timeout', ...
-            'entry', 'input', 'exit'};
+            'entry', 'input', 'exit', 'classification'};
         
         % default values of allStates struct array fields
-        stateDefaults = {'', '', 0, {}, {}, {}};
+        stateDefaults = {'', '', 0, {}, {}, {}, []};
     end
     
     methods
@@ -122,15 +126,15 @@ classdef topsStateMachine < topsConcurrent
         % @details
         % Returns an array of indexes into allStates where the new states
         % were appended or inserted.
-        function allStateIndexes = addMultipleStates(self, statesInfo)
+        function indexes = addMultipleStates(self, statesInfo)
             % build a stateInfo struct for each row of values
             %   let addState validate fields and fill in defaults
             sz = size(statesInfo);
-            allStateIndexes = zeros(1,sz(1)-1);
+            indexes = zeros(1,sz(1)-1);
             for ii = 2:sz(1)
                 newState = cell2struct( ...
                     statesInfo(ii,:), statesInfo(1,:), 2);
-                allStateIndexes(ii-1) = self.addState(newState);
+                indexes(ii-1) = self.addState(newState);
             end
         end
         
@@ -138,25 +142,25 @@ classdef topsStateMachine < topsConcurrent
         % @param stateInfo a struct with information defining a state.
         % @details
         % @a stateInfo should have the same fields as allStates:
-        % 	- @b name a string to identify the state
+        % 	- @b name unique name to identify the state
         % 	- @b timeout time that may elapse before transitioning to the
-        % @b next state, in units of clockFunction
+        %   @b next state, in units of clockFunction.
         % 	- @b next the @b name of the state to transition to once @b
         % timeout has elapsed
-        % 	- @b entry a fevalable cell array to invoke whenever
-        % entering the state
-        % 	- @b input: a fevalable cell array to invoke after entering
-        % the state, during each call to runBriefly().  Expected to return
-        % a single value, which may be the @b name of a state, in which
-        % case the state machine will transition to that state immediately.
-        % @b timeout must be nonzero for @b input to be invoked.
-        % 	- @b exit: a fevalable cell array to invoke whenever exiting
-        % the state
+        % 	- @b entry fevalable cell array invoked when entering the state
+        % 	- @b input fevalable cell array invoked after entering the
+        % 	state, during each call to runBriefly().  If the returned value
+        % 	is the @b name of a state, transitions to that state
+        % 	immediately.
+        % 	- @b exit fevalable cell array invokes when exiting the state
+        % 	- @b classification topsClassification object to query after
+        % 	entering the state, during each call to runBriefly().  If the
+        % 	returned output is the @b name of a state, transitions to that
+        % 	state immediately.
         %   .
         % @details
-        % Each state must have a unique @b name.  If @a stateInfo has the
-        % same @b name as an existing state, @a stateInfo will replace the
-        % existing state.
+        % Each state must have a unique @b name.  Any existing state with
+        % the same @b name will be replaced.
         % @details
         % Other fields of @a stateInfo may be omitted, in which case
         % default values will be used.
@@ -167,7 +171,7 @@ classdef topsStateMachine < topsConcurrent
         % @details
         % Returns the index into allStates where the new state was appended
         % or inserted.
-        function allStateIndex = addState(self, stateInfo)
+        function index = addState(self, stateInfo)
             % combine official state field names and default values with
             % shared entry and exit functions.
             allowedFields = cat(2, self.stateFields, ...
@@ -188,19 +192,16 @@ classdef topsStateMachine < topsConcurrent
             mergedValues(defaultIndices) = infoValues(validIndices);
             newState = cell2struct(mergedValues, allowedFields, 2);
             
-            % append the new state to allStates
-            %   add to lookup table
+            % new or replacement state?
             if isempty(self.allStates)
-                allStateIndex = 1;
+                index = 1;
                 self.allStates = newState;
             else
-                [isState, allStateIndex] = self.isStateName(newState.name);
-                if ~isState
-                    allStateIndex = length(self.allStates) + 1;
-                end
-                self.allStates(allStateIndex) = newState;
+                index = topsFoundation.findStructName( ...
+                    self.allStates, newState.name);
+                self.allStates(index) = newState;
             end
-            self.stateNameToIndex(newState.name) = allStateIndex;
+            self.stateNameToIndex(newState.name) = index;
         end
         
         % Edit fields of an existing state.
@@ -222,13 +223,13 @@ classdef topsStateMachine < topsConcurrent
         % @details
         % Returns the index into allStates of the @a stateName state.  If
         % @a stateName is not the name of an existing state, returns [].
-        function allStateIndex = editStateByName(self, stateName, varargin)
-            [isState, allStateIndex] = self.isStateName(stateName);
+        function index = editStateByName(self, stateName, varargin)
+            [isState, index] = self.isStateName(stateName);
             if isState
                 for ii = 1:2:length(varargin)
                     field = varargin{ii};
                     if isfield(self.allStates, field)
-                        self.allStates(allStateIndex).(field) = ...
+                        self.allStates(index).(field) = ...
                             varargin{ii+1};
                     end
                 end
@@ -283,21 +284,21 @@ classdef topsStateMachine < topsConcurrent
         end
         
         % Check whether a string is the name of a state.
-        function [isState, allStateIndex] = isStateName(self, stateName)
+        function [isState, index] = isStateName(self, stateName)
             isState = self.stateNameToIndex.isKey(stateName);
             if isState
-                allStateIndex = self.stateNameToIndex(stateName);
+                index = self.stateNameToIndex(stateName);
             else
-                allStateIndex = [];
+                index = [];
             end
         end
         
         % Get a struct of info about a state with a given name.
-        function [stateInfo, allStateIndex] = getStateInfoByName( ...
+        function [stateInfo, index] = getStateInfoByName( ...
                 self, stateName)
-            [isState, allStateIndex] = self.isStateName(stateName);
+            [isState, index] = self.isStateName(stateName);
             if isState
-                stateInfo = self.allStates(allStateIndex);
+                stateInfo = self.allStates(index);
             else
                 stateInfo = [];
             end
@@ -320,28 +321,37 @@ classdef topsStateMachine < topsConcurrent
         % record the finishState and finishTime.
         function finish(self)
             self.finish@topsConcurrent;
-            
             if length(self.allStates) >= self.currentIndex
                 self.finishState = self.allStates(self.currentIndex);
             else
                 self.finishState = [];
             end
-            
             self.finishTime = feval(self.clockFunction);
         end
         
         % Do a little flow control within the state list.
         % @details
         % topsStateMachine extends the runBriefly() method of
-        % topsConcurrent to do state traversal.  It checks the input
-        % fevalable for the current state and if the input returns a state
-        % name, transitions to that state.  If not, it checks whether the
-        % current state's timeout has expired.  If so it transitions to the
-        % next state.  If there is no next state, traversal ends.
+        % topsConcurrent to do state traversal.  It checks the @b input
+        % fevalable and @b classification for the current state.  If @b
+        % input or @b classification returns a state name, transitions to
+        % that state immediately.  If not, checks whether the current
+        % state's timeout has expired.  If timeout has expired, transitions
+        % to the next state immediately. If there is no next state,
+        % traversal ends.
         function runBriefly(self)
+            % poll for classification result
+            if ~isempty(self.currentClassification)
+                nextName = self.currentClassification.getOutput();
+                if self.isStateName(nextName)
+                    self.transitionToStateWithName(nextName);
+                    return;
+                end
+            end
+
             % poll for input
-            if ~isempty(self.currentInputFevalable)
-                nextName = feval(self.currentInputFevalable{:});
+            if ~isempty(self.currentInput)
+                nextName = feval(self.currentInput{:});
                 if self.isStateName(nextName)
                     self.transitionToStateWithName(nextName);
                     return;
@@ -363,13 +373,13 @@ classdef topsStateMachine < topsConcurrent
     
     methods (Access = protected)
         % reset all the current* properties for the given state
-        function enterStateAtIndex(self, allStateIndex)
-            self.currentIndex = allStateIndex;
+        function enterStateAtIndex(self, index)
             
-            if length(self.allStates) >= allStateIndex
-                
+            self.currentIndex = index;
+            if length(self.allStates) >= index
                 currentState = self.allStates(self.currentIndex);
-                self.currentInputFevalable = currentState.input;
+                self.currentClassification = currentState.classification;
+                self.currentInput = currentState.input;
                 self.currentEntryTime = feval(self.clockFunction);
                 self.currentTimeoutTime = ...
                     self.currentEntryTime + currentState.timeout;
@@ -382,10 +392,8 @@ classdef topsStateMachine < topsConcurrent
                     self.logStateSharedFeval(...
                         currentState, self.sharedEntry);
                 end
-                
             else
                 self.isRunning = false;
-                
             end
         end
         
@@ -394,7 +402,8 @@ classdef topsStateMachine < topsConcurrent
         function exitCurrentState(self)
             currentState = self.allStates(self.currentIndex);
             
-            self.currentInputFevalable = {};
+            self.currentClassification = [];
+            self.currentInput = {};
             self.currentEntryTime = [];
             self.currentTimeoutTime = [];
             

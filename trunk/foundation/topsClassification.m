@@ -193,16 +193,18 @@ classdef topsClassification < topsFoundation
                 self.updateSamples();
             end
             
-            % convert source samples to a grand spatial table index
-            samples = [self.sources.sample];
-            subscripts = self.space.subscriptsForValues(samples);
-            tableIndex = self.space.indexForSubscripts(subscripts);
-            
-            % retrieve the output mapped from the indexed spatial region
-            outputIndex = self.outputTable(tableIndex);
-            if outputIndex > 0
-                value = self.outputs(outputIndex).value;
-                name = self.outputs(outputIndex).name;
+            if ~isempty(self.sources)
+                % convert source samples to a grand spatial table index
+                samples = [self.sources.sample];
+                subscripts = self.space.subscriptsForValues(samples);
+                tableIndex = self.space.indexForSubscripts(subscripts);
+                
+                % retrieve the output mapped from the indexed region
+                outputIndex = self.outputTable(tableIndex);
+                if outputIndex > 0
+                    value = self.outputs(outputIndex).value;
+                    name = self.outputs(outputIndex).name;
+                end
             end
         end
     end
