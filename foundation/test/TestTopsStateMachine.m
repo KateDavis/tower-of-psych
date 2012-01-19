@@ -26,12 +26,6 @@ classdef TestTopsStateMachine < TestCase
             stateName = self.branchState;
         end
         
-        function testSingleton(self)
-            newStateMachine = topsStateMachine;
-            assertFalse(self.stateMachine==newStateMachine, ...
-                'topsStateMachine should not be a singleton');
-        end
-        
         function testCallMachineFcns(self)
             self.eventCount = 0;
             machineFcn = @(stateInfo) self.hearEvent;
@@ -163,7 +157,7 @@ classdef TestTopsStateMachine < TestCase
                 'end',      '',         {enterNum},     {exitNum}; ...
                 };
             self.stateMachine.addMultipleStates(statesInfo);
-
+            
             % add a new shared function after the fact
             %   the states wont know to add arguments to this one
             extraNum = 100;
@@ -201,6 +195,34 @@ classdef TestTopsStateMachine < TestCase
         
         function hearEvent(self, varargin)
             self.eventCount = self.eventCount + 1;
+        end
+        
+        
+        function testClassificationBranching(self)
+            % a batch of boring states
+            defaultEnd = 'end';
+            altEnd = 'alt';
+            statesInfo = { ...
+                'name',     'next'; ...
+                'beginning','middle'; ...
+                defaultEnd, ''; ...
+                altEnd,    ''; ...
+                };
+            self.stateMachine.addMultipleStates(statesInfo);
+            
+            % a special middle state which checks a classification
+            m.name = 'middle';
+            m.timeout = .005;
+            m.next = defaultEnd;
+            classn = topsClassification();
+            classn.defaultOutput = altEnd;
+            m.classification = classn;
+            self.stateMachine.addState(m);
+            
+            self.stateMachine.run;
+            endName = self.stateMachine.finishState.name;
+            assertEqual(endName, altEnd, ...
+                'classification should cause alternate ending')
         end
     end
 end
