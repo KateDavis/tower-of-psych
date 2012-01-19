@@ -26,17 +26,19 @@ classdef StateDiagramGrapher < handle
     methods
         % Constructor takes no arguments.
         function self = StateDiagramGrapher()
-            self.dataGrapher = DataGrapher;
+            self.dataGrapher = DataGrapher();
             self.dataGrapher.workingFileName = 'stateDiagram';
             self.dataGrapher.floatingEdgeNames = true;
             self.dataGrapher.listedEdgeNames = false;
-            self.inputHints = struct('stateName', {}, 'inputValue', {});
+            self.inputHints = struct( ...
+                'stateName', {}, ...
+                'inputValue', {});
             
             self.dataGrapher.nodeDescriptionFunction = ...
                 @StateDiagramGrapher.statePropertySummary;
             
             self.dataGrapher.edgeFunction = ...
-                @StateDiagramGrapher.edgeFromNextAndInputHints;
+                @StateDiagramGrapher.edgesFromState;
         end
         
         % Add a transition not in the state list to the graph.
@@ -119,18 +121,38 @@ classdef StateDiagramGrapher < handle
         end
         
         % Find edges leading away from a given state.
-        function [edgeIndexes, edgeNames] = edgeFromNextAndInputHints( ...
+        function [edgeIndexes, edgeNames] = edgesFromState( ...
                 inputData, index)
+            
             id = inputData(index);
             stateNames = {inputData.name};
             edgeIndexes = [];
             edgeNames = {};
             
+            % check the state's "next" state
             if ~isempty(id.next)
                 edgeIndexes(end+1) = find(strcmp(stateNames, id.next), 1);
                 edgeNames{end+1} = 'next';
             end
             
+            % check the state's classification object
+            if ~isempty(id.classification)
+                default = id.classification.defaultOutput;
+                defaultIndex = find(strcmp(stateNames, default), 1);
+                if ~isempty(defaultIndex)
+                    edgeIndexes(end+1) = defaultIndex;
+                    edgeNames{end+1} = id.classification.defaultOutputName;
+                end
+                
+                outputs = id.classification.outputs;
+                for ii = 1:numel(outputs)
+                    edgeIndexes(end+1) = ...
+                        find(strcmp(stateNames, outputs.value), 1);
+                    edgeNames{end+1} = outputs.name;
+                end
+            end
+            
+            % check arbitrary input hints
             for ii = 1:length(id.inputHint)
                 hintName = id.inputHint{ii};
                 if ~isempty(hintName)

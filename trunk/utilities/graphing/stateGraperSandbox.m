@@ -10,7 +10,7 @@ gameLogic = list{'control objects'}{'game logic'};
 queryable = list{'input objects'}{'using'};
 
 % create the state diagram grapher object
-sg = StateDiagramGrapher;
+sg = StateDiagramGrapher();
 sg.dataGrapher.floatingEdgeNames = true;
 sg.dataGrapher.listedEdgeNames = false;
 sg.stateMachine = stateMachine;
