@@ -47,7 +47,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <h1>topsStateMachine Class Reference</h1><!-- doxytag: class="topsStateMachine" --><!-- doxytag: inherits="topsConcurrent" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>A state machine for controlling flow through predefined states. </p>
-<p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> may contain arbitrary states to be traversed when it <a class="el" href="classtops_concurrent.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a>s. Each state may invoke functions and transition to other states with specified timing. State traversal may be deterministic, or may be conditional and branching based on an arbitrary functions. </p>
+<p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> may contain arbitrary states to be traversed when it <a class="el" href="classtops_concurrent.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a>s. Each state may invoke functions and transition to other states with specified timing. State traversal may be deterministic, or may be conditional and branching based on classifications or input functions. </p>
 <div class="dynheader">
 Inheritance diagram for topsStateMachine:</div>
 <div class="dynsection">
@@ -80,21 +80,22 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a422459a36cb80809cf74b93de92286d9"></a><!-- doxytag: member="topsStateMachine::currentTimeoutTime" ref="a422459a36cb80809cf74b93de92286d9" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a422459a36cb80809cf74b93de92286d9">currentTimeoutTime</a> = []</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">time when the current state will reach its timeout <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ac24f5406e696651a4c0fea1357fa5355">sharedEntryFevalableNames</a> = {}</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of string names given to functions which are invoked whenever entering any state.  <a href="#ac24f5406e696651a4c0fea1357fa5355"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ae0c1ac7569f553ac1414601f8daea6d2">sharedEntryFevalables</a> = {}</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of fevalable cell arrays which are invoked whenever entering any state.  <a href="#ae0c1ac7569f553ac1414601f8daea6d2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ad30ba8cc1458bf31f45a398fb170b4b0">sharedExitFevalableNames</a> = {}</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of strings, names given to functions which are invoked whenever exiting any state.  <a href="#ad30ba8cc1458bf31f45a398fb170b4b0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a99168e55b5b63371db623ca4a3621004">sharedExitFevalables</a> = {}</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of fevalable cell arrays which are invoked whenever exiting any state.  <a href="#a99168e55b5b63371db623ca4a3621004"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af368847f7002cf657df3358f019dff16"></a><!-- doxytag: member="topsStateMachine::sharedEntry" ref="af368847f7002cf657df3358f019dff16" args="" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#af368847f7002cf657df3358f019dff16">sharedEntry</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of shared fevalables and names <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9afae22f20f34a634ed9ced8b18f7f47"></a><!-- doxytag: member="topsStateMachine::sharedExit" ref="a9afae22f20f34a634ed9ced8b18f7f47" args="" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a9afae22f20f34a634ed9ced8b18f7f47">sharedExit</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of shared fevalables and names <br/></td></tr>
 <tr><td colspan="2"><h2>Private Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a091ba6272137818a9f60c86d5deb2ace"></a><!-- doxytag: member="topsStateMachine::currentIndex" ref="a091ba6272137818a9f60c86d5deb2ace" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a091ba6272137818a9f60c86d5deb2ace">currentIndex</a> = []</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">allStates array index for the current state <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9d8c5f02a0726dd871bc666ca64299f"></a><!-- doxytag: member="topsStateMachine::currentInputFevalable" ref="ae9d8c5f02a0726dd871bc666ca64299f" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ae9d8c5f02a0726dd871bc666ca64299f">currentInputFevalable</a> = []</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0873f1a8591d6a832b4cebdb06435ee"></a><!-- doxytag: member="topsStateMachine::currentInput" ref="af0873f1a8591d6a832b4cebdb06435ee" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#af0873f1a8591d6a832b4cebdb06435ee">currentInput</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">copy of the current state's input fevalable <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a759cef2d989439c304dc0558cc110ee6"></a><!-- doxytag: member="topsStateMachine::currentClassification" ref="a759cef2d989439c304dc0558cc110ee6" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a759cef2d989439c304dc0558cc110ee6">currentClassification</a> = []</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">copy of the current state's classification <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adfa93e512ddbfdc83d7080d1c7ce2cfe"></a><!-- doxytag: member="topsStateMachine::stateNameToIndex" ref="adfa93e512ddbfdc83d7080d1c7ce2cfe" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#adfa93e512ddbfdc83d7080d1c7ce2cfe">stateNameToIndex</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">containers.Map of state name -&gt; allStates array index. <br/></td></tr>
@@ -111,7 +112,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a2182892bae7c65ccf7c215b5b5664c61">stateFields</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">field names of allStates struct array, defining state behaviors <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae202b93b5e7da3a76264604ca53637e3"></a><!-- doxytag: member="topsStateMachine::stateDefaults" ref="ae202b93b5e7da3a76264604ca53637e3" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ae202b93b5e7da3a76264604ca53637e3">stateDefaults</a> = {'', '', 0, {}, {}, {}}</td></tr>
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ae202b93b5e7da3a76264604ca53637e3">stateDefaults</a> = {'', '', 0, {}, {}, {}, []}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">default values of allStates struct array fields <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f470f200b8561fb4539025562dccaef"></a><!-- doxytag: member="topsStateMachine::topsStateMachine" ref="a8f470f200b8561fb4539025562dccaef" args="()" -->
@@ -120,19 +121,19 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72e51a8014869030f089a5fb34fdd24f"></a><!-- doxytag: member="topsStateMachine::gui" ref="a72e51a8014869030f089a5fb34fdd24f" args="(self)" -->
 g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a72e51a8014869030f089a5fb34fdd24f">gui</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Launch a graphical interface showing the states in the machine. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">allStateIndexes&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a25df58665719e972a92f787ee2edc30c">addMultipleStates</a> (self, statesInfo)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add multiple states to the state machine.  <a href="#a25df58665719e972a92f787ee2edc30c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a46f50f3c63578358947721563c35fffe">addState</a> (self, stateInfo)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a new state to the state machine.  <a href="#a46f50f3c63578358947721563c35fffe"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ada01032c6b80b64d85490a6289e523d9">editStateByName</a> (self, stateName, varargin)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Edit fields of an existing state.  <a href="#ada01032c6b80b64d85490a6289e523d9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a27558177c25a153d2d1c050b612dbbb3">addSharedFevalableWithName</a> (self, fcn, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>, when)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a function to be invoked during every state.  <a href="#a27558177c25a153d2d1c050b612dbbb3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9708e364f7578ed6e1d86cc7d0a0d418"></a><!-- doxytag: member="topsStateMachine::isStateName" ref="a9708e364f7578ed6e1d86cc7d0a0d418" args="(self, stateName)" -->
-isState allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a9708e364f7578ed6e1d86cc7d0a0d418">isStateName</a> (self, stateName)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">indexes&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a5ae2f5eec8740c5c2c4ddc2d3eb78d18">addMultipleStates</a> (self, statesInfo)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add multiple states to the state machine.  <a href="#a5ae2f5eec8740c5c2c4ddc2d3eb78d18"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561">addState</a> (self, stateInfo)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a new state to the state machine.  <a href="#a0f5d6dba6767f2d089191e1925e04561"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a9e441d0cfe10bf3c787028c1cf3c5ad7">editStateByName</a> (self, stateName, varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Edit fields of an existing state.  <a href="#a9e441d0cfe10bf3c787028c1cf3c5ad7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a699ede3741dfdf33ddee4f8b32973218">addSharedFevalableWithName</a> (self, fevalable, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>, when)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a function to be invoked during every state.  <a href="#a699ede3741dfdf33ddee4f8b32973218"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a966e4981280cce4a76731b409a8669a0"></a><!-- doxytag: member="topsStateMachine::isStateName" ref="a966e4981280cce4a76731b409a8669a0" args="(self, stateName)" -->
+isState index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a966e4981280cce4a76731b409a8669a0">isStateName</a> (self, stateName)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Check whether a string is the name of a state. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71e07ed542789473f6458c2539ce6489"></a><!-- doxytag: member="topsStateMachine::getStateInfoByName" ref="a71e07ed542789473f6458c2539ce6489" args="(self, stateName)" -->
-stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a71e07ed542789473f6458c2539ce6489">getStateInfoByName</a> (self, stateName)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad847d449c86a32cef23d3e8eaf8604ad"></a><!-- doxytag: member="topsStateMachine::getStateInfoByName" ref="ad847d449c86a32cef23d3e8eaf8604ad" args="(self, stateName)" -->
+stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ad847d449c86a32cef23d3e8eaf8604ad">getStateInfoByName</a> (self, stateName)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get a struct of info about a state with a given name. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#aeb3b30c60946a22761128cbd397add94">start</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prepare for state traversal.  <a href="#aeb3b30c60946a22761128cbd397add94"></a><br/></td></tr>
@@ -141,26 +142,26 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173">runBriefly</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Do a little flow control within the state list.  <a href="#ad39f1b8814f26d4d247d7da89dcd1173"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Protected Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6752dc91c316ccfa81c4422de6e45c06"></a><!-- doxytag: member="topsStateMachine::enterStateAtIndex" ref="a6752dc91c316ccfa81c4422de6e45c06" args="(self, allStateIndex)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a6752dc91c316ccfa81c4422de6e45c06">enterStateAtIndex</a> (self, allStateIndex)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ec46371e9a360334621a2f4f3ef7408"></a><!-- doxytag: member="topsStateMachine::enterStateAtIndex" ref="a7ec46371e9a360334621a2f4f3ef7408" args="(self, index)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a7ec46371e9a360334621a2f4f3ef7408">enterStateAtIndex</a> (self, index)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">reset all the current* properties for the given state <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a154a25b46798f8342508bf5bd456072b"></a><!-- doxytag: member="topsStateMachine::exitCurrentState" ref="a154a25b46798f8342508bf5bd456072b" args="(self)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a154a25b46798f8342508bf5bd456072b">exitCurrentState</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">clear current* properties but leave currentIndex so it's checkable <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec3bd1393887c8291a08feec58b38bdb"></a><!-- doxytag: member="topsStateMachine::transitionToStateWithName" ref="aec3bd1393887c8291a08feec58b38bdb" args="(self, nextName)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#aec3bd1393887c8291a08feec58b38bdb">transitionToStateWithName</a> (self, nextName)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">call transitionFevalable before exiting last and entering next state <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4a7710848ac4f593b4c71549fe613fc"></a><!-- doxytag: member="topsStateMachine::logStateSharedFeval" ref="aa4a7710848ac4f593b4c71549fe613fc" args="(self, state, fcnNames, fcns)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#aa4a7710848ac4f593b4c71549fe613fc">logStateSharedFeval</a> (self, state, fcnNames, fcns)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke transitionFevalable before exiting previous state. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c59265d43bef53d776352ee97fb178e"></a><!-- doxytag: member="topsStateMachine::logStateSharedFeval" ref="a7c59265d43bef53d776352ee97fb178e" args="(self, state, shared)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a7c59265d43bef53d776352ee97fb178e">logStateSharedFeval</a> (self, state, shared)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an entry to <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> for an fevalable shared among states. <br/></td></tr>
 </table>
 <hr/><h2>Methods</h2>
-<a class="anchor" id="a25df58665719e972a92f787ee2edc30c"></a><!-- doxytag: member="topsStateMachine::addMultipleStates" ref="a25df58665719e972a92f787ee2edc30c" args="(self, statesInfo)" -->
+<a class="anchor" id="a5ae2f5eec8740c5c2c4ddc2d3eb78d18"></a><!-- doxytag: member="topsStateMachine::addMultipleStates" ref="a5ae2f5eec8740c5c2c4ddc2d3eb78d18" args="(self, statesInfo)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">allStateIndexes addMultipleStates </td>
+          <td class="memname">indexes addMultipleStates </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname">, </td>
@@ -188,19 +189,19 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
   </dd>
 </dl>
 <p><em>statesInfo</em> should resemble a table, with a row for each new state a column for each state field.</p>
-<p>The first row of <em>statesInfo</em> shoud contain field names that correspond to the fields of allStates. See <a class="el" href="classtops_state_machine.html#a46f50f3c63578358947721563c35fffe" title="Add a new state to the state machine.">addState()</a> for field descriptions. Only the <b>name</b> field is mandatory. Fields may appear in any order.</p>
+<p>The first row of <em>statesInfo</em> shoud contain field names that correspond to the fields of allStates. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for field descriptions. Only the <b>name</b> field is mandatory. Fields may appear in any order.</p>
 <p>Each additional row of <em>statesInfo</em> shoud contain values aligned with the field names in the first row. A new state will be added using each row of values. Default values will be used where fields are omitted. The <b>name</b> field is mandatory.</p>
 <p>The values in the <b>name</b> column should be unique with respect to each other and any existing states. When names collide, new states will replace existing states.</p>
 <p>Returns an array of indexes into allStates where the new states were appended or inserted. </p>
 
 </div>
 </div>
-<a class="anchor" id="a46f50f3c63578358947721563c35fffe"></a><!-- doxytag: member="topsStateMachine::addState" ref="a46f50f3c63578358947721563c35fffe" args="(self, stateInfo)" -->
+<a class="anchor" id="a0f5d6dba6767f2d089191e1925e04561"></a><!-- doxytag: member="topsStateMachine::addState" ref="a0f5d6dba6767f2d089191e1925e04561" args="(self, stateInfo)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">allStateIndex addState </td>
+          <td class="memname">index addState </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname">, </td>
@@ -229,26 +230,27 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 </dl>
 <p><em>stateInfo</em> should have the same fields as allStates:</p>
 <ul>
-<li><b>name</b> a string to identify the state</li>
-<li><b>timeout</b> time that may elapse before transitioning to the <b>next</b> state, in units of clockFunction</li>
+<li><b>name</b> unique name to identify the state</li>
+<li><b>timeout</b> time that may elapse before transitioning to the <b>next</b> state, in units of clockFunction.</li>
 <li><b>next</b> the <b>name</b> of the state to transition to once <b>timeout</b> has elapsed</li>
-<li><b>entry</b> a fevalable cell array to invoke whenever entering the state</li>
-<li><b>input:</b> a fevalable cell array to invoke after entering the state, during each call to <a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control within the state list.">runBriefly()</a>. Expected to return a single value, which may be the <b>name</b> of a state, in which case the state machine will transition to that state immediately. <b>timeout</b> must be nonzero for <b>input</b> to be invoked.</li>
-<li><b>exit:</b> a fevalable cell array to invoke whenever exiting the state</li>
+<li><b>entry</b> fevalable cell array invoked when entering the state</li>
+<li><b>input</b> fevalable cell array invoked after entering the state, during each call to <a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control within the state list.">runBriefly()</a>. If the returned value is the <b>name</b> of a state, transitions to that state immediately.</li>
+<li><b>exit</b> fevalable cell array invokes when exiting the state</li>
+<li><b>classification</b> <a class="el" href="classtops_classification.html" title="Represents data as points in space, for classification.">topsClassification</a> object to query after entering the state, during each call to <a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control within the state list.">runBriefly()</a>. If the returned output is the <b>name</b> of a state, transitions to that state immediately.</li>
 </ul>
-<p>Each state must have a unique <b>name</b>. If <em>stateInfo</em> has the same <b>name</b> as an existing state, <em>stateInfo</em> will replace the existing state.</p>
+<p>Each state must have a unique <b>name</b>. Any existing state with the same <b>name</b> will be replaced.</p>
 <p>Other fields of <em>stateInfo</em> may be omitted, in which case default values will be used.</p>
-<p>Fields of stateInfo may correspond to one of the names in sharedEntryFevalableNames or sharedExitFevalableNames. Values in these fields will be passed as state-specific arguments to the shared function.</p>
+<p>Fields of stateInfo may correspond to one of the names in sharedEntry or sharedExit. Values in these fields will be passed as state-specific arguments to the shared fevalable.</p>
 <p>Returns the index into allStates where the new state was appended or inserted. </p>
 
 </div>
 </div>
-<a class="anchor" id="ada01032c6b80b64d85490a6289e523d9"></a><!-- doxytag: member="topsStateMachine::editStateByName" ref="ada01032c6b80b64d85490a6289e523d9" args="(self, stateName, varargin)" -->
+<a class="anchor" id="a9e441d0cfe10bf3c787028c1cf3c5ad7"></a><!-- doxytag: member="topsStateMachine::editStateByName" ref="a9e441d0cfe10bf3c787028c1cf3c5ad7" args="(self, stateName, varargin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">allStateIndex editStateByName </td>
+          <td class="memname">index editStateByName </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname">, </td>
@@ -282,13 +284,13 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
   </table>
   </dd>
 </dl>
-<p>Assigns the given values to the given fields of the existing state that has the name <em>stateName</em>. <em>varargin</em> represents a flexible number of traling arguments passed to <a class="el" href="classtops_state_machine.html#ada01032c6b80b64d85490a6289e523d9" title="Edit fields of an existing state.">editStateByName()</a>. The first argument in each pair should be one of the field names of the allStates struct, which include the default state fields described for addField() and the names of any shared fevalables as added with <a class="el" href="classtops_state_machine.html#a27558177c25a153d2d1c050b612dbbb3" title="Add a function to be invoked during every state.">addSharedFevalableWithName()</a>. The second argument in each pair should be a value to assign to the named field.</p>
+<p>Assigns the given values to the given fields of the existing state that has the name <em>stateName</em>. <em>varargin</em> represents a flexible number of traling arguments passed to <a class="el" href="classtops_state_machine.html#a9e441d0cfe10bf3c787028c1cf3c5ad7" title="Edit fields of an existing state.">editStateByName()</a>. The first argument in each pair should be one of the field names of the allStates struct, which include the default state fields described for addField() and the names of any sharedEntry or sharedExit fevalables. The second argument in each pair should be a value to assign to the named field.</p>
 <p>Editing the <b>name</b> field of a state might cause the state machine to misbehave.</p>
 <p>Returns the index into allStates of the <em>stateName</em> state. If <em>stateName</em> is not the name of an existing state, returns []. </p>
 
 </div>
 </div>
-<a class="anchor" id="a27558177c25a153d2d1c050b612dbbb3"></a><!-- doxytag: member="topsStateMachine::addSharedFevalableWithName" ref="a27558177c25a153d2d1c050b612dbbb3" args="(self, fcn, name, when)" -->
+<a class="anchor" id="a699ede3741dfdf33ddee4f8b32973218"></a><!-- doxytag: member="topsStateMachine::addSharedFevalableWithName" ref="a699ede3741dfdf33ddee4f8b32973218" args="(self, fevalable, name, when)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -301,7 +303,7 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">fcn&nbsp;</td>
+          <td class="paramtype">fevalable&nbsp;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -328,15 +330,15 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 <p>Add a function to be invoked during every state. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>fcn</em>&nbsp;</td><td>a fevalable cell array to invoke during every state </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>fevalable</em>&nbsp;</td><td>fevalable cell array to invoke for every state </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>string name to give to <em>fcn</em> </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>when</em>&nbsp;</td><td>the string 'entry' or 'exit' specifying when to invoke <em>fcn</em>. For 'entry', <em>fcn</em> will be invoked just after each state's own entry. For 'exit', <em>fcn</em> will be invoked just before each state's own exit. If omitted, defaults to 'entry'.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>when</em>&nbsp;</td><td>the string 'entry' or 'exit' specifying when to invoke <em>fevalable</em>. For 'entry', <em>fevalable</em> will be invoked just after each state's own entry. For 'exit', <em>fevalable</em> will be invoked just before each state's own exit.</td></tr>
   </table>
   </dd>
 </dl>
-<p>Adds <em>fcn</em> to the state machine's sharedEntryFevalables or sharedExitFevalables. These functions are called for every state, in addition to each state's own entry and exit.</p>
-<p>Each state may specify additional arguments to pass to <em>fcn</em>. These may be specified like other state data, using <em>name</em> as the state field. See <a class="el" href="classtops_state_machine.html#a46f50f3c63578358947721563c35fffe" title="Add a new state to the state machine.">addState()</a> and <a class="el" href="classtops_state_machine.html#a25df58665719e972a92f787ee2edc30c" title="Add multiple states to the state machine.">addMultipleStates()</a> for details on specifying state data.</p>
-<p><em>name</em> must be unique with respect to other shared entry or exit functions. If <em>name</em> matches the name of an existing shared function, <em>fcn</em> will replace the existing function. </p>
+<p>Adds <em>fevalable</em> to the state machine's sharedEntry or sharedExit fevalables. These functions are called for every state, in addition to each state's own entry and exit.</p>
+<p>Each state may specify additional arguments to pass to <em>fevalable</em>. These may be specified like other state data, using <em>name</em> as the state field. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> and <a class="el" href="classtops_state_machine.html#a5ae2f5eec8740c5c2c4ddc2d3eb78d18" title="Add multiple states to the state machine.">addMultipleStates()</a> for details on specifying state data.</p>
+<p><em>name</em> must be unique with respect to other sharedEntry or sharedExit fevalables. If <em>name</em> matches an existing sharedEntry or sharedExit, <em>fevalable</em> will replace the existing function. </p>
 
 </div>
 </div>
@@ -403,7 +405,7 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 <div class="memdoc">
 
 <p>Do a little flow control within the state list. </p>
-<p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> extends the <a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control within the state list.">runBriefly()</a> method of <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> to do state traversal. It checks the input fevalable for the current state and if the input returns a state name, transitions to that state. If not, it checks whether the current state's timeout has expired. If so it transitions to the next state. If there is no next state, traversal ends. </p>
+<p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> extends the <a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control within the state list.">runBriefly()</a> method of <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> to do state traversal. It checks the <b>input</b> fevalable and <b>classification</b> for the current state. If <b>input</b> or <b>classification</b> returns a state name, transitions to that state immediately. If not, checks whether the current state's timeout has expired. If timeout has expired, transitions to the next state immediately. If there is no next state, traversal ends. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_concurrent.html#ad39f1b8814f26d4d247d7da89dcd1173">topsConcurrent</a>.</p>
 
@@ -422,7 +424,7 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 <div class="memdoc">
 
 <p>struct array of data for each state </p>
-<p>Each element of allStates represents a single state. See <a class="el" href="classtops_state_machine.html#a46f50f3c63578358947721563c35fffe" title="Add a new state to the state machine.">addState()</a> for details about the struct fields and state properties. </p>
+<p>Each element of allStates represents a single state. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details about the struct fields and state properties. </p>
 
 </div>
 </div>
@@ -438,7 +440,7 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 <div class="memdoc">
 
 <p>optional fevalable cell array to invoke during state transitions </p>
-<p>The function should expect as the first argument a 1x2 struct array of information about the previous state and the next state, with elements in that order. Any other arguments in the cell array will be passed to the function starting at the second place. See <a class="el" href="classtops_state_machine.html#a46f50f3c63578358947721563c35fffe" title="Add a new state to the state machine.">addState()</a> for details of the struct state information. </p>
+<p>The function should expect as the first argument a 1x2 struct array of information about the previous state and the next state, with elements in that order. Any other arguments in the cell array will be passed to the function starting at the second place. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details of the struct state information. </p>
 
 </div>
 </div>
@@ -454,71 +456,7 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 <div class="memdoc">
 
 <p>struct of information about the last state encountered during traversal. </p>
-<p>See <a class="el" href="classtops_state_machine.html#a46f50f3c63578358947721563c35fffe" title="Add a new state to the state machine.">addState()</a> for details of the struct state information. </p>
-
-</div>
-</div>
-<a class="anchor" id="ac24f5406e696651a4c0fea1357fa5355"></a><!-- doxytag: member="topsStateMachine::sharedEntryFevalableNames" ref="ac24f5406e696651a4c0fea1357fa5355" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Property <a class="el" href="classtops_state_machine.html#ac24f5406e696651a4c0fea1357fa5355">sharedEntryFevalableNames</a> = {}</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>cell array of string names given to functions which are invoked whenever entering any state. </p>
-<p>sharedEntryFevalableNames are parallel to sharedEntryFevalables. See addSharedFcn() for details about shared entry and exit funcions. </p>
-
-</div>
-</div>
-<a class="anchor" id="ae0c1ac7569f553ac1414601f8daea6d2"></a><!-- doxytag: member="topsStateMachine::sharedEntryFevalables" ref="ae0c1ac7569f553ac1414601f8daea6d2" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Property <a class="el" href="classtops_state_machine.html#ae0c1ac7569f553ac1414601f8daea6d2">sharedEntryFevalables</a> = {}</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>cell array of fevalable cell arrays which are invoked whenever entering any state. </p>
-<p>sharedEntryFevalableNames are parallel to sharedEntryFevalables. See addSharedFcn() for details about shared entry and exit funcions. </p>
-
-</div>
-</div>
-<a class="anchor" id="ad30ba8cc1458bf31f45a398fb170b4b0"></a><!-- doxytag: member="topsStateMachine::sharedExitFevalableNames" ref="ad30ba8cc1458bf31f45a398fb170b4b0" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Property <a class="el" href="classtops_state_machine.html#ad30ba8cc1458bf31f45a398fb170b4b0">sharedExitFevalableNames</a> = {}</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>cell array of strings, names given to functions which are invoked whenever exiting any state. </p>
-<p>sharedExitFevalableNames are parallel to sharedExitFevalables. See addSharedFcn() for details about shared entry and exit funcions. </p>
-
-</div>
-</div>
-<a class="anchor" id="a99168e55b5b63371db623ca4a3621004"></a><!-- doxytag: member="topsStateMachine::sharedExitFevalables" ref="a99168e55b5b63371db623ca4a3621004" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Property <a class="el" href="classtops_state_machine.html#a99168e55b5b63371db623ca4a3621004">sharedExitFevalables</a> = {}</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>cell array of fevalable cell arrays which are invoked whenever exiting any state. </p>
-<p>sharedExitFevalableNames are parallel to sharedExitFevalables. See addSharedFcn() for details about shared entry and exit funcions. </p>
+<p>See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details of the struct state information. </p>
 
 </div>
 </div>
@@ -540,7 +478,7 @@ stateInfo allStateIndex&nbsp;</td><td class="memItemRight" valign="bottom"><a cl
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 4 16:49:06 2011 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Mon Jan 23 15:07:37 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

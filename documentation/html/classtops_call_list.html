@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>A <a class="el" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch.">topsCallList</a> object has no internal state to keep track of, so it has no natural way to decide when it's done running. The alwaysRunning property determines whether the object should be considered running following each call to <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a>.</p>
 <p><a class="el" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch.">topsCallList</a> expects functions of a particular form, which it calls "fevalable". Fevalables are cell arrays that have a function <a class="el" href="classhandle.html">handle</a> as the first element. Additional elements are treated as arguments to the function.</p>
 <p>The fevalables convention makes it easy to make arbitrary function calls with Matlab's built-in feval() function--hence the name--so the cell array "foo" would be an fevalable if it could be executed with feval(foo{:}).</p>
-<p>By default, all of the fevalables in the call list will be called during each <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a>. Optionally, each call can be given a name and its <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a> activity can be toggled with <a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999" title="Toggle whether a call is active.">setActiveByName()</a>. </p>
+<p>By default, all of the fevalables in the call list will be called during each <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a>. Optionally, each call can be given a name and its <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a> activity can be toggled with <a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999" title="Toggle whether a call is active.">setActiveByName()</a>. Or, one call can replaced with a different call, useing setCallByName(); </p>
 <div class="dynheader">
 Inheritance diagram for topsCallList:</div>
 <div class="dynsection">
@@ -67,8 +67,8 @@ Inheritance diagram for topsCallList:</div>
 <p><a href="classtops_call_list-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fb314a99fbcf097eb0cb8e81fc63283"></a><!-- doxytag: member="topsCallList::calls" ref="a4fb314a99fbcf097eb0cb8e81fc63283" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a4fb314a99fbcf097eb0cb8e81fc63283">calls</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1e8e71657cd2edd77c16dc4978b5690"></a><!-- doxytag: member="topsCallList::calls" ref="af1e8e71657cd2edd77c16dc4978b5690" args="" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#af1e8e71657cd2edd77c16dc4978b5690">calls</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array with fevalable cell arrays to call as a batch <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab21d88606077d3889c06e727761f09ec"></a><!-- doxytag: member="topsCallList::alwaysRunning" ref="ab21d88606077d3889c06e727761f09ec" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ab21d88606077d3889c06e727761f09ec">alwaysRunning</a> = false</td></tr>
@@ -78,8 +78,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#adb12e8d2db340efae59610606639eb45">defaultName</a> = 'call'</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string default name for added calls <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a467b7233297fe2ce73a3d99bb2330d62">addCall</a> (self, fevalable, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an "fevalable" to the call list.  <a href="#a467b7233297fe2ce73a3d99bb2330d62"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38">addCall</a> (self, fevalable, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an "fevalable" to the call list.  <a href="#a5ffbc9f2b4079043a66289e71bc19a38"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999">setActiveByName</a> (self, isActive, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Toggle whether a call is active.  <a href="#a30972320684a68673d9ff8595acbc999"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad39f1b8814f26d4d247d7da89dcd1173"></a><!-- doxytag: member="topsCallList::runBriefly" ref="ad39f1b8814f26d4d247d7da89dcd1173" args="(self)" -->
@@ -87,12 +87,12 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke active calls in a batch. <br/></td></tr>
 </table>
 <hr/><h2>Methods</h2>
-<a class="anchor" id="a467b7233297fe2ce73a3d99bb2330d62"></a><!-- doxytag: member="topsCallList::addCall" ref="a467b7233297fe2ce73a3d99bb2330d62" args="(self, fevalable, name)" -->
+<a class="anchor" id="a5ffbc9f2b4079043a66289e71bc19a38"></a><!-- doxytag: member="topsCallList::addCall" ref="a5ffbc9f2b4079043a66289e71bc19a38" args="(self, fevalable, name)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">n addCall </td>
+          <td class="memname">index addCall </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname">, </td>
@@ -121,13 +121,13 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Add an "fevalable" to the call list. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>fevalable</em>&nbsp;</td><td>a cell array whose contents to pass to feval() </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional string name to assign to <em>fevalable</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>fevalable</em>&nbsp;</td><td>a cell array with contents to pass to feval() </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>unique name to assign to <em>fevalable</em> </td></tr>
   </table>
   </dd>
 </dl>
-<p>Appends the given <em>fevalable</em> to the calls struct array. If <em>name</em> is provided, <em>fevalable</em> can be referred to by <em>name</em>. If no <em>name</em> is provided, uses a generic name.</p>
-<p>Returns the index into the calls string array where <em>fevalable</em> was appended. </p>
+<p>Appends or inserts the given <em>fevalable</em> to the calls struct array. <em>name</em> should be unique so that <em>fevalable</em> can be referred to later by <em>name</em>. It will replace any existing fevalable with the same <em>name</em> will be replaced.</p>
+<p>Returns the index into the calls struct array where <em>fevalable</em> was appended or inserted. </p>
 
 </div>
 </div>
@@ -165,7 +165,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Toggle whether a call is active. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>given to an fevalable during <a class="el" href="classtops_call_list.html#a467b7233297fe2ce73a3d99bb2330d62" title="Add an &quot;fevalable&quot; to the call list.">addCall()</a> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>given to an fevalable during <a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38" title="Add an &quot;fevalable&quot; to the call list.">addCall()</a> </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>isActive</em>&nbsp;</td><td>true or false, whether to invoke the named fevalable during <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a></td></tr>
   </table>
   </dd>
@@ -192,7 +192,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Oct 4 16:49:06 2011 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Mon Jan 23 15:07:36 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
