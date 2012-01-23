@@ -14,7 +14,7 @@ January2012 will receive bug fixes, but new API and feature changes will go in t
 <wiki:toc max_depth="4" />
 
 ===Overview===
-January2012 implements two features: classification for spatial data, and aggregation of objects into groups for doing operations in batches.
+January2012 implements two features: classification for spatial data, and aggregation of objects into ensembles for doing operations in batches.
 
 ===Classification===
 Tower of Psych will implement classes for modeling and classifying spatial data (or any data treated as spatial).
@@ -30,13 +30,13 @@ StateDiagramGrapher will be able to peek at Classifications used by topsStateMac
 
 *As of r253, this new Classification stuff is done.*
 
-===Grouping===
+===Ensembles===
 Tower of Psych will also implement object grouping behavior.
 
-  * topsGroup will aggregate arbitrary objects and do member access and invocation in batches.
+  * topsEnsemble will aggregate arbitrary objects and do member access and invocation in batches.
 
-It will be up to users to group objects together that have members in common.
+It will be up to users to create ensembles whose members have methods or properties in common.
 
-Aggregated objects won't have to know anything about topsGroup or how grouping is accomplished.  Aggregated objects may be referred to by topsGroup instance, and an internal key or index.
+Aggregated objects won't have to know anything about topsEnsemble or how grouping is accomplished.  Aggregated objects may be referred to by topsEnsemble instance, plus an ensemble key or index.
 
-One open question: if aggregated objects are really naive, what will be a good way to access an individual object (say, for removal from the group)?  Matlab does not support objects as Map keys, or expose hashable object pointers.  This implies _searching_ for objects by equality.  Maybe this is the default behavior.  If performance matters, maybe an object's key can be returned for future use.
+One open question: if aggregated objects are really naive, what will be a good way to access an individual object (say, for removal from the ensemble)?  Matlab does not support objects as Map keys, or expose hashable object pointers.  This implies _searching_ for objects by equality.  Maybe this is the default behavior.  If performance matters, maybe an object's key can be returned for future use.
