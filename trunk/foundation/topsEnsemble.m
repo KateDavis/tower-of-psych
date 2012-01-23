@@ -37,38 +37,23 @@ classdef topsEnsemble < topsFoundation
             end
         end
         
-        % Is the given object a member of the ensemble?
-        function [isMember, index] = contains(self, object)
-        end
-        
         % Add an object to the ensemble.
-        function add(self, object)
+        function addObject(self, object)
         end
         
-        % Take the indexed objects out of the ensemble.
-        function remove(self, index)
+        % Remove one or more objects from the ensemble.
+        function removeObject(self, index)
         end
         
-        % Set a property for one or more objects.
-        function setProperty(self, property, value, index)
-            object.setPropertySilently(property, value);
+        % Get one or more objects in the ensemble.
+        function object = getObject(self, index)
         end
         
-        % Get a property value for one or more objects.
-        function value = getProperty(self, property, index)
-            value = object.(property);
+        % Is the given object a member of the ensemble?
+        function [isMember, index] = containsObject(self, object)
         end
         
-        % Call a method for one or more objects.
-        function result = callMethod(self, method, args, index)
-            object.(method)(varargin{:});
-        end
-        
-        % Get an array of objects in the ensemble.
-        function object = getObjects(self, index)
-        end
-        
-        % Assign one object to a property of another object.
+        % Assign one object to a property of one other object.
         % @details
         % "Wires up" an aggregation relationship between two managed
         % objects.  The given @a outer object will refer to the @a inner
@@ -80,8 +65,7 @@ classdef topsEnsemble < topsFoundation
         % @a varargin will be passed to Matlab's built-in substruct(), to
         % specify an arbitrary reference into @a outer.  The reference
         % could be to one of @a outer's properties, a sub-element or
-        % sub-field of a property.  I if @a outer is an array of objects,
-        % the reference could refer to one or more elements of @a outer.
+        % sub-field of a property.
         % @details
         % For example, to specify the 'data' property of @a outer, use the
         % following "dot" reference to the 'data' property:
@@ -92,9 +76,26 @@ classdef topsEnsemble < topsFoundation
         % @code
         % outer.data = inner;
         % @endcode
-        function assign(self, inIndex, outIndex, varargin)
+        function assignObject(self, inIndex, outIndex, varargin)
             subs = substruct(varargin{:});
             subsasgn(outer, subs, inner);
+        end
+        
+        % Set a property for one or more objects.
+        function setProperty(self, property, value, index)
+            object.setPropertySilently(property, value);
+        end
+        
+        % Get a property value for one or more objects.
+        %   cell with value from each
+        function value = getProperty(self, property, index)
+        end
+        
+        % Call a method for one or more objects.
+        % check nargout for alternate invokations
+        %   0: take no outputs
+        %   1: cell with first output from each invokation
+        function result = callMethod(self, method, args, index)
         end
     end
 end
