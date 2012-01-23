@@ -23,7 +23,6 @@ classdef topsFoundation < handle
             end
         end
         
-        
         % Make a topsGUI graphical interface for this object.
         % @details
         % Subclasses may overrride to return a specific topsGUI subclass,
@@ -60,7 +59,8 @@ classdef topsFoundation < handle
         % Returns the modified cell array @a c.  May also return the index
         % into @a c where @a item was inserted.
         function [c, index] = cellAdd(c, item, index)
-            l = length(c) + 1;
+            
+            l = numel(c) + 1;
             if nargin < 3 || isempty(index)
                 index = l;
             end
