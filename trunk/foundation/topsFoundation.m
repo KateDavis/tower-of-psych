@@ -30,7 +30,7 @@ classdef topsFoundation < handle
         function g = gui(self)
             g = topsGUI;
             g.title = class(self);
-            p = self.guiPanel(g);
+            self.guiPanel(g);
         end
         
         % Make a topsDetailPanel with details about this object.

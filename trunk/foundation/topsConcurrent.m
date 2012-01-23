@@ -7,12 +7,14 @@ classdef topsConcurrent < topsRunnable
     % with one another.
     % @details
     % In addition to being able to run(), topsConcurrent objects can also
-    % runBriefly(), which means to carry out a small part of their normal run()
-    % behavior and then return as soon as possible.  runBriefly() behaviors can
-    % be interleaved to acheive concurrent operation of multiple
-    % topsConcurrent objects within Matlab's single user-controled thread.
-    % See the topsConcurrentComposite class for interleaving topsConcurrent 
-    % objects.
+    % runBriefly(), which means to carry out a small part of their normal
+    % run() behavior, and then return as soon as possible.  runBriefly()
+    % behaviors can be interleaved to acheive concurrent operation of
+    % multiple topsConcurrent objects within a single Matlab instance.
+    % @details
+    % Multiple topsConcurrent objects can be aggregated within a single
+    % topsConcurrentComposite object.  This makes allows the aggregated
+    % objects to be treated like a single topsRunnable object.
     % @ingroup foundation
     
     properties (Hidden)
@@ -38,8 +40,8 @@ classdef topsConcurrent < topsRunnable
         
         % Do a little flow control and return as soon as possible.
         % @details
-        % Subclasses should redefine runBriefly() to do specific run() behaviors,
-        % a little at a time, and return as soon as possible.
+        % Subclasses should redefine runBriefly() to do specific run()
+        % behaviors, a little at a time, and return as soon as possible.
         function runBriefly(self)
             self.isRunning = false;
         end
