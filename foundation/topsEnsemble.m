@@ -1,4 +1,4 @@
-classdef topsEnsemble < topsFoundation
+classdef topsEnsemble < topsCallList
     % @class topsEnsemble
     % Aggregate objects into an ensemble for batch opertaions.
     % @details
@@ -10,15 +10,18 @@ classdef topsEnsemble < topsFoundation
     % accessed.
     % @details
     % Any object can be added to an ensemble.  The objects should have some
-    % property names or method names in common, so that the objects can
-    % work in concert.  topsEnsemble leaves this up to the user.
+    % property names or method names in common, so that they can respond in
+    % concert to the same property or method access.
     % @details
     % topsEnsemble is expected to work with "handle" objects (objects that
     % inherit from the built-in handle class.  Other objects or data types
     % may be added, but these may behave poorly.  Non-handle objects may
     % not reflect property changes correctly.  Non-object data types may
     % cause errors when the ensemble attempts to access their methods.
-    %
+    % @details
+    % topsEnsemble can make repeated method calls on its aggregated objects
+    % during runBriefly().  Use prepareToCallMethod() to set up repeated
+    % calls.
     % @ingroup foundation
     
     properties (SetAccess = protected)
@@ -82,20 +85,29 @@ classdef topsEnsemble < topsFoundation
         end
         
         % Set a property for one or more objects.
-        function setProperty(self, property, value, index)
-            object.setPropertySilently(property, value);
+        function setObjectProperty(self, property, value, index)
         end
         
         % Get a property value for one or more objects.
         %   cell with value from each
-        function value = getProperty(self, property, index)
+        function value = getObjectProperty(self, property, index)
         end
         
         % Call a method for one or more objects.
         % check nargout for alternate invokations
         %   0: take no outputs
         %   1: cell with first output from each invokation
-        function result = callMethod(self, method, args, index)
+        function result = callObjectMethod(self, method, args, index)
+        end
+        
+        % Prepare to call one or more method, repeatedly
+        %   take no outputs
+        %   delegate to call list
+        %   need a name to refer to the repeated call
+        %   assume object as first method arg
+        %   package self-call and add to calls fevalable
+        %   isActive = false by default, else called from runBriefly()
+        function prepareObjectMethod(self, method, args, name, index)
         end
     end
 end

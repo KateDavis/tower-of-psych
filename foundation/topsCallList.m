@@ -65,7 +65,7 @@ classdef topsCallList < topsConcurrent
             
             % is this a new name or a replacement?
             index = topsFoundation.findStructName(self.calls, name);
-
+            
             % insert or append the new call
             self.calls(index).name = name;
             self.calls(index).fevalable = fevalable;
@@ -82,8 +82,24 @@ classdef topsCallList < topsConcurrent
         % calls have the same name, @a isActive will be applied to all of
         % them.
         function setActiveByName(self, isActive, name)
-            named = strcmp({self.calls.name}, name);
-            [self.calls(named).isActive] = deal(isActive);
+            [index selector] = ...
+                topsFoundation.findStructName(self.calls, name);
+            [self.calls(selector).isActive] = deal(isActive);
+        end
+        
+        % Invoke a call once, whether or not it's active.
+        % @param name given to an fevalable during addCall()
+        % @details
+        % If @a name is the name of a call added to this call list, invokes
+        % the fevalable for that call.  Invokes the call whether or not
+        % it's active.
+        function callByName(self, name)
+            [index selector] = ...
+                topsFoundation.findStructName(self.calls, name);
+            if any(selector)
+                call = self.calls(selector);
+                feval(call(1).fevalable{:});
+            end
         end
         
         % Invoke active calls in a batch.
