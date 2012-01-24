@@ -41,11 +41,6 @@ classdef topsCallList < topsConcurrent
         alwaysRunning = false;
     end
     
-    properties (Hidden)
-        % string default name for added calls
-        defaultName = 'call';
-    end
-    
     methods
         % Add an "fevalable" to the call list.
         % @param fevalable a cell array with contents to pass to feval()
@@ -59,10 +54,6 @@ classdef topsCallList < topsConcurrent
         % Returns the index into the calls struct array where @a fevalable
         % was appended or inserted.
         function index = addCall(self, fevalable, name)
-            if nargin < 3
-                name = self.defaultName;
-            end
-            
             % is this a new name or a replacement?
             index = topsFoundation.findStructName(self.calls, name);
             
