@@ -102,9 +102,22 @@ classdef topsFoundation < handle
         % Removes all elements of @a c that are equal to the given @a item.
         % @details
         % Returns the modified cell array, @a c.
-        function c = cellRemoveItem(self, item)
+        function c = cellRemoveItem(c, item)
             selector = self.contains(item);
             c = c(~selector);
+        end
+
+        % Remove indexed elements from a cell array.
+        % @param c a cell array
+        % @param index index of the element or elements to remove
+        % @details
+        % Removes the indexed element or elements of @a c.
+        % @details
+        % Returns the modified cell array, @a c.
+        function c = cellRemoveElement(c, index)
+            selector = true(size(c));
+            selector(index) = false;
+            c = c(selector);
         end
         
         % Where is the given name in the given struct array?

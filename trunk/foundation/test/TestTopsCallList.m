@@ -65,7 +65,7 @@ classdef TestTopsCallList < TestCase
         function testRunUntilStopped(self)
             self.callList.alwaysRunning = true;
             self.callList.addCall({@stopListFromRunning, ...
-                self, self.callList});
+                self, self.callList}, 'stop');
             self.callList.runBriefly;
             assertFalse(self.callList.isRunning, ...
                 'call list should have been stopped from running')

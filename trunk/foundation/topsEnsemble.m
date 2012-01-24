@@ -40,74 +40,245 @@ classdef topsEnsemble < topsCallList
             end
         end
         
-        % Add an object to the ensemble.
-        function addObject(self, object)
+        % Add one object to the ensemble.
+        % @param object any object to add to the ensemble
+        % @param index optional index where to insert the object
+        % @details
+        % Adds the given @a object to this ensemble.  By default, adds @a
+        % object at the end of the ensemble, so it will be accessed after
+        % any other objects.  If @a index is provided it must be an
+        % index, where to insert @a object in the ensemble.  Any existing
+        % object with the same index will be replaced.
+        % @details
+        % Returns the index where @a object was appended or inserted into
+        % the ensemble.
+        function index = addObject(self, object, index)
+            % insert or append?
+            if nargin >= 3
+                [self.objects, index] = topsFoundation.cellAdd( ...
+                    self.objects, object, index);
+                
+            else
+                [self.objects, index] = topsFoundation.cellAdd( ...
+                    self.objects, object);
+            end
         end
         
         % Remove one or more objects from the ensemble.
-        function removeObject(self, index)
+        % @param index ensemble object index or indexes
+        % @details
+        % Removes the indicated object or objects from this ensemble.
+        % Since removal changes the size of the ensemble, previously used
+        % indexes may become invalid.  Returns the object that was removed,
+        % or a cell array of removed objects.
+        function object = removeObject(self, index)
+            object = self.getObject(index);
+            self.objects = topsFoundation.cellRemoveElement( ...
+                self.objects, index);
         end
         
         % Get one or more objects in the ensemble.
+        % @param index ensemble object index or indexes
+        % @details
+        % Returns the indexed object from this ensemble, or a cell array
+        % containing multiple objects.
         function object = getObject(self, index)
+            if isscalar(index)
+                object = self.objects{index};
+            else
+                object = self.objects(index);
+            end
         end
         
         % Is the given object a member of the ensemble?
+        % @param object an object that might be in the ensemble
+        % @details
+        % Returns true if the given @a object is equal to an object in this
+        % ensemble, otherwise returns false.  Also returns as a second
+        % output the index of the first object found to be equal to the
+        % given @a object.  If no object is found to be equal, the returned
+        % index will be empty.
         function [isMember, index] = containsObject(self, object)
+            selector = topsFoundation.cellContains(self.objects, object);
+            isMember = any(selector);
+            index = find(selector, 1, 'first');
         end
         
         % Assign one object to a property of one other object.
+        % @param innerIndex ensemble index of the object to be assigned
+        % @param outerIndex ensemble index of the object that will receive
+        % @param varargin asignment specification pased to substruct()
         % @details
-        % "Wires up" an aggregation relationship between two managed
-        % objects.  The given @a outer object will refer to the @a inner
-        % object, using the assignment specified in @a varargin.  Both @a
-        % outer and @a inner must be members of this ensemble.
+        % "Wires up" an aggregation relationship between two ensemble
+        % objects.  @a innerIndex specifies the inner object which will be
+        % assigned to an outer object.  @a outerObject specifies the outer
+        % object.  Both objects must belong to this ensemble.
         % @details
-        % Aggregation can be undone by passing an empty @a inner object.
+        % @a varargin specifies how to assign the inner object to the outer
+        % object. These trailing arguments will be passed to Matlab's
+        % built-in substruct() function.  @a varargin could specify a
+        % property of the outer object, or drill down to specify a
+        % sub-field or element of a property.
         % @details
-        % @a varargin will be passed to Matlab's built-in substruct(), to
-        % specify an arbitrary reference into @a outer.  The reference
-        % could be to one of @a outer's properties, a sub-element or
-        % sub-field of a property.
-        % @details
-        % For example, to specify the 'data' property of @a outer, use the
-        % following "dot" reference to the 'data' property:
+        % For example, to specify the 'data' property of the outer object,
+        % use the following "dot" reference to the 'data' property:
         % @code
-        % assignObject(@a inner, @a outer, '.', 'data');
+        % assignObject(@a innerIndex, @a outerIndex, '.', 'data');
         % @endcode
-        % The result of this simple asignment would be the same as
+        % The result would be the same as
         % @code
-        % outer.data = inner;
+        % outerObject.data = innerObject;
         % @endcode
-        function assignObject(self, inIndex, outIndex, varargin)
+        % @details
+        % Assignment can be undone by passing an empty @a innerIndex.
+        function assignObject(self, innerIndex, outerIndex, varargin)
+            % resolve the ensemble objects
+            if isempty(innerIndex)
+                innerObject = [];
+            else
+                innerObject = self.getObject(innerIndex);
+            end
+            outerObject = self.getObject(outerIndex);
+            
+            % create an arbitrary substruct
             subs = substruct(varargin{:});
-            subsasgn(outer, subs, inner);
+            subsasgn(outerObject, subs, innerObject);
         end
         
         % Set a property for one or more objects.
+        % @param property string name of an ensemble object property
+        % @param value one value to assign to @a property
+        % @param index optional ensemble object index or indexes
+        % @details
+        % Sets the value of the named @a property, which ensemble objects
+        % have in common.  @a value can be any value to set to all objects.
+        % @details
+        % By default, sets @a value to all objects in the ensemble.  If @a
+        % index is provided, it may specify a subset of ensemble objects.
         function setObjectProperty(self, property, value, index)
+            % all or indexed objects?
+            if nargin >=3
+                objs = self.objecfts(index);
+            else
+                objs = self.objecfts;
+            end
+            
+            % set one at a time
+            nObjects = numel(objs);
+            for ii = 1:nObjects
+                objs{ii}.(property) = value;
+            end
         end
         
         % Get a property value for one or more objects.
-        %   cell with value from each
+        % @param property string name of an ensemble object property
+        % @param index optional ensemble object index or indexes
+        % @details
+        % Gets the value of the named @property, which ensemble objects
+        % have in common.  Returns a cell array with one element per
+        % object, containing each @a property value.  If there is only one
+        % object, returns the value without enclosing it in a cell array.
+        % @details
+        % By default, gets a value from each each ensemble object.  If @a
+        % index is provided, it may specify a subset of ensemble objects.
         function value = getObjectProperty(self, property, index)
+            % all or indexed objects?
+            if nargin >=3
+                objs = self.objecfts(index);
+            else
+                objs = self.objecfts;
+            end
+            nObjects = numel(objs);
+            
+            % get one at a time
+            value = cell(1, nObjects);
+            for ii = 1:nObjects
+                value{ii} = objs{ii}.(property);
+            end
+            
+            % cell array or scalar value?
+            if nObjects == 1
+                value = value{1};
+            end
         end
         
         % Call a method for one or more objects.
-        % check nargout for alternate invokations
-        %   0: take no outputs
-        %   1: cell with first output from each invokation
+        % @param method string name of an ensemble object method
+        % @param args optional arguments to pass to @a method
+        % @param index optional ensemble object index or indexes
+        % @details
+        % Calls the named @a method, which ensemble objects have in
+        % common.  If @a args is provided, passes the elements of @a args
+        % as arguments to @a method.  Returns a cell array with one element
+        % per object, containing the first @a method result from each
+        % object.  If there is only one object, returns the result without
+        % enclosing it in a cell array.
+        % @details
+        % By default, gets a @a method result from each each ensemble
+        % object.  If @a index is provided, it may specify a subset of
+        % ensemble objects.
         function result = callObjectMethod(self, method, args, index)
+            % all or indexed objects?
+            if nargin >=3
+                objs = self.objecfts(index);
+            else
+                objs = self.objecfts;
+            end
+            nObjects = numel(objs);
+            
+            if nargout
+                % must collect results
+                result = cell(1, nObjects);
+                for ii = 1:nObjects
+                    result{ii} = objs{ii}.(method)(args{:});
+                end
+                
+                % cell array or scalar value?
+                if nObjects == 1
+                    result = result{1};
+                end
+                
+            else
+                % didn't ask for results
+                for ii = 1:nObjects
+                    objs{ii}.(method)(args{:});
+                end
+            end
         end
         
-        % Prepare to call one or more method, repeatedly
-        %   take no outputs
-        %   delegate to call list
-        %   need a name to refer to the repeated call
-        %   assume object as first method arg
-        %   package self-call and add to calls fevalable
-        %   isActive = false by default, else called from runBriefly()
-        function prepareObjectMethod(self, method, args, name, index)
+        % Prepare to repeatedly call a method, for one or more objects.
+        % @name callName name given to this automated method call
+        % @param methodName string name of an ensemble object method
+        % @param args optional arguments to pass to @a method
+        % @param index optional ensemble object index or indexes
+        % @details
+        % Defines an automatic method call, with the given @a callName.
+        % The method may be invoked later with callByName().  If the call
+        % is activated with setActiveByName(), it will be invoked
+        % automatically during runBriefly().
+        % @details
+        % Prepares to call @a methodName, which ensemble objects
+        % have in common.  If @a args is provided, the elements of @a args
+        % will be passed as arguments to @a methodName.
+        % @details
+        % By default, calls @a methodName on each ensemble object.  If @a
+        % index is provided, it may specify a subset of ensemble objects.
+        function automateObjectMethod(self, name, method, args, index)
+            % later, use self to call the method
+            fevalable = {@callObjectMethod, self, method};
+            
+            % pass args to method?
+            if nargin >= 4
+                fevalable{4} = args;
+            end
+            
+            % subset of ensemble objecs?
+            if nargin >= 5
+                fevalable{5} = index;
+            end
+            
+            % append or insert in call list
+            self.addCall(fevalable, name);
         end
     end
 end
