@@ -10,7 +10,7 @@ classdef topsEnsemble < topsCallList
     % accessed.
     % @details
     % Any object can be added to an ensemble.  The objects should have some
-    % property names or method names in common, so that they can respond in
+    % property names or methods in common, so that they can respond in
     % concert to the same property or method access.
     % @details
     % topsEnsemble is expected to work with "handle" objects (objects that
@@ -19,9 +19,9 @@ classdef topsEnsemble < topsCallList
     % not reflect property changes correctly.  Non-object data types may
     % cause errors when the ensemble attempts to access their methods.
     % @details
-    % topsEnsemble can make repeated method calls on its aggregated objects
-    % during runBriefly().  Use prepareToCallMethod() to set up repeated
-    % calls.
+    % topsEnsemble extends topsCall list.  In addition to arbitrary
+    % functions, it can make repeated method calls on its aggregated
+    % objects during runBriefly().
     % @ingroup foundation
     
     properties (SetAccess = protected)
@@ -157,10 +157,10 @@ classdef topsEnsemble < topsCallList
         % index is provided, it may specify a subset of ensemble objects.
         function setObjectProperty(self, property, value, index)
             % all or indexed objects?
-            if nargin >=3
-                objs = self.objecfts(index);
+            if nargin >= 4
+                objs = self.objects(index);
             else
-                objs = self.objecfts;
+                objs = self.objects;
             end
             
             % set one at a time
@@ -183,10 +183,10 @@ classdef topsEnsemble < topsCallList
         % index is provided, it may specify a subset of ensemble objects.
         function value = getObjectProperty(self, property, index)
             % all or indexed objects?
-            if nargin >=3
-                objs = self.objecfts(index);
+            if nargin >= 3
+                objs = self.objects(index);
             else
-                objs = self.objecfts;
+                objs = self.objects;
             end
             nObjects = numel(objs);
             
@@ -203,11 +203,11 @@ classdef topsEnsemble < topsCallList
         end
         
         % Call a method for one or more objects.
-        % @param method string name of an ensemble object method
-        % @param args optional arguments to pass to @a method
+        % @param method function_handle of an ensemble object method
+        % @param args optional cell array of arguments to pass to @a method
         % @param index optional ensemble object index or indexes
         % @details
-        % Calls the named @a method, which ensemble objects have in
+        % Calls the given @a method, which ensemble objects have in
         % common.  If @a args is provided, passes the elements of @a args
         % as arguments to @a method.  Returns a cell array with one element
         % per object, containing the first @a method result from each
@@ -218,19 +218,25 @@ classdef topsEnsemble < topsCallList
         % object.  If @a index is provided, it may specify a subset of
         % ensemble objects.
         function result = callObjectMethod(self, method, args, index)
+            % pass arguments to method?
+            if nargin < 3 || isempty(args)
+                args = {};
+            end
+            
             % all or indexed objects?
-            if nargin >=3
-                objs = self.objecfts(index);
+            if nargin >= 4
+                objs = self.objects(index);
             else
-                objs = self.objecfts;
+                objs = self.objects;
             end
             nObjects = numel(objs);
             
             if nargout
                 % must collect results
                 result = cell(1, nObjects);
+                
                 for ii = 1:nObjects
-                    result{ii} = objs{ii}.(method)(args{:});
+                    result{ii} = feval(method, objs{ii}, args{:});
                 end
                 
                 % cell array or scalar value?
@@ -241,30 +247,38 @@ classdef topsEnsemble < topsCallList
             else
                 % didn't ask for results
                 for ii = 1:nObjects
-                    objs{ii}.(method)(args{:});
+                    feval(method, objs{ii}, args{:});
                 end
             end
         end
         
         % Prepare to repeatedly call a method, for one or more objects.
         % @name callName name given to this automated method call
-        % @param methodName string name of an ensemble object method
-        % @param args optional arguments to pass to @a method
+        % @param method function_handle of an ensemble object method
+        % @param args optional cell array of arguments to pass to @a method
         % @param index optional ensemble object index or indexes
         % @details
-        % Defines an automatic method call, with the given @a callName.
-        % The method may be invoked later with callByName().  If the call
-        % is activated with setActiveByName(), it will be invoked
-        % automatically during runBriefly().
+        % Defines an automated method call, with the given @a callName.
+        % Any existing call with @a callName will be replaced. The
+        % automated call can be treated like other topsCallList calls: it
+        % may be invoked by the user with callByName(), or automatically
+        % during runBriefly().  By default, automated method calls are not
+        % active, so they must be activated with setActiveByName() before
+        % runBriefly() can invoke them.
         % @details
-        % Prepares to call @a methodName, which ensemble objects
-        % have in common.  If @a args is provided, the elements of @a args
-        % will be passed as arguments to @a methodName.
+        % Prepares to call @a method, which ensemble objects have in
+        % common.  If @a args is provided, the elements of @a args will be
+        % passed as arguments to @a method.
         % @details
-        % By default, calls @a methodName on each ensemble object.  If @a
-        % index is provided, it may specify a subset of ensemble objects.
-        function automateObjectMethod(self, name, method, args, index)
-            % later, use self to call the method
+        % By default, calls @a method on each ensemble object.  If @a index
+        % is provided, it may specify a subset of ensemble objects.
+        % @details
+        % Returns the index into the calls struct array where the automated
+        % method call was appended or inserted.
+        function index = automateObjectMethod( ...
+                self, callName, method, args, index)
+            
+            % call this method on self
             fevalable = {@callObjectMethod, self, method};
             
             % pass args to method?
@@ -278,7 +292,8 @@ classdef topsEnsemble < topsCallList
             end
             
             % append or insert in call list
-            self.addCall(fevalable, name);
+            index = self.addCall(fevalable, callName);
+            self.setActiveByName(false, callName);
         end
     end
 end

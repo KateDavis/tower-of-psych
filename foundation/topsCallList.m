@@ -78,7 +78,7 @@ classdef topsCallList < topsConcurrent
             [self.calls(selector).isActive] = deal(isActive);
         end
         
-        % Invoke a call once, whether or not it's active.
+        % Invoke a call now, whether or not it's active.
         % @param name given to an fevalable during addCall()
         % @details
         % If @a name is the name of a call added to this call list, invokes
