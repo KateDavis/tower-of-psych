@@ -26,8 +26,11 @@ The topsGUI code evolved into a mess.  I want to clean it up so that it can beco
   * Figure out how to re-summarize text, as widget resizes
  (big - 3 days)
 
-===Member Access===
-I want to agree across the code base on on hidden vs. protected member access, as a point of code style
+===Code Style===
+Class members that are intuitively "internal" to a class should all use the SetAccess = protected or Access = protected modifier.  That way members are viewable but won't get messed with by accident.  Now, there's a mix of access modifiers and hidden status, for no good reason.
+ (small)
+
+topsFoundation subclasses should all take a "name" argument in their constructors.  Matlab makes this a pain in the neck because it requires such a constructor to be cut and pasted.  But I think it's worth having a name appear in the same line where an object is created, to make code easy to scan
  (small)
   
 ===Demos===
