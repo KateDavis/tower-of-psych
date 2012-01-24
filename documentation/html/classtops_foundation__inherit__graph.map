@@ -6,10 +6,10 @@
 <area shape="rect" id="node9" href="$classtops_data_log.html" title="One central place to log data on the fly." alt="" coords="124,238,213,266"/>
 <area shape="rect" id="node13" href="$classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="239,238,341,266"/>
 <area shape="rect" id="node21" href="$classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects." alt="" coords="366,238,468,266"/>
-<area shape="rect" id="node23" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="500,238,652,266"/>
-<area shape="rect" id="node15" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="125,315,211,343"/>
-<area shape="rect" id="node17" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="235,315,331,343"/>
-<area shape="rect" id="node19" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="355,315,471,343"/>
-<area shape="rect" id="node25" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="495,315,656,343"/>
-<area shape="rect" id="node27" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="681,315,777,343"/>
+<area shape="rect" id="node23" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="492,238,644,266"/>
+<area shape="rect" id="node15" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="151,315,237,343"/>
+<area shape="rect" id="node19" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="262,315,377,343"/>
+<area shape="rect" id="node17" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="147,393,243,421"/>
+<area shape="rect" id="node25" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="430,315,591,343"/>
+<area shape="rect" id="node27" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="616,315,712,343"/>
 </map>

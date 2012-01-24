@@ -17,11 +17,11 @@
 <area shape="rect" id="node29" href="$classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="512,382,616,410"/>
 <area shape="rect" id="node37" href="$classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects." alt="" coords="513,434,615,462"/>
 <area shape="rect" id="node39" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="488,486,640,514"/>
-<area shape="rect" id="node31" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="726,330,813,358"/>
-<area shape="rect" id="node33" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="721,382,817,410"/>
-<area shape="rect" id="node35" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="711,434,828,462"/>
-<area shape="rect" id="node41" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="689,486,850,514"/>
-<area shape="rect" id="node43" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="721,538,818,566"/>
+<area shape="rect" id="node31" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="726,343,813,371"/>
+<area shape="rect" id="node35" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="711,395,828,423"/>
+<area shape="rect" id="node33" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="899,343,995,371"/>
+<area shape="rect" id="node41" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="689,459,850,487"/>
+<area shape="rect" id="node43" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="721,511,818,539"/>
 <area shape="rect" id="node47" href="$classtops_data_log_g_u_i.html" title="Visualize data sorted by time." alt="" coords="312,459,426,487"/>
 <area shape="rect" id="node49" href="$classtops_grouped_list_g_u_i.html" title="Visualize the items stored in a grouped list." alt="" coords="302,511,437,539"/>
 <area shape="rect" id="node51" href="$classtops_runnable_g_u_i.html" title="Visualize the structure of topsRunnable objects." alt="" coords="310,563,429,591"/>

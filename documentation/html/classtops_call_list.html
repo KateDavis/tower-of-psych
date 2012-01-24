@@ -61,7 +61,7 @@ Inheritance diagram for topsCallList:</div>
 <div class="dynsection">
 <div class="center"><img src="classtops_call_list__inherit__graph.png" border="0" usemap="#tops_call_list_inherit__map" alt="Inheritance graph"/></div>
 <map name="tops_call_list_inherit__map" id="tops_call_list_inherit__map">
-<area shape="rect" id="node2" href="classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="5,237,133,267"/><area shape="rect" id="node4" href="classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="12,160,127,189"/><area shape="rect" id="node6" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="7,83,132,112"/><area shape="rect" id="node8" href="classhandle.html" title="handle" alt="" coords="36,5,103,35"/></map>
+<area shape="rect" id="node11" href="classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="9,393,105,421"/><area shape="rect" id="node2" href="classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="6,238,108,266"/><area shape="rect" id="node4" href="classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="10,161,104,189"/><area shape="rect" id="node6" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="5,83,109,111"/><area shape="rect" id="node8" href="classhandle.html" title="handle" alt="" coords="29,6,85,34"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classtops_call_list-members.html">List of all members.</a></p>
@@ -73,15 +73,13 @@ Inheritance diagram for topsCallList:</div>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab21d88606077d3889c06e727761f09ec"></a><!-- doxytag: member="topsCallList::alwaysRunning" ref="ab21d88606077d3889c06e727761f09ec" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ab21d88606077d3889c06e727761f09ec">alwaysRunning</a> = false</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">true or false, whether to run indefinitely <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb12e8d2db340efae59610606639eb45"></a><!-- doxytag: member="topsCallList::defaultName" ref="adb12e8d2db340efae59610606639eb45" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#adb12e8d2db340efae59610606639eb45">defaultName</a> = 'call'</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string default name for added calls <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38">addCall</a> (self, fevalable, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an "fevalable" to the call list.  <a href="#a5ffbc9f2b4079043a66289e71bc19a38"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999">setActiveByName</a> (self, isActive, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Toggle whether a call is active.  <a href="#a30972320684a68673d9ff8595acbc999"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ae21f87eecf52490cabad88340eec2aa7">callByName</a> (self, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke a call now, whether or not it's active.  <a href="#ae21f87eecf52490cabad88340eec2aa7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad39f1b8814f26d4d247d7da89dcd1173"></a><!-- doxytag: member="topsCallList::runBriefly" ref="ad39f1b8814f26d4d247d7da89dcd1173" args="(self)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173">runBriefly</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke active calls in a batch. <br/></td></tr>
@@ -174,6 +172,42 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 </div>
 </div>
+<a class="anchor" id="ae21f87eecf52490cabad88340eec2aa7"></a><!-- doxytag: member="topsCallList::callByName" ref="ae21f87eecf52490cabad88340eec2aa7" args="(self, name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">callByName </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Invoke a call now, whether or not it's active. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>given to an fevalable during <a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38" title="Add an &quot;fevalable&quot; to the call list.">addCall()</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is the name of a call added to this call list, invokes the fevalable for that call. Invokes the call whether or not it's active. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>topsCallList.m</li>
 </ul>
@@ -192,7 +226,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Mon Jan 23 15:07:36 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 24 18:04:26 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
