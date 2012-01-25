@@ -31,11 +31,11 @@ classdef topsConcurrent < topsRunnable
         % the caller until isRunning becomes false.  It does not attempt to
         % return quickly.
         function run(self)
-            self.start;
+            self.start();
             while self.isRunning
-                self.runBriefly;
+                self.runBriefly();
             end
-            self.finish;
+            self.finish();
         end
         
         % Do a little flow control and return as soon as possible.

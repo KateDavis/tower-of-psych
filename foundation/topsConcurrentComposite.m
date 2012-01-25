@@ -49,17 +49,17 @@ classdef topsConcurrentComposite < topsRunnableComposite
         % number of times and in an interleaved fashion, they should all
         % appear to run() concurrently.
         function run(self)
-            self.start;
-            self.startChildren;
+            self.start();
+            self.startChildren();
             self.runBrieflyCount = 0;
             
             while self.isRunning
                 self.runBrieflyCount = self.runBrieflyCount + 1;
-                self.runChildren;
+                self.runChildren();
             end
             
-            self.finishChildren;
-            self.finish;
+            self.finishChildren();
+            self.finish();
         end
         
         
