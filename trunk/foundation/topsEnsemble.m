@@ -54,13 +54,13 @@ classdef topsEnsemble < topsCallList
         % the ensemble.
         function index = addObject(self, object, index)
             % insert or append?
-            if nargin >= 3
+            if nargin < 3 || isempty(index)
                 [self.objects, index] = topsFoundation.cellAdd( ...
-                    self.objects, object, index);
+                    self.objects, object);
                 
             else
                 [self.objects, index] = topsFoundation.cellAdd( ...
-                    self.objects, object);
+                    self.objects, object, index);
             end
         end
         
