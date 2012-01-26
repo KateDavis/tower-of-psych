@@ -24,6 +24,7 @@ The topsGUI code evolved into a mess.  I want to clean it up so that it can beco
   * GUIs need to show relevant data, rather than automatic data
   * Make awesome "pueblo" color scheme
   * Figure out how to re-summarize text, as widget resizes
+  * Instead responding to events posted by tops classes, it would be easier and maybe even better just to have a "refresh" button in every GUI.
  (big - 3 days)
 
 ===Code Style===
