@@ -47,7 +47,7 @@ classdef topsRunnable < topsFoundation
         % Constructor takes no arguments.
         % @details
         % Uses the class of this topsRunnable as the default name.
-        function self = topsRunnable
+        function self = topsRunnable()
             self.name = class(self);
         end
         

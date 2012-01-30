@@ -263,8 +263,9 @@ classdef topsEnsemble < topsCallList
         % automated call can be treated like other topsCallList calls: it
         % may be invoked by the user with callByName(), or automatically
         % during runBriefly().  By default, automated method calls are not
-        % active, so they must be activated with setActiveByName() before
-        % runBriefly() can invoke them.
+        % active, so they must be activated with setActiveByName() or
+        % callByName() with the isActive flag before runBriefly() can
+        % invoke them.
         % @details
         % Prepares to call @a method, which ensemble objects have in
         % common.  If @a args is provided, the elements of @a args will be

@@ -7,9 +7,14 @@ classdef TestTopsEnsemble < dotsTestCase
             self = self@dotsTestCase(name);
         end
         
+        % test subclass may override to produce subclass
+        function ensemble = getEnsemble(self, name)
+            ensemble = topsEnsemble(name);
+        end
+        
         function testAddContainsRemoveObject(self)
             nObjects = 5;
-            ensemble = topsEnsemble('test');
+            ensemble = self.getEnsemble('test');
             
             % add several objects, specify ordering
             objects = cell(1, nObjects);
@@ -47,7 +52,7 @@ classdef TestTopsEnsemble < dotsTestCase
             % ensemble of two objects
             a = topsFoundation('dumb name');
             b = topsFoundation('dumb name');
-            ensemble = topsEnsemble('test');
+            ensemble = self.getEnsemble('test');
             aIndex = ensemble.addObject(a);
             bIndex = ensemble.addObject(b);
             
@@ -77,7 +82,7 @@ classdef TestTopsEnsemble < dotsTestCase
             % ensemble of two objects
             a = topsFoundation('dumb name');
             b = topsFoundation('dumb name');
-            ensemble = topsEnsemble('test');
+            ensemble = self.getEnsemble('test');
             aIndex = ensemble.addObject(a);
             bIndex = ensemble.addObject(b);
             
@@ -100,7 +105,7 @@ classdef TestTopsEnsemble < dotsTestCase
             % ensemble of two objects
             a = topsFoundation('dumb name');
             b = topsFoundation('dumb name');
-            ensemble = topsEnsemble('test');
+            ensemble = self.getEnsemble('test');
             aIndex = ensemble.addObject(a);
             bIndex = ensemble.addObject(b);
             
@@ -118,7 +123,7 @@ classdef TestTopsEnsemble < dotsTestCase
             % ensemble of two objects
             outer = topsFoundation();
             inner = topsFoundation('inner');
-            ensemble = topsEnsemble('test');
+            ensemble = self.getEnsemble('test');
             outerIndex = ensemble.addObject(outer);
             innerIndex = ensemble.addObject(inner);
             

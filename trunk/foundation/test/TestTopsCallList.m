@@ -75,10 +75,20 @@ classdef TestTopsCallList < TestCase
             self.callList.addCall(self.orderedFunctions{1}, 'one');
             self.callList.addCall(self.orderedFunctions{2}, 'two');
             
+            % toggle active directly
+            self.callList.setActiveByName(true, 'one');
             self.callList.setActiveByName(false, 'two');
             self.callList.runBriefly;
             assertEqual(length(self.order), 1, ...
                 'should have called only one function')
+            
+            % toggle active while calling by name
+            self.order = [];
+            self.callList.callByName('one', true);
+            self.callList.callByName('two', false);
+            self.callList.runBriefly;
+            assertEqual(length(self.order), 3, ...
+                'should have called three functions')
         end
         
         function testPropertyChangeEventPosting(self)

@@ -24,10 +24,10 @@ classdef topsCallList < topsConcurrent
     % feval(foo{:}).
     % @details
     % By default, all of the fevalables in the call list will be called
-    % during each runBriefly().  Optionally, each call can be given a name
-    % and its runBriefly() activity can be toggled with setActiveByName().
-    % Or, one call can replaced with a different call, useing
-    % setCallByName();
+    % during each runBriefly().  The activity of each call can be
+    % controlled with setActiveByName() or with callByName() with the
+    % isActive flag.  A call can also be replaced by passing a new call
+    % with the same name to addCall().
     % @ingroup foundation
     
     properties (SetObservable)
@@ -80,16 +80,36 @@ classdef topsCallList < topsConcurrent
         
         % Invoke a call now, whether or not it's active.
         % @param name given to an fevalable during addCall()
+        % @param isActive whether to activate or un-activate the call at
+        % the same time
         % @details
-        % If @a name is the name of a call added to this call list, invokes
-        % the fevalable for that call.  Invokes the call whether or not
-        % it's active.
-        function callByName(self, name)
+        % @a name must be the name of a call added to this call list with
+        % addCall().  Invokes the fevalable for that call, whether or not
+        % it's active.  If isActive is provided, sets whether the named
+        % call is active, to be invoked in the future by runBriefly().
+        % @details
+        % Returns the first output from the named call, if any.
+        function result = callByName(self, name, isActive)
+            % need to return a result?
+            isResult = nargout > 0;
+            
+            % toggle the call's runBriefly() activity?
+            if nargin >=3
+                self.setActiveByName(isActive, name);
+            end
+            
+            % invoke the call
             [index selector] = ...
                 topsFoundation.findStructName(self.calls, name);
             if any(selector)
                 call = self.calls(selector);
-                feval(call(1).fevalable{:});
+                
+                % with or without returning a result
+                if isResult
+                    result = feval(call(1).fevalable{:});
+                else
+                    feval(call(1).fevalable{:});
+                end
             end
         end
         
