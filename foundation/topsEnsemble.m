@@ -9,19 +9,20 @@ classdef topsEnsemble < topsCallList
     % This affects the order in which properties and methods will be
     % accessed.
     % @details
-    % Any object can be added to an ensemble.  The objects should have some
-    % property names or methods in common, so that they can respond in
-    % concert to the same property or method access.
+    % Any objects can be added to an ensemble.  The objects should have
+    % at least one property name or methods in common, so that they can
+    % respond in concert to the same property access or method calls.
     % @details
     % topsEnsemble is expected to work with "handle" objects (objects that
-    % inherit from the built-in handle class.  Other objects or data types
-    % may be added, but these may behave poorly.  Non-handle objects may
-    % not reflect property changes correctly.  Non-object data types may
-    % cause errors when the ensemble attempts to access their methods.
+    % inherit from the built-in handle class).  Other objects or data types
+    % may be added, but these may behave poorly:
+    %   - Non-handle objects may not reflect property changes correctly.
+    %   - Non-object data types may cause errors when the ensemble attempts
+    %   to access their properties or methods.
     % @details
-    % topsEnsemble extends topsCall list.  In addition to arbitrary
-    % functions, it can make repeated method calls on its aggregated
-    % objects during runBriefly().
+    % topsEnsemble extends topsCall list.  Where topsCall list is able to
+    % call arbitrary functions, topsEnsemble can also call arbitrary
+    % methods on its aggrigated objects.
     % @ingroup foundation
     
     properties (SetAccess = protected)
@@ -46,12 +47,17 @@ classdef topsEnsemble < topsCallList
         % @details
         % Adds the given @a object to this ensemble.  By default, adds @a
         % object at the end of the ensemble, so it will be accessed after
-        % any other objects.  If @a index is provided it must be an
-        % index, where to insert @a object in the ensemble.  Any existing
-        % object with the same index will be replaced.
+        % any other objects.  If @a index is provided it must be a positive
+        % integer specifying where to insert @a object in the ensemble.
+        % Any existing object with the same index will be replaced.
+        % @details
+        % topsEnsemble assumes that objects are packed without gaps into
+        % its objects array.  This will always be the case if @a index is
+        % omitted.  If @a index is provided, care must be take to pack
+        % objects into the ensemble.
         % @details
         % Returns the index where @a object was appended or inserted into
-        % the ensemble.
+        % the ensemble, which may be the same as the given @a index.
         function index = addObject(self, object, index)
             % insert or append?
             if nargin < 3 || isempty(index)
