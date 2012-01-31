@@ -263,15 +263,19 @@ classdef topsEnsemble < topsCallList
         % @param method function_handle of an ensemble object method
         % @param args optional cell array of arguments to pass to @a method
         % @param index optional ensemble object index or indexes
+        % @param isActive whether the named method call shoul be active
         % @details
         % Defines an automated method call, with the given @a callName.
         % Any existing call with @a callName will be replaced. The
         % automated call can be treated like other topsCallList calls: it
         % may be invoked by the user with callByName(), or automatically
-        % during runBriefly().  By default, automated method calls are not
-        % active, so they must be activated with setActiveByName() or
-        % callByName() with the isActive flag before runBriefly() can
-        % invoke them.
+        % during runBriefly().
+        % @details
+        % By default, automated method calls are not active, so
+        % runBriefly() will ignore them.  If @a isActive is provided and
+        % true, the named call will be activated.  Calls may be activated
+        % later with setActiveByName() or  callByName() with the isActive
+        % flag.
         % @details
         % Prepares to call @a method, which ensemble objects have in
         % common.  If @a args is provided, the elements of @a args will be
@@ -283,7 +287,11 @@ classdef topsEnsemble < topsCallList
         % Returns the index into the calls struct array where the automated
         % method call was appended or inserted.
         function index = automateObjectMethod( ...
-                self, callName, method, args, index)
+                self, callName, method, args, index, isActive)
+            
+            if nargin < 6
+                isActive = false;
+            end
             
             % call this method on self
             fevalable = {@callObjectMethod, self, method};
@@ -300,7 +308,7 @@ classdef topsEnsemble < topsCallList
             
             % append or insert in call list
             index = self.addCall(fevalable, callName);
-            self.setActiveByName(false, callName);
+            self.setActiveByName(isActive, callName);
         end
     end
 end

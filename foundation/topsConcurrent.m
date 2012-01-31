@@ -24,17 +24,25 @@ classdef topsConcurrent < topsRunnable
     
     methods
         % Do flow control.
+        % @param duration how long in seconds to keep running
         % @details
         % topsConcurrent redefines the run() method of topsRunnable.  It
         % uses start(), finish(), and repeated calls to runBriefly() to
-        % accomplish run() behaviors.  run() takes over flow-control from
-        % the caller until isRunning becomes false.  It does not attempt to
-        % return quickly.
-        function run(self)
+        % accomplish run() behaviors.  By default, run() takes over
+        % flow-control from the caller until isRunning becomes false.  If
+        % @a duration is provided, runs until isRunning becomes false, or
+        % @a duration elapses, then sets isRunning to false.
+        function run(self, duration)
+            if nargin < 2
+                duration = inf;
+            end
+            endTime = duration + topsClock();
+
             self.start();
-            while self.isRunning
+            while self.isRunning && (topsClock() < endTime)
                 self.runBriefly();
             end
+            self.isRunning = false;
             self.finish();
         end
         
