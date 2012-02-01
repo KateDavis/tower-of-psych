@@ -4,12 +4,22 @@
 I'm jotting down ideas and needs for tops GUIs, with a view to reimplementing the GUI classes.  They evolved into a mess over time, and they don't all show the data that they should show.
 
 ===General===
+I like the model of having a topsGUI which provides basic functionality and manages the Matlab figure, and then filling the figure with custom panels.
+
+I want to be able to show a useful summary of classes besides topsFoundation.  Maybe the gui can do special things for topsFoundation but also default to an agnostic mode.
+
 I like having char data colored in to create a visual pop-out.  I want a simpler and more striking color scheme.  I want to call it [http://upload.wikimedia.org/wikipedia/en/3/3d/CM_arrow_sun.jpg Pueblo].
+
+There's a tension between normalized positions units, which are easiest to deal with, and character position units, which are more correct for text.  Is it worth solving this?  Say all units are assumed to be normalized, but text components have a chance to resize privately?
+
+Some GUIs have a well-defined notion of the "current selection".  Should all GUIs have a selection?  If so, then they all could have a "to workspace" button for getting at stuff.
 
 ===topsText===
 Text widgets have been tricky.  Many of the text widgets in use now don't end up showing useful information.  For example, the first element of an fevalable cell array, or the class and size of an object are not very useful (unless the user can drill down...).
 
 It would be nice if text widgets could dynamically re-summarize their contents.  It would also be nice if they could in-truncate their summaries to fit in available space.  So should resize callbacks descend all the way down to text widgets?
+
+It's useful to have editable text with callbacks.  Is there a way to make the text behave better, like by repositioning and resizing when its time to edit, and escaping the edit more by responding to ESC? 
 
 ===topsGUI===
 I like having a few full-on custom GUIs for certain classes, like topsDataLog.
