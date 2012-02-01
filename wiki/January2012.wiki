@@ -1,42 +1,38 @@
 #summary Tower of Psych milestones for January 2012
 
-"January2012" will be the third formal milestone for the Tower of Psych project.  It will correspond to the repository tag called January2012:
+January2012 is the third formal milestone for the Tower of Psych project.  It corresponds to the repository tag called January2012:
 {{{
 http://tower-of-psych.googlecode.com/svn/tags/January2012
 }}}
 
-[http://tower-of-psych.googlecode.com/svn-history/r632/documentation/html/index.html Documentation contemporary with January2012] will be available.
+[http://tower-of-psych.googlecode.com/svn-history/r270/documentation/html/index.html Documentation contemporary with January2012] is available.
 
 January2012 will receive bug fixes, but new API and feature changes will go in the trunk, to be included in a later milestone.
-
-*Note: this repository tag doesn't exist yet, but it will in January.*
 
 <wiki:toc max_depth="4" />
 
 ===Overview===
-January2012 implements two features: classification for spatial data, and aggregation of objects into ensembles for doing operations in batches.
+January2012 implements two features: classification for spatial data, and aggregation of objects into "ensembles" for doing operations in batches.
 
 ===Classification===
-Tower of Psych will implement classes for modeling and classifying spatial data (or any data treated as spatial).
+January2012 implements classes for modeling and classifying spatial data (or any data treated as spatial).
 
-  * topsDimension will model discrete, finite spatial dimensions _(did on 13 Jan)_
-  * topsSpace will aggregate Dimensions to define a discrete, finite space _(did on 13 Jan)_
-  * topsRegion will model a region within a Space _(did on 17 Jan)_
-  * topsClassification will classify spatial data based on Regions within a Space _(did on 18 Jan)_
+  * topsDimension models discrete, finite spatial dimensions
+  * topsSpace aggregates Dimensions to define a discrete, finite space
+  * topsRegion models a region within a Space
+  * topsClassification classifies spatial data, based on Regions within a Space
 
-topsStateMachine will make use of topsClassification.  Each state may have its own Classification, allowing it to respond to inputs in a state-dependent way.  This functionality will supplement state input functions.  _(did on 19 Jan)_
+See demos/demoRegion.m and demos/demoClassification.m.
 
-StateDiagramGrapher will be able to peek at Classifications used by topsStateMachine, in order to produce rich graphs.  _(did on 19 Jan)_
+topsStateMachine makes use of topsClassification.  Each state may have its own Classification, allowing it to respond to inputs in a state-dependent way.  This functionality supplements state input functions.
 
-*As of r253, this new Classification stuff is done.*
+StateDiagramGrapher can peek at the Classifications used by topsStateMachine.  Since the outputs of a Classification are known in advance, peeking allows StateDiagramGrapher to produce rich graphs.
 
 ===Ensembles===
-Tower of Psych will also implement object grouping behavior.
+January2012 also implements object grouping behavior with "ensembles".
 
-  * topsEnsemble will aggregate arbitrary objects and do member access and invocation in batches.
+  * topsEnsemble aggregates arbitrary objects and does member access and method invocation in batches.
 
-It will be up to users to create ensembles whose members have methods or properties in common.
+It is up to to users to create ensembles whose members have methods or properties in common, so that they can be treated uniformly.
 
-Aggregated objects won't have to know anything about topsEnsemble or how grouping is accomplished.  Aggregated objects may be referred to by topsEnsemble instance, plus an ensemble key or index.
-
-One open question: if aggregated objects are really naive, what will be a good way to access an individual object (say, for removal from the ensemble)?  Matlab does not support objects as Map keys, or expose hashable object pointers.  This implies _searching_ for objects by equality.  Maybe this is the default behavior.  If performance matters, maybe an object's key can be returned for future use.
+Aggregated objects don't have to know anything about topsEnsemble, or how aggregation is accomplished.  An aggregated object can be identified uniquely from its topsEnsemble instance, plus an index into the ensemble.  topsEnsemble returns an object's index when the object is added to the ensemble with addObject(), and from the containsObject() method.
