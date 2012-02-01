@@ -1,0 +1,46 @@
+#summary Notes about redesigning tops GUI classes for Version1
+#labels Phase-Design
+
+I'm jotting down ideas and needs for tops GUIs, with a view to reimplementing the GUI classes.  They evolved into a mess over time, and they don't all show the data that they should show.
+
+===General===
+I like having char data colored in to create a visual pop-out.  I want a simpler and more striking color scheme.  I want to call it [http://upload.wikimedia.org/wikipedia/en/3/3d/CM_arrow_sun.jpg Pueblo].
+
+===topsText===
+Text widgets have been tricky.  Many of the text widgets in use now don't end up showing useful information.  For example, the first element of an fevalable cell array, or the class and size of an object are not very useful (unless the user can drill down...).
+
+It would be nice if text widgets could dynamically re-summarize their contents.  It would also be nice if they could in-truncate their summaries to fit in available space.  So should resize callbacks descend all the way down to text widgets?
+
+===topsGUI===
+I like having a few full-on custom GUIs for certain classes, like topsDataLog.
+
+But it would be brittle and irritating to require every class to have its own custom GUI class.  So some GUIs should be constructed dynamically out of suitable parts.  Those parts would be based on topsPanel.
+
+topsGUI should be in charge of the Matlab figure.
+  * aggregates panels and auto-arranges
+  * aggregates buttons and auto-arranges
+  * has a "refresh" button
+  * deals out mouse scroll events to registered components
+  * deals out key press events to registered components?
+  
+
+===topsPanel===
+What parts would be needed to support useful, dynamically created GUIs?
+  * object property list
+  * property drill-down that the user can click through
+    * can the panel real estate be dynamic, like a menu
+    * should the drill down use a "back" button like a browser
+  * property focus
+    * static real estate to emphasize a key property
+  * tree view of connected objects, like topsRunnable
+  * is there a role for figure menus to play?
+    * menus require a lot of clicking and mousing
+    * menus disappear
+    * menus are visually dull
+    * menus are bound to the figure, not each panel
+    * menus provide a tree structure
+
+===topsFoundation===
+Foundation objects should not have to know much about the GUI classes.  Foundation objects can have a gui() method which creates a topsGUI.  They can have a property like guiHints which specifies what kind of topGUI to make.  But they shouldn't have to manage any details of the GUI.
+
+Previously, topsFoundation objects have posted notifications about certain events, like "new item" or "started running".  As far as I know, only GUI classes are using these events.  For the GUI classes, it will be easier and more powerful to just have a "refresh" button that the user can invoke.  So maybe the topsFoundation objects should not post events.  It would be nice to eliminate the event code.
