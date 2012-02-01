@@ -19,6 +19,10 @@
 %   @ingroup utilities
 function colors = spacedColors(n)
 
+if nargin < 1
+   n = size(get(gcf,'colormap'),1);
+end
+
 % define a whiteness index, w = r + g + b, 
 %   want to exclude colors with w > some k
 %   this is monotonic with the area of excluded cube,
