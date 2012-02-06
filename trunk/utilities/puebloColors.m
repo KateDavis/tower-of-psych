@@ -11,7 +11,7 @@
 %   book Arrow to the Sun (http://en.wikipedia.org/wiki/Arrow_to_the_Sun).
 %
 %   Here's a demo:
-%   n = 19;
+%   n = 9;
 %   colormap([puebloColors(n); 0 0 0]);
 %   thingy = n+1*ones(1, 2*n+1);
 %   thingy(2:2:2*n) = 1:n;
