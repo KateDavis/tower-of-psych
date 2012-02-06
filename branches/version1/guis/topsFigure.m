@@ -43,7 +43,7 @@ classdef topsFigure < handle
         mainPanel;
         
         % 2D cell array of topsPanel objects
-        contentPanels = [];
+        contentPanels = {};
         
         % the figure area reserved for buttons
         buttonPanel;
@@ -152,7 +152,12 @@ classdef topsFigure < handle
         function setCurrentItem(self, currentItem, currentItemName)
             self.currentItem = currentItem;
             self.currentItemName = currentItemName;
-            self.refreshPanels();
+            self.refresh(false);
+            
+            for ii = 1:numel(self.contentPanels)
+                self.contentPanels{ii}.setCurrentItem( ...
+                    currentItem, currentItemName);
+            end
         end
         
         % Choose the content panels to use in this GUI.
@@ -236,8 +241,26 @@ classdef topsFigure < handle
         end
         
         % Tell each content panel to refresh its contents.
-        function refreshPanels(self)
+        % @param isRefreshPanels whether to also refresh panels
+        % @details
+        % Refreshes the appearance of this figure.  By default, also
+        % invokes refresh() on each panel in contentPanels.  If @a
+        % isRefreshPanels is provided and false, only refreshes the figure
+        % itself.
+        function refresh(self, isRefreshPanels)
             
+            if nargin < 2
+                isRefreshPanels = true;
+            end
+            
+            % any self behaviors?
+            
+            % refresh each panel
+            if isRefreshPanels
+                for ii = 1:numel(self.contentPanels)
+                    self.contentPanels{ii}.refresh();
+                end
+            end
         end
         
         % Send the current item to the Command Window workspace.
@@ -251,7 +274,7 @@ classdef topsFigure < handle
         end
         
         % View details of the current item.
-        function currentItemViewDetails(self)
+        function currentItemInfo(self)
             
         end
     end
@@ -291,6 +314,64 @@ classdef topsFigure < handle
             r = max(p(:,1)+p(:,3));
             t = max(p(:,2)+p(:,4));
             merged = [l, b, r-l, t-b];
+        end
+        
+        % Pick a color for the given string, based on its spelling.
+        % @param string any string
+        % @param colors nx3 matrix with one color per row (RGB, 0-1)
+        % @details
+        % Maps the given @a string to one of the rows in @a colors, based
+        % on the spelling of @a string.  The same string will always map to
+        % the same row.  Multiple strings will also map to each row.
+        function col = getColorForString(string, colors)
+            hashRow = 1 + mod(sum(string), size(colors,1));
+            col = colors(hashRow, :);
+        end
+        
+        % Wrap the given string with HTML font color tags.
+        % @param string any string
+        % @param color 1x3 color (RGB, 0-1)
+        % @details
+        % Wraps the given @a string in HTML "<FONT>" and "</FONT>" tags,
+        % with the font color set to the given @a color.  Color should have
+        % RGB components in the range 0-1.  Does not add "<HTML>" and
+        % "</HTML>" tags to the string.
+        function colored = htmlWrapFontColor(string, color)
+            colorHex = dec2hex(round(color*255), 2)';
+            colorName = colorHex(:)';
+            colored = sprintf('<FONT color="%s">%s</FONT>', ...
+                colorName, string);
+        end
+        
+        % Strip out HTML anchors and anchor tags from a string.
+        % @param string any string
+        % @param isPreserveText whether to leave the anchor text in place
+        % @details
+        % Strips out HTML anchors (like "a=href", etc.) from the given
+        % @a string.  By default, strips out the anchor text along with the
+        % anchor tags.  If @a isPreserverText is provided and true, leaves
+        % the anchor text without the tags.  Also strips out commas or new
+        % lines following the anchor close tag.
+        function stripped = htmlStripAnchors(string, isPreserveText)
+            if nargin < 2
+                isPreserveText = false;
+            end
+            anchorPat = '<[Aa][^<]*>([^<]*)</[Aa]>[,\n\r]*';
+            if isPreserveText
+                stripped = regexprep(string, anchorPat, '$1');
+            else
+                stripped = regexprep(string, anchorPat, '');
+            end
+        end
+        
+        % Replace newline characters with HTML break tags.
+        % @param string any string
+        % @details
+        % Replaces any newline (\n) or return carriage (\r) characters in
+        % the given @a string with HTML <br/> break tags.
+        function breaked = htmlBreakAtLines(string)
+            newLinePat = '([\n\r]+)';
+            breaked = regexprep(string, newLinePat, '<br />');
         end
     end
 end

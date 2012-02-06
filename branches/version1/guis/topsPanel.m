@@ -24,8 +24,8 @@ classdef topsPanel < handle
         % the Matlab uipanel
         pan;
         
-        % whether or not to change appearance when current item is set
-        isUpdatable;
+        % whether or not to refresh when currentItem is set
+        isAutoRefresh = true;
         
         % the "current item" in use in the GUI
         currentItem;
@@ -36,10 +36,16 @@ classdef topsPanel < handle
     
     methods
         % Make a new panel in the given figure.
+        % @param parentFigure topsFigure to work with
+        % @details
+        % Creates a new topsPanel to show GUI content.  @a parentFigure
+        % must be a topsFigure object, otherwise the panel won't display
+        % any content.
         function self = topsPanel(parentFigure)
             if nargin >= 1
                 self.parentFigure = parentFigure;
                 self.initialize();
+                self.refresh();
             end
         end
         
@@ -47,19 +53,23 @@ classdef topsPanel < handle
         % @param currentItem the new current item
         % @param currentItemName name to use for the current item
         % @details
-        % Assigns @a currentItem and @a currentItemName to this figure and
-        % any panels.
+        % Assigns @a currentItem and @a currentItemName to this panel and
+        % refreshes the panel contents.
         function setCurrentItem(self, currentItem, currentItemName)
             self.currentItem = currentItem;
             self.currentItemName = currentItemName;
             
-            if self.isUpdatable
-                self.refreshPanels();
+            if self.isAutoRefresh
+                self.refresh();
             end
+        end
+        
+        % Refresh the panel's contents.
+        function refresh(self)
         end
     end
     
-    methods (Access = private)
+    methods (Access = protected)
         % Create and arrange fresh components.
         function initialize(self)
             if ishandle(self.pan)
