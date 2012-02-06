@@ -1,4 +1,4 @@
-function [gameTree, gameList] = encounter
+function [gameTree, gameList] = encounter()
 % Demonstrate the Tower of Psych (tops) foundation classes with a game
 %
 %   [gameTree, gameList] = encounter
@@ -58,10 +58,13 @@ gameList.addItemToGroupWithMnemonic(characterQueue, ...
 % batch of functions to call, with arguments
 battleCalls = topsCallList;
 battleCalls.alwaysRunning = true;
-battleCalls.addCall({@drawnow});
-battleCalls.addCall({@()monsterQueue.dispatchNextFevalable});
-battleCalls.addCall({@()characterQueue.dispatchNextFevalable});
-battleCalls.addCall({@checkBattleStatus, gameList, battleCalls});
+battleCalls.addCall({@drawnow}, 'drawnow');
+battleCalls.addCall({@()monsterQueue.dispatchNextFevalable}, ...
+    'monsterDispatch');
+battleCalls.addCall({@()characterQueue.dispatchNextFevalable}, ...
+    'characterDispatch');
+battleCalls.addCall({@checkBattleStatus, gameList, battleCalls}, ...
+    'battleStatus');
 gameList.addItemToGroupWithMnemonic(battleCalls, 'game', 'battleCalls');
 
 % Create an array of battler objects to represent player characters. 
@@ -101,7 +104,7 @@ for ii = 1:length(characters)
     bt.loadForRepeatIntervalWithCallback ...
         (characters(ii).attackInterval, ...
         {@characterWakesUp, characters(ii), gameList});
-    charCalls.addCall({@tick, bt});
+    charCalls.addCall({@tick, bt}, 'tickBattleTimer');
 end
 gameList.addItemToGroupWithMnemonic(charCalls, 'game', 'charCalls');
 gameList.addItemToGroupWithMnemonic(charTimers, 'game', 'charTimers');
@@ -169,7 +172,7 @@ for ii = 1:length(group)
         bt.loadForRepeatIntervalWithCallback ...
             (group(ii).monsters(jj).attackInterval, ...
             {@monsterWakesUp, group(ii).monsters(jj), gameList});
-        groupCalls.addCall({@tick, bt});
+        groupCalls.addCall({@tick, bt}, 'tickBattleTimer');
     end
     gameList.addItemToGroupWithMnemonic( ...
         group(ii).monsters, 'monsters', group(ii).name);
