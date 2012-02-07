@@ -68,7 +68,7 @@ classdef topsFigure < handle
     end
     
     methods
-        % Open an new topsFigure.
+        % Open an new topsGUIUtilities.
         % @param name optional name to give the figure.
         % @param varargin optional property-value pairs to set
         % @details
@@ -102,6 +102,16 @@ classdef topsFigure < handle
             end
         end
         
+        % Add a button to the button panel.
+        function addButton(self, name, callback)
+            button = self.makeButton(self.buttonPanel);
+            set(button, ...
+                'String', name, ...
+                'Callback', callback);
+            self.buttons(end+1) = button;
+            self.repositionButtons();
+        end
+        
         % Make a Matlab figure with a certain look and feel.
         function f = makeFigure(self)
             f = figure( ...
@@ -117,8 +127,8 @@ classdef topsFigure < handle
                 'WindowScrollWheelFcn', {});
         end
         
-        % Make a Matlab uipanel with a certain look and feel
-        % @param parent figure or uipanel to hold the new uipane.
+        % Make a Matlab uipanel with a certain look and feel.
+        % @param parent figure or uipanel to hold the new uipanel.
         % @details
         % Returns a new uipanel which is a child of the given @a parent, or
         % mainPanel if @a parent is omitted.  At first, the ui panel is not
@@ -132,6 +142,7 @@ classdef topsFigure < handle
                 'BorderType', 'none', ...
                 'BorderWidth', 0, ...
                 'FontName', self.fontName, ...
+                'FontSize', self.fontSize, ...
                 'ForegroundColor', self.foregroundColor, ...
                 'HighlightColor', self.midgroundColor, ...
                 'ShadowColor', self.backgroundColor, ...
@@ -141,6 +152,29 @@ classdef topsFigure < handle
                 'Parent', parent, ...
                 'SelectionHighlight', 'off', ...
                 'Visible', 'off');
+        end
+        
+        % Make a uicontrol button with a certain look and feel.
+        % @param parent figure or uipanel to hold the new button.
+        % @details
+        % Returns a new uicontrol pushbutton which is a child of the given
+        % @a parent, or mainPanel if @a parent is omitted.
+        function b = makeButton(self, parent)
+            if nargin < 2
+                parent = self.mainPanel;
+            end
+            
+            b = uicontrol( ...
+                'Style', 'pushbutton', ...
+                'BackgroundColor', self.backgroundColor, ...
+                'Callback', [], ...
+                'FontName', self.fontName, ...
+                'FontSize', self.fontSize, ...
+                'ForegroundColor', self.foregroundColor, ...
+                'HorizontalAlignment', 'center', ...
+                'Units', 'normalized', ...
+                'Parent', parent, ...
+                'SelectionHighlight', 'off');
         end
         
         % Make a widget capable of displaying HTML content.
@@ -195,7 +229,7 @@ classdef topsFigure < handle
             jColor = java.awt.Color(c(1), c(2), c(3));
             jWidget.setForeground(jColor);
             jContainer.setForeground(jColor);
-
+            
             % display the widget and container through the given parent
             %   javacomponent() is an undocumented built-in function
             %   see http://undocumentedmatlab.com/blog/javacomponent/
@@ -293,7 +327,8 @@ classdef topsFigure < handle
                         if any(alreadyPositioned == h)
                             % stretch to fill additional grid cells
                             panelPosition = get(h, 'Position');
-                            mergedPosition = topsFigure.mergePositions( ...
+                            mergedPosition = ...
+                                topsGUIUtilities.mergePositions( ...
                                 cellPosition, panelPosition);
                             set(h, 'Position', mergedPosition);
                             
@@ -308,7 +343,7 @@ classdef topsFigure < handle
                 end
             end
             
-            % now positioned, make all uipanels visible
+            % now that they're positioned, make all uipanels visible
             set(alreadyPositioned, 'Visible', 'on');
         end
         
@@ -320,7 +355,6 @@ classdef topsFigure < handle
         % isRefreshPanels is provided and false, only refreshes the figure
         % itself.
         function refresh(self, isRefreshPanels)
-            
             if nargin < 2
                 isRefreshPanels = true;
             end
@@ -335,29 +369,67 @@ classdef topsFigure < handle
             end
         end
         
-        % Send the current item to the Command Window workspace.
-        function currentItemToCommandWindow(self)
-            
-        end
-        
         % Try to open the current item as a file.
         function currentItemOpen(self)
             
+            % does the current item indicate a file name?
+            item = self.currentItem;
+            mName = '';
+            if isa(item, 'function_handle')
+                % open a funciton's m-file
+                mName = [func2str(item), '.m'];
+                
+            elseif ischar(item)
+                % open up an m-file
+                mName = [item, '.m'];
+            end
+            
+            % does the file exist?
+            if ~isempty(mName) && exist(mName, 'file')
+                message = sprintf('Opening "%s"', mName);
+                disp(message);
+                open(mName);
+            else
+                message = sprintf('Cannot open "%s"', ...
+                    self.currentItemName);
+                disp(message);
+            end
         end
         
         % View details of the current item.
         function currentItemInfo(self)
-            
+            message = sprintf('Get info for open "%s"', ...
+                self.currentItemName);
+            disp(message);
+        end
+        
+        % Send the current item to the Command Window workspace.
+        function currentItemToWorkspace(self)
+            itemName = self.currentItemName;
+            if ~isempty(itemName)
+                existingNames = evalin('base', 'who()');
+                workspaceName = genvarname(itemName, existingNames);
+                assignin('base', workspaceName, self.currentItem);
+                message = sprintf('Sent "%s" to workspace', workspaceName);
+                disp(message);
+            end
         end
     end
     
-    methods (Access = private)
+    methods (Access = protected)
         % Create and arrange fresh components.
         function initialize(self)
+            % clear old components
             if ishandle(self.fig)
                 delete(self.fig);
             end
+            self.fig = [];
+            self.mainPanel = [];
+            self.buttonPanel = [];
+            self.contentPanels = {};
+            self.buttons = [];
             
+            % make a new figure with two panels
             self.fig = self.makeFigure();
             fd = self.figureDiv ./ sum(self.figureDiv);
             self.mainPanel = self.makeUIPanel(self.fig);
@@ -368,113 +440,28 @@ classdef topsFigure < handle
             set(self.buttonPanel, ...
                 'Position', [0 0 1 fd(1)], ...
                 'Visible', 'on');
-        end
-    end
-    
-    methods (Static)
-        % Calculate a position that bounds other positions.
-        % @param varargin one or more position rectangles
-        % @details
-        % Merges one or more position rectangles of the form [x y width
-        % height] into one big position that bounds all of the given
-        % rectangles.
-        function merged = mergePositions(varargin)
-            % take cell array of [x y width height] rects
-            p = vertcat(varargin{:});
-            l = min(p(:,1));
-            b = min(p(:,2));
-            r = max(p(:,1)+p(:,3));
-            t = max(p(:,2)+p(:,4));
-            merged = [l, b, r-l, t-b];
+            
+            % populate the button panel with buttons
+            self.addButton('refresh', ...
+                @(obj,event)self.refresh());
+            self.addButton('open item', ...
+                @(obj,event)self.currentItemOpen());
+            self.addButton('item info', ...
+                @(obj,event)self.currentItemInfo());
+            self.addButton('item to workspace', ...
+                @(obj,event)self.currentItemToWorkspace());
         end
         
-        % Pick a color for the given string, based on its spelling.
-        % @param string any string
-        % @param colors nx3 matrix with one color per row (RGB, 0-1)
-        % @details
-        % Maps the given @a string to one of the rows in @a colors, based
-        % on the spelling of @a string.  The same string will always map to
-        % the same row.  Multiple strings will also map to each row.
-        function col = getColorForString(string, colors)
-            hashRow = 1 + mod(sum(string), size(colors,1));
-            col = colors(hashRow, :);
-        end
-        
-        % Wrap the given string with HTML font tags.
-        % @param string any string
-        % @param color 1x3 color (RGB, 0-1)
-        % @param isEmphasis whether to apply @em emphasis formatting
-        % @param isStrong whether to apply @b strong formatting
-        % @details
-        % Wraps the given @a string in HTML tags which specify font
-        % formatting.  @a color must contain RBG components in the range
-        % 0-1.  @a isEmphasis specifies whether to apply @em emphasis
-        % (true) or not.  @a isStrong specifies whether to apply @b strong
-        % formatting or not.  @a color, @a isEmphasis, or @a isStrong may
-        % be omitted empty, in which case no formatting is specified.
-        % @details
-        % Returns the given @a string, wrapped in HTML tags.
-        function string = htmlWrapFormat( ...
-                string, color, isEmphasis, isStrong)
-            
-            % Apply color?
-            if nargin >=2 && ~isempty(color)
-                colorHex = dec2hex(round(color*255), 2)';
-                colorName = colorHex(:)';
-                string = sprintf('<FONT color="%s">%s</FONT>', ...
-                    colorName, string);
+        % Organize buttons in the button panel with even spacing.
+        function repositionButtons(self)
+            nButtons = numel(self.buttons);
+            fullSize = [0 0 1 1];
+            for ii = 1:nButtons
+                buttonPosition = subposition(fullSize, 1, nButtons, 1, ii);
+                set(self.buttons(ii), ...
+                    'Units', 'normalized', ...
+                    'Position', buttonPosition);
             end
-            
-            % Apply emphasis?
-            if nargin >=3 && isEmphasis
-                string = sprintf('<EM>%s</EM>', string);
-            end
-            
-            % Apply strong?
-            if nargin >=4 && isStrong
-                string = sprintf('<STRONG>%s</STRONG>', string);
-            end
-        end
-        
-        % Strip out HTML anchors and anchor tags from a string.
-        % @param string any string
-        % @param isPreserveText whether to leave the anchor text in place
-        % @param stripPrefix additional regexp to strip before each anchor
-        % @details
-        % Strips out HTML anchors (like "a=href", etc.) from the given
-        % @a string.  By default, strips out the anchor text along with the
-        % anchor tags.  If @a isPreserverText is provided and true, leaves
-        % the anchor text without the tags.  If @a stripPrefix is provided,
-        % also strips out patterns that match the regular expression @a
-        % stripPrefix, immediately before anchors.
-        function stripped = htmlStripAnchors( ...
-                string, isPreserveText, stripPrefix)
-            
-            if nargin < 2 || isempty(isPreserveText)
-                isPreserveText = false;
-            end
-            
-            if nargin < 3 || isempty(stripPrefix)
-                stripPrefix = '';
-            end
-            
-            anchorPat = '<[Aa][^<]*>([^<]*)</[Aa]>';
-            stripPat = [stripPrefix anchorPat stripPrefix];
-            if isPreserveText
-                stripped = regexprep(string, stripPat, '$1');
-            else
-                stripped = regexprep(string, stripPat, '');
-            end
-        end
-        
-        % Replace newline characters with HTML break tags.
-        % @param string any string
-        % @details
-        % Replaces any newline (\n) or return carriage (\r) characters in
-        % the given @a string with HTML <br/> break tags.
-        function breaked = htmlBreakAtLines(string)
-            newLinePat = '([\n\r]+)';
-            breaked = regexprep(string, newLinePat, '<br />');
         end
     end
 end

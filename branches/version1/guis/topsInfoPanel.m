@@ -38,14 +38,14 @@ classdef topsInfoPanel < topsPanel
             headerText = sprintf('"%s" is a %s:', ...
                 self.currentItemName, class(self.currentItem));
             color = self.parentFigure.midgroundColor;
-            headerText = topsFigure.htmlWrapFormat( ...
+            headerText = topsGUIUtilities.htmlWrapFormat( ...
                 headerText, color, false, false);
             
             infoText = self.makeHTMLInfoText(self.currentItem);
             
             summary = sprintf('%s\n%s', ...
                 headerText, infoText);
-            summary = topsFigure.htmlBreakAtLines(summary);
+            summary = topsGUIUtilities.htmlBreakAtLines(summary);
             self.jWidget.setText(summary);
         end
     end
@@ -65,16 +65,17 @@ classdef topsInfoPanel < topsPanel
             
             if ischar(item)
                 % item is a string, color it in
-                color = topsFigure.getColorForString( ...
+                color = topsGUIUtilities.getColorForString( ...
                     item, self.parentFigure.colors);
                 info = sprintf('''%s''', item);
-                info = topsFigure.htmlWrapFormat( ...
+                info = topsGUIUtilities.htmlWrapFormat( ...
                     info, color, false, false);
                 
             else
                 % use what disp() has to say about the item
                 info = evalc('disp(item)');
-                info = topsFigure.htmlStripAnchors(info, false, '[\s,]*');
+                info = topsGUIUtilities.htmlStripAnchors( ...
+                    info, false, '[\s,]*');
                 
                 % locate quoted strings
                 quotePat = '''([^'']+)''';
@@ -83,10 +84,10 @@ classdef topsInfoPanel < topsPanel
                 % wrap each one in colored formatting
                 for ii = 1:numel(quotedStrings)
                     qs = quotedStrings{ii}{1};
-                    color = topsFigure.getColorForString( ...
+                    color = topsGUIUtilities.getColorForString( ...
                         qs, self.parentFigure.colors);
                     qsPat = sprintf('''%s''', qs);
-                    qsWrapped = topsFigure.htmlWrapFormat( ...
+                    qsWrapped = topsGUIUtilities.htmlWrapFormat( ...
                         qsPat, color, false, false);
                     info = regexprep(info, qsPat, qsWrapped);
                 end
