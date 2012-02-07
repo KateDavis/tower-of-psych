@@ -36,3 +36,5 @@ for ii = 1:numel(items)
     fig.setCurrentItem(items{ii}, name);
     pause();
 end
+
+close all

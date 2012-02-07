@@ -35,15 +35,16 @@ classdef topsInfoPanel < topsPanel
         % Refresh the panel's contents.
         function refresh(self)
             % display a summary of the current item
-            color = self.parentFigure.midgroundColor;
             headerText = sprintf('"%s" is a %s:', ...
                 self.currentItemName, class(self.currentItem));
+            color = self.parentFigure.midgroundColor;
             headerText = topsFigure.htmlWrapFormat( ...
-                headerText, color, true, false);
+                headerText, color, false, false);
             
             infoText = self.makeHTMLInfoText(self.currentItem);
             
-            summary = sprintf('%s\n%s', headerText, infoText);
+            summary = sprintf('%s\n%s', ...
+                headerText, infoText);
             summary = topsFigure.htmlBreakAtLines(summary);
             self.jWidget.setText(summary);
         end
@@ -60,17 +61,13 @@ classdef topsInfoPanel < topsPanel
         end
         
         % Make disp()-style HTML info for a Matlab variable.
-        function info = makeHTMLInfoText(self, item, color)
-            
-            if nargin < 3
-                color = self.parentFigure.foregroundColor;
-            end
+        function info = makeHTMLInfoText(self, item)
             
             if ischar(item)
-                % item is a string, quote it and color it
-                info = sprintf('''%s''', item);
+                % item is a string, color it in
                 color = topsFigure.getColorForString( ...
                     item, self.parentFigure.colors);
+                info = sprintf('''%s''', item);
                 info = topsFigure.htmlWrapFormat( ...
                     info, color, false, false);
                 
@@ -78,8 +75,21 @@ classdef topsInfoPanel < topsPanel
                 % use what disp() has to say about the item
                 info = evalc('disp(item)');
                 info = topsFigure.htmlStripAnchors(info, false, '[\s,]*');
-                info = topsFigure.htmlWrapFormat( ...
-                    info, color, false, false);
+                
+                % locate quoted strings
+                quotePat = '''([^'']+)''';
+                quotedStrings = regexp(info, quotePat, 'tokens');
+                
+                % wrap each one in colored formatting
+                for ii = 1:numel(quotedStrings)
+                    qs = quotedStrings{ii}{1};
+                    color = topsFigure.getColorForString( ...
+                        qs, self.parentFigure.colors);
+                    qsPat = sprintf('''%s''', qs);
+                    qsWrapped = topsFigure.htmlWrapFormat( ...
+                        qsPat, color, false, false);
+                    info = regexprep(info, qsPat, qsWrapped);
+                end
             end
         end
         

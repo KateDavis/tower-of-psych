@@ -169,24 +169,11 @@ classdef topsFigure < handle
             jWidget.setEditable(false);
             jContainer = javax.swing.JScrollPane(jWidget);
             
-            % set the default appearance of the widget and container
+            % use borderless widget and container
             jWidget.setBorder([]);
             jContainer.setBorder([]);
             
-            c = self.backgroundColor;
-            jColor = java.awt.Color(c(1), c(2), c(3));
-            jWidget.setForeground(jColor);
-            jWidget.setBackground(jColor);
-            
-            c = self.foregroundColor;
-            jColor = java.awt.Color(c(1), c(2), c(3));
-            jContainer.setForeground(jColor);
-            jContainer.setBackground(jColor);
-            
-            % setting the font takes a little Java work
-            jFont = java.awt.Font( ...
-                self.fontName, java.awt.Font.PLAIN, self.fontSize);
-            jWidget.setFont(jFont);
+            % set the widget font, which takes a little Java work
             java.lang.System.setProperty( ...
                 'awt.useSystemAAFontSettings', 'on');
             jWidget.putClientProperty( ...
@@ -194,7 +181,21 @@ classdef topsFigure < handle
             property = ...
                 com.jidesoft.swing.JideSwingUtilities.AA_TEXT_PROPERTY_KEY;
             jWidget.putClientProperty(property, true);
+            jFont = java.awt.Font( ...
+                self.fontName, java.awt.Font.PLAIN, self.fontSize);
+            jWidget.setFont(jFont);
             
+            % set the widget and container colors
+            c = self.backgroundColor;
+            jColor = java.awt.Color(c(1), c(2), c(3));
+            jWidget.setBackground(jColor);
+            jContainer.setBackground(jColor);
+            
+            c = self.foregroundColor;
+            jColor = java.awt.Color(c(1), c(2), c(3));
+            jWidget.setForeground(jColor);
+            jContainer.setForeground(jColor);
+
             % display the widget and container through the given parent
             %   javacomponent() is an undocumented built-in function
             %   see http://undocumentedmatlab.com/blog/javacomponent/
