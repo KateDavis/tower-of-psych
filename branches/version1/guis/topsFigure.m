@@ -25,13 +25,22 @@ classdef topsFigure < handle
         name = 'Tower of Psych';
         
         % the color to use for backgrounds
-        backgroundColor = [0.1 0.1 0];
+        backgroundColor = [0.98 0.98 0.92];
         
-        % the color to use for midgrounds
+        % the color to use for midgrounds or secondary text
         midgroundColor = [0.3 0.2 0.1];
         
-        % color map to use for foreground colors
+        % the color to use for foregrounds or primary text
+        foregroundColor = [0 0 0];
+        
+        % color map to use for alternate foreground colors
         colors = puebloColors(9);
+        
+        % default font typeface to use for text
+        fontName = 'Helvetica';
+        
+        % default font size to use for text
+        fontSize = 12;
         
         % the Matlab figure window
         fig;
@@ -93,8 +102,8 @@ classdef topsFigure < handle
             end
         end
         
-        % Get a Matlab figure with "cleaned up" properties.
-        function f = makeCleanFigure(self)
+        % Make a Matlab figure with a certain look and feel.
+        function f = makeFigure(self)
             f = figure( ...
                 'Color', self.backgroundColor, ...
                 'Colormap', self.colors, ...
@@ -108,13 +117,13 @@ classdef topsFigure < handle
                 'WindowScrollWheelFcn', {});
         end
         
-        % Get a Matlab uipanel with "cleaned up" properties.
+        % Make a Matlab uipanel with a certain look and feel
         % @param parent figure or uipanel to hold the new uipane.
         % @details
         % Returns a new uipanel which is a child of the given @a parent, or
         % mainPanel if @a parent is omitted.  At first, the ui panel is not
         % visible.
-        function p = makeCleanUIPanel(self, parent)
+        function p = makeUIPanel(self, parent)
             if nargin < 2
                 parent = self.mainPanel;
             end
@@ -122,7 +131,8 @@ classdef topsFigure < handle
             p = uipanel( ...
                 'BorderType', 'none', ...
                 'BorderWidth', 0, ...
-                'ForegroundColor', self.midgroundColor, ...
+                'FontName', self.fontName, ...
+                'ForegroundColor', self.foregroundColor, ...
                 'HighlightColor', self.midgroundColor, ...
                 'ShadowColor', self.backgroundColor, ...
                 'Title', '', ...
@@ -131,6 +141,67 @@ classdef topsFigure < handle
                 'Parent', parent, ...
                 'SelectionHighlight', 'off', ...
                 'Visible', 'off');
+        end
+        
+        % Make a widget capable of displaying HTML content.
+        % @param parent figure or uipanel to hold the new widget.
+        % @details
+        % Makes a new HTML widget which is a child of the given @a
+        % parent, or mainPanel if @a parent is omitted.  The widget
+        % is wrapped in a container which can scroll as needed.  Both a
+        % Matlab graphics handle and a Java object are returned, for both
+        % the widget and the container.  The four outputs are returned
+        % following order:
+        %   - widget handle
+        %   - container handle
+        %   - widget Java object
+        %   - container Java object.
+        %   .
+        function [widget, container, jWidget, jContainer] = ...
+                makeHTMLWidget(self, parent)
+            if nargin < 2
+                parent = self.mainPanel;
+            end
+            
+            % create a Java Swing widget capable of showing HTML content
+            %   put the widget in a scrollable Swing container
+            jWidget = javax.swing.JEditorPane('text/html', '');
+            jWidget.setEditable(false);
+            jContainer = javax.swing.JScrollPane(jWidget);
+            
+            % set the default appearance of the widget and container
+            jWidget.setBorder([]);
+            jContainer.setBorder([]);
+            
+            c = self.backgroundColor;
+            jColor = java.awt.Color(c(1), c(2), c(3));
+            jWidget.setForeground(jColor);
+            jWidget.setBackground(jColor);
+            
+            c = self.foregroundColor;
+            jColor = java.awt.Color(c(1), c(2), c(3));
+            jContainer.setForeground(jColor);
+            jContainer.setBackground(jColor);
+            
+            % setting the font takes a little Java work
+            jFont = java.awt.Font( ...
+                self.fontName, java.awt.Font.PLAIN, self.fontSize);
+            jWidget.setFont(jFont);
+            java.lang.System.setProperty( ...
+                'awt.useSystemAAFontSettings', 'on');
+            jWidget.putClientProperty( ...
+                javax.swing.JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+            property = ...
+                com.jidesoft.swing.JideSwingUtilities.AA_TEXT_PROPERTY_KEY;
+            jWidget.putClientProperty(property, true);
+            
+            % display the widget and container through the given parent
+            %   javacomponent() is an undocumented built-in function
+            %   see http://undocumentedmatlab.com/blog/javacomponent/
+            [widget, container] = javacomponent(jContainer, [], parent);
+            set(container, ...
+                'Units', 'normalized', ...
+                'Position', [0 0 1 1]);
         end
         
         % Choose the name to display in the figure title bar.
@@ -286,10 +357,10 @@ classdef topsFigure < handle
                 delete(self.fig);
             end
             
-            self.fig = self.makeCleanFigure();
+            self.fig = self.makeFigure();
             fd = self.figureDiv ./ sum(self.figureDiv);
-            self.mainPanel = self.makeCleanUIPanel(self.fig);
-            self.buttonPanel = self.makeCleanUIPanel(self.fig);
+            self.mainPanel = self.makeUIPanel(self.fig);
+            self.buttonPanel = self.makeUIPanel(self.fig);
             set(self.mainPanel, ...
                 'Position', [0 fd(1) 1 fd(2)], ...
                 'Visible', 'on');
@@ -328,39 +399,70 @@ classdef topsFigure < handle
             col = colors(hashRow, :);
         end
         
-        % Wrap the given string with HTML font color tags.
+        % Wrap the given string with HTML font tags.
         % @param string any string
         % @param color 1x3 color (RGB, 0-1)
+        % @param isEmphasis whether to apply @em emphasis formatting
+        % @param isStrong whether to apply @b strong formatting
         % @details
-        % Wraps the given @a string in HTML "<FONT>" and "</FONT>" tags,
-        % with the font color set to the given @a color.  Color should have
-        % RGB components in the range 0-1.  Does not add "<HTML>" and
-        % "</HTML>" tags to the string.
-        function colored = htmlWrapFontColor(string, color)
-            colorHex = dec2hex(round(color*255), 2)';
-            colorName = colorHex(:)';
-            colored = sprintf('<FONT color="%s">%s</FONT>', ...
-                colorName, string);
+        % Wraps the given @a string in HTML tags which specify font
+        % formatting.  @a color must contain RBG components in the range
+        % 0-1.  @a isEmphasis specifies whether to apply @em emphasis
+        % (true) or not.  @a isStrong specifies whether to apply @b strong
+        % formatting or not.  @a color, @a isEmphasis, or @a isStrong may
+        % be omitted empty, in which case no formatting is specified.
+        % @details
+        % Returns the given @a string, wrapped in HTML tags.
+        function string = htmlWrapFormat( ...
+                string, color, isEmphasis, isStrong)
+            
+            % Apply color?
+            if nargin >=2 && ~isempty(color)
+                colorHex = dec2hex(round(color*255), 2)';
+                colorName = colorHex(:)';
+                string = sprintf('<FONT color="%s">%s</FONT>', ...
+                    colorName, string);
+            end
+            
+            % Apply emphasis?
+            if nargin >=3 && isEmphasis
+                string = sprintf('<EM>%s</EM>', string);
+            end
+            
+            % Apply strong?
+            if nargin >=4 && isStrong
+                string = sprintf('<STRONG>%s</STRONG>', string);
+            end
         end
         
         % Strip out HTML anchors and anchor tags from a string.
         % @param string any string
         % @param isPreserveText whether to leave the anchor text in place
+        % @param stripPrefix additional regexp to strip before each anchor
         % @details
         % Strips out HTML anchors (like "a=href", etc.) from the given
         % @a string.  By default, strips out the anchor text along with the
         % anchor tags.  If @a isPreserverText is provided and true, leaves
-        % the anchor text without the tags.  Also strips out commas or new
-        % lines following the anchor close tag.
-        function stripped = htmlStripAnchors(string, isPreserveText)
-            if nargin < 2
+        % the anchor text without the tags.  If @a stripPrefix is provided,
+        % also strips out patterns that match the regular expression @a
+        % stripPrefix, immediately before anchors.
+        function stripped = htmlStripAnchors( ...
+                string, isPreserveText, stripPrefix)
+            
+            if nargin < 2 || isempty(isPreserveText)
                 isPreserveText = false;
             end
-            anchorPat = '<[Aa][^<]*>([^<]*)</[Aa]>[,\n\r]*';
+            
+            if nargin < 3 || isempty(stripPrefix)
+                stripPrefix = '';
+            end
+            
+            anchorPat = '<[Aa][^<]*>([^<]*)</[Aa]>';
+            stripPat = [stripPrefix anchorPat stripPrefix];
             if isPreserveText
-                stripped = regexprep(string, anchorPat, '$1');
+                stripped = regexprep(string, stripPat, '$1');
             else
-                stripped = regexprep(string, anchorPat, '');
+                stripped = regexprep(string, stripPat, '');
             end
         end
         

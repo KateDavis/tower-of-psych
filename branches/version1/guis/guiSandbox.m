@@ -21,11 +21,18 @@ fig = topsFigure('smappy');
 pan = topsInfoPanel(fig);
 fig.setPanels({pan})
 
-item = sprintf('Cheese this man...\n...and quickly!');
-name = 'a string';
-fig.setCurrentItem(item, name);
+name = 'this item';
 
-% item = topsFoundation('I would have some cheese.');
-% item = containers.Map();
-% name = 'an objet';
-% fig.setCurrentItem(item, name);
+items = { ...
+    sprintf('Cheese this man...\n...and quickly!'), ...
+    topsFoundation('I would have some cheese.'), ...
+    containers.Map(), ...
+    struct('a', 'flowers', 'ggg', 4), ...
+    {'gg', containers.Map(), 44, false}, ...
+    false(1,100), ...
+    eye(9)};
+
+for ii = 1:numel(items)
+    fig.setCurrentItem(items{ii}, name);
+    pause();
+end

@@ -38,16 +38,14 @@ classdef topsInfoPanel < topsPanel
             color = self.parentFigure.midgroundColor;
             headerText = sprintf('"%s" is a %s:', ...
                 self.currentItemName, class(self.currentItem));
-            headerText = topsFigure.htmlWrapFontColor(headerText, color);
-            infoText = self.makeHTMLInfoText(self.currentItem, [1 1 1]);
+            headerText = topsFigure.htmlWrapFormat( ...
+                headerText, color, true, false);
+            
+            infoText = self.makeHTMLInfoText(self.currentItem);
+            
             summary = sprintf('%s\n%s', headerText, infoText);
             summary = topsFigure.htmlBreakAtLines(summary);
             self.jWidget.setText(summary);
-            
-            % make sure the java widget is up to date
-            bg = self.parentFigure.backgroundColor;
-            jColor = java.awt.Color(bg(1), bg(2), bg(3));
-            self.jWidget.setBackground(jColor);
         end
     end
     
@@ -56,46 +54,34 @@ classdef topsInfoPanel < topsPanel
         function initialize(self)
             self.initialize@topsPanel();
             
-            % create a Java Swing widget capable of showing HTML content
-            self.jWidget = javax.swing.JEditorPane('text/html', '');
-            self.jWidget.setEditable(false);
-            self.jWidget.setBorder([]);
-            
-            % put the widget in a scrollable Swing container
-            self.jContainer = javax.swing.JScrollPane(self.jWidget);
-            self.jContainer.setBorder([]);
-            
-            % display the Swing container through this Matlab panel
-            %   javacomponent() is an undocumented built-in function
-            %   see http://undocumentedmatlab.com/blog/javacomponent/
-            [self.infoWidget, self.infoContainer] = ...
-                javacomponent(self.jContainer, [], self.pan);
-            set(self.infoContainer, ...
-                'Units', 'normalized', ...
-                'Position', [0 0 1 1]);
+            [self.infoWidget, self.infoContainer, ...
+                self.jWidget, self.jContainer] = ...
+                self.parentFigure.makeHTMLWidget(self.pan);
         end
         
         % Make disp()-style HTML info for a Matlab variable.
         function info = makeHTMLInfoText(self, item, color)
             
+            if nargin < 3
+                color = self.parentFigure.foregroundColor;
+            end
+            
             if ischar(item)
                 % item is a string, quote it and color it
-                info = self.stringQuotesAndColor(item);
+                info = sprintf('''%s''', item);
+                color = topsFigure.getColorForString( ...
+                    item, self.parentFigure.colors);
+                info = topsFigure.htmlWrapFormat( ...
+                    info, color, false, false);
                 
             else
                 % use what disp() has to say about the item
                 info = evalc('disp(item)');
-                info = topsFigure.htmlStripAnchors(info, false);
-                info = topsFigure.htmlWrapFontColor(info, color);
+                info = topsFigure.htmlStripAnchors(info, false, '[\s,]*');
+                info = topsFigure.htmlWrapFormat( ...
+                    info, color, false, false);
             end
         end
         
-        % Add quotes and HTML color tags for a string.
-        function colorQuoted = stringQuotesAndColor(self, string)
-            quoted = sprintf('''%s''', string);
-            colors = self.parentFigure.colors;
-            color = topsFigure.getColorForString(string, colors);
-            colorQuoted = topsFigure.htmlWrapFontColor(quoted, color);
-        end
     end
 end

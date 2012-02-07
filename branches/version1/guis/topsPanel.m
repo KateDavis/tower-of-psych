@@ -75,7 +75,7 @@ classdef topsPanel < handle
             if ishandle(self.pan)
                 delete(self.pan);
             end
-            self.pan = self.parentFigure.makeCleanUIPanel();
+            self.pan = self.parentFigure.makeUIPanel();
         end
     end
 end
