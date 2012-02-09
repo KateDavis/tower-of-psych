@@ -31,23 +31,6 @@ classdef topsInfoPanel < topsPanel
         function self = topsInfoPanel(varargin)
             self = self@topsPanel(varargin{:});
         end
-        
-        % Refresh the panel's contents.
-        function refresh(self)
-            % display a summary of the current item
-            headerText = sprintf('"%s" is a %s:', ...
-                self.currentItemName, class(self.currentItem));
-            color = self.parentFigure.midgroundColor;
-            headerText = topsGUIUtilities.htmlWrapFormat( ...
-                headerText, color, false, false);
-            
-            infoText = self.makeHTMLInfoText(self.currentItem);
-            
-            summary = sprintf('%s\n%s', ...
-                headerText, infoText);
-            summary = topsGUIUtilities.htmlBreakAtLines(summary);
-            self.jWidget.setText(summary);
-        end
     end
     
     methods (Access = protected)
@@ -60,39 +43,21 @@ classdef topsInfoPanel < topsPanel
                 self.parentFigure.makeHTMLWidget(self.pan);
         end
         
-        % Make disp()-style HTML info for a Matlab variable.
-        function info = makeHTMLInfoText(self, item)
+        % Refresh the panel's contents.
+        function updateContents(self)
+            % display a summary of the current item
+            headerText = topsGUIUtilities.makeTitleForItem( ...
+                self.currentItem, ...
+                self.currentItemName, ...
+                self.parentFigure.midgroundColor);
             
-            if ischar(item)
-                % item is a string, color it in
-                color = topsGUIUtilities.getColorForString( ...
-                    item, self.parentFigure.colors);
-                info = sprintf('''%s''', item);
-                info = topsGUIUtilities.htmlWrapFormat( ...
-                    info, color, false, false);
-                
-            else
-                % use what disp() has to say about the item
-                info = evalc('disp(item)');
-                info = topsGUIUtilities.htmlStripAnchors( ...
-                    info, false, '[\s,]*');
-                
-                % locate quoted strings
-                quotePat = '''([^'']+)''';
-                quotedStrings = regexp(info, quotePat, 'tokens');
-                
-                % wrap each one in colored formatting
-                for ii = 1:numel(quotedStrings)
-                    qs = quotedStrings{ii}{1};
-                    color = topsGUIUtilities.getColorForString( ...
-                        qs, self.parentFigure.colors);
-                    qsPat = sprintf('''%s''', qs);
-                    qsWrapped = topsGUIUtilities.htmlWrapFormat( ...
-                        qsPat, color, false, false);
-                    info = regexprep(info, qsPat, qsWrapped);
-                end
-            end
+            infoText = topsGUIUtilities.makeSummaryForItem( ...
+                self.currentItem, self.parentFigure.colors);
+            
+            summary = sprintf('<HTML>%s\n%s</HTML>', ...
+                headerText, infoText);
+            summary = topsGUIUtilities.htmlBreakAtLines(summary);
+            self.jWidget.setText(summary);
         end
-        
     end
 end

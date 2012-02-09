@@ -37,6 +37,68 @@ classdef topsGUIUtilities
             col = colors(hashRow, :);
         end
         
+        % Make a descriptive title for an item.
+        % @param item any item
+        % @param item name a name to display for @a item
+        % @param color a color for the description (RGB, 0-1)
+        % @details
+        % Makes a title for the given @a item, based on the @a item class,
+        % size, and the given @a name, with HTML formatting.  @a name will
+        % appear in the default foreground color, the rest of the title
+        % will appear in the given @a color.
+        function title = makeTitleForItem(item, name, color)
+            if isempty(item)
+                suffix = ' (empty)';
+            elseif numel(item) > 1
+                suffix = ' array';
+            else
+                suffix = '';
+            end
+            title = sprintf('is a %s%s', class(item), suffix);
+            title = topsGUIUtilities.htmlWrapFormat( ...
+                title, color, false, false);
+            title = sprintf('%s %s', name, title);
+        end
+
+        % Make a descriptive summary of an item.
+        % @param item any item
+        % @param colors nx3 matrix with one color per row (RGB, 0-1)
+        % Makes a summary for the given @a item, based on the built-in
+        % disp() function.  Quoted 'strings' in the summary will be colored
+        % in based on their spelling and the given @colors.  The summary
+        % will contain HTML color tags.
+        function info = makeSummaryForItem(item, colors)
+            
+            if ischar(item)
+                % item is a string, color it in
+                color = topsGUIUtilities.getColorForString(item, colors);
+                info = sprintf('''%s''', item);
+                info = topsGUIUtilities.htmlWrapFormat( ...
+                    info, color, false, false);
+                
+            else
+                % use what disp() has to say about the item
+                info = evalc('disp(item)');
+                info = topsGUIUtilities.htmlStripAnchors( ...
+                    info, false, '[\s,]*');
+                
+                % locate quoted strings
+                quotePat = '''([^'']+)''';
+                quotedStrings = regexp(info, quotePat, 'tokens');
+                
+                % wrap each one in colored formatting
+                for ii = 1:numel(quotedStrings)
+                    qs = quotedStrings{ii}{1};
+                    color = topsGUIUtilities.getColorForString(qs, colors);
+                    qsPat = sprintf('''%s''', qs);
+                    qsWrapped = topsGUIUtilities.htmlWrapFormat( ...
+                        qsPat, color, false, false);
+                    info = regexprep(info, qsPat, qsWrapped);
+                end
+            end
+        end
+
+        
         % Wrap the given string with HTML font tags.
         % @param string any string
         % @param color 1x3 color (RGB, 0-1)

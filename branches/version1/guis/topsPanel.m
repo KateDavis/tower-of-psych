@@ -24,8 +24,8 @@ classdef topsPanel < handle
         % the Matlab uipanel
         pan;
         
-        % whether or not to refresh when currentItem is set
-        isAutoRefresh = true;
+        % whether to leave the currentItem and contents as static
+        isLocked = false;
         
         % the "current item" in use in the GUI
         currentItem;
@@ -56,20 +56,26 @@ classdef topsPanel < handle
         % Assigns @a currentItem and @a currentItemName to this panel and
         % refreshes the panel contents.
         function setCurrentItem(self, currentItem, currentItemName)
-            self.currentItem = currentItem;
-            self.currentItemName = currentItemName;
-            
-            if self.isAutoRefresh
-                self.refresh();
+            if ~self.isLocked
+                self.currentItem = currentItem;
+                self.currentItemName = currentItemName;
             end
         end
         
         % Refresh the panel's contents.
         function refresh(self)
+            if ~self.isLocked
+                self.updateContents();
+            end
         end
     end
     
     methods (Access = protected)
+        % Update the panel's contents (used internally)
+        function updateContents(self)
+            
+        end
+        
         % Create and arrange fresh components.
         function initialize(self)
             if ishandle(self.pan)

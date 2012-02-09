@@ -25,7 +25,7 @@ classdef topsFigure < handle
         name = 'Tower of Psych';
         
         % the color to use for backgrounds
-        backgroundColor = [0.98 0.98 0.92];
+        backgroundColor = [0.99 0.99 0.96];
         
         % the color to use for midgrounds or secondary text
         midgroundColor = [0.3 0.2 0.1];
@@ -113,8 +113,8 @@ classdef topsFigure < handle
         end
         
         % Make a Matlab figure with a certain look and feel.
-        function f = makeFigure(self)
-            f = figure( ...
+        function fig = makeFigure(self)
+            fig = figure( ...
                 'Color', self.backgroundColor, ...
                 'Colormap', self.colors, ...
                 'MenuBar', 'none', ...
@@ -128,30 +128,141 @@ classdef topsFigure < handle
         end
         
         % Make a Matlab uipanel with a certain look and feel.
-        % @param parent figure or uipanel to hold the new uipanel.
+        % @param parent figure or uipanel to hold the new uipanel
         % @details
         % Returns a new uipanel which is a child of the given @a parent, or
-        % mainPanel if @a parent is omitted.  At first, the ui panel is not
+        % mainPanel if @a parent is omitted.  At first, the uipanel is not
         % visible.
-        function p = makeUIPanel(self, parent)
+        function panel = makeUIPanel(self, parent)
             if nargin < 2
                 parent = self.mainPanel;
             end
             
-            p = uipanel( ...
-                'BorderType', 'none', ...
-                'BorderWidth', 0, ...
+            panel = uipanel( ...
+                'BorderType', 'line', ...
+                'BorderWidth', 1, ...
                 'FontName', self.fontName, ...
                 'FontSize', self.fontSize, ...
+                'BackgroundColor', self.backgroundColor, ...
                 'ForegroundColor', self.foregroundColor, ...
                 'HighlightColor', self.midgroundColor, ...
                 'ShadowColor', self.backgroundColor, ...
                 'Title', '', ...
-                'BackgroundColor', self.backgroundColor, ...
                 'Units', 'normalized', ...
                 'Parent', parent, ...
                 'SelectionHighlight', 'off', ...
                 'Visible', 'off');
+        end
+        
+        % Make a uitable with a certain look and feel.
+        % @param parent figure or uipanel to hold the new uitable
+        % @details
+        % Returns a new uitable which is a child of the given @a parent, or
+        % mainPanel if @a parent is omitted.
+        function table = makeUITable(self, parent)
+            if nargin < 2
+                parent = self.mainPanel;
+            end
+            
+            table = uitable( ...
+                'BackgroundColor', self.backgroundColor, ...
+                'ForegroundColor', self.foregroundColor, ...
+                'ColumnFormat', {}, ...
+                'Columneditable', false, ...
+                'ColumnName', {}, ...
+                'ColumnWidth', 'auto', ...
+                'RowName', {}, ...
+                'RowStriping', 'off', ...
+                'CellEditCallback', [], ...
+                'CellSelectionCallback', [], ...
+                'FontName', self.fontName, ...
+                'FontSize', self.fontSize, ...
+                'RearrangeableColumns', 'off', ...
+                'Units', 'normalized', ...
+                'SelectionHighlight', 'off', ...
+                'Parent', parent);
+        end
+        
+        % Make a uitree with a certain look and feel.
+        % @param parent figure or uipanel to hold the new uitree
+        % @param rootNode
+        % @param expandFunction
+        % @param selectFunction
+        % @details
+        % Makes a new uitree object which can present data in a
+        % heirarchical fashion.  The uitree is wrapped in a container which
+        % can scroll as needed.  The container is a child of the given @a
+        % parent, or mainPanel if @a parent is omitted.
+        % @details
+        % @a rootNode represents the top of the heirarchical presentation.
+        % It must be a uitreenode.
+        % @details
+        % @a expandFunction determines what data are presented beneath each
+        % tree node, when each node is expanded.  @a expandFunction must
+        % expect a uitreenode object as the first input and a value
+        % associated with that node as the second input.  @a expandFunction
+        % must return one output, which is an array of new uitreenode
+        % objects to add under the expanded node, or else [].
+        % @details
+        % @a selectFunction determines what happens when the user selects a
+        % node.  @a selectFunction should expect a uitreenode object as the
+        % first input and a value associated with that node as the second
+        % input.
+        function [tree, container] = makeUITree( ...
+                self, parent, rootNode, expandFunction, selectFunction)
+            if nargin < 2 || isempty(parent)
+                parent = self.mainPanel;
+            end
+            
+            if nargin < 3 || isempty(rootNode)
+                rootNode = uitreenode('v0', 'root', 'root', [], false);
+            end
+            
+            % create a tree widget and its container
+            [tree, container] = uitree('v0', self.fig, ...
+                'Root', rootNode, ...
+                'ExpandFcn', expandFunction, ...
+                'SelectionChangeFcn', selectFunction);
+            
+            % set appearance of the Matlab handle container
+            set(container, ...
+                'Parent', parent, ...
+                'BackgroundColor', self.backgroundColor, ...
+                'Units', 'normalized', ...
+                'Position', [0 0 1 1], ...
+                'SelectionHighlight', 'off');
+            
+            % set appearance of the undelying Java tree and container
+            jContainer = tree.getScrollPane();
+            jTree = tree.getTree();
+            
+            % use borderless tree and container
+            jTree.setBorder([]);
+            jContainer.setBorder([]);
+            
+            % set the tree font, which takes a little Java work
+            java.lang.System.setProperty( ...
+                'awt.useSystemAAFontSettings', 'on');
+            property = ...
+                com.jidesoft.swing.JideSwingUtilities.AA_TEXT_PROPERTY_KEY;
+            jTree.putClientProperty(property, true);
+            jFont = java.awt.Font( ...
+                self.fontName, java.awt.Font.PLAIN, self.fontSize);
+            jTree.setFont(jFont);
+            
+            % set the widget and container colors
+            c = self.backgroundColor;
+            jColor = java.awt.Color(c(1), c(2), c(3));
+            jTree.setBackground(jColor);
+            jRenderer = jTree.getCellRenderer();
+            jRenderer.setBackgroundNonSelectionColor(jColor);
+            jContainer.setBackground(jColor);
+            
+            c = self.foregroundColor;
+            jColor = java.awt.Color(c(1), c(2), c(3));
+            jTree.setForeground(jColor);
+            jContainer.setForeground(jColor);
+
         end
         
         % Make a uicontrol button with a certain look and feel.
@@ -166,6 +277,8 @@ classdef topsFigure < handle
             
             b = uicontrol( ...
                 'Style', 'pushbutton', ...
+                'Max', 100, ...
+                'Min', 1, ...
                 'BackgroundColor', self.backgroundColor, ...
                 'Callback', [], ...
                 'FontName', self.fontName, ...
@@ -178,7 +291,7 @@ classdef topsFigure < handle
         end
         
         % Make a widget capable of displaying HTML content.
-        % @param parent figure or uipanel to hold the new widget.
+        % @param parent figure or uipanel to hold the new widget
         % @details
         % Makes a new HTML widget which is a child of the given @a
         % parent, or mainPanel if @a parent is omitted.  The widget
@@ -258,12 +371,13 @@ classdef topsFigure < handle
         function setCurrentItem(self, currentItem, currentItemName)
             self.currentItem = currentItem;
             self.currentItemName = currentItemName;
-            self.refresh(false);
             
             for ii = 1:numel(self.contentPanels)
                 self.contentPanels{ii}.setCurrentItem( ...
                     currentItem, currentItemName);
             end
+            
+            self.refresh();
         end
         
         % Choose the content panels to use in this GUI.
@@ -348,25 +462,18 @@ classdef topsFigure < handle
         end
         
         % Tell each content panel to refresh its contents.
-        % @param isRefreshPanels whether to also refresh panels
         % @details
         % Refreshes the appearance of this figure.  By default, also
         % invokes refresh() on each panel in contentPanels.  If @a
         % isRefreshPanels is provided and false, only refreshes the figure
         % itself.
-        function refresh(self, isRefreshPanels)
-            if nargin < 2
-                isRefreshPanels = true;
+        function refresh(self)
+            % refresh each panel
+            for ii = 1:numel(self.contentPanels)
+                self.contentPanels{ii}.refresh();
             end
             
             % any self behaviors?
-            
-            % refresh each panel
-            if isRefreshPanels
-                for ii = 1:numel(self.contentPanels)
-                    self.contentPanels{ii}.refresh();
-                end
-            end
         end
         
         % Try to open the current item as a file.
