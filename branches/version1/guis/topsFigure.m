@@ -437,7 +437,7 @@ classdef topsFigure < handle
             
             % choose the row divisions
             nRows = size(panels, 1);
-            if nargin < 4
+            if nargin < 3
                 yDiv = ones(1, nRows) ./ nRows;
             else
                 yDiv = yDiv ./ sum(yDiv);
@@ -446,7 +446,7 @@ classdef topsFigure < handle
             
             % choose the column divisions
             nCols = size(panels, 2);
-            if nargin < 3
+            if nargin < 4
                 xDiv = ones(1, nCols) ./ nCols;
             else
                 xDiv = xDiv ./ sum(xDiv);
@@ -521,12 +521,11 @@ classdef topsFigure < handle
             
             % does the file exist?
             if ~isempty(mName) && exist(mName, 'file')
-                message = sprintf('Opening "%s"', mName);
+                message = sprintf('Opening file "%s"', mName);
                 disp(message);
                 open(mName);
             else
-                message = sprintf('Cannot open "%s"', ...
-                    self.currentItemName);
+                message = sprintf('Cannot open file "%s"', mName);
                 disp(message);
             end
         end
@@ -542,8 +541,12 @@ classdef topsFigure < handle
         function currentItemToWorkspace(self)
             itemName = self.currentItemName;
             if ~isempty(itemName)
-                existingNames = evalin('base', 'who()');
-                workspaceName = genvarname(itemName, existingNames);
+                if isvarname(itemName)
+                    workspaceName = itemName;
+                else
+                    existingNames = evalin('base', 'who()');
+                    workspaceName = genvarname(itemName, existingNames);
+                end
                 assignin('base', workspaceName, self.currentItem);
                 message = sprintf('Sent "%s" to workspace', workspaceName);
                 disp(message);

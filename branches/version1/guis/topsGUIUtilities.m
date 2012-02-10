@@ -55,29 +55,10 @@ classdef topsGUIUtilities
         % in based on their spelling and the given @colors.  The summaries
         % will contain HTML color tags.
         function tableCell = makeTableForCellArray(cellArray, colors)
-            
-            %%
-%             clear
-%             clc
-% 
-%             a = zeros(4,2,3);
-%             n = numel(a);
-%             a(1:n) = 1:n
-% 
-%             rows = size(a, 1);
-%             cols = size(a, 2);
-%             b = zeros(rows, n/rows);
-%             b(:) = a(:)
-%             
-%             c = zeros(n/cols, cols);
-%             for ii = 0:(n/(rows*cols)-1)
-%                 cRows = (1:rows)+ii*rows;
-%                 bCols = (1:cols)+ii*cols;
-%                 c(cRows,1:cols) = b(1:rows,bCols);
-%             end
-%             c
-            
-            %% 
+            if isempty(cellArray)
+                tableCell = {};
+                return;
+            end 
             
             % compute indices for folding into 2 dimensions
             %   while preserving columns

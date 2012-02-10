@@ -59,10 +59,25 @@ c = num2cell(nums);
 c{1} = 'cottage cheese';
 c{end} = containers.Map();
 tableData = topsGUIUtilities.makeTableForCellArray(c, fig.colors);
-tableHeaders = [];
 
 cellTable = fig.makeUITable();
 set(cellTable, ...
     'Position', [.5 0 .5 1], ...
     'Data', tableData, ...
-    'ColumnName', tableHeaders)
+    'ColumnName', 'numbered', ...
+    'RowName', 'numbered')
+
+%% Try out a grouped list panel
+
+close all
+clear all
+
+gl = topsGroupedList();
+gl.addItemToGroupWithMnemonic(45, 'g-one', 'hulla');
+gl.addItemToGroupWithMnemonic('ghjg', 'g-two', 'cheese');
+gl.addItemToGroupWithMnemonic('rfior', 'g-two', 'my jesus cheese');
+gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 'g-two', 'bert');
+gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 'g-two', 'mahp');
+fig = topsMakeGroupedListGUI(gl);
+
+
