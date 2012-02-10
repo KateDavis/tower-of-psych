@@ -37,7 +37,7 @@ set(t.pan, 'BackgroundColor', fig.colors(3,:));
 
 fig.setPanels({bl br;t t}, [3 7], [4 6])
 
-%% Look at a uitable
+%% Look at some uitables
 close all
 clear all
 
@@ -47,7 +47,22 @@ s = struct('Firstly', {'McFirst', 'Firstington'}, 'Secondly', {2, [2 2]});
 [tableData, tableHeaders] = ...
     topsGUIUtilities.makeTableForStructArray(s, fig.colors);
 
-table = fig.makeUITable();
-set(table, ...
+structTable = fig.makeUITable();
+set(structTable, ...
+    'Position', [0 0 .5 1], ...
+    'Data', tableData, ...
+    'ColumnName', tableHeaders)
+
+nums = zeros(3, 2, 5, 2);
+nums(1:end) = 1:numel(nums);
+c = num2cell(nums);
+c{1} = 'cottage cheese';
+c{end} = containers.Map();
+tableData = topsGUIUtilities.makeTableForCellArray(c, fig.colors);
+tableHeaders = [];
+
+cellTable = fig.makeUITable();
+set(cellTable, ...
+    'Position', [.5 0 .5 1], ...
     'Data', tableData, ...
     'ColumnName', tableHeaders)

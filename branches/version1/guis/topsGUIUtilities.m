@@ -24,8 +24,88 @@ classdef topsGUIUtilities
             t = max(p(:,2)+p(:,4));
             merged = [l, b, r-l, t-b];
         end
+
+        % Pick a color for the given string, based on its spelling.
+        % @param string any string
+        % @param colors nx3 matrix with one color per row (RGB, 0-1)
+        % @details
+        % Maps the given @a string to one of the rows in @a colors, based
+        % on the spelling of @a string.  The same string will always map to
+        % the same row.  Multiple strings will also map to each row.
+        function col = getColorForString(string, colors)
+            hashRow = 1 + mod(sum(string), size(colors,1));
+            col = colors(hashRow, :);
+        end
+
+        % Summarize a cell array as a 2D cell array of strings.
+        % @param cellArray any cell array
+        % @param colors nx3 matrix with one color per row (RGB, 0-1)
+        % @details
+        % Summarizes the given @a cellArray as a 2D cell array of strings
+        % suitable for display as a table.  Each element of the returned 2D
+        % cell array contains a string summary of one element of @a
+        % cellArray.
+        % @details
+        % If @a cellArray is 1D or 2D, rows and columns arrangements are
+        % are preserved in the returned cell array.  For higher-dimensional
+        % cell arrays, columns are preserved and all other dimensions are
+        % folded into rows.  
+        % @details
+        % Quoted 'strings' in the value summaries summary will be colored
+        % in based on their spelling and the given @colors.  The summaries
+        % will contain HTML color tags.
+        function tableCell = makeTableForCellArray(cellArray, colors)
+            
+            %%
+%             clear
+%             clc
+% 
+%             a = zeros(4,2,3);
+%             n = numel(a);
+%             a(1:n) = 1:n
+% 
+%             rows = size(a, 1);
+%             cols = size(a, 2);
+%             b = zeros(rows, n/rows);
+%             b(:) = a(:)
+%             
+%             c = zeros(n/cols, cols);
+%             for ii = 0:(n/(rows*cols)-1)
+%                 cRows = (1:rows)+ii*rows;
+%                 bCols = (1:cols)+ii*cols;
+%                 c(cRows,1:cols) = b(1:rows,bCols);
+%             end
+%             c
+            
+            %% 
+            
+            % compute indices for folding into 2 dimensions
+            %   while preserving columns
+            nElements = numel(cellArray);
+            nRows = size(cellArray, 1);
+            nCols = size(cellArray, 2);
+            rowFolder = zeros(nRows, nElements/nRows);
+            rowFolder(:) = 1:nElements;
+            columnFolder = zeros(nElements/nCols, nCols);
+            for ii = 0:(nElements/(nRows*nCols)-1)
+                rowChunk = (1:nRows)+ii*nRows;
+                columnChunk = (1:nCols)+ii*nCols;
+                columnFolder(rowChunk,1:nCols) = ...
+                    rowFolder(1:nRows,columnChunk);
+            end
+            
+            % make a summary for each element of cellArray
+            tableCell = cell(nElements/nCols, nCols);
+            for ii = 1:nElements
+                foldIndex = columnFolder(ii);
+                item = cellArray{foldIndex};
+                info = topsGUIUtilities.makeSummaryForItem(item, colors);
+                info = sprintf('<HTML>%s</HTML>', info);
+                tableCell{ii} = info;
+            end
+        end
         
-        % Summarize a struct array into a 2D cell array table.
+        % Summarize a struct array as a 2D cell array of strings.
         % @param structArray any struct array
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
         % @details
@@ -33,8 +113,8 @@ classdef topsGUIUtilities
         % suitable for display as a table.  Each element of @a structArray
         % corresponds to a row in the returned cell array.  Each field of
         % @a structArray corresponds to a column.  Each individual element
-        % of the returned cell array contains a string summary of one data
-        % value from @a structArray.
+        % of the returned 2D cell array contains a string summary of one
+        % data value from @a structArray.
         % @details
         % Also returns a cell array of field names, suitable as table row
         % headers.
@@ -56,21 +136,8 @@ classdef topsGUIUtilities
                     info = topsGUIUtilities.makeSummaryForItem(item, colors);
                     info = sprintf('<HTML>%s</HTML>', info);
                     tableCell{ii,jj} = info;
-                        
                 end
             end
-        end
-        
-        % Pick a color for the given string, based on its spelling.
-        % @param string any string
-        % @param colors nx3 matrix with one color per row (RGB, 0-1)
-        % @details
-        % Maps the given @a string to one of the rows in @a colors, based
-        % on the spelling of @a string.  The same string will always map to
-        % the same row.  Multiple strings will also map to each row.
-        function col = getColorForString(string, colors)
-            hashRow = 1 + mod(sum(string), size(colors,1));
-            col = colors(hashRow, :);
         end
         
         % Make a descriptive title for an item.
