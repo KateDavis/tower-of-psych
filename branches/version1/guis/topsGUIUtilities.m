@@ -81,6 +81,7 @@ classdef topsGUIUtilities
                 foldIndex = columnFolder(ii);
                 item = cellArray{foldIndex};
                 info = topsGUIUtilities.makeSummaryForItem(item, colors);
+                info = topsGUIUtilities.spaceInstadOfLines(info);
                 info = sprintf('<HTML>%s</HTML>', info);
                 tableCell{ii} = info;
             end
@@ -116,6 +117,7 @@ classdef topsGUIUtilities
                     item = structArray(ii).(fields{jj});
                     info = topsGUIUtilities.makeSummaryForItem(item, colors);
                     info = sprintf('<HTML>%s</HTML>', info);
+                    info = topsGUIUtilities.spaceInstadOfLines(info);
                     tableCell{ii,jj} = info;
                 end
             end
@@ -254,10 +256,22 @@ classdef topsGUIUtilities
         % @param string any string
         % @details
         % Replaces any newline (\n) or return carriage (\r) characters in
-        % the given @a string with HTML <br/> break tags.
-        function breaked = htmlBreakAtLines(string)
+        % the given @a string with HTML <br/> break tags.  Returns the
+        % updated string.
+        function string = htmlBreakAtLines(string)
             newLinePat = '([\n\r]+)';
-            breaked = regexprep(string, newLinePat, '<br />');
+            string = regexprep(string, newLinePat, '<br />');
+        end
+
+        % Remove newline characters from the given string.
+        % @param string any string
+        % @details
+        % Replaces any newline (\n) or return carriage (\r) characters in
+        % the given @a string with a single space.  Returns the updated
+        % string.
+        function string = spaceInstadOfLines(string)
+            newLinePat = '([\n\r]+)';
+            string = regexprep(string, newLinePat, ' ');
         end
     end
 end

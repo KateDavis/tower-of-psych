@@ -73,11 +73,11 @@ close all
 clear all
 
 gl = topsGroupedList();
-gl.addItemToGroupWithMnemonic(45, 'g-one', 'hulla');
-gl.addItemToGroupWithMnemonic('ghjg', 'g-two', 'cheese');
-gl.addItemToGroupWithMnemonic('rfior', 'g-two', 'my jesus cheese');
-gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 'g-two', 'bert');
-gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 'g-two', 'mahp');
+gl.addItemToGroupWithMnemonic(45, 1, 8);
+gl.addItemToGroupWithMnemonic('ghjg', 2, 'cheese');
+gl.addItemToGroupWithMnemonic('rfior', 2, 'my jesus cheese');
+gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 2, 'bert');
+gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 2, 'mahp');
 fig = topsMakeGroupedListGUI(gl);
 
 

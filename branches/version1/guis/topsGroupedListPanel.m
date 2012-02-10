@@ -11,7 +11,8 @@ classdef topsGroupedListPanel < topsPanel
     %   and refresh contents
     %   - it doesn't work to have one table with two columns because
     %   refreshing the mnemonic column irritates the group column and loses
-    %   the selection
+    %   the selection.  It was better to use two tables.
+    %   - numeric groups and mnemonics don't show up right.
     %   .
     %
     % @ingroup guis
