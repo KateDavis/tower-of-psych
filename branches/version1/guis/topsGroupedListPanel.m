@@ -9,10 +9,6 @@ classdef topsGroupedListPanel < topsPanel
     % TODO:
     %   - add edit text field below browser columns to edit current item
     %   and refresh contents
-    %   - it doesn't work to have one table with two columns because
-    %   refreshing the mnemonic column irritates the group column and loses
-    %   the selection.  It was better to use two tables.
-    %   - numeric groups and mnemonics don't show up right.
     %   .
     %
     % @ingroup guis
@@ -22,7 +18,10 @@ classdef topsGroupedListPanel < topsPanel
         groupedList;
         
         % the uitable for group names
-        columnTable;
+        groupTable;
+        
+        % the uitable for mnemonic names
+        mnemonicTable;
         
         % the value of the currently selected group
         currentGroup;
@@ -59,37 +58,44 @@ classdef topsGroupedListPanel < topsPanel
             self.updateContents();
         end
         
-        % Set the GUI current group or mnemonic from a selected table cell.
+        % Set the current list group from a selected table cell.
         % @param table uitable object making the selection
         % @param event struct of data about the selection event
         % @details
-        % Sets currentGroup or currentMnemonic, and the current item for
-        % the parent figure, based on the selected cell in a uitable.
-        function updateForSelect(self, table, event)
+        % Sets currentGroup and the current item for the parent figure,
+        % based on the selected cell in a uitable.
+        function selectGroup(self, table, event)
             % Only bother with single selections
             if size(event.Indices, 1) == 1
+                % select one group
                 row = event.Indices(1);
-                column = event.Indices(2);
-                % selected a group or a mnemonic?
-                if column == 1
-                    % selected a group
-                    groups = self.groupedList.groups();
-                    if row <= numel(groups)
-                        self.currentGroup = groups{row};
-                        self.populateColumnTable();
-                        self.currentItemForGroupAndMnemonic();
-                    end
-                    
-                else
-                    % selected a mnemonic
-                    mnemonics = ...
-                        self.groupedList.getAllMnemonicsFromGroup( ...
-                        self.currentGroup);
-                    if row <= numel(mnemonics)
-                        self.currentMnemonic = mnemonics{row};
-                    end
+                groups = self.groupedList.groups();
+                if row <= numel(groups)
+                    self.currentGroup = groups{row};
+                    self.populateMnemonicTable();
                     self.currentItemForGroupAndMnemonic();
                 end
+            end
+        end
+        
+        % Set the current list mnemonic from a selected table cell.
+        % @param table uitable object making the selection
+        % @param event struct of data about the selection event
+        % @details
+        % Sets currentMnemonic and the current item for the parent figure,
+        % based on the selected cell in a uitable.
+        function selectMnemonic(self, table, event)
+            % Only bother with single selections
+            if size(event.Indices, 1) == 1
+                % select one mnemonic
+                row = event.Indices(1);
+                mnemonics = ...
+                    self.groupedList.getAllMnemonicsFromGroup( ...
+                    self.currentGroup);
+                if row <= numel(mnemonics)
+                    self.currentMnemonic = mnemonics{row};
+                end
+                self.currentItemForGroupAndMnemonic();
             end
         end
     end
@@ -99,20 +105,30 @@ classdef topsGroupedListPanel < topsPanel
         function initialize(self)
             self.initialize@topsPanel();
             
-            % new table for groups and mnemonics
-            self.columnTable = self.parentFigure.makeUITable( ...
+            % new table for groups
+            self.groupTable = self.parentFigure.makeUITable( ...
                 self.pan, ...
-                @(table, event)self.updateForSelect(table, event));
-            set(self.columnTable, ...
+                @(table, event)self.selectGroup(table, event));
+            set(self.groupTable, ...
+                'Position', [0 0 0.5 1], ...
                 'Data', {}, ...
-                'ColumnName', {'group', 'mnemonic'});
+                'ColumnName', {'group'});
+            
+            % new table for mnemonics
+            self.mnemonicTable = self.parentFigure.makeUITable( ...
+                self.pan, ...
+                @(table, event)self.selectMnemonic(table, event));
+            set(self.mnemonicTable, ...
+                'Position', [0.5 0 0.5 1], ...
+                'Data', {}, ...
+                'ColumnName', {'group'})
             
             % update the tree to use groupedList
             self.updateContents();
         end
         
         % Refresh the group table's contents
-        function populateColumnTable(self)
+        function populateGroupTable(self)
             % get the list of groups
             groups = self.groupedList.groups;
             groupSummary = topsGUIUtilities.makeTableForCellArray( ...
@@ -125,7 +141,20 @@ classdef topsGroupedListPanel < topsPanel
             elseif ~self.groupedList.containsGroup(self.currentGroup);
                 self.currentGroup = groups{1};
             end
-            
+
+            % set the column width from the table width
+            %   which is irritating
+            set(self.groupTable, 'Units', 'pixels');
+            pixelPosition = get(self.groupTable, 'Position');
+            columnWidth = pixelPosition(3) - 5;
+            set(self.groupTable, ...
+                'Units', 'normalized', ...
+                'ColumnWidth', {columnWidth}, ...
+                'Data', groupSummary);
+        end
+        
+        % Refresh the mnemonic table's contents
+        function populateMnemonicTable(self)
             % get the list of group mnemonics
             if isempty(self.currentGroup)
                 mnemonics = {};
@@ -145,30 +174,23 @@ classdef topsGroupedListPanel < topsPanel
                 self.currentMnemonic = mnemonics{1};
             end
             
-            % combine group and column summary into one table
-            nGroups = numel(groupSummary);
-            nMnemonics = numel(mnemonicSummary);
-            nRows = max([nGroups, nMnemonics]);
-            listSummary = cell(nRows, 2);
-            listSummary(1:nGroups, 1) = groupSummary;
-            listSummary(1:nMnemonics, 2) = mnemonicSummary;
-            
-            % set the column widths from the table width
+            % set the column width from the table width
             %   which is irritating
-            set(self.columnTable, 'Units', 'pixels');
-            pixelPosition = get(self.columnTable, 'Position');
-            columnWidths = [1 1] + (pixelPosition(3)/2) - 3;
-            set(self.columnTable, ...
+            set(self.mnemonicTable, 'Units', 'pixels');
+            pixelPosition = get(self.mnemonicTable, 'Position');
+            columnWidth = pixelPosition(3) - 5;
+            set(self.mnemonicTable, ...
                 'Units', 'normalized', ...
-                'ColumnWidth', num2cell(columnWidths), ...
-                'Data', listSummary);
+                'ColumnWidth', {columnWidth}, ...
+                'Data', mnemonicSummary);
         end
         
         % Refresh the panel's contents.
         function updateContents(self)
             if isobject(self.groupedList)
-                % repopulate columns for the table
-                self.populateColumnTable();
+                % repopulate tables with groups and mnemonics
+                self.populateGroupTable();
+                self.populateMnemonicTable();
                 
                 % update the current item
                 self.currentItemForGroupAndMnemonic();
