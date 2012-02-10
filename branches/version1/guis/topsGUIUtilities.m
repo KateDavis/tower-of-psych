@@ -25,6 +25,42 @@ classdef topsGUIUtilities
             merged = [l, b, r-l, t-b];
         end
         
+        % Summarize a struct array into a 2D cell array table.
+        % @param structArray any struct array
+        % @param colors nx3 matrix with one color per row (RGB, 0-1)
+        % @details
+        % Summarizes the given @a structArray as a 2D cell array of strings
+        % suitable for display as a table.  Each element of @a structArray
+        % corresponds to a row in the returned cell array.  Each field of
+        % @a structArray corresponds to a column.  Each individual element
+        % of the returned cell array contains a string summary of one data
+        % value from @a structArray.
+        % @details
+        % Also returns a cell array of field names, suitable as table row
+        % headers.
+        % @details
+        % Quoted 'strings' in the value summaries summary will be colored
+        % in based on their spelling and the given @colors.  The summaries
+        % will contain HTML color tags.
+        function [tableCell, fields] = makeTableForStructArray( ...
+                structArray, colors)
+            
+            fields = fieldnames(structArray);
+            nFields = numel(fields);
+            nElements = numel(structArray);
+            
+            tableCell = cell(nElements, nFields);
+            for ii = 1:nElements
+                for jj = 1:nFields
+                    item = structArray(ii).(fields{jj});
+                    info = topsGUIUtilities.makeSummaryForItem(item, colors);
+                    info = sprintf('<HTML>%s</HTML>', info);
+                    tableCell{ii,jj} = info;
+                        
+                end
+            end
+        end
+        
         % Pick a color for the given string, based on its spelling.
         % @param string any string
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
@@ -59,7 +95,7 @@ classdef topsGUIUtilities
                 title, color, false, false);
             title = sprintf('%s %s', name, title);
         end
-
+        
         % Make a descriptive summary of an item.
         % @param item any item
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
@@ -97,7 +133,7 @@ classdef topsGUIUtilities
                 end
             end
         end
-
+        
         
         % Wrap the given string with HTML font tags.
         % @param string any string

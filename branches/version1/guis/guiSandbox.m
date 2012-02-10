@@ -1,6 +1,6 @@
 %% Put the drill-down GUI through its paces
 close all
-clear all
+clear
 
 items = { ...
     sprintf('Cheese this man...\n...and quickly!'), ...
@@ -17,15 +17,12 @@ items = { ...
 nItems = numel(items);
 for ii = 1:nItems
     name = sprintf('item %d/%d', ii, nItems);
-    fig = topsMakeDrillDownGUI(items{ii}, name);
-    while ishandle(fig.fig);
-        drawnow();
-    end
+    f = topsMakeDrillDownGUI(items{ii}, name);
 end
 
 %% Make sure the figure can do panel layout
 close all
-clear all
+clear
 
 fig = topsFigure('george');
 
@@ -45,7 +42,12 @@ close all
 clear all
 
 fig = topsFigure('hoo');
+
+s = struct('Firstly', {'McFirst', 'Firstington'}, 'Secondly', {2, [2 2]});
+[tableData, tableHeaders] = ...
+    topsGUIUtilities.makeTableForStructArray(s, fig.colors);
+
 table = fig.makeUITable();
 set(table, ...
-    'Data', num2cell(eye(3)), ...
-    'ColumnName', {'aaaaaaaaaaaaaaaaaaaaaaaaaa', 'b', 'c'})
+    'Data', tableData, ...
+    'ColumnName', tableHeaders)

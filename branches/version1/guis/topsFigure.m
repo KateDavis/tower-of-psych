@@ -95,7 +95,7 @@ classdef topsFigure < handle
             self.initialize();
         end
         
-        % Close the Matlab figure when this topsFigure is destroyed.
+        % Close the Matlab figure and clear handle and graphics objects.
         function delete(self)
             if ishandle(self.fig)
                 delete(self.fig);
@@ -103,11 +103,17 @@ classdef topsFigure < handle
         end
         
         % Add a button to the button panel.
-        function addButton(self, name, callback)
+        % @param name string to display on the button
+        % @param pressFunction callback for button presses
+        % @details
+        % Creates a new button with the given @a name and @a pressFunction
+        % behavior.  Places the button in the buttonPanel for this figure
+        % and automatically rearranges all the buttons.
+        function addButton(self, name, pressFunction)
             button = self.makeButton(self.buttonPanel);
             set(button, ...
                 'String', name, ...
-                'Callback', callback);
+                'Callback', pressFunction);
             self.buttons(end+1) = button;
             self.repositionButtons();
         end
@@ -149,6 +155,7 @@ classdef topsFigure < handle
                 'ShadowColor', self.backgroundColor, ...
                 'Title', '', ...
                 'Units', 'normalized', ...
+                'Position', [0 0 1 1], ...
                 'Parent', parent, ...
                 'SelectionHighlight', 'off', ...
                 'Visible', 'off');
@@ -156,38 +163,49 @@ classdef topsFigure < handle
         
         % Make a uitable with a certain look and feel.
         % @param parent figure or uipanel to hold the new uitable
+        % @param selectFunction callback for selected table cell
         % @details
         % Returns a new uitable which is a child of the given @a parent, or
         % mainPanel if @a parent is omitted.
-        function table = makeUITable(self, parent)
+        % @details
+        % @a selectFunction determines what happens when the user selects a
+        % cell in the table.  @a selectFunction should expect the uitable
+        % object as the first input a struct of selection event data as the
+        % second input.
+        function table = makeUITable(self, parent, selectFunction)
             if nargin < 2
                 parent = self.mainPanel;
+            end
+            
+            if nargin < 3 || isempty(selectFunction)
+                selectFunction = [];
             end
             
             table = uitable( ...
                 'BackgroundColor', self.backgroundColor, ...
                 'ForegroundColor', self.foregroundColor, ...
                 'ColumnFormat', {}, ...
-                'Columneditable', false, ...
+                'ColumnEditable', false, ...
                 'ColumnName', {}, ...
                 'ColumnWidth', 'auto', ...
                 'RowName', {}, ...
                 'RowStriping', 'off', ...
                 'CellEditCallback', [], ...
-                'CellSelectionCallback', [], ...
+                'CellSelectionCallback', selectFunction, ...
                 'FontName', self.fontName, ...
                 'FontSize', self.fontSize, ...
                 'RearrangeableColumns', 'off', ...
                 'Units', 'normalized', ...
+                'Position', [0 0 1 1], ...
                 'SelectionHighlight', 'off', ...
                 'Parent', parent);
         end
         
         % Make a uitree with a certain look and feel.
         % @param parent figure or uipanel to hold the new uitree
-        % @param rootNode
-        % @param expandFunction
-        % @param selectFunction
+        % @param rootNode uitreenode which is the topmost tree node
+        % @param expandFunction callback for expanding tree nodes
+        % @param selectFunction callback for selected tree node
         % @details
         % Makes a new uitree object which can present data in a
         % heirarchical fashion.  The uitree is wrapped in a container which
@@ -262,17 +280,26 @@ classdef topsFigure < handle
             jColor = java.awt.Color(c(1), c(2), c(3));
             jTree.setForeground(jColor);
             jContainer.setForeground(jColor);
-
+            
         end
         
         % Make a uicontrol button with a certain look and feel.
         % @param parent figure or uipanel to hold the new button.
+        % @param pressFunction callback for pressed button
         % @details
         % Returns a new uicontrol pushbutton which is a child of the given
         % @a parent, or mainPanel if @a parent is omitted.
-        function b = makeButton(self, parent)
-            if nargin < 2
+        % @details
+        % @a pressFunction determines what happens when the user presses
+        % the button.  @a pressFunction should expect a uicontrol object as
+        % the first input and a struct of event data as the second input.
+        function b = makeButton(self, parent, pressFunction)
+            if nargin < 2 || isempty(parent)
                 parent = self.mainPanel;
+            end
+            
+            if nargin < 3 || isempty(pressFunction)
+                pressFunction = [];
             end
             
             b = uicontrol( ...
@@ -280,12 +307,13 @@ classdef topsFigure < handle
                 'Max', 100, ...
                 'Min', 1, ...
                 'BackgroundColor', self.backgroundColor, ...
-                'Callback', [], ...
+                'Callback', pressFunction, ...
                 'FontName', self.fontName, ...
                 'FontSize', self.fontSize, ...
                 'ForegroundColor', self.foregroundColor, ...
                 'HorizontalAlignment', 'center', ...
                 'Units', 'normalized', ...
+                'Position', [0 0 1 1], ...
                 'Parent', parent, ...
                 'SelectionHighlight', 'off');
         end

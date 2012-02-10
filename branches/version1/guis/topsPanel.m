@@ -49,6 +49,13 @@ classdef topsPanel < handle
             end
         end
         
+        % Clear references to graphics and handle objects.
+        function delete(self)
+            if ishandle(self.pan)
+                delete(self.pan);
+            end
+        end
+        
         % Choose the current item.
         % @param currentItem the new current item
         % @param currentItemName name to use for the current item
