@@ -61,7 +61,7 @@ classdef topsPanel < handle
                 delete(self.pan);
             end
         end
-
+        
         % Choose the item to represent.
         % @param baseItem the item to represent
         % @param baseItemName string name for @a baseItem
@@ -104,17 +104,31 @@ classdef topsPanel < handle
     end
     
     methods (Access = protected)
-        % Update the panel's contents (used internally)
-        function updateContents(self)
-            
-        end
-        
         % Create and arrange fresh components.
         function initialize(self)
             if ishandle(self.pan)
                 delete(self.pan);
             end
             self.pan = self.parentFigure.makeUIPanel();
+        end
+        
+        % Update the panel's contents (used internally)
+        function updateContents(self)
+            
+        end
+        
+        % Get an item referenced below baseItem.
+        % @param subPath string path beneath baseItem
+        % @details
+        % Resolves a reference to a sub-item beneath baseItem and returns
+        % the sub-item.  A sub-item may be an element, field, or property,
+        % or a combination of these, contained in baseItem.  @a subPath
+        % must be a string referencing the sub-item, as might be typed in
+        % the command window.  For example, '.myField', '(3,5)', and
+        % '.otherField{5}', might be valid @a subPath strings.
+        function item = subItemFromPath(self, subPath)
+            absolutePath = sprintf('self.baseItem%s', subPath);
+            item = eval(absolutePath);
         end
     end
 end

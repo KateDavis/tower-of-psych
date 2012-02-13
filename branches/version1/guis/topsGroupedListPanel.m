@@ -106,14 +106,14 @@ classdef topsGroupedListPanel < topsPanel
                     % put the new item in the grouped list
                     self.baseItem.addItemToGroupWithMnemonic( ...
                         newItem, self.currentGroup, self.currentMnemonic);
-
+                    
                     % update the figure's current item
                     self.parentFigure.setCurrentItem(newItem);
                     
                     % prepare for fresh text entry
                     set(editField, 'String', '');
                 end
-            end    
+            end
         end
     end
     
@@ -156,6 +156,9 @@ classdef topsGroupedListPanel < topsPanel
             
             % update the tree to use groupedList
             self.updateContents();
+            
+            % update with the first item
+            self.currentItemForGroupAndMnemonic();
         end
         
         % Refresh the group table's contents
@@ -172,7 +175,7 @@ classdef topsGroupedListPanel < topsPanel
             elseif ~self.baseItem.containsGroup(self.currentGroup);
                 self.currentGroup = groups{1};
             end
-
+            
             % set the column width from the table width
             %   which is irritating
             set(self.groupTable, 'Units', 'pixels');
@@ -218,7 +221,7 @@ classdef topsGroupedListPanel < topsPanel
         
         % Refresh the panel's contents.
         function updateContents(self)
-            if isobject(self.baseItem)                
+            if isobject(self.baseItem)
                 % default to select the first group
                 groups = self.baseItem.groups;
                 if ~isempty(groups)
@@ -228,15 +231,13 @@ classdef topsGroupedListPanel < topsPanel
                 % repopulate tables with groups and mnemonics
                 self.populateGroupTable();
                 self.populateMnemonicTable();
-                
-                % update the current item
-                self.currentItemForGroupAndMnemonic();
             end
         end
         
         % Set the GUI current item from selected group and mnemonic.
         function currentItemForGroupAndMnemonic(self)
-            if self.baseItem.containsMnemonicInGroup( ...
+            if isobject(self.baseItem) && ...
+                    self.baseItem.containsMnemonicInGroup( ...
                     self.currentMnemonic, self.currentGroup)
                 
                 % get out the selected item

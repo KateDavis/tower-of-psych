@@ -34,11 +34,11 @@ classdef topsDrillDownPanel < topsPanel
         % @details
         % Sets the value of the current item for the parent figure, based
         % on the selected node.
-        function currentItemForSelect(self, tree, event)
+        function selectItem(self, tree, event)
             % node value contains a drill-down path for the expanding node
             node = event.getCurrentNode();
             drillPath = node.getValue();
-            item = self.itemFromDrillDownPath(drillPath);
+            item = self.subItemFromPath(drillPath);
             name = sprintf('%s%s', self.baseItemName, drillPath);
             self.parentFigure.setCurrentItem(item, name);
         end
@@ -54,7 +54,7 @@ classdef topsDrillDownPanel < topsPanel
         function nodes = childNodesForExpand(self, tree, value)
             % value contains a drill-down path for the expanding node
             drillPath = value;
-            item = self.itemFromDrillDownPath(drillPath);
+            item = self.subItemFromPath(drillPath);
             
             % drill into the sub-item based on its class and size
             if isstruct(item)
@@ -100,7 +100,7 @@ classdef topsDrillDownPanel < topsPanel
                 self.pan, ...
                 rootNode, ...
                 @(tree, event)self.childNodesForExpand(tree, event), ...
-                @(tree, event)self.currentItemForSelect(tree, event));
+                @(tree, event)self.selectItem(tree, event));
             
             % update the tree to use baseItem
             self.updateContents();
@@ -115,12 +115,6 @@ classdef topsDrillDownPanel < topsPanel
             
             % show the first child nodes right away
             self.drillDownTree.expand(rootNode);
-        end
-        
-        % Resolve a dill-down path string from baseItem.
-        function item = itemFromDrillDownPath(self, drillPath)
-            absolutePath = sprintf('self.baseItem%s', drillPath);
-            item = eval(absolutePath);
         end
         
         % Make uitreenode nodes for a scalar struct or object.

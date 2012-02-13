@@ -9,6 +9,6 @@ function fig = topsMakeGroupedListGUI(groupedList)
 fig = topsFigure(sprintf('browse %s', groupedList.name));
 listPan = topsGroupedListPanel(fig);
 infoPan = topsInfoPanel(fig);
-fig.setPanels({infoPan; listPan}, [1 2], 1);
+fig.setPanels({listPan; infoPan}, [2 1], 1);
 
 listPan.setBaseItem(groupedList, groupedList.name);

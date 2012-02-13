@@ -135,7 +135,7 @@ classdef topsGUIUtilities
         % @details
         % Also returns as a third output a cell array of field names,
         % suitable as table row headers.
-        function [tableCell, fields, mapCell] = ...
+        function [tableCell, mapCell, fields] = ...
                 makeTableForStructArray(structArray, colors)
             
             if isobject(structArray)
