@@ -16,6 +16,13 @@ classdef topsPanel < handle
     % @details
     %
     % @ingroup guis
+    properties
+        % whether to leave the currentItem and contents as static
+        isLocked = false;
+        
+        % whether to show a title for baseItem
+        isBaseItemTitle = false;
+    end
     
     properties (SetAccess = protected)
         % the topsFigure that holds this panel
@@ -23,9 +30,6 @@ classdef topsPanel < handle
         
         % the Matlab uipanel
         pan;
-        
-        % whether to leave the currentItem and contents as static
-        isLocked = false;
         
         % the "current item" in use in the GUI
         currentItem;
@@ -79,7 +83,13 @@ classdef topsPanel < handle
             end
             
             % let the parent gui know about this change
-            self.parentFigure.setCurrentItem(baseItem, baseItemName);
+            self.parentFigure.setCurrentItem( ...
+                self.baseItem, self.baseItemName);
+            
+            % show the title for this item?
+            if self.isBaseItemTitle
+                set(self.pan, 'Title', self.baseItemName);
+            end
             
             % represent this new item
             self.updateContents();

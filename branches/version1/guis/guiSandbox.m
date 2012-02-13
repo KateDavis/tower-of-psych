@@ -46,9 +46,10 @@ fig = topsFigure('hoo');
 structPan = topsTablePanel(fig);
 cellPan = topsTablePanel(fig);
 infoPan = topsInfoPanel(fig);
-fig.setPanels({structPan cellPan; infoPan infoPan}, [2 1]);
+fig.setPanels({structPan cellPan; infoPan infoPan}, [1 1]);
 
 s = struct('Firstly', {'McFirst', 'Firstington'}, 'Secondly', {2, [2 2]});
+structPan.isBaseItemTitle = true;
 structPan.setBaseItem(s, 'myStruct');
 
 nums = zeros(3, 2, 5, 1);
@@ -56,6 +57,7 @@ nums(1:end) = 1:numel(nums);
 c = num2cell(nums);
 c{1} = 'cottage cheese';
 c{end} = containers.Map();
+cellPan.isBaseItemTitle = true;
 cellPan.setBaseItem(c, 'myCell');
 
 %% Try out a grouped list panel
