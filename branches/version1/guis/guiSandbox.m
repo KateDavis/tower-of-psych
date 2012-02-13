@@ -73,6 +73,7 @@ close all
 clear all
 
 gl = topsGroupedList();
+gl.name = 'myList';
 gl.addItemToGroupWithMnemonic(45, 1, 8);
 gl.addItemToGroupWithMnemonic('ghjg', 2, 'cheese');
 gl.addItemToGroupWithMnemonic('rfior', 2, 'my jesus cheese');

@@ -23,6 +23,9 @@ classdef topsGroupedListPanel < topsPanel
         % the uitable for mnemonic names
         mnemonicTable;
         
+        % uicontrol for editing the current item
+        editField;
+        
         % the value of the currently selected group
         currentGroup;
         
@@ -98,6 +101,44 @@ classdef topsGroupedListPanel < topsPanel
                 self.currentItemForGroupAndMnemonic();
             end
         end
+        
+        % Edit currentItem based on user-entered text.
+        % @param editField uicontrol edit field which contains new text
+        % @param event struct of data about the edit event
+        % @details
+        % Invokes eval() on the text contained in @a editField.  If eval()
+        % succeeds, replaces the item selected item in groupedList, based
+        % on currentGroup and currentMnemonic.  Also sets the current item
+        % of the parent figure, using the new value.
+        function editItem(self, editField, event)
+            % get the text that the user entered
+            entry = get(editField, 'String');
+            
+            if ~isempty(entry)
+                % try to get a new item from the text
+                newItem = [];
+                isEvalSuccess = true;
+                try
+                    newItem = eval(entry);
+                catch evalErr
+                    disp('Error edititng item:');
+                    disp(evalErr.message);
+                    isEvalSuccess = false;
+                end
+                
+                if isEvalSuccess
+                    % put the new item in the grouped list
+                    self.groupedList.addItemToGroupWithMnemonic( ...
+                        newItem, self.currentGroup, self.currentMnemonic);
+
+                    % update the figure's current item
+                    self.parentFigure.setCurrentItem(newItem);
+                    
+                    % prepare for fresh text entry
+                    set(editField, 'String', '');
+                end
+            end    
+        end
     end
     
     methods (Access = protected)
@@ -105,12 +146,16 @@ classdef topsGroupedListPanel < topsPanel
         function initialize(self)
             self.initialize@topsPanel();
             
+            % how to split up the panel for three ui components
+            yDiv = 0.1;
+            xDiv = 0.5;
+            
             % new table for groups
             self.groupTable = self.parentFigure.makeUITable( ...
                 self.pan, ...
                 @(table, event)self.selectGroup(table, event));
             set(self.groupTable, ...
-                'Position', [0 0 0.5 1], ...
+                'Position', [0 yDiv xDiv 1-yDiv], ...
                 'Data', {}, ...
                 'ColumnName', {'group'});
             
@@ -119,9 +164,20 @@ classdef topsGroupedListPanel < topsPanel
                 self.pan, ...
                 @(table, event)self.selectMnemonic(table, event));
             set(self.mnemonicTable, ...
-                'Position', [0.5 0 0.5 1], ...
+                'Position', [xDiv yDiv xDiv 1-yDiv], ...
                 'Data', {}, ...
-                'ColumnName', {'group'})
+                'ColumnName', {'mnemonic'})
+            
+            % new text field for editing the current item
+            self.editField = self.parentFigure.makeEditField( ...
+                self.pan, ...
+                @(field, event)self.editItem(field, event));
+            avtivateOnPress = @(field, event)set(field, 'Enable', 'on');
+            set(self.editField, ...
+                'Position', [0 0 1 yDiv], ...
+                'Min', 0, ...
+                'Max', 0.1, ...
+                'String', '% edit current item');
             
             % update the tree to use groupedList
             self.updateContents();

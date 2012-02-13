@@ -257,21 +257,33 @@ classdef topsGUIUtilities
         % @details
         % Replaces any newline (\n) or return carriage (\r) characters in
         % the given @a string with HTML <br/> break tags.  Returns the
-        % updated string.
+        % updated @a string.
         function string = htmlBreakAtLines(string)
             newLinePat = '([\n\r]+)';
             string = regexprep(string, newLinePat, '<br />');
         end
 
-        % Remove newline characters from the given string.
+        % Replace newline characters with spaces in the given string.
         % @param string any string
         % @details
         % Replaces any newline (\n) or return carriage (\r) characters in
         % the given @a string with a single space.  Returns the updated
-        % string.
+        % @a string.
         function string = spaceInstadOfLines(string)
             newLinePat = '([\n\r]+)';
             string = regexprep(string, newLinePat, ' ');
+        end
+
+        % Replace non-word characters with underscores in the given string.
+        % @param string any string
+        % @details
+        % Replaces any non-word characters in the given @a string with a
+        % single underscore (_).  "Non-word" means anything besides
+        % letters, numbers, and underscores (regular expression '\W').
+        % Returns the updated @a string.
+        function string = underscoreInsteadOfNonwords(string)
+            nonwordPat = '([\W]+)';
+            string = regexprep(string, nonwordPat, '_');
         end
     end
 end

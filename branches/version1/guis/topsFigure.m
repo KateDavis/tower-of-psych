@@ -282,6 +282,42 @@ classdef topsFigure < handle
             jContainer.setForeground(jColor);
             
         end
+
+        % Make a uicontrol text edit field with a certain look and feel.
+        % @param parent figure or uipanel to hold the text field.
+        % @param editFunction callback to handle edited text
+        % @details
+        % Returns a new uicontrol edit text field which is a child of the
+        % given @a parent, or mainPanel if @a parent is omitted.
+        % @details
+        % @a editFunction determines what happens when the user finishes
+        % editing text.  @a editFunction should expect a uicontrol object
+        % as the first input and a struct of event data as the second
+        % input.
+        function e = makeEditField(self, parent, editFunction)
+            if nargin < 2 || isempty(parent)
+                parent = self.mainPanel;
+            end
+            
+            if nargin < 3 || isempty(editFunction)
+                editFunction = [];
+            end
+            
+            e = uicontrol( ...
+                'Style', 'edit', ...
+                'Max', 100, ...
+                'Min', 1, ...
+                'BackgroundColor', self.backgroundColor, ...
+                'Callback', editFunction, ...
+                'FontName', self.fontName, ...
+                'FontSize', self.fontSize, ...
+                'ForegroundColor', self.foregroundColor, ...
+                'HorizontalAlignment', 'left', ...
+                'Units', 'normalized', ...
+                'Position', [0 0 1 1], ...
+                'Parent', parent, ...
+                'SelectionHighlight', 'off');
+        end
         
         % Make a uicontrol button with a certain look and feel.
         % @param parent figure or uipanel to hold the new button.
@@ -395,14 +431,18 @@ classdef topsFigure < handle
         % @param currentItemName name to use for the current item
         % @details
         % Assigns @a currentItem and @a currentItemName to this figure and
-        % any panels.
+        % any panels.  @a currentItemName is optional.  If omitted, @a
+        % currentItemName defaults to its present value.
         function setCurrentItem(self, currentItem, currentItemName)
             self.currentItem = currentItem;
-            self.currentItemName = currentItemName;
+            
+            if nargin >= 3
+                self.currentItemName = currentItemName;
+            end
             
             for ii = 1:numel(self.contentPanels)
                 self.contentPanels{ii}.setCurrentItem( ...
-                    currentItem, currentItemName);
+                    self.currentItem, self.currentItemName);
             end
             
             self.refresh();
@@ -544,12 +584,16 @@ classdef topsFigure < handle
                 if isvarname(itemName)
                     workspaceName = itemName;
                 else
+                    itemName = ...
+                        topsGUIUtilities.underscoreInsteadOfNonwords( ...
+                        itemName);
                     existingNames = evalin('base', 'who()');
                     workspaceName = genvarname(itemName, existingNames);
                 end
                 assignin('base', workspaceName, self.currentItem);
                 message = sprintf('Sent "%s" to workspace', workspaceName);
                 disp(message);
+                evalin('base', sprintf('disp(%s)', workspaceName));
             end
         end
     end

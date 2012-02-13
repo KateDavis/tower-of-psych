@@ -34,7 +34,7 @@ baseColors = [ ...
     49 214 85; ... % scrub green
     154 50 31; ... % rust brown
     238 86 25; ... % sunset orange
-    254 255 36; ... % sun yellow
+    234 235 36; ... % sun yellow
     251 178 64; ... % sand bronze
     ];
 
