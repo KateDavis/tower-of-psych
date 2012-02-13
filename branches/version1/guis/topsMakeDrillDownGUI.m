@@ -17,10 +17,12 @@ fig = topsFigure(sprintf('drill down for %s', itemName));
 
 % make a panel to explore various sub-items
 drillDownPan = topsDrillDownPanel(fig);
-drillDownPan.setBaseItem(item, itemName);
 
 % make a panel to describe each selected sub-item
 infoPan = topsInfoPanel(fig);
 
 % add the panels to the GUI figure
 fig.setPanels({drillDownPan, infoPan});
+
+% show the given item
+drillDownPan.setBaseItem(item, itemName);

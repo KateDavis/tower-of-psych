@@ -6,17 +6,9 @@ classdef topsGroupedListPanel < topsPanel
     % The user can view and select one group and one mnemonic.  Each
     % selection updates the "current item" of a Tower of Psych GUI.
     %
-    % TODO:
-    %   - add edit text field below browser columns to edit current item
-    %   and refresh contents
-    %   .
-    %
     % @ingroup guis
     
     properties (SetAccess = protected)
-        % the grouped list to browse
-        groupedList;
-        
         % the uitable for group names
         groupTable;
         
@@ -45,22 +37,6 @@ classdef topsGroupedListPanel < topsPanel
             self.isLocked = true;
         end
         
-        % Choose the grouped list to browse.
-        % @param groupedList topsGroupedList object
-        % @details
-        % @a groupedList must be a topsGroupedList object.  The grouped
-        % list panel will summarize the groups and mnemonics for @a
-        % groupedList and allow the user to select a current item for the
-        % GUI.
-        function setGroupedList(self, groupedList)
-            self.groupedList = groupedList;
-            groups = self.groupedList.groups;
-            if ~isempty(groups)
-                self.currentGroup = groups{1};
-            end
-            self.updateContents();
-        end
-        
         % Set the current list group from a selected table cell.
         % @param table uitable object making the selection
         % @param event struct of data about the selection event
@@ -72,7 +48,7 @@ classdef topsGroupedListPanel < topsPanel
             if size(event.Indices, 1) == 1
                 % select one group
                 row = event.Indices(1);
-                groups = self.groupedList.groups();
+                groups = self.baseItem.groups();
                 if row <= numel(groups)
                     self.currentGroup = groups{row};
                     self.populateMnemonicTable();
@@ -93,7 +69,7 @@ classdef topsGroupedListPanel < topsPanel
                 % select one mnemonic
                 row = event.Indices(1);
                 mnemonics = ...
-                    self.groupedList.getAllMnemonicsFromGroup( ...
+                    self.baseItem.getAllMnemonicsFromGroup( ...
                     self.currentGroup);
                 if row <= numel(mnemonics)
                     self.currentMnemonic = mnemonics{row};
@@ -128,7 +104,7 @@ classdef topsGroupedListPanel < topsPanel
                 
                 if isEvalSuccess
                     % put the new item in the grouped list
-                    self.groupedList.addItemToGroupWithMnemonic( ...
+                    self.baseItem.addItemToGroupWithMnemonic( ...
                         newItem, self.currentGroup, self.currentMnemonic);
 
                     % update the figure's current item
@@ -172,7 +148,6 @@ classdef topsGroupedListPanel < topsPanel
             self.editField = self.parentFigure.makeEditField( ...
                 self.pan, ...
                 @(field, event)self.editItem(field, event));
-            avtivateOnPress = @(field, event)set(field, 'Enable', 'on');
             set(self.editField, ...
                 'Position', [0 0 1 yDiv], ...
                 'Min', 0, ...
@@ -186,7 +161,7 @@ classdef topsGroupedListPanel < topsPanel
         % Refresh the group table's contents
         function populateGroupTable(self)
             % get the list of groups
-            groups = self.groupedList.groups;
+            groups = self.baseItem.groups;
             groupSummary = topsGUIUtilities.makeTableForCellArray( ...
                 groups(:), self.parentFigure.colors);
             
@@ -194,7 +169,7 @@ classdef topsGroupedListPanel < topsPanel
             if isempty(groups)
                 self.currentGroup = [];
                 
-            elseif ~self.groupedList.containsGroup(self.currentGroup);
+            elseif ~self.baseItem.containsGroup(self.currentGroup);
                 self.currentGroup = groups{1};
             end
 
@@ -215,7 +190,7 @@ classdef topsGroupedListPanel < topsPanel
             if isempty(self.currentGroup)
                 mnemonics = {};
             else
-                mnemonics = self.groupedList.getAllMnemonicsFromGroup( ...
+                mnemonics = self.baseItem.getAllMnemonicsFromGroup( ...
                     self.currentGroup);
             end
             mnemonicSummary = topsGUIUtilities.makeTableForCellArray( ...
@@ -225,7 +200,7 @@ classdef topsGroupedListPanel < topsPanel
             if isempty(mnemonics)
                 self.currentMnemonic = [];
                 
-            elseif ~self.groupedList.containsMnemonicInGroup( ...
+            elseif ~self.baseItem.containsMnemonicInGroup( ...
                     self.currentMnemonic, self.currentGroup);
                 self.currentMnemonic = mnemonics{1};
             end
@@ -243,7 +218,13 @@ classdef topsGroupedListPanel < topsPanel
         
         % Refresh the panel's contents.
         function updateContents(self)
-            if isobject(self.groupedList)
+            if isobject(self.baseItem)                
+                % default to select the first group
+                groups = self.baseItem.groups;
+                if ~isempty(groups)
+                    self.currentGroup = groups{1};
+                end
+                
                 % repopulate tables with groups and mnemonics
                 self.populateGroupTable();
                 self.populateMnemonicTable();
@@ -255,11 +236,11 @@ classdef topsGroupedListPanel < topsPanel
         
         % Set the GUI current item from selected group and mnemonic.
         function currentItemForGroupAndMnemonic(self)
-            if self.groupedList.containsMnemonicInGroup( ...
+            if self.baseItem.containsMnemonicInGroup( ...
                     self.currentMnemonic, self.currentGroup)
                 
                 % get out the selected item
-                item = self.groupedList.getItemFromGroupWithMnemonic( ...
+                item = self.baseItem.getItemFromGroupWithMnemonic( ...
                     self.currentGroup, self.currentMnemonic);
                 
                 % make up a name for the selected item
@@ -275,7 +256,7 @@ classdef topsGroupedListPanel < topsPanel
                     mnemonicName = num2str(self.currentMnemonic);
                 end
                 name = sprintf('%s{%s}{%s}', ...
-                    self.groupedList.name, groupName, mnemonicName);
+                    self.baseItem.name, groupName, mnemonicName);
                 
                 % report the current item to the parent figure
                 self.parentFigure.setCurrentItem(item, name);

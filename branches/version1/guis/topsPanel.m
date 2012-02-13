@@ -32,6 +32,12 @@ classdef topsPanel < handle
         
         % name to give the "current item"
         currentItemName;
+        
+        % the item this panel is representing
+        baseItem;
+        
+        % name to give baseItem
+        baseItemName;
     end
     
     methods
@@ -55,18 +61,38 @@ classdef topsPanel < handle
                 delete(self.pan);
             end
         end
+
+        % Choose the item to represent.
+        % @param baseItem the item to represent
+        % @param baseItemName string name for @a baseItem
+        % @details
+        % @a baseItem is the item to represnet in this topsPanel.
+        % Different topsPanle subclasses may treat baseItem differently, or
+        % even ignore it.  @a bassItemName is a name to display for the
+        % bass item.  @a bassItemName is optional.  If ommitted, defaults
+        % to the present value of bassItemName.
+        function setBaseItem(self, baseItem, baseItemName)
+            self.baseItem = baseItem;
+            
+            if nargin >= 3
+                self.baseItemName = baseItemName;
+            end
+            
+            % let the parent gui know about this change
+            self.parentFigure.setCurrentItem(baseItem, baseItemName);
+            
+            % represent this new item
+            self.updateContents();
+        end
         
         % Choose the current item.
         % @param currentItem the new current item
         % @param currentItemName name to use for the current item
         % @details
-        % Assigns @a currentItem and @a currentItemName to this panel and
-        % refreshes the panel contents.
+        % Assigns @a currentItem and @a currentItemName to this panel.
         function setCurrentItem(self, currentItem, currentItemName)
-            if ~self.isLocked
-                self.currentItem = currentItem;
-                self.currentItemName = currentItemName;
-            end
+            self.currentItem = currentItem;
+            self.currentItemName = currentItemName;
         end
         
         % Refresh the panel's contents.

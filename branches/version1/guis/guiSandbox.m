@@ -46,7 +46,6 @@ fig = topsFigure('hoo');
 s = struct('Firstly', {'McFirst', 'Firstington'}, 'Secondly', {2, [2 2]});
 [tableData, tableHeaders, tableMap] = ...
     topsGUIUtilities.makeTableForStructArray(s, fig.colors);
-tableMap{:}
 
 structTable = fig.makeUITable();
 set(structTable, ...
@@ -61,7 +60,6 @@ c{1} = 'cottage cheese';
 c{end} = containers.Map();
 [tableData, tableMap] = ...
     topsGUIUtilities.makeTableForCellArray(c, fig.colors);
-tableMap{:}
 
 cellTable = fig.makeUITable();
 set(cellTable, ...

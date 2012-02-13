@@ -11,4 +11,4 @@ listPan = topsGroupedListPanel(fig);
 infoPan = topsInfoPanel(fig);
 fig.setPanels({infoPan; listPan}, [1 2], 1);
 
-listPan.setGroupedList(groupedList);
+listPan.setBaseItem(groupedList, groupedList.name);

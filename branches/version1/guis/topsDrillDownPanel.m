@@ -9,12 +9,6 @@ classdef topsDrillDownPanel < topsPanel
     % @ingroup guis
     
     properties (SetAccess = protected)
-        % the item to drill down into
-        baseItem;
-        
-        % name for the bass item
-        baseItemName;
-        
         % the uitree for displaying drill down sub-items
         drillDownTree;
         
@@ -32,20 +26,6 @@ classdef topsDrillDownPanel < topsPanel
         function self = topsDrillDownPanel(varargin)
             self = self@topsPanel(varargin{:});
             self.isLocked = true;
-        end
-        
-        % Choose the item to drill down into.
-        % @param baseItem any item to drill down into
-        % @param baseItemName string name for @a baseItem
-        % @details
-        % @a bassItem may be any item.  The drill down panel will
-        % summarize the item with its sub-items, including fields,
-        % properties, and array elements.  @a bassItemName is a name to
-        % display for the bass item.
-        function setBaseItem(self, baseItem, baseItemName)
-            self.baseItem = baseItem;
-            self.baseItemName = baseItemName;
-            self.updateContents();
         end
         
         % Set the GUI current item from a selected node.
