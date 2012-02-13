@@ -24,7 +24,7 @@ classdef topsGUIUtilities
             t = max(p(:,2)+p(:,4));
             merged = [l, b, r-l, t-b];
         end
-
+        
         % Pick a color for the given string, based on its spelling.
         % @param string any string
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
@@ -36,7 +36,7 @@ classdef topsGUIUtilities
             hashRow = 1 + mod(sum(string), size(colors,1));
             col = colors(hashRow, :);
         end
-
+        
         % Summarize a cell array as a 2D cell array of strings.
         % @param cellArray any cell array
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
@@ -52,7 +52,7 @@ classdef topsGUIUtilities
         % If @a cellArray is 1D or 2D, rows and columns arrangements are
         % are preserved in the returned cell array.  For higher-dimensional
         % cell arrays, columns are preserved and all other dimensions are
-        % folded into rows.  
+        % folded into rows.
         % @details
         % Also returns as a second output a cell array of strings for
         % mapping 2D table elements back to elements of the original @a
@@ -69,7 +69,7 @@ classdef topsGUIUtilities
             if isempty(cellArray)
                 tableCell = {};
                 return;
-            end 
+            end
             
             % compute indices for folding into 2 dimensions
             %   while preserving columns
@@ -113,7 +113,7 @@ classdef topsGUIUtilities
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
         % @details
         % Summarizes the given @a structArray for display as a table.
-        % Returns a 2D cell array of strings in which each element 
+        % Returns a 2D cell array of strings in which each element
         % summarizes one value within @a structArray.  Each row in the
         % 2D cell array corresponds to an element of @a structArray.  @a
         % structArray is treated as one-dimensional.  Each column in the 2D
@@ -205,7 +205,7 @@ classdef topsGUIUtilities
             else
                 % use what disp() has to say about the item
                 info = evalc('disp(item)');
-                info = topsGUIUtilities.htmlStripAnchors( ...
+                info = topsGUIUtilities.htmlStripTags( ...
                     info, false, '[\s,]*');
                 
                 % locate quoted strings
@@ -261,34 +261,41 @@ classdef topsGUIUtilities
             end
         end
         
-        % Strip out HTML anchors and anchor tags from a string.
+        % Strip out HTML tags from the given string.
         % @param string any string
-        % @param isPreserveText whether to leave the anchor text in place
-        % @param stripPrefix additional regexp to strip before each anchor
+        % @param isPreserveText whether to leave in text between tags
+        % @param stripExtra additional regexp to strip around each tag
         % @details
-        % Strips out HTML anchors (like "a=href", etc.) from the given
-        % @a string.  By default, strips out the anchor text along with the
-        % anchor tags.  If @a isPreserverText is provided and true, leaves
-        % the anchor text without the tags.  If @a stripPrefix is provided,
-        % also strips out patterns that match the regular expression @a
-        % stripPrefix, immediately before anchors.
-        function stripped = htmlStripAnchors( ...
-                string, isPreserveText, stripPrefix)
+        % Strips out angle-bracketed tags (like <a>myText</a>, etc.) from
+        % the given @a string.  By default, also strips out the text
+        % between opening and closing tags (like 'myText'), along with the
+        % tags themselves.  If @a isPreserverText is provided and true,
+        % leaves the text in place and only strips the angle-bracketed tags
+        % themselves.
+        % @details
+        % If @a stripExtra is provided, it must be a regular expression.
+        % @a stripExtra is added to the front and back of the regular
+        % expression that matches tags, to strip out additional surrounding
+        % text.  This is useful for stripping out things like a
+        % comma-separated list of tags.
+        % @details
+        % Returns the updated @a string.
+        function string = htmlStripTags(string, isPreserveText, stripExtra)
             
             if nargin < 2 || isempty(isPreserveText)
                 isPreserveText = false;
             end
             
-            if nargin < 3 || isempty(stripPrefix)
-                stripPrefix = '';
+            if nargin < 3 || isempty(stripExtra)
+                stripExtra = '';
             end
             
-            anchorPat = '<[Aa][^<]*>([^<]*)</[Aa]>';
-            stripPat = [stripPrefix anchorPat stripPrefix];
+            tagPat = '<[\w]*[^<]*>([^<]*)</[\w]*>';
+            stripPat = [stripExtra tagPat stripExtra];
             if isPreserveText
-                stripped = regexprep(string, stripPat, '$1');
+                string = regexprep(string, stripPat, '$1');
             else
-                stripped = regexprep(string, stripPat, '');
+                string = regexprep(string, stripPat, '');
             end
         end
         
@@ -302,7 +309,7 @@ classdef topsGUIUtilities
             newLinePat = '([\n\r]+)';
             string = regexprep(string, newLinePat, '<br />');
         end
-
+        
         % Replace newline characters with spaces in the given string.
         % @param string any string
         % @details
@@ -313,7 +320,7 @@ classdef topsGUIUtilities
             newLinePat = '([\n\r]+)';
             string = regexprep(string, newLinePat, ' ');
         end
-
+        
         % Replace non-word characters with underscores in the given string.
         % @param string any string
         % @details

@@ -246,13 +246,15 @@ classdef topsGroupedListPanel < topsPanel
                 
                 % make up a name for the selected item
                 if ischar(self.currentGroup)
-                    groupName = self.currentGroup;
+                    groupName = topsGUIUtilities.makeSummaryForItem( ...
+                        self.currentGroup, self.parentFigure.colors);
                 else
                     groupName = num2str(self.currentGroup);
                 end
                 
-                if ischar(self.currentGroup)
-                    mnemonicName = self.currentMnemonic;
+                if ischar(self.currentMnemonic)
+                    mnemonicName = topsGUIUtilities.makeSummaryForItem( ...
+                        self.currentMnemonic, self.parentFigure.colors);
                 else
                     mnemonicName = num2str(self.currentMnemonic);
                 end

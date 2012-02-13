@@ -37,12 +37,11 @@ set(t.pan, 'BackgroundColor', fig.colors(3,:));
 
 fig.setPanels({bl br;t t}, [3 7], [4 6])
 
-%% Look at some uitables
+%% Look at some 2D tables for struct and cell array data
 close all
 clear all
 
 fig = topsFigure('hoo');
-
 structPan = topsTablePanel(fig);
 cellPan = topsTablePanel(fig);
 infoPan = topsInfoPanel(fig);
@@ -67,11 +66,13 @@ clear all
 
 gl = topsGroupedList();
 gl.name = 'myList';
-gl.addItemToGroupWithMnemonic(45, 1, 8);
-gl.addItemToGroupWithMnemonic('ghjg', 2, 'cheese');
-gl.addItemToGroupWithMnemonic('rfior', 2, 'my jesus cheese');
-gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 2, 'bert');
-gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 2, 'mahp');
+gl.addItemToGroupWithMnemonic(48, 'group 1', 8);
+gl.addItemToGroupWithMnemonic(49, 'group 1', 9);
+gl.addItemToGroupWithMnemonic(39, 'group 1', -1);
+gl.addItemToGroupWithMnemonic('ghjg', 'group 2', 'cheese');
+gl.addItemToGroupWithMnemonic('rfior', 'group 2', 'my jesus cheese');
+gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 'group 2', 'bert');
+gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 'group 2', 'mahp');
 fig = topsMakeGroupedListGUI(gl);
 
 
