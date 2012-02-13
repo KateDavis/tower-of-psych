@@ -41,20 +41,31 @@ classdef topsGUIUtilities
         % @param cellArray any cell array
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
         % @details
-        % Summarizes the given @a cellArray as a 2D cell array of strings
-        % suitable for display as a table.  Each element of the returned 2D
-        % cell array contains a string summary of one element of @a
-        % cellArray.
+        % Summarizes the given @a cellArray for display as a table.
+        % Returns a 2D cell array of strings in which each element
+        % summarizes one element of @a cellArray.
+        % @details
+        % Quoted 'strings' in the value summaries summary will be colored
+        % in based on their spelling and the given @colors.  The summaries
+        % will contain HTML tags.
         % @details
         % If @a cellArray is 1D or 2D, rows and columns arrangements are
         % are preserved in the returned cell array.  For higher-dimensional
         % cell arrays, columns are preserved and all other dimensions are
         % folded into rows.  
         % @details
-        % Quoted 'strings' in the value summaries summary will be colored
-        % in based on their spelling and the given @colors.  The summaries
-        % will contain HTML color tags.
-        function tableCell = makeTableForCellArray(cellArray, colors)
+        % Also returns as a second output a cell array of strings for
+        % mapping 2D table elements back to elements of the original @a
+        % cellArray.  This is most useful when @a cellArray is
+        % higher-dimensional.
+        % @details
+        % Each mapping string contains comma-separated subscripts into @a
+        % cellArray, enclosed in curly braces.  For example, if @a
+        % cellArray is three-dimensional, the first mapping string would be
+        % '{1,1,1}'.
+        function [tableCell, mapCell] = ...
+                makeTableForCellArray(cellArray, colors)
+            
             if isempty(cellArray)
                 tableCell = {};
                 return;
@@ -77,48 +88,77 @@ classdef topsGUIUtilities
             
             % make a summary for each element of cellArray
             tableCell = cell(nElements/nCols, nCols);
+            mapSubs = cell(1, ndims(cellArray));
+            mapCell = cell(nElements/nCols, nCols);
             for ii = 1:nElements
+                % get the column-folded element of cellArray
                 foldIndex = columnFolder(ii);
+                
+                % build a summary for this element
                 item = cellArray{foldIndex};
                 info = topsGUIUtilities.makeSummaryForItem(item, colors);
                 info = topsGUIUtilities.spaceInstadOfLines(info);
                 info = sprintf('<HTML>%s</HTML>', info);
                 tableCell{ii} = info;
+                
+                % describe the mapping to undo column-folding
+                [mapSubs{:}] = ind2sub(size(cellArray), foldIndex);
+                mapString = sprintf(',%d', mapSubs{:});
+                mapCell{ii} = sprintf('{%s}', mapString(2:end));
             end
         end
         
         % Summarize a struct array as a 2D cell array of strings.
-        % @param structArray any struct array
+        % @param structArray any struct or object array
         % @param colors nx3 matrix with one color per row (RGB, 0-1)
         % @details
-        % Summarizes the given @a structArray as a 2D cell array of strings
-        % suitable for display as a table.  Each element of @a structArray
-        % corresponds to a row in the returned cell array.  Each field of
-        % @a structArray corresponds to a column.  Each individual element
-        % of the returned 2D cell array contains a string summary of one
-        % data value from @a structArray.
-        % @details
-        % Also returns a cell array of field names, suitable as table row
-        % headers.
+        % Summarizes the given @a structArray for display as a table.
+        % Returns a 2D cell array of strings in which each element 
+        % summarizes one value within @a structArray.  Each row in the
+        % 2D cell array corresponds to an element of @a structArray.  @a
+        % structArray is treated as one-dimensional.  Each column in the 2D
+        % cell array corresponds to one of the fields of @a structArray.
         % @details
         % Quoted 'strings' in the value summaries summary will be colored
         % in based on their spelling and the given @colors.  The summaries
         % will contain HTML color tags.
-        function [tableCell, fields] = makeTableForStructArray( ...
-                structArray, colors)
+        % @details
+        % Also returns as a second output a cell array of strings for
+        % mapping 2D table elements back to velues withing the original @a
+        % structArray.
+        % @details
+        % Each mapping string contains an index into @a structArray
+        % enclosed in parentheses, plus a 'dot' reference into one of the
+        % fields of @a structArray.  For example, if @a
+        % structArray has a field called 'myField', one of the mapping
+        % strings would be '(1).myField'.
+        % @details
+        % Also returns as a third output a cell array of field names,
+        % suitable as table row headers.
+        function [tableCell, fields, mapCell] = ...
+                makeTableForStructArray(structArray, colors)
             
-            fields = fieldnames(structArray);
+            if isobject(structArray)
+                fields = properties(structArray);
+            else
+                fields = fieldnames(structArray);
+            end
             nFields = numel(fields);
             nElements = numel(structArray);
             
             tableCell = cell(nElements, nFields);
+            mapCell = cell(nElements, nFields);
             for ii = 1:nElements
                 for jj = 1:nFields
+                    % build a summary for this value
                     item = structArray(ii).(fields{jj});
                     info = topsGUIUtilities.makeSummaryForItem(item, colors);
                     info = sprintf('<HTML>%s</HTML>', info);
                     info = topsGUIUtilities.spaceInstadOfLines(info);
                     tableCell{ii,jj} = info;
+                    
+                    % describe the mapping from table back to structArray
+                    mapCell{ii,jj} = sprintf('(%d).%s', ii, fields{jj});
                 end
             end
         end
