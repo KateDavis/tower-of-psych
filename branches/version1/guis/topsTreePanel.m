@@ -7,6 +7,11 @@ classdef topsTreePanel < topsPanel
     %
     % @ingroup guis
     
+    properties
+        % how far to expand the tree automatically when building it
+        autoExpandDepth = 1;
+    end
+    
     properties (SetAccess = protected)
         % the uitree for displaying items connected to baseItem
         tree;
@@ -34,7 +39,7 @@ classdef topsTreePanel < topsPanel
         % Sets the value of the current item for the parent figure, based
         % on the selected node.
         function selectItem(self, tree, event)
-            % the current node's value contains a sub-path path 
+            % the current node's value contains a sub-path path
             %   from baseItem to the expanding node
             node = event.getCurrentNode();
             subPath = node.getValue();
@@ -82,20 +87,45 @@ classdef topsTreePanel < topsPanel
                 self.baseItemName, '');
             self.tree.setRoot(rootNode);
             
-            % show the first child nodes right away
-            self.tree.expand(rootNode);
+            % expand some nodes right away
+            self.expandToDepth(rootNode, self.autoExpandDepth);
+        end
+        
+        % Expand tree nodes to the given depth.
+        % @param node a uitree node in the tree
+        % @param depth how far down to expand the tree
+        % @details
+        % Recursively expands all tree nodes, starting with the given @a
+        % node, as far down as the given @a depth.  If @a node is the root
+        % node, the entire tree can be expanded.  If @a depth is zero, no
+        % nodes will be expanded.  If @a depth is one, only the given @a
+        % node will be expanded.  If depth is inf, all nodes beneath @a
+        % node will be expanded.
+        function expandToDepth(self, node, depth)
+            if depth > 0
+                % expand this node and allow Matlab to update it
+                self.tree.expand(node);
+                drawnow();
+                
+                % recur to expand child nodes
+                jVector = node.children();
+                while jVector.hasMoreElements()
+                    child = jVector.nextElement();
+                    self.expandToDepth(child, depth - 1);
+                end
+            end
         end
         
         % Make a new tree node to represent the given item.
         % @param item any item
         % @param name string name for the item
-        % @param subPath string drill down path from a parent node
+        % @param subPath string sub-path path from baseItem to @a item
         % @details
         % Makes a new uitreenode to represent the given @a item.  @a
-        % subPath must be a string to pass to eval, which drills down
-        % from a parent item to this item.  For example, if the item is
-        % located in a struct field names 'data', subPath should be
-        % '.data'.
+        % subPath must be a string to pass to eval(), which contains a
+        % reference from baseItem to this item.  For example, if @a item
+        % is located in a field of baseItem named 'data', subPath might be
+        % '.data', '(1).data', or similar.
         function node = nodeForItem(self, item, name, subPath)
             % display a summary of the item
             name = topsGUIUtilities.makeTitleForItem(item, name, ...

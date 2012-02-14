@@ -55,7 +55,6 @@ classdef topsPanel < handle
             if nargin >= 1
                 self.parentFigure = parentFigure;
                 self.initialize();
-                self.refresh();
             end
         end
         

@@ -27,36 +27,36 @@ classdef topsDrillDownPanel < topsTreePanel
         % expanding, based on the value of baseItem, the sub-path for the
         % expanding node, and any sub-items beneath the expanding node.
         function nodes = childNodesForExpand(self, tree, value)
-            % value contains a drill-down path for the expanding node
-            drillPath = value;
-            item = self.subItemFromPath(drillPath);
+            % value contains a sub-path for the expanding node
+            itemPath = value;
+            item = self.subItemFromPath(itemPath);
             
             % drill into the sub-item based on its class and size
             if isstruct(item)
                 if numel(item) > 1
                     % for a struct array, break out each element
-                    nodes = self.nodesForElements(item, drillPath);
+                    nodes = self.nodesForElements(item, itemPath);
                 else
                     % for a struct, break out each field
-                    nodes = self.nodesForNamedFields(item, drillPath);
+                    nodes = self.nodesForNamedFields(item, itemPath);
                 end
                 
             elseif isobject(item)
                 if numel(item) > 1
                     % for an object array, break out each element
-                    nodes = self.nodesForElements(item, drillPath);
+                    nodes = self.nodesForElements(item, itemPath);
                 else
                     % for an object, break out each property
-                    nodes = self.nodesForNamedFields(item, drillPath);
+                    nodes = self.nodesForNamedFields(item, itemPath);
                 end
                 
             elseif iscell(item)
                 % for a cell array, break out each element
-                nodes = self.nodesForCellElements(item, drillPath);
+                nodes = self.nodesForCellElements(item, itemPath);
                 
             else
                 % for a primitive, make a leaf node
-                nodes = self.leafNodeForPrimitive(item, drillPath);
+                nodes = self.leafNodeForPrimitive(item, itemPath);
             end
         end
     end
@@ -79,9 +79,9 @@ classdef topsDrillDownPanel < topsTreePanel
             for ii = 1:nNodes
                 subItem = item.(fields{ii});
                 subPath = sprintf('.%s', fields{ii});
-                drillPath = [itemPath subPath];
+                fullPath = [itemPath subPath];
                 nodeCell{ii} = self.nodeForItem( ...
-                    subItem, subPath, drillPath);
+                    subItem, subPath, fullPath);
             end
             nodes = [nodeCell{:}];
         end
@@ -95,9 +95,9 @@ classdef topsDrillDownPanel < topsTreePanel
             for ii = 1:nNodes
                 subItem = item(ii);
                 subPath = sprintf('(%d)', ii);
-                drillPath = [itemPath subPath];
+                fullPath = [itemPath subPath];
                 nodeCell{ii} = self.nodeForItem( ...
-                    subItem, subPath, drillPath);
+                    subItem, subPath, fullPath);
             end
             nodes = [nodeCell{:}];
         end
@@ -111,19 +111,19 @@ classdef topsDrillDownPanel < topsTreePanel
             for ii = 1:nNodes
                 subItem = item{ii};
                 subPath = sprintf('{%d}', ii);
-                drillPath = [itemPath subPath];
+                fullPath = [itemPath subPath];
                 nodeCell{ii} = self.nodeForItem( ...
-                    subItem, subPath, drillPath);
+                    subItem, subPath, fullPath);
             end
             nodes = [nodeCell{:}];
         end
         
         % Make a uitreenode node for a basic item.
-        function node = leafNodeForPrimitive(self, item, drillPath)
+        function node = leafNodeForPrimitive(self, item, subPath)
             name = topsGUIUtilities.makeSummaryForItem( ...
                 item, self.parentFigure.colors);
             name = sprintf('<HTML>%s</HTML>', name);
-            node = uitreenode('v0', drillPath, name, [], true);
+            node = uitreenode('v0', subPath, name, [], true);
         end
     end
 end

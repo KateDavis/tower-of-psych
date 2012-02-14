@@ -1,20 +1,12 @@
-classdef topsRunnablesPanel < topsPanel
-    % Show a graph of connected topsRunnable objects.
+classdef topsRunnablesPanel < topsTreePanel
+    % Show the high-level structure of a task/game.
     % @details
-    % topsRunnablesPanel shows tree graph of topsRunnable objects for
-    % visualizing the high-level structure of an task, game, etc.  Users
-    % can browse the tree to view details for an individual runnable
-    % object.
+    % topsRunnablesPanel shows an expanded tree which summarizes all the
+    % topsRunnable objects that make up an experiment or game.  The user
+    % can select each runnable to view more details about it, and set the
+    % curent item of the Tower of Psych GUI.
     %
     % @ingroup guis
-    
-    properties (SetAccess = protected)
-        % the uitree for displaying topsRunnable objects
-        tree;
-        
-        % the graphical container of tree
-        treeContainer;
-    end
     
     methods
         % Make a new panel in the given figure.
@@ -24,23 +16,8 @@ classdef topsRunnablesPanel < topsPanel
         % topsFigure object, otherwise the panel won't display any content.
         % @details
         function self = topsRunnablesPanel(varargin)
-            self = self@topsPanel(varargin{:});
-            self.isLocked = true;
-        end
-        
-        % Set the GUI current item from a selected node.
-        % @param tree uitree object or a "peer" object
-        % @param event event object related to the selection
-        % @details
-        % Sets the value of the current item for the parent figure, based
-        % on the selected node.
-        function selectItem(self, tree, event)
-            % node value contains a drill-down path for the expanding node
-            node = event.getCurrentNode();
-            drillPath = node.getValue();
-            item = self.subItemFromPath(drillPath);
-            name = sprintf('%s%s', self.baseItemName, drillPath);
-            self.parentFigure.setCurrentItem(item, name);
+            self = self@topsTreePanel(varargin{:});
+            self.autoExpandDepth = inf;
         end
         
         % Create new child nodes for an expanded node.
@@ -48,154 +25,54 @@ classdef topsRunnablesPanel < topsPanel
         % @param value value associated with the expanding node
         % @details
         % Creates new uitreenode objects for a node that is currently
-        % expanding, based on the value of baseItem, the drill down path
-        % for any parent nodes, and any sup-items beneath the drill down
-        % path.
+        % expanding, based on the value of the baseItem topsRunnable, the
+        % sub-path for the expanding node, and any children beneath the
+        % expanding node's runable.
         function nodes = childNodesForExpand(self, tree, value)
-            % value contains a drill-down path for the expanding node
-            drillPath = value;
-            item = self.subItemFromPath(drillPath);
-            
-            % drill into the sub-item based on its class and size
-            if isstruct(item)
-                if numel(item) > 1
-                    % for a struct array, break out each element
-                    nodes = self.nodesForElements(item, drillPath);
-                else
-                    % for a struct, break out each field
-                    nodes = self.nodesForNamedFields(item, drillPath);
-                end
-                
-            elseif isobject(item)
-                if numel(item) > 1
-                    % for an object array, break out each element
-                    nodes = self.nodesForElements(item, drillPath);
-                else
-                    % for an object, break out each property
-                    nodes = self.nodesForNamedFields(item, drillPath);
-                end
-                
-            elseif iscell(item)
-                % for a cell array, break out each element
-                nodes = self.nodesForCellElements(item, drillPath);
-                
-            else
-                % for a primitive, make a leaf node
-                nodes = self.leafNodeForItem(item, drillPath);
-            end
+            % value contains a sub-path for the expanding node
+            itemPath = value;
+            runnable = self.subItemFromPath(itemPath);
+            nodes = self.nodesForRunnableChildren(runnable, itemPath);
         end
     end
     
     methods (Access = protected)
-        % Create and arrange fresh components.
-        function initialize(self)
-            self.initialize@topsPanel();
-            
-            % a placeholder root node for uitree creation to succeed
-            rootNode = self.leafNodeForItem([], '');
-            
-            % the new tree gets wired up to call panel methods
-            [self.drillDownTree, self.drillDownContainer] =...
-                self.parentFigure.makeUITree( ...
-                self.pan, ...
-                rootNode, ...
-                @(tree, event)self.childNodesForExpand(tree, event), ...
-                @(tree, event)self.selectItem(tree, event));
-            
-            % update the tree to use baseItem
-            self.updateContents();
-        end
-        
-        % Refresh the panel's contents.
-        function updateContents(self)
-            % represent baseItem at the uitree root
-            rootNode = self.nodeForItem(self.baseItem, ...
-                self.baseItemName, '');
-            self.drillDownTree.setRoot(rootNode);
-            
-            % show the first child nodes right away
-            self.drillDownTree.expand(rootNode);
-        end
-        
-        % Make uitreenode nodes for a scalar struct or object.
-        function nodes = nodesForNamedFields(self, item, itemPath)
-            % get named sub-fields
-            if isstruct(item)
-                fields = fieldnames(item);
+        % Make uitreenode nodes for a runnable's children, if any.
+        function nodes = nodesForRunnableChildren(self, runnable, itemPath)
+            if isa(runnable, 'topsRunnableComposite')
+                
+                % make a node for each child runnable
+                nChildren = numel(runnable.children);
+                nodeCell = cell(1, nChildren);
+                for ii = 1:nChildren
+                    child = runnable.children{ii};
+                    subPath = sprintf('.children{%d}', ii);
+                    fullPath = [itemPath subPath];
+                    nodeCell{ii} = self.nodeForRunnable(child, fullPath);
+                end
+                nodes = [nodeCell{:}];
+                
             else
-                fields = properties(item);
+                % no children
+                nodes = [];
             end
-            
-            % build a node for each named field
-            %   and append the drill-down path
-            nNodes = numel(fields);
-            nodeCell = cell(1, nNodes);
-            for ii = 1:nNodes
-                subItem = item.(fields{ii});
-                subPath = sprintf('.%s', fields{ii});
-                drillPath = [itemPath subPath];
-                nodeCell{ii} = self.nodeForItem( ...
-                    subItem, subPath, drillPath);
-            end
-            nodes = [nodeCell{:}];
         end
         
-        % Make uitreenode nodes for an array.
-        function nodes = nodesForElements(self, item, itemPath)
-            % build a node for each indexed element
-            %   and append the drill-down path
-            nNodes = numel(item);
-            nodeCell = cell(1, nNodes);
-            for ii = 1:nNodes
-                subItem = item(ii);
-                subPath = sprintf('(%d)', ii);
-                drillPath = [itemPath subPath];
-                nodeCell{ii} = self.nodeForItem( ...
-                    subItem, subPath, drillPath);
-            end
-            nodes = [nodeCell{:}];
-        end
-        
-        % Make uitreenode nodes for a cell array.
-        function nodes = nodesForCellElements(self, item, itemPath)
-            % build a node for each indexed cell element
-            %   and append the drill-down path
-            nNodes = numel(item);
-            nodeCell = cell(1, nNodes);
-            for ii = 1:nNodes
-                subItem = item{ii};
-                subPath = sprintf('{%d}', ii);
-                drillPath = [itemPath subPath];
-                nodeCell{ii} = self.nodeForItem( ...
-                    subItem, subPath, drillPath);
-            end
-            nodes = [nodeCell{:}];
-        end
-        
-        % Make a new tree node to represent the given item.
-        % @param item any item
+        % Make a uitreenode to represent a topsRunnable object.
+        % @param runnable a topsRunnableObject
         % @param name string name for the item
-        % @param drillPath string drill down path from a parent node
+        % @param subPath string sub-path path from baseItem to @a runnable
         % @details
-        % Makes a new uitreenode to represent the given @a item.  @a
-        % drillPath must be a string to pass to eval, which drills down
-        % from a parent item to this item.  For example, if the item is
-        % located in a struct field names 'data', drillPath should be
-        % '.data'.
-        function node = nodeForItem(self, item, name, drillPath)
+        % Makes a new uitreenode to represent the given @a runnable.
+        % Different topsRunnable subclasses may have special formatting.
+        function node = nodeForRunnable(self, runnable, subPath)
             % display a summary of the item
-            name = topsGUIUtilities.makeTitleForItem(item, name, ...
-                self.parentFigure.midgroundColor);
+            name = topsGUIUtilities.makeTitleForItem( ...
+                runnable, runnable.name, self.parentFigure.midgroundColor);
             name = sprintf('<HTML>%s</HTML>', name);
-            node = uitreenode('v0', drillPath, name, [], false);
-        end
-        
-        % Make a uitreenode node for a basic item.
-        function node = leafNodeForItem(self, item, drillPath)
-            name = topsGUIUtilities.makeSummaryForItem( ...
-                item, self.parentFigure.colors);
-            name = sprintf('<HTML>%s</HTML>', name);
-            node = uitreenode('v0', drillPath, name, [], true);
+            isParent = isa(runnable, 'topsRunnableComposite') ...
+                && numel(runnable.children) > 0;
+            node = uitreenode('v0', subPath, name, [], ~isParent);
         end
     end
 end
