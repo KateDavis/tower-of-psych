@@ -34,9 +34,14 @@ classdef topsTablePanel < topsPanel
         % Follows tableMap to get a single value out of baseItem and
         % updates the parent figure's current item with this value.
         function selectItem(self, table, event)
-            % Only bother with single selections
-            if size(event.Indices, 1) == 1
-                % resolve the selected item
+            if isempty(event.Indices)
+                % deselection: display baseItem
+                self.parentFigure.setCurrentItem( ...
+                    self.baseItem, self.baseItemName);
+                
+            elseif size(event.Indices, 1) == 1
+                % selection: resolve the selected item
+                %   only bother with single selection
                 row = event.Indices(1);
                 column = event.Indices(2);
                 mapPath = self.tableMap{row, column};

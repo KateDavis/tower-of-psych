@@ -64,7 +64,7 @@ cellPan.setBaseItem(c, 'myCell');
 % 1.6.0
 % os x 10.6.8
 
-% click on title to set baseItem as currentItem
+% click on title or something to set baseItem as currentItem
 
 %% Try out a grouped list panel
 
