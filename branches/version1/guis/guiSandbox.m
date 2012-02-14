@@ -35,7 +35,7 @@ set(br.pan, 'BackgroundColor', fig.colors(2,:));
 t = topsPanel(fig);
 set(t.pan, 'BackgroundColor', fig.colors(3,:));
 
-fig.setPanels({bl br;t t}, [3 7], [4 6])
+fig.setPanels({bl br; t t}, [3 7], [4 6])
 
 %% Look at some 2D tables for struct and cell array data
 close all
@@ -58,6 +58,13 @@ c{1} = 'cottage cheese';
 c{end} = containers.Map();
 cellPan.isBaseItemTitle = true;
 cellPan.setBaseItem(c, 'myCell');
+
+% Josh had a matlab hang in this example
+% 7.13.0.564
+% 1.6.0
+% os x 10.6.8
+
+% click on title to set baseItem as currentItem
 
 %% Try out a grouped list panel
 

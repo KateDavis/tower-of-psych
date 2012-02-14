@@ -1,22 +1,46 @@
-classdef topsDrillDownPanel < topsTreePanel
-    % Show an item and sub elements, fields, and properties as a tree.
+classdef topsRunnablesPanel < topsPanel
+    % Show a graph of connected topsRunnable objects.
     % @details
-    % topsDrillDownPanel shows tree that can drill down into a given "base
-    % item".  The user can view and select struct fields, object
-    % properties, and cell array elements, to arbitrary depth.  Each
-    % selection updates the "current item" of a Tower of Psych GUI.
+    % topsRunnablesPanel shows tree graph of topsRunnable objects for
+    % visualizing the high-level structure of an task, game, etc.  Users
+    % can browse the tree to view details for an individual runnable
+    % object.
     %
     % @ingroup guis
+    
+    properties (SetAccess = protected)
+        % the uitree for displaying topsRunnable objects
+        tree;
+        
+        % the graphical container of tree
+        treeContainer;
+    end
     
     methods
         % Make a new panel in the given figure.
         % @param parentFigure topsFigure to work with
         % @details
-        % Creates a new topsDrillDownPanel.  @a parentFigure must be a
+        % Creates a new topsRunnablesPanel.  @a parentFigure must be a
         % topsFigure object, otherwise the panel won't display any content.
         % @details
-        function self = topsDrillDownPanel(varargin)
-            self = self@topsTreePanel(varargin{:});
+        function self = topsRunnablesPanel(varargin)
+            self = self@topsPanel(varargin{:});
+            self.isLocked = true;
+        end
+        
+        % Set the GUI current item from a selected node.
+        % @param tree uitree object or a "peer" object
+        % @param event event object related to the selection
+        % @details
+        % Sets the value of the current item for the parent figure, based
+        % on the selected node.
+        function selectItem(self, tree, event)
+            % node value contains a drill-down path for the expanding node
+            node = event.getCurrentNode();
+            drillPath = node.getValue();
+            item = self.subItemFromPath(drillPath);
+            name = sprintf('%s%s', self.baseItemName, drillPath);
+            self.parentFigure.setCurrentItem(item, name);
         end
         
         % Create new child nodes for an expanded node.
@@ -24,8 +48,9 @@ classdef topsDrillDownPanel < topsTreePanel
         % @param value value associated with the expanding node
         % @details
         % Creates new uitreenode objects for a node that is currently
-        % expanding, based on the value of baseItem, the sub-path for the
-        % expanding node, and any sub-items beneath the expanding node.
+        % expanding, based on the value of baseItem, the drill down path
+        % for any parent nodes, and any sup-items beneath the drill down
+        % path.
         function nodes = childNodesForExpand(self, tree, value)
             % value contains a drill-down path for the expanding node
             drillPath = value;
@@ -56,12 +81,41 @@ classdef topsDrillDownPanel < topsTreePanel
                 
             else
                 % for a primitive, make a leaf node
-                nodes = self.leafNodeForPrimitive(item, drillPath);
+                nodes = self.leafNodeForItem(item, drillPath);
             end
         end
     end
     
     methods (Access = protected)
+        % Create and arrange fresh components.
+        function initialize(self)
+            self.initialize@topsPanel();
+            
+            % a placeholder root node for uitree creation to succeed
+            rootNode = self.leafNodeForItem([], '');
+            
+            % the new tree gets wired up to call panel methods
+            [self.drillDownTree, self.drillDownContainer] =...
+                self.parentFigure.makeUITree( ...
+                self.pan, ...
+                rootNode, ...
+                @(tree, event)self.childNodesForExpand(tree, event), ...
+                @(tree, event)self.selectItem(tree, event));
+            
+            % update the tree to use baseItem
+            self.updateContents();
+        end
+        
+        % Refresh the panel's contents.
+        function updateContents(self)
+            % represent baseItem at the uitree root
+            rootNode = self.nodeForItem(self.baseItem, ...
+                self.baseItemName, '');
+            self.drillDownTree.setRoot(rootNode);
+            
+            % show the first child nodes right away
+            self.drillDownTree.expand(rootNode);
+        end
         
         % Make uitreenode nodes for a scalar struct or object.
         function nodes = nodesForNamedFields(self, item, itemPath)
@@ -118,8 +172,26 @@ classdef topsDrillDownPanel < topsTreePanel
             nodes = [nodeCell{:}];
         end
         
+        % Make a new tree node to represent the given item.
+        % @param item any item
+        % @param name string name for the item
+        % @param drillPath string drill down path from a parent node
+        % @details
+        % Makes a new uitreenode to represent the given @a item.  @a
+        % drillPath must be a string to pass to eval, which drills down
+        % from a parent item to this item.  For example, if the item is
+        % located in a struct field names 'data', drillPath should be
+        % '.data'.
+        function node = nodeForItem(self, item, name, drillPath)
+            % display a summary of the item
+            name = topsGUIUtilities.makeTitleForItem(item, name, ...
+                self.parentFigure.midgroundColor);
+            name = sprintf('<HTML>%s</HTML>', name);
+            node = uitreenode('v0', drillPath, name, [], false);
+        end
+        
         % Make a uitreenode node for a basic item.
-        function node = leafNodeForPrimitive(self, item, drillPath)
+        function node = leafNodeForItem(self, item, drillPath)
             name = topsGUIUtilities.makeSummaryForItem( ...
                 item, self.parentFigure.colors);
             name = sprintf('<HTML>%s</HTML>', name);
