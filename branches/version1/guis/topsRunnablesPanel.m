@@ -8,6 +8,11 @@ classdef topsRunnablesPanel < topsTreePanel
     %
     % @ingroup guis
     
+    properties
+        % filename for icon that represents topsConcurrent objects
+        concurrentIconFile = 'filmIcon.gif';
+    end
+    
     methods
         % Make a new panel in the given figure.
         % @param parentFigure topsFigure to work with
@@ -70,9 +75,19 @@ classdef topsRunnablesPanel < topsTreePanel
             name = topsGUIUtilities.makeTitleForItem( ...
                 runnable, runnable.name, self.parentFigure.midgroundColor);
             name = sprintf('<HTML>%s</HTML>', name);
+            
+            % will this node need to be expanded?
             isParent = isa(runnable, 'topsRunnableComposite') ...
                 && numel(runnable.children) > 0;
-            node = uitreenode('v0', subPath, name, [], ~isParent);
+            
+            % what icon should represent this kind of runnable?
+            if isa(runnable, 'topsConcurrent')
+                iconFile = which(self.concurrentIconFile);
+            else
+                iconFile = [];
+            end
+            
+            node = uitreenode('v0', subPath, name, iconFile, ~isParent);
         end
     end
 end
