@@ -121,3 +121,17 @@ c.addChild(e);
 t.addChild(st);
 
 runPan.setBaseItem(r, r.name);
+
+%% try out a data log panel
+close all
+clear
+clc
+
+topsDataLog.logDataInGroup('myData', 'singulars');
+topsDataLog.logDataInGroup('yournData', 'singulars');
+topsDataLog.logDataInGroup('ournData', 'plurals');
+topsDataLog.logDataInGroup('theirnData', 'plurals');
+
+fig = topsFigure('loggins');
+logPan = topsDataLogPanel(fig);
+fig.setPanels({logPan});
