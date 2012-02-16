@@ -64,6 +64,7 @@ classdef topsDataLogPanel < topsPanel
                 % clicked on the axes background
                 self.parentFigure.setCurrentItem(...
                     self.baseItem, self.baseItemName);
+                set(self.rasterCursor, 'Visible', 'off');
             else
                 % clicked on a data point
                 

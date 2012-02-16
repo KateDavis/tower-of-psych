@@ -17,7 +17,7 @@ items = { ...
 nItems = numel(items);
 for ii = 1:nItems
     name = sprintf('item %d/%d', ii, nItems);
-    f = topsMakeDrillDownGUI(items{ii}, name);
+    topsGUIUtilities.openBasicGUI(items{ii}, name);
 end
 
 %% Make sure the figure can do panel layout
@@ -134,4 +134,5 @@ topsDataLog.logDataInGroup('theirnData', 'plurals');
 
 fig = topsFigure('loggins');
 logPan = topsDataLogPanel(fig);
-fig.setPanels({logPan});
+infoPan = topsInfoPanel(fig);
+fig.setPanels({infoPan; logPan}, [2 8]);

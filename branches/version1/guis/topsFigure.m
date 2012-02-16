@@ -582,7 +582,7 @@ classdef topsFigure < handle
         end
         
         % Try to open the current item as a file.
-        function currentItemOpen(self)
+        function currentItemOpenAsFile(self)
             
             % does the current item indicate a file name?
             item = self.currentItem;
@@ -608,10 +608,16 @@ classdef topsFigure < handle
         end
         
         % View details of the current item.
-        function currentItemInfo(self)
-            message = sprintf('Get info for open "%s"', ...
-                self.currentItemName);
-            disp(message);
+        function fig = currentItemOpenGUI(self)
+            if ismethod(self.currentItem, 'gui')
+                % open a class-specific GUI
+                fig = self.currentItem.gui();
+                
+            else
+                % open the generic GUI
+                fig = topsGUIUtilities.openBasicGUI( ...
+                    self.currentItem, self.currentItemName);
+            end
         end
         
         % Send the current item to the Command Window workspace.
@@ -666,9 +672,9 @@ classdef topsFigure < handle
             self.addButton('refresh', ...
                 @(obj,event)self.refresh());
             self.addButton('open as file', ...
-                @(obj,event)self.currentItemOpen());
+                @(obj,event)self.currentItemOpenAsFile());
             self.addButton('open in gui', ...
-                @(obj,event)self.currentItemInfo());
+                @(obj,event)self.currentItemOpenGUI());
             self.addButton('to workspace', ...
                 @(obj,event)self.currentItemToWorkspace());
         end

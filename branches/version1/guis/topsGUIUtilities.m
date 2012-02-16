@@ -9,6 +9,28 @@ classdef topsGUIUtilities
     % @ingroup guis
     
     methods (Static)
+        % Open a GUI that can explore any item.
+        % @param item any item
+        % @param itemName string name to display for @a item
+        % @details
+        % Opens a new GUI figure for summarizing the given @a item and
+        % "driling down" to explore any elements, fields, and properties,
+        % to arbitrary depth.  If @a itemName is provided, displays @a
+        % itemName to represent @a item.
+        function fig = openBasicGUI(item, itemName)
+            
+            if nargin < 2
+                itemName = 'item';
+            end
+            
+            % Put a drill-down panel and an info panel in the same figure
+            fig = topsFigure(sprintf('explore %s', itemName));            
+            drillDownPan = topsDrillDownPanel(fig);
+            infoPan = topsInfoPanel(fig);
+            fig.setPanels({drillDownPan, infoPan});
+            drillDownPan.setBaseItem(item, itemName);
+        end
+        
         % Calculate a position that bounds other positions.
         % @param varargin one or more position rectangles
         % @details
