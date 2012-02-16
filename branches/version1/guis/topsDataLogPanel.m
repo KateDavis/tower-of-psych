@@ -18,6 +18,9 @@ classdef topsDataLogPanel < topsPanel
         
         % axes for raster data summary
         rasterAxes;
+
+        % cursor line for selections in rasterAxes
+        rasterCursor;
         
         % the uitable for group names
         groupTable;
@@ -50,14 +53,44 @@ classdef topsDataLogPanel < topsPanel
             self.isLocked = true;
         end
         
-        % Set the GUI current item group from a clicked-on raster point.
-        % @param line line object that was clicked
+        % Set the GUI current item group from a clicked-on graphics object.
+        % @param object graphics object that was clicked
         % @param event struct of data about the selection event
         % @details
         % Sets the current item for the parent figure, based on the
-        % selected line in a raster plot.
-        function selectItem(self, line, event)
-            
+        % a data point or axes that was clicked on.
+        function selectItem(self, object, event)
+            if object == self.rasterAxes
+                % clicked on the axes background
+                self.parentFigure.setCurrentItem(...
+                    self.baseItem, self.baseItemName);
+            else
+                % clicked on a data point
+                
+                % which group does this line represent?
+                group = get(object, 'UserData');
+                
+                % around what time did the user click?
+                clickPoint = get(self.rasterAxes, 'CurrentPoint');
+                clickTime = clickPoint(1,1);
+                lineTimes = get(object, 'XData');
+                [nearest, nearestIndex] = min(abs(lineTimes-clickTime));
+                time = lineTimes(nearestIndex);
+                
+                % move the data cursor to this new point
+                rows = get(object, 'YData');
+                set(self.rasterCursor, ...
+                    'XData', time, ...
+                    'YData', rows(1), ...
+                    'Visible', 'on');
+                
+                if self.baseItem.containsMnemonicInGroup(time, group);
+                    item = self.baseItem.getItemFromGroupWithMnemonic( ...
+                        group, time);
+                    name = sprintf('%s at %.4f', group, time);
+                    self.parentFigure.setCurrentItem(item, name);
+                end
+            end
         end
         
         % Set which data groups are selected from uitable checkboxes.
@@ -95,13 +128,13 @@ classdef topsDataLogPanel < topsPanel
         % the groupIsPlotted remains unchanged
         function setGroupIsPlotted(self, isPlotted)
             groups = self.baseItem.groups;
-
+            
             if ischar(isPlotted)
                 % choose all or none
                 switch isPlotted
                     case 'all'
                         isPlotted = true(size(self.baseItem.groups));
-
+                        
                     case 'none'
                         isPlotted = false(size(self.baseItem.groups));
                         
@@ -170,7 +203,7 @@ classdef topsDataLogPanel < topsPanel
             elseif isnumeric(range)
                 % use the given numeric range
                 numRange = range;
-
+                
             else
                 % nonsense range
                 return;
@@ -189,19 +222,11 @@ classdef topsDataLogPanel < topsPanel
             
             % check for distinct min and max
             if rangeMin < rangeMax
+                % go with the new range
                 self.timeRange = [rangeMin, rangeMax];
-                
-                % set the raster axes to the new range
-                %   use hack to avoid exponential notation
-                set(self.rasterAxes, ...
-                    'XTickMode', 'auto', ...
-                    'XTickLabelMode', 'auto', ...
-                    'XLim', self.timeRange);
-                ticks = get(self.rasterAxes, 'XTick');
-                set(self.rasterAxes, 'XTickLabel', ticks);
-                    
                 set(self.chooseRangeField, ...
                     'String', sprintf('[%.0f, %.0f]', rangeMin, rangeMax));
+                self.plotRaster();
             end
         end
     end
@@ -220,11 +245,16 @@ classdef topsDataLogPanel < topsPanel
             h = yDiv/5;
             
             % axes for data raster overview
-            padding = [0.01 0.05 -0.02 -0.06];
+            padding = [0.01 0.01 -0.02 -0.06];
             self.rasterAxes = self.parentFigure.makeAxes(self.pan);
             set(self.rasterAxes, ...
                 'Position', [0 yDiv 1 1-yDiv] + padding, ...
-                'YTick', []);
+                'YTick', [], ...
+                'Box', 'on', ...
+                'XGrid', 'on', ...
+                'XAxisLocation', 'top', ...
+                'HitTest', 'on', ...
+                'ButtonDownFcn', @(ax, event)self.selectItem(ax, event));
             
             % table for groups
             self.groupTable = self.parentFigure.makeUITable( ...
@@ -292,6 +322,17 @@ classdef topsDataLogPanel < topsPanel
             self.updateContents();
         end
         
+        % Refresh the panel's contents.
+        function updateContents(self)
+            % repopulate table with group names and selections
+            self.setGroupIsPlotted('all');
+            self.populateGroupTable();
+            
+            % summarize all the data in the raster plot
+            self.setTimeRange('all');
+            self.plotRaster();
+        end
+        
         % Refresh the group table's contents
         function populateGroupTable(self)
             % summarize the list of groups
@@ -316,19 +357,62 @@ classdef topsDataLogPanel < topsPanel
         
         % Summarize logged data as groups vs timestamp.
         function plotRaster(self)
-            groups = self.baseItem.groups;
-            disp(groups(self.groupIsPlotted));
-        end
-        
-        % Refresh the panel's contents.
-        function updateContents(self)
-            % repopulate table with group names and selections
-            self.setGroupIsPlotted('all');
-            self.populateGroupTable();
+            % clear out old plot objets
+            oldPlot = get(self.rasterAxes, 'Children');
+            delete(oldPlot(ishandle(oldPlot)));
             
-            % summarize all the data in the raster plot
-            self.setTimeRange('all');
-            self.plotRaster();
+            % adjust axest to accomodate groups and time range
+            %   use a hack to avoid exponential x-tick-lable notation
+            groups = self.baseItem.groups;
+            plotGroups = groups(self.groupIsPlotted);
+            nGroups = numel(plotGroups);
+            set(self.rasterAxes, ...
+                'YLim', [0, 2*nGroups+1], ...
+                'XTickMode', 'auto', ...
+                'XTickLabelMode', 'auto', ...
+                'XLim', self.timeRange);
+            ticks = get(self.rasterAxes, 'XTick');
+            set(self.rasterAxes, 'XTickLabel', ticks);
+            
+            % make a new cursor line for selections in rasterAxes
+            self.rasterCursor = line(0, 0, ...
+                'Parent', self.rasterAxes, ...
+                'Color', self.parentFigure.midgroundColor, ...
+                'LineStyle', 'none', ...
+                'Marker', '.', ...
+                'MarkerSize', 25, ...
+                'HitTest', 'off', ...
+                'Visible', 'off');
+            
+            % make a new label and irregular series for each group
+            for ii = 1:nGroups
+                plotRow = 2*(nGroups-ii+1);
+                
+                group = plotGroups{ii};
+                groupColor = topsGUIUtilities.getColorForString( ...
+                    group, self.parentFigure.colors);
+                paddedGroup = [' ' group];
+                text(self.timeRange(1), plotRow, paddedGroup, ...
+                    'Parent', self.rasterAxes, ...
+                    'Color', groupColor, ...
+                    'FontSize', self.parentFigure.fontSize, ...
+                    'HitTest', 'off');
+                
+                groupData = ...
+                    self.baseItem.getAllItemsFromGroupAsStruct(group);
+                times = [groupData.mnemonic];
+                rows = (plotRow-1)*ones(size(times));
+                cb = @(obj,event)self.selectItem(obj, event);
+                line(times, rows, ...
+                    'Parent', self.rasterAxes, ...
+                    'Color', groupColor, ...
+                    'LineStyle', 'none', ...
+                    'Marker', '.', ...
+                    'MarkerSize', 15, ...
+                    'HitTest', 'on', ...
+                    'UserData', group, ...
+                    'ButtonDownFcn', cb);
+            end
         end
     end
 end
