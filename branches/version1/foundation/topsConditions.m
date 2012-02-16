@@ -337,7 +337,7 @@ classdef topsConditions < topsRunnable
             self.pickingMethod = pickingMethod;
         end
         
-        % Log, notify, and reset() as needed.
+        % Log action and reset() as needed.
         % @details
         % Extends the start() method of topsRunnable to also reset()
         % condition picking as needed.
@@ -375,7 +375,7 @@ classdef topsConditions < topsRunnable
             self.finish;
         end
         
-        % Log, notify, and call out as needed.
+        % Log action and call out as needed.
         % @details
         % Extends the finish() method of topsRunnable to also invoke
         % donePickingFevalable and tell caller to stop running, when

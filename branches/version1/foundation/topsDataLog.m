@@ -67,11 +67,6 @@ classdef (Sealed) topsDataLog < topsGroupedList
         lastWriteTime;
     end
     
-    events
-        % notifies any listeners when all data are cleared from the log
-        FlushedTheDataLog;
-    end
-    
     methods (Access = private)
         % Constructor is private.
         % @details 
@@ -215,8 +210,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % this before starting an experiment.
         % @details
         % Removes all data from all groups, then removes the groups
-        % themselves.  Then sets earliestTime and latestTime to nan.  Then
-        % sends a FlushedTheDataLog notification to any listeners.
+        % themselves.  Sets earliestTime and latestTime to nan.
         function flushAllData
             self = topsDataLog.theDataLog;
             for g = self.groups
@@ -225,7 +219,6 @@ classdef (Sealed) topsDataLog < topsGroupedList
             self.earliestTime = nan;
             self.latestTime = nan;
             self.lastFlushTime = feval(self.clockFunction);
-            self.notify('FlushedTheDataLog');
         end
         
         % Add some data to the log.

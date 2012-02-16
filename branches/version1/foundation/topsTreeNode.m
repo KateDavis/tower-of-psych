@@ -69,8 +69,6 @@ classdef topsTreeNode < topsRunnableComposite
         % @details
         % Begin traversing the tree with this node as the topmost node.
         % The sequence of events should go like this:
-        %   - This node sends a 'RunStart' notification to any
-        %   listeners.
         %   - This node executes its startFevalable
         %   - This node does zero or more "iterations":
         %       - This node calls run() on each of its children,

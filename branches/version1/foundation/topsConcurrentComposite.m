@@ -108,7 +108,7 @@ classdef topsConcurrentComposite < topsRunnableComposite
             self.childIsRunning = false(size(self.children));
         end
         
-        % Log, notify, and finish doing flow control.
+        % Log action and finish doing flow control.
         % @details
         % Extends the finish() method of topsRunnable to also log the
         % count of runBriefly() invocations.
