@@ -190,6 +190,7 @@ classdef topsFigure < handle
         % Make a uitable with a certain look and feel.
         % @param parent figure or uipanel to hold the new uitable
         % @param selectFunction callback for selected table cell
+        % @param editFunction callback for edited table cell
         % @details
         % Returns a new uitable which is a child of the given @a parent, or
         % mainPanel if @a parent is omitted.
@@ -198,13 +199,23 @@ classdef topsFigure < handle
         % cell in the table.  @a selectFunction should expect the uitable
         % object as the first input a struct of selection event data as the
         % second input.
-        function table = makeUITable(self, parent, selectFunction)
+        % @details
+        % @a editFunction determines what happens when the user edits a
+        % cell in the table.  @a editFunction should expect the uitable
+        % object as the first input a struct of edit event data as the
+        % second input.
+        function table = makeUITable( ...
+                self, parent, selectFunction, editFunction)
             if nargin < 2
                 parent = self.mainPanel;
             end
             
             if nargin < 3 || isempty(selectFunction)
                 selectFunction = [];
+            end
+
+            if nargin < 4 || isempty(editFunction)
+                editFunction = [];
             end
             
             table = uitable( ...
@@ -216,8 +227,8 @@ classdef topsFigure < handle
                 'ColumnWidth', 'auto', ...
                 'RowName', {}, ...
                 'RowStriping', 'off', ...
-                'CellEditCallback', [], ...
                 'CellSelectionCallback', selectFunction, ...
+                'CellEditCallback', editFunction, ...
                 'FontName', self.fontName, ...
                 'FontSize', self.fontSize, ...
                 'RearrangeableColumns', 'off', ...
