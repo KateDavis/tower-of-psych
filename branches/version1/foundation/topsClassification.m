@@ -50,10 +50,8 @@ classdef topsClassification < topsFoundation
         % @param name optional name for this object
         % @details
         % If @a name is provided, assigns @a name to this object.
-        function self = topsClassification(name)
-            if nargin >= 1
-                self.name = name;
-            end
+        function self = topsClassification(varargin)
+            self = self@topsFoundation(varargin{:});
         end
         
         % Open a GUI to view object details.

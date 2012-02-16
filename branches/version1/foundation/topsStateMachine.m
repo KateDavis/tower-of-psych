@@ -91,13 +91,18 @@ classdef topsStateMachine < topsConcurrent
     end
     
     methods
-        % Constructor takes no arguments.
-        function self = topsStateMachine
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsStateMachine(varargin)
+            self = self@topsConcurrent(varargin{:});
+            
             self.stateNameToIndex = containers.Map( ...
                 'a', 1, 'uniformValues', false);
             self.stateNameToIndex.remove(self.stateNameToIndex.keys);
         end
-        
+                
         % Open a GUI to view object details.
         % @details
         % Opens a new GUI with components suitable for viewing objects of

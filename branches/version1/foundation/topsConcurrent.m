@@ -23,6 +23,14 @@ classdef topsConcurrent < topsRunnable
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsConcurrent(varargin)
+            self = self@topsRunnable(varargin{:});
+        end
+
         % Do flow control.
         % @param duration how long in seconds to keep running
         % @details

@@ -72,11 +72,12 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @details 
         % Use topsDataLog.theDataLog to access the current instance of
         % topsDataLog.
-        function self = topsDataLog
+        function self = topsDataLog()
             self.earliestTime = nan;
             self.latestTime = nan;
             self.lastFlushTime = nan;
             self.lastWriteTime = -inf;
+            self.name = 'The Data Log';
         end
         
         % Write a data increment and other data to file and do accounting.

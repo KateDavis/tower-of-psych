@@ -57,6 +57,14 @@ classdef topsTreeNode < topsRunnableComposite
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsTreeNode(varargin)
+            self = self@topsRunnableComposite(varargin{:});
+        end
+
         % Create a new topsTreeNode child and add it beneath this node.
         % @details
         % Returns a new topsTreeNode which is a child of this node.

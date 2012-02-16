@@ -40,10 +40,10 @@ classdef topsGroupedList < topsFoundation
     properties (SetObservable)
         % Cell array of strings or numbers identifying all the groups in
         % the list.
-        groups;
+        groups = {};
         
         % The number of items contained among all groups.
-        length;
+        length = 0;
     end
     
     properties(Hidden)
@@ -52,11 +52,14 @@ classdef topsGroupedList < topsFoundation
     end
     
     methods
-        % Constructor takes no arguments.
-        function self = topsGroupedList
-            self.groups = {};
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsGroupedList(varargin)
+            self = self@topsFoundation(varargin{:});
         end
-        
+                
         % Open a GUI to view object details.
         % @details
         % Opens a new GUI with components suitable for viewing objects of

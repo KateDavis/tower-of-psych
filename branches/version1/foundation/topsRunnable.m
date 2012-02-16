@@ -36,11 +36,12 @@ classdef topsRunnable < topsFoundation
     end
     
     methods
-        % Constructor takes no arguments.
+        % Constuct with name optional.
+        % @param name optional name for this object
         % @details
-        % Uses the class of this topsRunnable as the default name.
-        function self = topsRunnable()
-            self.name = class(self);
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsRunnable(varargin)
+            self = self@topsFoundation(varargin{:});
         end
         
         % Do flow control.
