@@ -1,4 +1,4 @@
-classdef TestTopsClassification < dotsTestCase
+classdef TestTopsClassification < TestTopsFoundation
     
     properties
         xSample;
@@ -7,7 +7,12 @@ classdef TestTopsClassification < dotsTestCase
     
     methods
         function self = TestTopsClassification(name)
-            self = self@dotsTestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Make a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = topsClassification(varargin{:});
         end
         
         function x = getX(self)
@@ -20,7 +25,7 @@ classdef TestTopsClassification < dotsTestCase
         
         function testRectangles(self)
             % classify in the unit square
-            classn = topsClassification('unit square');
+            classn = self.newObject('unit square');
             nPoints = 10;
             classn.addSource('x', @()getX(self), 0, 1, nPoints);
             classn.addSource('y', @()getY(self), 0, 1, nPoints);
@@ -60,6 +65,5 @@ classdef TestTopsClassification < dotsTestCase
             assertEqual('middle', output, 'middle should take precedence')
             assertEqual('middle', outputName, 'wrong name for middle')
         end
-        
     end
 end

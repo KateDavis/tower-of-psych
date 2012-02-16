@@ -1,8 +1,8 @@
-classdef TestTopsRegion < dotsTestCase
+classdef TestTopsRegion < TestCase
     
     methods
         function self = TestTopsRegion(name)
-            self = self@dotsTestCase(name);
+            self = self@TestCase(name);
         end
         
         function space = newCubeSpace(self, nDims, nSide)

@@ -1,18 +1,27 @@
-classdef TestTopsStateMachine < TestCase
+classdef TestTopsStateMachine < TestTopsFoundation
     
     properties
-        stateMachine;
         eventCount;
+        stateMachine;
         branchState;
     end
     
     methods
         function self = TestTopsStateMachine(name)
-            self = self@TestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Get a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = topsStateMachine(varargin{:});
+        end
+        
+        function hearEvent(self, varargin)
+            self.eventCount = self.eventCount + 1;
         end
         
         function setUp(self)
-            self.stateMachine = topsStateMachine;
+            self.stateMachine = self.newObject();
             self.stateMachine.name = 'test machine';
             topsDataLog.flushAllData;
         end
@@ -176,27 +185,6 @@ classdef TestTopsStateMachine < TestCase
         function countSharedFunctionCall(self, number)
             self.eventCount = self.eventCount + number;
         end
-        
-        function testPropertyChangeEventPosting(self)
-            % listen for event postings
-            props = properties(self.stateMachine);
-            n = length(props);
-            for ii = 1:n
-                self.stateMachine.addlistener(props{ii}, 'PostSet', @self.hearEvent);
-            end
-            
-            % trigger a posting for each property
-            self.eventCount = 0;
-            for ii = 1:n
-                self.stateMachine.(props{ii}) = self.stateMachine.(props{ii});
-            end
-            assertEqual(self.eventCount, n, 'heard wrong number of property set events');
-        end
-        
-        function hearEvent(self, varargin)
-            self.eventCount = self.eventCount + 1;
-        end
-        
         
         function testClassificationBranching(self)
             % a batch of boring states

@@ -1,20 +1,23 @@
-classdef TestTopsConditions < TestCase
+classdef TestTopsConditions < TestTopsFoundation
     
     properties
         conditions;
         assignmentTarget;
-        eventCount;
     end
     
     methods
         function self = TestTopsConditions(name)
-            self = self@TestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Make a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = topsConditions(varargin{:});
         end
         
         function setUp(self)
-            self.conditions = topsConditions;
+            self.conditions = self.newObject();
             self.assignmentTarget = '';
-            self.eventCount = 0;
         end
         
         function tearDown(self)
@@ -56,26 +59,6 @@ classdef TestTopsConditions < TestCase
             expectedNumbers = 0:(self.conditions.nConditions - 1);
             assertEqual(sort(assignedNumbers), expectedNumbers, ...
                 'should have traversed a unique integer per condition')
-        end
-        
-        function testPropertyChangeEventPosting(self)
-            % listen for event postings
-            props = properties(self.conditions);
-            n = length(props);
-            for ii = 1:n
-                self.conditions.addlistener(props{ii}, 'PostSet', @self.hearEvent);
-            end
-            
-            % trigger a posting for each property
-            self.eventCount = 0;
-            for ii = 1:n
-                self.conditions.(props{ii}) = self.conditions.(props{ii});
-            end
-            assertEqual(self.eventCount, n, 'heard wrong number of property set events');
-        end
-        
-        function hearEvent(self, metaProp, event)
-            self.eventCount = self.eventCount + 1;
         end
     end
 end

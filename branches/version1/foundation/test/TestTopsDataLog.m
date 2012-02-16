@@ -1,28 +1,31 @@
-classdef TestTopsDataLog < TestCase
+classdef TestTopsDataLog < TestTopsFoundation
     
     properties
         groups;
         data;
-        eventCount;
         filename;
     end
     
     methods
         function self = TestTopsDataLog(name)
-            self = self@TestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Make a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = topsDataLog.theDataLog();
         end
         
         function setUp(self)
             self.groups = {'animals', 'pizzas', 'phone books'};
             self.data = {1, {'elephant', 'sauce'}, []};
-            self.eventCount = 0;
             [p,f] = fileparts(mfilename('fullpath'));
             self.filename = fullfile(p, 'dataLogTest.mat');
-            topsDataLog.flushAllData;
+            topsDataLog.flushAllData();
         end
         
         function tearDown(self)
-            topsDataLog.flushAllData;
+            topsDataLog.flushAllData();
             if exist(self.filename)
                 delete(self.filename)
             end
@@ -35,10 +38,6 @@ classdef TestTopsDataLog < TestCase
                     topsDataLog.logDataInGroup(d{1}, g{1});
                 end
             end
-        end
-        
-        function hearEvent(self, obj, event)
-            self.eventCount = self.eventCount + 1;
         end
         
         function testSingleton(self)
@@ -54,34 +53,30 @@ classdef TestTopsDataLog < TestCase
             logStruct = topsDataLog.getSortedDataStruct;
             logGroups = {logStruct.group};
             for g = self.groups
-                assertEqual(sum(strcmp(g{1}, logGroups)), length(self.data), 'wrong number log entries per group')
+                assertEqual( ...
+                    sum(strcmp(g{1}, logGroups)), length(self.data), ...
+                    'wrong number log entries per group')
             end
             
             logTimes = [logStruct.mnemonic];
-            assertTrue(all(diff(logTimes) >= 0), 'log entries should be sorted by time')
+            assertTrue(all(diff(logTimes) >= 0), ...
+                'log entries should be sorted by time')
         end
         
         function testDataFlush(self)
             % log should arrive flushed, from setUp()
             theLog = topsDataLog.theDataLog;
-            assertEqual(theLog.length, 0, 'data log should start with 0 entries')
-            assertTrue(isempty(theLog.groups), 'data log should start with no groups')
+            assertEqual(theLog.length, 0, ...
+                'data log should start with 0 entries')
+            assertTrue(isempty(theLog.groups), ...
+                'data log should start with no groups')
             
             self.logSomeData;
             topsDataLog.flushAllData;
-            assertEqual(theLog.length, 0, 'failed to clear log entries after adding')
-            assertTrue(isempty(theLog.groups), 'failed to clear log groups after adding')
-        end
-        
-        function testDataFlushNotification(self)
-            theLog = topsDataLog.theDataLog;
-            listener = theLog.addlistener('FlushedTheDataLog', @self.hearEvent);
-            n = 5;
-            for ii = 1:n
-                topsDataLog.flushAllData;
-            end
-            assertEqual(self.eventCount, n, 'heard wrong number of FlushedTheDataLog events');
-            delete(listener);
+            assertEqual(theLog.length, 0, ...
+                'failed to clear log entries after adding')
+            assertTrue(isempty(theLog.groups), ...
+                'failed to clear log groups after adding')
         end
         
         function testToFromFile(self)
