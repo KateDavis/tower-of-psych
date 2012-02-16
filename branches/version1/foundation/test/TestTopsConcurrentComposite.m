@@ -18,7 +18,7 @@ classdef TestTopsConcurrentComposite < TestTopsFoundation
         end
         
         function setUp(self)
-            self.concurrents = newObject();
+            self.concurrents = self.newObject();
             
             self.nComponents = 10;
             self.components = cell(1, self.nComponents);

@@ -185,7 +185,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % log's clockFunction, to use some custom timer.  In that case you would
         % get the log using this method, and set the value of log.clockFunction
         % just like you would set the value of any object property.
-        function log = theDataLog
+        function log = theDataLog()
             persistent theLog
             if isempty(theLog) || ~isvalid(theLog)
                 theLog = topsDataLog;
@@ -197,7 +197,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @details
         % Opens a new GUI with components suitable for viewing objects of
         % this class.  Returns a topsFigure object which contains the GUI.
-        function fig = gui(self)
+        function fig = gui()
+            self = topsDataLog.theDataLog();
             fig = topsFigure(self.name);
             logPan = topsDataLogPanel(fig);
             infoPan = topsInfoPanel(fig);
@@ -212,8 +213,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % @details
         % Removes all data from all groups, then removes the groups
         % themselves.  Sets earliestTime and latestTime to nan.
-        function flushAllData
-            self = topsDataLog.theDataLog;
+        function flushAllData()
+            self = topsDataLog.theDataLog();
             for g = self.groups
                 self.removeGroup(g{1});
             end
@@ -248,7 +249,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % like the groups in topsGroupedList.  The data log uses a
         % @a timestamp as the mnemonic for each data item.
         function logDataInGroup(data, group, timestamp)
-            self = topsDataLog.theDataLog;
+            self = topsDataLog.theDataLog();
             
             if nargin < 3 || isempty(timestamp) || ~isnumeric(timestamp)
                 timestamp = feval(self.clockFunction);
@@ -277,7 +278,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % a struct array, using getAllItemsFromGroupAsStruct().  Sorts the
         % struct array by the time values stored in its mnemonics field.
         function logStruct = getSortedDataStruct(timeRange)
-            self = topsDataLog.theDataLog;
+            self = topsDataLog.theDataLog();
             if nargin < 1
                 timeRange = [-inf inf];
             end
@@ -327,7 +328,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         %   property.
         %   .
         function writeDataFile(fileWithPath)
-            self = topsDataLog.theDataLog;
+            self = topsDataLog.theDataLog();
             
             if nargin > 0 && ~isempty(fileWithPath) && ischar(fileWithPath)
                 self.fileWithPath = fileWithPath;
@@ -374,7 +375,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         %   property.
         %   .
         function dataStruct = readDataFile(fileWithPath)
-            self = topsDataLog.theDataLog;
+            self = topsDataLog.theDataLog();
             dataStruct = struct([]);
             
             if nargin > 0 && ~isempty(fileWithPath) && ischar(fileWithPath)

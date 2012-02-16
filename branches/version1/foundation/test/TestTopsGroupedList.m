@@ -27,7 +27,6 @@ classdef TestTopsGroupedList < TestTopsFoundation
             self.stringMnemonics = ...
                 {'function handle', 'string', 'number', 'object'};
             self.numberMnemonics = {0, 2, -4, 66.567};
-            self.eventCount = 0;
         end
         
         function tearDown(self)

@@ -15,7 +15,7 @@ classdef TestTopsTreeNode < TestTopsFoundation
         end
         
         function setUp(self)
-            self.treeNode = self.getObject();
+            self.treeNode = self.newObject();
             self.treeNode.name = 'parent';
             topsDataLog.flushAllData();
         end
