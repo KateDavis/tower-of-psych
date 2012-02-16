@@ -90,6 +90,7 @@ classdef topsGUIUtilities
             
             if isempty(cellArray)
                 tableCell = {};
+                mapCell = {};
                 return;
             end
             

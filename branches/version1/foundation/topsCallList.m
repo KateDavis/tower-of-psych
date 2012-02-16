@@ -42,6 +42,26 @@ classdef topsCallList < topsConcurrent
     end
     
     methods
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            callsPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.setPanels({callsPan selfInfoPan; callsPan infoPan});
+            
+            fig.setCurrentItem(self.calls, 'calls');
+            callsPan.isBaseItemTitle = true;
+            callsPan.setBaseItem(self.calls, 'calls');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
+        end
+        
         % Add an "fevalable" to the call list.
         % @param fevalable a cell array with contents to pass to feval()
         % @param name unique name to assign to @a fevalable

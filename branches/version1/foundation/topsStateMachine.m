@@ -98,9 +98,26 @@ classdef topsStateMachine < topsConcurrent
             self.stateNameToIndex.remove(self.stateNameToIndex.keys);
         end
         
-        % Launch a graphical interface showing the states in the machine.
-        function g = gui(self)
-            g = topsStateMachineGUI(self);
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            allStatesPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.setPanels( ...
+                {allStatesPan allStatesPan; selfInfoPan infoPan});
+            
+            allStatesPan.isBaseItemTitle = true;
+            allStatesPan.setBaseItem( ...
+                self.allStates, 'allStates');
+            fig.setCurrentItem(self.allStates, 'allStates');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
         end
         
         % Add multiple states to the state machine.

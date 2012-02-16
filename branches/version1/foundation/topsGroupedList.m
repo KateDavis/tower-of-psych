@@ -65,9 +65,16 @@ classdef topsGroupedList < topsFoundation
             self.sendNotifications = false;
         end
         
-        % Launch a graphical interface for this topsGroupedList.
-        function g = gui(self)
-            g = topsGroupedListGUI(self);
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            listPan = topsGroupedListPanel(fig);
+            infoPan = topsInfoPanel(fig);
+            fig.setPanels({listPan; infoPan}, [7 3]);
+            listPan.setBaseItem(self, self.name);
         end
 
         % Make a topsGroupedListPanel with details about this object.

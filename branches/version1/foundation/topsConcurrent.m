@@ -37,7 +37,7 @@ classdef topsConcurrent < topsRunnable
                 duration = inf;
             end
             endTime = duration + topsClock();
-
+            
             self.start();
             while self.isRunning && (topsClock() < endTime)
                 self.runBriefly();

@@ -15,6 +15,18 @@ classdef topsRunnableComposite < topsRunnable
     end
     
     methods
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            treePan = topsRunnablesPanel(fig);
+            infoPan = topsInfoPanel(fig);
+            fig.setPanels({treePan, infoPan});
+            treePan.setBaseItem(self, self.name);
+        end
+
         % Add a child beneath this object.
         % @param child a topsRunnable to add beneath this object.
         % @details

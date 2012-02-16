@@ -40,6 +40,30 @@ classdef topsEnsemble < topsCallList
                 self.name = name;
             end
         end
+
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            objectsPan = topsTablePanel(fig);
+            callsPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.setPanels( ...
+                {callsPan selfInfoPan; objectsPan infoPan});
+            
+            objectsPan.isBaseItemTitle = true;
+            objectsPan.setBaseItem(self.objects, 'objects');
+            callsPan.isBaseItemTitle = true;
+            callsPan.setBaseItem(self.calls, 'calls');
+            fig.setCurrentItem(self.objects, 'objects');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
+        end
         
         % Add one object to the ensemble.
         % @param object any object to add to the ensemble

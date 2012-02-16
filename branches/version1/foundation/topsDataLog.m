@@ -197,9 +197,15 @@ classdef (Sealed) topsDataLog < topsGroupedList
             log = theLog;
         end
         
-        % Launch the graphical interface for topsDataLog.
-        function g = gui(self)
-            g = topsDataLogGUI;
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            logPan = topsDataLogPanel(fig);
+            infoPan = topsInfoPanel(fig);
+            fig.setPanels({infoPan; logPan}, [2 8]);
         end
         
         % Clear out all data from the log

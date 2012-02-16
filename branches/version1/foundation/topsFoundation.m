@@ -23,14 +23,12 @@ classdef topsFoundation < handle
             end
         end
         
-        % Make a topsGUI graphical interface for this object.
+        % Open a GUI to view object details.
         % @details
-        % Subclasses may overrride to return a specific topsGUI subclass,
-        % or let topsFoundataion generate a generic topsGUI.
-        function g = gui(self)
-            g = topsGUI;
-            g.title = class(self);
-            self.guiPanel(g);
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsGUIUtilities.openBasicGUI(self, self.name);
         end
         
         % Make a topsDetailPanel with details about this object.

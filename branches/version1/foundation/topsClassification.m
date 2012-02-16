@@ -56,6 +56,29 @@ classdef topsClassification < topsFoundation
             end
         end
         
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            sourcesPan = topsTablePanel(fig);
+            outputsPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.setPanels({outputsPan selfInfoPan; sourcesPan infoPan});
+            
+            fig.setCurrentItem(self.sources, 'sources');
+            sourcesPan.isBaseItemTitle = true;
+            sourcesPan.setBaseItem(self.sources, 'sources');
+            outputsPan.isBaseItemTitle = true;
+            outputsPan.setBaseItem(self.outputs, 'outputs');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
+        end
+        
         % Add a data source.
         % @param name unique name for the data source
         % @param sampleFunction function_handle that returns a sample

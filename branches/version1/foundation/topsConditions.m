@@ -120,7 +120,33 @@ classdef topsConditions < topsRunnable
     
     methods
         % Constructor takes no arguments.
-        function self = topsConditions
+        function self = topsConditions()
+        end
+                
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            allParametersPan = topsTablePanel(fig);
+            currentValuesPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.setPanels( ...
+                {currentValuesPan selfInfoPan; allParametersPan infoPan});
+            
+            allParametersPan.isBaseItemTitle = true;
+            allParametersPan.setBaseItem( ...
+                self.allParameters, 'allParameters');
+            currentValuesPan.isBaseItemTitle = true;
+            currentValuesPan.setBaseItem( ...
+                self.currentValues, 'currentValues');
+            fig.setCurrentItem(self.currentCondition, 'currentCondition');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
         end
         
         % Add a parameter and set of values for condition formation.
