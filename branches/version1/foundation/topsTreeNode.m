@@ -66,10 +66,11 @@ classdef topsTreeNode < topsRunnableComposite
         end
 
         % Create a new topsTreeNode child and add it beneath this node.
+        % @param name optional name for the new child node
         % @details
         % Returns a new topsTreeNode which is a child of this node.
-        function child = newChildNode(self)
-            child = topsTreeNode;
+        function child = newChildNode(self, varargin)
+            child = topsTreeNode(varargin{:});
             self.addChild(child);
         end
         
