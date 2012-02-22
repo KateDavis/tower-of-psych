@@ -72,6 +72,7 @@ classdef topsTablePanel < topsPanel
         
         % Refresh the panel's contents.
         function updateContents(self)
+            nColumns = 0;
             if isobject(self.baseItem) || isstruct(self.baseItem)
                 % struct array summary with named columns
                 [tableData, self.tableMap, columnNames] = ...
@@ -80,6 +81,7 @@ classdef topsTablePanel < topsPanel
                 set(self.table, ...
                     'Data', tableData, ...
                     'ColumnName', columnNames);
+                nColumns = size(tableData, 2);
                 
             elseif iscell(self.baseItem)
                 % cell array summary with numbered columns
@@ -89,6 +91,19 @@ classdef topsTablePanel < topsPanel
                 set(self.table, ...
                     'Data', tableData, ...
                     'ColumnName', 'numbered');
+                nColumns = size(tableData, 2);
+            end
+            
+            if nColumns > 0
+                % set the column widths from the table width
+                %   which is irritating
+                set(self.table, 'Units', 'pixels');
+                pixelPosition = get(self.table, 'Position');
+                w = (pixelPosition(3) - 40) / nColumns;
+                columnWidth = w*ones(1,nColumns);
+                set(self.table, ...
+                    'Units', 'normalized', ...
+                    'ColumnWidth', num2cell(columnWidth));
             end
         end
     end

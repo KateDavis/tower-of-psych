@@ -38,7 +38,7 @@ classdef topsCallList < topsConcurrent
             'isActive', {});
         
         % true or false, whether to run indefinitely
-        alwaysRunning = false;
+        alwaysRunning = true;
     end
     
     methods
@@ -118,11 +118,12 @@ classdef topsCallList < topsConcurrent
         % @details
         % Returns the first output from the named call, if any.
         function result = callByName(self, name, isActive)
+            
             % need to return a result?
             isResult = nargout > 0;
             
             % toggle the call's runBriefly() activity?
-            if nargin >=3
+            if nargin >= 3
                 self.setActiveByName(isActive, name);
             end
             
