@@ -1,56 +1,50 @@
-#summary Notes about redesigning tops GUI classes for Version1
+#summary Notes about redesigned Graphical User Interfaces
 #labels Phase-Design
 
-I'm jotting down ideas and needs for tops GUIs, with a view to reimplementing the GUI classes.  They evolved into a mess over time, and they don't all show the data that they should show.
+I hit the GUI code pretty hard, in preparation for [Version1].  The result is a total overhaul of the Tower of Psych GUIs!
 
 ===General===
-I like the model of having a topsGUI which provides basic functionality and manages the Matlab figure, and then filling the figure with custom panels.
+The new GUIs show more data than the old ones.  Hopefully they look and feel nicer too, because I redesigned their appearance and took advantage of some undocumented Matlab HTML features.
 
-I want to be able to show a useful summary of classes besides topsFoundation.  Maybe the gui can do special things for topsFoundation but also default to an agnostic mode.
+Thanks to Yair Altman for the [http://undocumentedmatlab.com/ Undocumented Matlab] tips.
 
-I like having char data colored in to create a visual pop-out.  I want a simpler and more striking color scheme.  I want to call it [http://upload.wikimedia.org/wikipedia/en/3/3d/CM_arrow_sun.jpg Pueblo].
+Instead of trying to summarize every conceivable variable with a custom "stringify" function, GUIs now capture the output of the built-in `disp()` function.  These summaries are pretty good.
 
-There's a tension between normalized positions units, which are easiest to deal with, and character position units, which are more correct for text.  Is it worth solving this?  Say all units are assumed to be normalized, but text components have a chance to resize privately?
+I made a new color scheme called `puebloColors()`, inspired by [http://upload.wikimedia.org/wikipedia/en/3/3d/CM_arrow_sun.jpg Arrow to the Sun], a great picture book by Gerlad McDermott.  In the GUIs, strings get colored in based on spelling, creating a visual pop-out effect.
 
-Some GUIs have a well-defined notion of the "current selection".  Should all GUIs have a selection?  If so, then they all could have a "to workspace" button for getting at stuff.
+I got rid of some custom widgets like `topsText` and `ScrollingControlGrid`.  Instead, I made better use of the built-in `uitable` and `uitree` (`uitree` is undocumented).
 
-===topsText===
-Text widgets have been tricky.  Many of the text widgets in use now don't end up showing useful information.  For example, the first element of an fevalable cell array, or the class and size of an object are not very useful (unless the user can drill down...).
+GUIs are based on a `topsFigure` object and one or more `topsPanel` objects each of which presents a different kind of content.  The `topsFigure` and `topsPanel`s can talk to each other by updating a _current item_ which they all share.
 
-It would be nice if text widgets could dynamically re-summarize their contents.  It would also be nice if they could in-truncate their summaries to fit in available space.  So should resize callbacks descend all the way down to text widgets?
+===`topsFigure`===
+`topsFigure` is the top-level container for the new GUIs.  One GUI has exactly one `topsFigure`.  The `topsFigure` is in charge of a Matlab figure window, one or more `topsPanel` objects, and four buttons:
+  * The *refresh* button tells the `topsFigure` and `topsPanel`s to update their appearance in case anything has changed.
+  * The *open as file* button attempts to open the _current item_ as though it were a file name.  If it's not a file name, nothing happens.
+  * The *open in gui* button opens a new GUI for the _current item_, to show it in more detail.
+  * The *to workspace* button assigns the _current item_ to a variable in the base workspace.  It displays the new variable name and its contents in the Command Window.
 
-It's useful to have editable text with callbacks.  Is there a way to make the text behave better, like by repositioning and resizing when its time to edit, and escaping the edit more by responding to ESC? 
+Custom buttons can be added to a `topsFigure` once its created.  All the buttons appear in a row at the bottom of the figure.
 
-===topsGUI===
-I like having a few full-on custom GUIs for certain classes, like topsDataLog.
+`topsFigure` also defines the look and feel of most GUI components.  It provides wrapper methods for making things like tables and buttons with consistent property settings, like font and colors.
 
-But it would be brittle and irritating to require every class to have its own custom GUI class.  So some GUIs should be constructed dynamically out of suitable parts.  Those parts would be based on topsPanel.
+===`topsPanel`===
+`topsPanel` objects deal with specific kinds of content.  Their job is to represent an item visually.  The item might be a _base item_ that never changes, or a _current item_ which changes as the user clicks around the GUI.  `topsPanel` objects can also set the _current item_ by providing user controls.
 
-topsGUI should be in charge of the Matlab figure.
-  * aggregates panels and auto-arranges
-  * aggregates buttons and auto-arranges
-  * has a "refresh" button
-  * deals out mouse scroll events to registered components
-  * deals out key press events to registered components?
-  
+There are several flavors of `topsPanel`.  It's easy to drop any combination of these into a `topsFigure` to make a custom GUI.  Since they all know about the _current item_, they all play nicely together.
+  * `topsDrillDownPanel` can represent any value.  It shows a tree view for browsing an item and any of its elements, fields, or properties, to arbitrary depth.
+  * `topsTablePanel` represents cell array and struct/object array data as a 2D table.  It folds cell arrays to fit into the 2D view.  It shows struct/object field names as column headings
+  * `topsGroupedListPanel` lets the user browse a `topsGroupedList` by selecting a group and a mnemonic.  It also lets the user type in a statement to edit the value stored under the selected group and mnemonic.
+  * `topsRunnablesPanel` shows a tree view of `topsRunnable` objects.  This gives an overview of an experiment's structure.
+  * `topsDataLogPanel` summarizes the data in `topsDataLog`.  It shows a "raster" of data groups vs. data timestamps.  The user can choose which groups and the range of timestamps to view.
+  * `topsInfoPanel` shows a description of the _current item_.
 
-===topsPanel===
-What parts would be needed to support useful, dynamically created GUIs?
-  * object property list
-  * property drill-down that the user can click through
-    * can the panel real estate be dynamic, like a menu
-    * should the drill down use a "back" button like a browser
-  * property focus
-    * static real estate to emphasize a key property
-  * tree view of connected objects, like topsRunnable
-  * is there a role for figure menus to play?
-    * menus require a lot of clicking and mousing
-    * menus disappear
-    * menus are visually dull
-    * menus are bound to the figure, not each panel
-    * menus provide a tree structure
+===`topsFoundation`===
+As before, all `topsFoundation` objects have a `gui()` method which opens up a GUI for showing object details.
 
-===topsFoundation===
-Foundation objects should not have to know much about the GUI classes.  Foundation objects can have a gui() method which creates a topsGUI.  They can have a property like guiHints which specifies what kind of topGUI to make.  But they shouldn't have to manage any details of the GUI.
+Each `gui()` method creates `topsPanel` object appropriate for summarizing key object properties, and adds them to a new `topsFigure`.  Aside from choosing correct panel types, `gui()` methods don't know about GUI details.
 
-Previously, topsFoundation objects have posted notifications about certain events, like "new item" or "started running".  As far as I know, only GUI classes are using these events.  For the GUI classes, it will be easier and more powerful to just have a "refresh" button that the user can invoke.  So maybe the topsFoundation objects should not post events.  It would be nice to eliminate the event code.
+Previously, `topsFoundation` objects posted notifications about certain events, like "new item" or "started running".  These allowed GUIs to update some of their content automatically.  This is a nice idea, but using notifications was the wrong approach.
+
+Notifications required foundation classes and GUI classes to "know" a lot about each other, so they weren't accommodating to foundation class revisions and extensions.  They sometimes took a long time to execute, which is problematic in Matlab's single-threaded environment.  They were frustrating to debug, because Matlab didn't report a full stack trace for event handler code.  They led to lots of extra lines of code, for writing handlers for this and that event.
+
+So instead, users can just hit the GUI *refresh* button when they need to.
