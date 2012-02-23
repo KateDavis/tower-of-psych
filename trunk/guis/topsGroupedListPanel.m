@@ -34,7 +34,7 @@ classdef topsGroupedListPanel < topsPanel
         % @details
         function self = topsGroupedListPanel(varargin)
             self = self@topsPanel(varargin{:});
-            self.isLocked = true;
+            self.isLocked = false;
         end
         
         % Set the current list group from a selected table cell.
@@ -170,6 +170,9 @@ classdef topsGroupedListPanel < topsPanel
             if isempty(groups)
                 self.currentGroup = [];
                 
+            elseif isempty(self.currentGroup)
+                self.currentGroup = groups{1};
+                
             elseif ~self.baseItem.containsGroup(self.currentGroup);
                 self.currentGroup = groups{1};
             end
@@ -200,7 +203,6 @@ classdef topsGroupedListPanel < topsPanel
             % default or preserve the mnemonic selection
             if isempty(mnemonics)
                 self.currentMnemonic = [];
-                
             elseif ~self.baseItem.containsMnemonicInGroup( ...
                     self.currentMnemonic, self.currentGroup);
                 self.currentMnemonic = mnemonics{1};
@@ -220,15 +222,10 @@ classdef topsGroupedListPanel < topsPanel
         % Refresh the panel's contents.
         function updateContents(self)
             if isobject(self.baseItem)
-                % default to select the first group
-                groups = self.baseItem.groups;
-                if ~isempty(groups)
-                    self.currentGroup = groups{1};
-                end
-                
-                % repopulate tables with groups and mnemonics
+                % update tables with groups and mnemonics
                 self.populateGroupTable();
                 self.populateMnemonicTable();
+                self.currentItemForGroupAndMnemonic();
             end
         end
         
@@ -260,7 +257,10 @@ classdef topsGroupedListPanel < topsPanel
                     self.baseItem.name, groupName, mnemonicName);
                 
                 % report the current item to the parent figure
+                %   lock to prevent infinite update loop
+                self.isLocked = true;
                 self.parentFigure.setCurrentItem(item, name);
+                self.isLocked = false;
             end
         end
     end
