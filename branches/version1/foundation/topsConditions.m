@@ -137,7 +137,7 @@ classdef topsConditions < topsRunnable
             currentValuesPan = topsTablePanel(fig);
             infoPan = topsInfoPanel(fig);
             selfInfoPan = topsInfoPanel(fig);
-            fig.setPanels( ...
+            fig.usePanels( ...
                 {currentValuesPan selfInfoPan; allParametersPan infoPan});
             
             allParametersPan.isBaseItemTitle = true;

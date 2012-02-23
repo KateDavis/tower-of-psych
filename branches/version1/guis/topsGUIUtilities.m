@@ -27,7 +27,7 @@ classdef topsGUIUtilities
             fig = topsFigure(sprintf('explore %s', itemName));            
             drillDownPan = topsDrillDownPanel(fig);
             infoPan = topsInfoPanel(fig);
-            fig.setPanels({drillDownPan, infoPan});
+            fig.usePanels({drillDownPan, infoPan});
             drillDownPan.setBaseItem(item, itemName);
         end
         

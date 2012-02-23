@@ -31,7 +31,7 @@ classdef topsRunnableComposite < topsRunnable
             fig = topsFigure(self.name);
             treePan = topsRunnablesPanel(fig);
             infoPan = topsInfoPanel(fig);
-            fig.setPanels({treePan, infoPan});
+            fig.usePanels({treePan, infoPan});
             treePan.setBaseItem(self, self.name);
         end
 

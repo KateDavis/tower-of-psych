@@ -68,7 +68,7 @@ classdef topsGroupedList < topsFoundation
             fig = topsFigure(self.name);
             listPan = topsGroupedListPanel(fig);
             infoPan = topsInfoPanel(fig);
-            fig.setPanels({listPan; infoPan}, [7 3]);
+            fig.usePanels({listPan; infoPan}, [7 3]);
             listPan.setBaseItem(self, self.name);
         end
 

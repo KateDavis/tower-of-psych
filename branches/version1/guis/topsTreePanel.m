@@ -87,7 +87,7 @@ classdef topsTreePanel < topsPanel
                 self.baseItemName, '');
             self.tree.setRoot(rootNode);
             
-            % expand some nodes right away
+            %expand some nodes right away
             self.expandToDepth(rootNode, self.autoExpandDepth);
         end
         

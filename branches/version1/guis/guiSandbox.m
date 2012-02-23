@@ -1,3 +1,15 @@
+%% test for circular references
+close all
+clear
+clc
+
+fig = topsFigure('circus');
+pan = topsTreePanel(fig);
+drawnow();
+
+close all
+clear classes
+
 %% Put the drill-down GUI through its paces
 close all
 clear
@@ -35,7 +47,7 @@ set(br.pan, 'BackgroundColor', fig.colors(2,:));
 t = topsPanel(fig);
 set(t.pan, 'BackgroundColor', fig.colors(3,:));
 
-fig.setPanels({bl br; t t}, [3 7], [4 6])
+fig.usePanels({bl br; t t}, [3 7], [4 6])
 
 %% Look at some 2D tables for struct and cell array data
 close all
@@ -45,7 +57,7 @@ fig = topsFigure('hoo');
 structPan = topsTablePanel(fig);
 cellPan = topsTablePanel(fig);
 infoPan = topsInfoPanel(fig);
-fig.setPanels({structPan cellPan; infoPan infoPan}, [1 1]);
+fig.usePanels({structPan cellPan; infoPan infoPan}, [1 1]);
 
 s = struct('Firstly', {'McFirst', 'Firstington'}, 'Secondly', {2, [2 2]});
 structPan.isBaseItemTitle = true;
@@ -79,7 +91,7 @@ gl.addItemToGroupWithMnemonic('ghjg', 'group 2', 'cheese');
 gl.addItemToGroupWithMnemonic('rfior', 'group 2', 'my jesus cheese');
 gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 'group 2', 'bert');
 gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 'group 2', 'mahp');
-fig = topsMakeGroupedListGUI(gl);
+fig = gl.gui();
 
 %% try out a runnables panel
 close all
@@ -88,7 +100,7 @@ clc
 
 fig = topsFigure('runnablalia');
 runPan = topsRunnablesPanel(fig);
-fig.setPanels({runPan});
+fig.usePanels({runPan});
 
 r = topsRunnableComposite();
 r.name = 'cheese';
@@ -120,7 +132,7 @@ c.addChild(e);
 
 t.addChild(st);
 
-runPan.setBaseItem(r, r.name);
+%runPan.setBaseItem(r, r.name);
 
 %% try out a data log panel
 close all
@@ -135,4 +147,4 @@ topsDataLog.logDataInGroup('theirnData', 'plurals');
 fig = topsFigure('loggins');
 logPan = topsDataLogPanel(fig);
 infoPan = topsInfoPanel(fig);
-fig.setPanels({infoPan; logPan}, [2 8]);
+fig.usePanels({infoPan; logPan}, [2 8]);

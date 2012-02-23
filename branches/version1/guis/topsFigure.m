@@ -51,9 +51,6 @@ classdef topsFigure < handle
         % the figure area reserved for content panels
         mainPanel;
         
-        % 2D cell array of topsPanel objects
-        contentPanels = {};
-        
         % the figure area reserved for buttons
         buttonPanel;
         
@@ -477,8 +474,9 @@ classdef topsFigure < handle
                 self.currentItemName = currentItemName;
             end
             
-            for ii = 1:numel(self.contentPanels)
-                self.contentPanels{ii}.setCurrentItem( ...
+            panels = self.getPanels();
+            for ii = 1:numel(panels)
+                panels{ii}.setCurrentItem( ...
                     self.currentItem, self.currentItemName);
             end
             
@@ -508,9 +506,9 @@ classdef topsFigure < handle
         % @details
         % Sets the Position of each panel's uipanel for the given layout,
         % and makes each panel Visible.
-        function setPanels(self, panels, yDiv, xDiv)
+        function usePanels(self, panels, yDiv, xDiv)
             % use the given panels
-            self.contentPanels = panels;
+            self.setPanels(panels);
             
             % choose the row divisions
             nRows = size(panels, 1);
@@ -569,13 +567,12 @@ classdef topsFigure < handle
         % Tell each content panel to refresh its contents.
         % @details
         % Refreshes the appearance of this figure.  By default, also
-        % invokes refresh() on each panel in contentPanels.  If @a
-        % isRefreshPanels is provided and false, only refreshes the figure
-        % itself.
+        % invokes refresh() on child topsPanels.
         function refresh(self)
             % refresh each panel
-            for ii = 1:numel(self.contentPanels)
-                self.contentPanels{ii}.refresh();
+            panels = self.getPanels();
+            for ii = 1:numel(panels)
+                panels{ii}.refresh();
             end
             
             % any self behaviors?
@@ -641,6 +638,31 @@ classdef topsFigure < handle
                 evalin('base', sprintf('disp(%s)', workspaceName));
             end
         end
+        
+        % Store references to content panels in the Matlab figure.
+        % @param panels cell array of topsPanel objects
+        % @details
+        % Sets the given @a panels to the UserData property of this
+        % topsFigures's fig.  @a panels can be retrieved with getPanels();
+        function setPanels(self, panels)
+            if ishandle(self.fig)
+                set(self.fig, 'UserData', panels);
+            end
+        end
+        
+        % Retrieve references to content panels from the Matlab figure.
+        % @details
+        % Returns a cell array of topsPanel objects that was stored in
+        % UserData property of this topsFigures's fig, via setPanels().
+        function panels = getPanels(self)
+            panels = {};
+            if ishandle(self.fig)
+                panels = get(self.fig, 'UserData');
+                if isempty(panels)
+                    panels = {};
+                end
+            end
+        end
     end
     
     methods (Access = protected)
@@ -648,12 +670,12 @@ classdef topsFigure < handle
         function initialize(self)
             % clear old components
             if ishandle(self.fig)
+                self.setPanels({});
                 delete(self.fig);
             end
             self.fig = [];
             self.mainPanel = [];
             self.buttonPanel = [];
-            self.contentPanels = {};
             self.buttons = [];
             
             % make a new figure with two panels

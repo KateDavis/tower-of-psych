@@ -49,7 +49,7 @@ classdef topsEnsemble < topsCallList
             callsPan = topsTablePanel(fig);
             infoPan = topsInfoPanel(fig);
             selfInfoPan = topsInfoPanel(fig);
-            fig.setPanels( ...
+            fig.usePanels( ...
                 {callsPan selfInfoPan; objectsPan infoPan});
             
             objectsPan.isBaseItemTitle = true;

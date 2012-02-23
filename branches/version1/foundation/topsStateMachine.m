@@ -112,7 +112,7 @@ classdef topsStateMachine < topsConcurrent
             allStatesPan = topsTablePanel(fig);
             infoPan = topsInfoPanel(fig);
             selfInfoPan = topsInfoPanel(fig);
-            fig.setPanels( ...
+            fig.usePanels( ...
                 {allStatesPan allStatesPan; selfInfoPan infoPan});
             
             allStatesPan.isBaseItemTitle = true;

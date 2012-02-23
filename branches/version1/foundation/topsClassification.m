@@ -64,7 +64,7 @@ classdef topsClassification < topsFoundation
             outputsPan = topsTablePanel(fig);
             infoPan = topsInfoPanel(fig);
             selfInfoPan = topsInfoPanel(fig);
-            fig.setPanels({outputsPan selfInfoPan; sourcesPan infoPan});
+            fig.usePanels({outputsPan selfInfoPan; sourcesPan infoPan});
             
             fig.setCurrentItem(self.sources, 'sources');
             sourcesPan.isBaseItemTitle = true;

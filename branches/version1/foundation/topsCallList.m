@@ -59,7 +59,7 @@ classdef topsCallList < topsConcurrent
             callsPan = topsTablePanel(fig);
             infoPan = topsInfoPanel(fig);
             selfInfoPan = topsInfoPanel(fig);
-            fig.setPanels({callsPan selfInfoPan; callsPan infoPan});
+            fig.usePanels({callsPan selfInfoPan; callsPan infoPan});
             
             fig.setCurrentItem(self.calls, 'calls');
             callsPan.isBaseItemTitle = true;

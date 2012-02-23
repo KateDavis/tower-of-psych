@@ -202,7 +202,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             fig = topsFigure(self.name);
             logPan = topsDataLogPanel(fig);
             infoPan = topsInfoPanel(fig);
-            fig.setPanels({infoPan; logPan}, [2 8]);
+            fig.usePanels({infoPan; logPan}, [2 8]);
         end
         
         % Clear out all data from the log
