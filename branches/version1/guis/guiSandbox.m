@@ -1,18 +1,16 @@
 %% test for circular references
 close all
 clear
-clc
+clear classes
 
 fig = topsFigure('circus');
 pan = topsTreePanel(fig);
 drawnow();
 
-close all
-clear classes
-
 %% Put the drill-down GUI through its paces
 close all
 clear
+clear classes
 
 items = { ...
     sprintf('Cheese this man...\n...and quickly!'), ...
@@ -35,6 +33,7 @@ end
 %% Make sure the figure can do panel layout
 close all
 clear
+clear classes
 
 fig = topsFigure('george');
 
@@ -52,6 +51,7 @@ fig.usePanels({bl br; t t}, [3 7], [4 6])
 %% Look at some 2D tables for struct and cell array data
 close all
 clear
+clear classes
 
 fig = topsFigure('hoo');
 structPan = topsTablePanel(fig);
@@ -81,6 +81,7 @@ cellPan.setBaseItem(c, 'myCell');
 %% Try out a grouped list panel
 close all
 clear
+clear classes
 
 gl = topsGroupedList();
 gl.name = 'myList';
@@ -96,7 +97,7 @@ fig = gl.gui();
 %% try out a runnables panel
 close all
 clear
-clc
+clear classes
 
 fig = topsFigure('runnablalia');
 runPan = topsRunnablesPanel(fig);
@@ -137,7 +138,7 @@ t.addChild(st);
 %% try out a data log panel
 close all
 clear
-clc
+clear classes
 
 topsDataLog.logDataInGroup('myData', 'singulars');
 topsDataLog.logDataInGroup('yournData', 'singulars');

@@ -65,6 +65,10 @@ classdef topsTreePanel < topsPanel
         function initialize(self)
             self.initialize@topsPanel();
             
+            % put a self reference in the uipanel UserData
+            %   this avoids handle references in uitree callbacks
+            set(self.pan, 'UserData', self);
+            
             % a placeholder root node for uitree creation to succeed
             rootNode = uitreenode('v0', '', 'root', [], true);
             
@@ -73,8 +77,8 @@ classdef topsTreePanel < topsPanel
                 self.parentFigure.makeUITree( ...
                 self.pan, ...
                 rootNode, ...
-                @(tree, event)self.childNodesForExpand(tree, event), ...
-                @(tree, event)self.selectItem(tree, event));
+                {@topsTreePanel.treeExpandCallback, self.pan}, ...
+                {@topsTreePanel.treeSelectCallback, self.pan});
             
             % update the tree to use baseItem
             self.updateContents();
@@ -132,6 +136,26 @@ classdef topsTreePanel < topsPanel
                 self.parentFigure.midgroundColor);
             name = sprintf('<HTML>%s</HTML>', name);
             node = uitreenode('v0', subPath, name, [], false);
+        end
+    end
+    
+    methods (Static)
+        function nodes = treeExpandCallback(tree, event, pan)
+            % get the self reference from the uipanel UserData
+            %   placed there during initialize()
+            self = get(pan, 'UserData');
+            
+            % go ahead and invoke the "real" expand callback
+            nodes = self.childNodesForExpand(tree, event);
+        end
+        
+        function treeSelectCallback(tree, event, pan)
+            % get the self reference from the uipanel UserData
+            %   placed there during initialize()
+            self = get(pan, 'UserData');
+            
+            % go ahead and invoke the "real" select callback
+            self.selectItem(tree, event);
         end
     end
 end
