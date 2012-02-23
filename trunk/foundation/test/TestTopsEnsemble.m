@@ -1,10 +1,15 @@
-classdef TestTopsEnsemble < dotsTestCase
-    % ensemble tests should access objects through ensemble methods
-    % whenever possible.  Otherwise it's unfair to expect consistency.
+classdef TestTopsEnsemble < TestTopsFoundation
+    % ensemble tests should always access objects through ensemble methods.
+    % Otherwise it's unfair to expect consistency.
     
     methods
         function self = TestTopsEnsemble(name)
-            self = self@dotsTestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Get a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = self.getEnsemble(varargin{:});
         end
         
         % test subclass may override to produce subclass
@@ -113,7 +118,8 @@ classdef TestTopsEnsemble < dotsTestCase
             ensemble.automateObjectMethod( ...
                 'autoName', @TestTopsEnsemble.setName, {'great name'});
             ensemble.callByName('autoName');
-            ensemble.run();
+            duration = 1;
+            ensemble.run(duration);
             names = ensemble.getObjectProperty('name');
             assertTrue(all(strcmp('great name', names)), ...
                 'should set all names via method call')

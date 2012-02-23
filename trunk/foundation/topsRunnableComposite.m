@@ -15,6 +15,26 @@ classdef topsRunnableComposite < topsRunnable
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsRunnableComposite(varargin)
+            self = self@topsRunnable(varargin{:});            
+        end
+
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            treePan = topsRunnablesPanel(fig);
+            infoPan = topsInfoPanel(fig);
+            fig.usePanels({treePan, infoPan});
+            treePan.setBaseItem(self, self.name);
+        end
+
         % Add a child beneath this object.
         % @param child a topsRunnable to add beneath this object.
         % @details

@@ -119,8 +119,38 @@ classdef topsConditions < topsRunnable
     end
     
     methods
-        % Constructor takes no arguments.
-        function self = topsConditions
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsConditions(varargin)
+            self = self@topsRunnable(varargin{:});
+        end
+                
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            allParametersPan = topsTablePanel(fig);
+            currentValuesPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.usePanels( ...
+                {currentValuesPan selfInfoPan; allParametersPan infoPan});
+            
+            allParametersPan.isBaseItemTitle = true;
+            allParametersPan.setBaseItem( ...
+                self.allParameters, 'allParameters');
+            currentValuesPan.isBaseItemTitle = true;
+            currentValuesPan.setBaseItem( ...
+                self.currentValues, 'currentValues');
+            fig.setCurrentItem(self.currentCondition, 'currentCondition');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
         end
         
         % Add a parameter and set of values for condition formation.
@@ -311,7 +341,7 @@ classdef topsConditions < topsRunnable
             self.pickingMethod = pickingMethod;
         end
         
-        % Log, notify, and reset() as needed.
+        % Log action and reset() as needed.
         % @details
         % Extends the start() method of topsRunnable to also reset()
         % condition picking as needed.
@@ -349,7 +379,7 @@ classdef topsConditions < topsRunnable
             self.finish;
         end
         
-        % Log, notify, and call out as needed.
+        % Log action and call out as needed.
         % @details
         % Extends the finish() method of topsRunnable to also invoke
         % donePickingFevalable and tell caller to stop running, when

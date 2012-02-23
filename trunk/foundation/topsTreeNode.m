@@ -57,11 +57,20 @@ classdef topsTreeNode < topsRunnableComposite
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsTreeNode(varargin)
+            self = self@topsRunnableComposite(varargin{:});
+        end
+
         % Create a new topsTreeNode child and add it beneath this node.
+        % @param name optional name for the new child node
         % @details
         % Returns a new topsTreeNode which is a child of this node.
-        function child = newChildNode(self)
-            child = topsTreeNode;
+        function child = newChildNode(self, varargin)
+            child = topsTreeNode(varargin{:});
             self.addChild(child);
         end
         
@@ -69,8 +78,6 @@ classdef topsTreeNode < topsRunnableComposite
         % @details
         % Begin traversing the tree with this node as the topmost node.
         % The sequence of events should go like this:
-        %   - This node sends a 'RunStart' notification to any
-        %   listeners.
         %   - This node executes its startFevalable
         %   - This node does zero or more "iterations":
         %       - This node calls run() on each of its children,

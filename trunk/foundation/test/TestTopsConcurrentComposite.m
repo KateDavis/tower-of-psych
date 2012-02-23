@@ -1,20 +1,24 @@
-classdef TestTopsConcurrentComposite < TestCase
+classdef TestTopsConcurrentComposite < TestTopsFoundation
     
     properties
         concurrents;
         nComponents;
         components;
         order;
-        eventCount;
     end
     
     methods
         function self = TestTopsConcurrentComposite(name)
-            self = self@TestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Make a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = topsConcurrentComposite(varargin{:});
         end
         
         function setUp(self)
-            self.concurrents = topsConcurrentComposite;
+            self.concurrents = self.newObject();
             
             self.nComponents = 10;
             self.components = cell(1, self.nComponents);
@@ -41,7 +45,7 @@ classdef TestTopsConcurrentComposite < TestCase
         end
         
         function testSingleton(self)
-            newList = topsConcurrentComposite;
+            newList = self.newObject();
             assertFalse(self.concurrents==newList, ...
                 'topsConcurrentComposite should not be a singleton');
         end
@@ -59,28 +63,6 @@ classdef TestTopsConcurrentComposite < TestCase
                 assertEqual(self.order(ii), value, ...
                     'should have called components in the order added')
             end
-        end
-        
-        function testPropertyChangeEventPosting(self)
-            % listen for event postings
-            props = properties(self.concurrents);
-            n = length(props);
-            for ii = 1:n
-                self.concurrents.addlistener(props{ii}, 'PostSet', ...
-                    @self.hearEvent);
-            end
-            
-            % trigger a posting for each property
-            self.eventCount = 0;
-            for ii = 1:n
-                self.concurrents.(props{ii}) = self.concurrents.(props{ii});
-            end
-            assertEqual(self.eventCount, n, ...
-                'heard wrong number of property set events');
-        end
-        
-        function hearEvent(self, metaProp, event)
-            self.eventCount = self.eventCount + 1;
         end
     end
 end

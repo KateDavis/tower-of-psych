@@ -38,10 +38,38 @@ classdef topsCallList < topsConcurrent
             'isActive', {});
         
         % true or false, whether to run indefinitely
-        alwaysRunning = false;
+        alwaysRunning = true;
     end
     
     methods
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsCallList(varargin)
+            self = self@topsConcurrent(varargin{:});
+        end
+
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            callsPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.usePanels({callsPan selfInfoPan; callsPan infoPan});
+            
+            fig.setCurrentItem(self.calls, 'calls');
+            callsPan.isBaseItemTitle = true;
+            callsPan.setBaseItem(self.calls, 'calls');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
+        end
+        
         % Add an "fevalable" to the call list.
         % @param fevalable a cell array with contents to pass to feval()
         % @param name unique name to assign to @a fevalable
@@ -90,11 +118,12 @@ classdef topsCallList < topsConcurrent
         % @details
         % Returns the first output from the named call, if any.
         function result = callByName(self, name, isActive)
+            
             % need to return a result?
             isResult = nargout > 0;
             
             % toggle the call's runBriefly() activity?
-            if nargin >=3
+            if nargin >= 3
                 self.setActiveByName(isActive, name);
             end
             

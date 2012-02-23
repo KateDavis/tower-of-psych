@@ -27,14 +27,6 @@ classdef topsRunnable < topsFoundation
         caller;
     end
     
-    events
-        % notification just before run()
-        RunStart;
-        
-        % notification just after run()
-        RunFinish;
-    end
-    
     properties (Hidden)
         % string used for topsDataLog entry just before run()
         startString = 'start';
@@ -44,11 +36,12 @@ classdef topsRunnable < topsFoundation
     end
     
     methods
-        % Constructor takes no arguments.
+        % Constuct with name optional.
+        % @param name optional name for this object
         % @details
-        % Uses the class of this topsRunnable as the default name.
-        function self = topsRunnable()
-            self.name = class(self);
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsRunnable(varargin)
+            self = self@topsFoundation(varargin{:});
         end
         
         % Do flow control.
@@ -66,24 +59,22 @@ classdef topsRunnable < topsFoundation
             g = topsRunnableGUI(self);
         end
 
-        % Log, notify, and prepare to do flow control.
+        % Log action and prepare to do flow control.
         % @details
         % Subclasses should extend start() to do initialization before
         % running.
         function start(self)
             self.logAction(self.startString);
             self.logFeval(self.startString, self.startFevalable);
-            self.notify('RunStart');
             self.isRunning = true;
         end
         
-        % Log, notify, and finish doing flow control.
+        % Log, action and finish doing flow control.
         % @details
         % Subclasses should extend finish() to do clean up after running.
         function finish(self)
             self.logAction(self.finishString);
             self.logFeval(self.finishString, self.finishFevalable);
-            self.notify('RunFinish');
             self.isRunning = false;
         end
         

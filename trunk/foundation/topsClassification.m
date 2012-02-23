@@ -50,10 +50,31 @@ classdef topsClassification < topsFoundation
         % @param name optional name for this object
         % @details
         % If @a name is provided, assigns @a name to this object.
-        function self = topsClassification(name)
-            if nargin >= 1
-                self.name = name;
-            end
+        function self = topsClassification(varargin)
+            self = self@topsFoundation(varargin{:});
+        end
+        
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            sourcesPan = topsTablePanel(fig);
+            outputsPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.usePanels({outputsPan selfInfoPan; sourcesPan infoPan});
+            
+            fig.setCurrentItem(self.sources, 'sources');
+            sourcesPan.isBaseItemTitle = true;
+            sourcesPan.setBaseItem(self.sources, 'sources');
+            outputsPan.isBaseItemTitle = true;
+            outputsPan.setBaseItem(self.outputs, 'outputs');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
         end
         
         % Add a data source.
