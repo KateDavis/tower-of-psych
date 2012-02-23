@@ -10,7 +10,7 @@ Thanks to Yair Altman for the [http://undocumentedmatlab.com/ Undocumented Matla
 
 Instead of trying to summarize every conceivable variable with a custom "stringify" function, GUIs now capture the output of the built-in `disp()` function.  These summaries are pretty good.
 
-I made a new color scheme called `puebloColors()`, inspired by [http://upload.wikimedia.org/wikipedia/en/3/3d/CM_arrow_sun.jpg Arrow to the Sun], a great picture book by Gerlad McDermott.  In the GUIs, strings get colored in based on spelling, creating a visual pop-out effect.
+I made a new color scheme called `puebloColors()`, inspired by [http://en.wikipedia.org/wiki/Arrow_to_the_Sun Arrow to the Sun], a great picture book by Gerlad McDermott.  In the GUIs, strings get colored in based on spelling, creating a visual pop-out effect.
 
 I got rid of some custom widgets like `topsText` and `ScrollingControlGrid`.  Instead, I made better use of the built-in `uitable` and `uitree` (`uitree` is undocumented).
 
