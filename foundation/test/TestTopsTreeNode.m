@@ -1,19 +1,23 @@
-classdef TestTopsTreeNode < TestCase
+classdef TestTopsTreeNode < TestTopsFoundation
     
     properties
         treeNode;
-        eventCount;
     end
     
     methods
         function self = TestTopsTreeNode(name)
-            self = self@TestCase(name);
+            self = self@TestTopsFoundation(name);
+        end
+        
+        % Get a suitable topsFoundation object
+        function object = newObject(self, varargin)
+            object = topsTreeNode(varargin{:});
         end
         
         function setUp(self)
-            self.treeNode = topsTreeNode;
+            self.treeNode = self.newObject();
             self.treeNode.name = 'parent';
-            topsDataLog.flushAllData;
+            topsDataLog.flushAllData();
         end
         
         function tearDown(self)
@@ -22,16 +26,16 @@ classdef TestTopsTreeNode < TestCase
         end
         
         function testSingleton(self)
-            newTreeNode = topsTreeNode;
+            newTreeNode = self.newObject();
             assertFalse(self.treeNode==newTreeNode, ...
                 'topsTreeNode should not be a singleton');
         end
         
         function testDepthFirstActionLogging(self)
-            child = topsTreeNode;
+            child = self.newObject();
             child.name = 'child';
             
-            grandchild = topsTreeNode;
+            grandchild = self.newObject();
             grandchild.name = 'grandchild';
             
             self.treeNode.addChild(child);
@@ -62,7 +66,7 @@ classdef TestTopsTreeNode < TestCase
         end
         
         function testCatchRecursionException(self)
-            errorCauser = {@stupidDoesNotExist};
+            errorCauser = {@stupidDoesNotExistasfewqv3fas};
             try
                 feval(errorCauser{:})
             catch expectedException
@@ -75,28 +79,6 @@ classdef TestTopsTreeNode < TestCase
             assertExceptionThrown(runner, expectedException.identifier, ...
                 'treeNode should catch errors during runnung and rethrow')
             
-        end
-        
-        function testPropertyChangeEventPosting(self)
-            % listen for event postings
-            props = properties(self.treeNode);
-            n = length(props);
-            for ii = 1:n
-                self.treeNode.addlistener(props{ii}, ...
-                    'PostSet', @self.hearEvent);
-            end
-            
-            % trigger a posting for each property
-            self.eventCount = 0;
-            for ii = 1:n
-                self.treeNode.(props{ii}) = self.treeNode.(props{ii});
-            end
-            assertEqual(self.eventCount, n, ...
-                'heard wrong number of property set events');
-        end
-        
-        function hearEvent(self, metaProp, event)
-            self.eventCount = self.eventCount + 1;
-        end
+        end        
     end
 end

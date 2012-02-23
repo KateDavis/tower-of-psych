@@ -40,34 +40,36 @@ classdef topsGroupedList < topsFoundation
     properties (SetObservable)
         % Cell array of strings or numbers identifying all the groups in
         % the list.
-        groups;
+        groups = {};
         
         % The number of items contained among all groups.
-        length;
+        length = 0;
     end
     
     properties(Hidden)
         allGroupsMap;
-        sendNotifications;
         ideasGroup = 'ideas';
     end
     
-    events
-        % Notifies any listeners when items added to the list, including
-        % group and mnemonic
-        NewAddition;
-    end
-    
     methods
-        % Constructor takes no arguments.
-        function self = topsGroupedList
-            self.groups = {};
-            self.sendNotifications = false;
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsGroupedList(varargin)
+            self = self@topsFoundation(varargin{:});
         end
-        
-        % Launch a graphical interface for this topsGroupedList.
-        function g = gui(self)
-            g = topsGroupedListGUI(self);
+                
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            listPan = topsGroupedListPanel(fig);
+            infoPan = topsInfoPanel(fig);
+            fig.usePanels({listPan; infoPan}, [7 3]);
+            listPan.setBaseItem(self, self.name);
         end
 
         % Make a topsGroupedListPanel with details about this object.
@@ -80,12 +82,9 @@ classdef topsGroupedList < topsFoundation
         % @param item any Matlab value or object
         % @param group a string or number that identifies a group of
         % related items
-        % @param mnemonic a string or number to identify this new item
-        % @details
-        % If @a group and @a mnemonic are already in the list, then @a item
-        % will replace an older item.  If @a group is not already in the
-        % list, it may send a NewAddition notification to any listeners
-        % after adding @a item.
+        % @param mnemonic a string or number to identify this new item.  If
+        % @a group and @a mnemonic are already in the list, then @a item
+        % will replace an older item.
         % @details
         % Note: for each topsGroupedList, group values must be all strings or
         % all numbers.  Likewise, for each group, mnemonics must be all
@@ -114,14 +113,6 @@ classdef topsGroupedList < topsFoundation
                 
                 groupIsNew = true;
             end
-            
-            if self.sendNotifications
-                ed.item = item;
-                ed.group = group;
-                ed.groupIsNew = groupIsNew;
-                ed.mnemonic = mnemonic;
-                self.notify('NewAddition', EventWithData(ed));
-            end
         end
         
         % Jot down a value in the "ideas" group.
@@ -139,11 +130,6 @@ classdef topsGroupedList < topsFoundation
             if isempty(gm) || strcmp(gm.KeyType, 'char')
                 self.addItemToGroupWithMnemonic(idea, self.ideasGroup, idea);
             end
-        end
-        
-        function el = addlistener(self, varargin)
-            el = self.addlistener@handle(varargin{:});
-            self.sendNotifications = true;
         end
         
         % Remove all instances of an item from a group.
@@ -385,21 +371,27 @@ classdef topsGroupedList < topsFoundation
             end
         end
         
-        % Get string group names that match the given regular expression.        % @param expression a regular expression to match agains group names in
-        % the list
+        % Get string group names that match the given regular expression.
+        % @param expression a regular expression to match agains group
+        % names in the list
         % @details
         % Compares @a expression to the names of groups in the list.
         % Returns a cell array of strings of group names that match @a
         % expression.  If the list uses numeric group names, returns an
         % empty cell array.
         % @details
+        % Also returns as a second ouput a logical selector with one
+        % element per list group, set to true where a group matches @a
+        % expression.
+        % @details
         % Regular expressions are specially formatted strings used for
         % matching patterns in other strings.  See Matlab's builtin
         % regexp() and "Regular Expressions" documentation.
-        function matches = getGroupNamesMatchingExpression(self, expression)
+        function [matches, isMatch] = ...
+                getGroupNamesMatchingExpression(self, expression)
             matches = {};
+            isMatch = logical(size(self.groups));
             if iscellstr(self.groups)
-                isMatch = logical(size(self.groups));
                 locations = regexp(self.groups, expression);
                 for ii = 1:numel(self.groups)
                     isMatch(ii) = ~isempty(locations{ii});

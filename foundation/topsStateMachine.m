@@ -91,16 +91,38 @@ classdef topsStateMachine < topsConcurrent
     end
     
     methods
-        % Constructor takes no arguments.
-        function self = topsStateMachine
+        % Constuct with name optional.
+        % @param name optional name for this object
+        % @details
+        % If @a name is provided, assigns @a name to this object.
+        function self = topsStateMachine(varargin)
+            self = self@topsConcurrent(varargin{:});
+            
             self.stateNameToIndex = containers.Map( ...
                 'a', 1, 'uniformValues', false);
             self.stateNameToIndex.remove(self.stateNameToIndex.keys);
         end
-        
-        % Launch a graphical interface showing the states in the machine.
-        function g = gui(self)
-            g = topsStateMachineGUI(self);
+                
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            allStatesPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.usePanels( ...
+                {allStatesPan allStatesPan; selfInfoPan infoPan});
+            
+            allStatesPan.isBaseItemTitle = true;
+            allStatesPan.setBaseItem( ...
+                self.allStates, 'allStates');
+            fig.setCurrentItem(self.allStates, 'allStates');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
         end
         
         % Add multiple states to the state machine.

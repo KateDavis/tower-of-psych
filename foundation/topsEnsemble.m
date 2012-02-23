@@ -35,10 +35,32 @@ classdef topsEnsemble < topsCallList
         % @param name optional name for this object
         % @details
         % If @a name is provided, assigns @a name to this object.
-        function self = topsEnsemble(name)
-            if nargin >= 1
-                self.name = name;
-            end
+        function self = topsEnsemble(varargin)
+            self = self@topsCallList(varargin{:});
+        end
+
+        % Open a GUI to view object details.
+        % @details
+        % Opens a new GUI with components suitable for viewing objects of
+        % this class.  Returns a topsFigure object which contains the GUI.
+        function fig = gui(self)
+            fig = topsFigure(self.name);
+            objectsPan = topsTablePanel(fig);
+            callsPan = topsTablePanel(fig);
+            infoPan = topsInfoPanel(fig);
+            selfInfoPan = topsInfoPanel(fig);
+            fig.usePanels( ...
+                {callsPan selfInfoPan; objectsPan infoPan});
+            
+            objectsPan.isBaseItemTitle = true;
+            objectsPan.setBaseItem(self.objects(:), 'objects');
+            callsPan.isBaseItemTitle = true;
+            callsPan.setBaseItem(self.calls, 'calls');
+            fig.setCurrentItem(self.objects, 'objects');
+            
+            selfInfoPan.setCurrentItem(self, self.name);
+            selfInfoPan.refresh();
+            selfInfoPan.isLocked = true;
         end
         
         % Add one object to the ensemble.
@@ -259,23 +281,23 @@ classdef topsEnsemble < topsCallList
         end
         
         % Prepare to repeatedly call a method, for one or more objects.
-        % @name callName name given to this automated method call
+        % @name name string name given to this automated method call
         % @param method function_handle of an ensemble object method
         % @param args optional cell array of arguments to pass to @a method
         % @param index optional ensemble object index or indexes
-        % @param isActive whether the named method call shoul be active
+        % @param isActive whether the named method call should be active
         % @details
-        % Defines an automated method call, with the given @a callName.
-        % Any existing call with @a callName will be replaced. The
+        % Defines an automated method call, with the given @a name.
+        % Any existing call with @a name will be replaced. The
         % automated call can be treated like other topsCallList calls: it
         % may be invoked by the user with callByName(), or automatically
         % during runBriefly().
         % @details
-        % By default, automated method calls are not active, so
-        % runBriefly() will ignore them.  If @a isActive is provided and
-        % true, the named call will be activated.  Calls may be activated
-        % later with setActiveByName() or  callByName() with the isActive
-        % flag.
+        % By default, automated method calls will be invoked during
+        % runBriefly().  If @a isActive is provided and 
+        % false, runBriefly() will ignore the named call.  Calls may be
+        % activated or deactivated later with setActiveByName() or
+        % callByName() with the isActive flag.
         % @details
         % Prepares to call @a method, which ensemble objects have in
         % common.  If @a args is provided, the elements of @a args will be
@@ -287,10 +309,10 @@ classdef topsEnsemble < topsCallList
         % Returns the index into the calls struct array where the automated
         % method call was appended or inserted.
         function index = automateObjectMethod( ...
-                self, callName, method, args, index, isActive)
+                self, name, method, args, index, isActive)
             
             if nargin < 6
-                isActive = false;
+                isActive = true;
             end
             
             % call this method on self
@@ -307,8 +329,8 @@ classdef topsEnsemble < topsCallList
             end
             
             % append or insert in call list
-            index = self.addCall(fevalable, callName);
-            self.setActiveByName(isActive, callName);
+            index = self.addCall(fevalable, name);
+            self.setActiveByName(isActive, name);
         end
     end
 end
