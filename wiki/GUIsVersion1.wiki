@@ -18,7 +18,7 @@ GUIs are based on a `topsFigure` object and one or more `topsPanel` objects each
 
 ===`topsFigure`===
 `topsFigure` is the top-level container for the new GUIs.  One GUI has exactly one `topsFigure`.  The `topsFigure` is in charge of a Matlab figure window, one or more `topsPanel` objects, and four buttons:
-  * The *refresh* button tells the `topsFigure` and `topsPanel`s to update their appearance in case anything has changed.
+  * The *refresh* button tells the `topsFigure` and `topsPanel`s to update their appearances in case anything has changed.
   * The *open as file* button attempts to open the _current item_ as though it were a file name.  If it's not a file name, nothing happens.
   * The *open in gui* button opens a new GUI for the _current item_, to show it in more detail.
   * The *to workspace* button assigns the _current item_ to a variable in the base workspace.  It displays the new variable name and its contents in the Command Window.
@@ -39,12 +39,12 @@ There are several flavors of `topsPanel`.  It's easy to drop any combination of 
   * `topsInfoPanel` shows a description of the _current item_.
 
 ===`topsFoundation`===
-As before, all `topsFoundation` objects have a `gui()` method which opens up a GUI for showing object details.
+As before, all `topsFoundation` classes have a `gui()` method which opens up a GUI for showing object details.
 
-Each `gui()` method creates `topsPanel` object appropriate for summarizing key object properties, and adds them to a new `topsFigure`.  Aside from choosing correct panel types, `gui()` methods don't know about GUI details.
+Each `gui()` implementation creates `topsPanel` objects appropriate for summarizing object properties, and adds them to a new `topsFigure`.  Aside from choosing correct panel types, `gui()` methods don't know about GUI details.
 
-Previously, `topsFoundation` objects posted notifications about certain events, like "new item" or "started running".  These allowed GUIs to update some of their content automatically.  This is a nice idea, but using notifications was the wrong approach.
+Previously, `topsFoundation` objects posted notifications about certain events, like "new item" or "started running".  These allowed GUIs to update some of their content automatically.  This was a nice idea, but using notifications was the wrong approach.
 
-Notifications required foundation classes and GUI classes to "know" a lot about each other, so they weren't accommodating to foundation class revisions and extensions.  They sometimes took a long time to execute, which is problematic in Matlab's single-threaded environment.  They were frustrating to debug, because Matlab didn't report a full stack trace for event handler code.  They led to lots of extra lines of code, for writing handlers for this and that event.
+Notifications required foundation classes and GUI classes to "know" a lot about each other, so they made it harder to revise and extend foundation classes.  Notifications sometimes took a long time to execute, which was problematic in Matlab's single-threaded environment.  They were frustrating to debug, because Matlab didn't report a full stack trace for event handler code.  They led to lots of extra lines of code, defining behaviors to handle this and that event.
 
-So instead, users can just hit the GUI *refresh* button when they need to.
+So I removed all the notification code.  Instead, users can push the GUI *refresh* button when they need to.  This is less nice because it's not automatic, but it's more nice because it will probably work more often.
