@@ -118,7 +118,8 @@ classdef TestTopsEnsemble < TestTopsFoundation
             ensemble.automateObjectMethod( ...
                 'autoName', @TestTopsEnsemble.setName, {'great name'});
             ensemble.callByName('autoName');
-            ensemble.run();
+            duration = 1;
+            ensemble.run(duration);
             names = ensemble.getObjectProperty('name');
             assertTrue(all(strcmp('great name', names)), ...
                 'should set all names via method call')
