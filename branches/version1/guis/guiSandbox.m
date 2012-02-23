@@ -85,13 +85,19 @@ clear classes
 
 gl = topsGroupedList();
 gl.name = 'myList';
-gl.addItemToGroupWithMnemonic(48, 'group 1', 8);
-gl.addItemToGroupWithMnemonic(49, 'group 1', 9);
-gl.addItemToGroupWithMnemonic(39, 'group 1', -1);
-gl.addItemToGroupWithMnemonic('ghjg', 'group 2', 'cheese');
-gl.addItemToGroupWithMnemonic('rfior', 'group 2', 'my jesus cheese');
-gl.addItemToGroupWithMnemonic(topsFoundation('albert'), 'group 2', 'bert');
-gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 'group 2', 'mahp');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox c');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox d');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox e');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox f');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox g');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox h');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox i');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox j');
+gl.addItemToGroupWithMnemonic(1, 'group 1', 'this is a very quick fox k');
+gl.addItemToGroupWithMnemonic(48, 'group 2', 8);
+gl.addItemToGroupWithMnemonic(49, 'group 2', 9);
+gl.addItemToGroupWithMnemonic(39, 'group 2', -1);
+gl.addItemToGroupWithMnemonic(containers.Map(4, 4), 'group 2', 7);
 fig = gl.gui();
 
 %% try out a runnables panel
@@ -133,7 +139,7 @@ c.addChild(e);
 
 t.addChild(st);
 
-%runPan.setBaseItem(r, r.name);
+runPan.setBaseItem(r, r.name);
 
 %% try out a data log panel
 close all

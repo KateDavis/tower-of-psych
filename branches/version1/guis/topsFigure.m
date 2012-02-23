@@ -25,7 +25,7 @@ classdef topsFigure < handle
         name = 'Tower of Psych';
         
         % the color to use for backgrounds
-        backgroundColor = [0.99 0.99 0.96];
+        backgroundColor = [0.98 0.98 0.96];
         
         % the color to use for midgrounds or secondary text
         midgroundColor = [0.3 0.2 0.1];

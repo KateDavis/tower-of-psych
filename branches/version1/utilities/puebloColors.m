@@ -28,13 +28,13 @@ end
 % various colors identified in Arrow the the Sun
 baseColors = [ ...
     206 1 1; ... % arrowmaker red
-    146 165 33; ... % cactus green
+    126 165 33; ... % cactus green
     44 192 242; ... % morning blue
     236 76 150; ... % frosting pink
-    49 214 85; ... % scrub green
-    154 50 31; ... % rust brown
+    49 224 85; ... % scrub green
+    154 40 26; ... % rust brown
     238 86 25; ... % sunset orange
-    234 235 36; ... % sun yellow
+    224 225 6; ... % sun yellow
     251 178 64; ... % sand bronze
     ];
 
