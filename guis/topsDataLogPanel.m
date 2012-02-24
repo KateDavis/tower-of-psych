@@ -50,7 +50,7 @@ classdef topsDataLogPanel < topsPanel
         % @details
         function self = topsDataLogPanel(varargin)
             self = self@topsPanel(varargin{:});
-            self.isLocked = true;
+            self.isLocked = false;
         end
         
         % Set the GUI current item group from a clicked-on graphics object.
@@ -65,6 +65,7 @@ classdef topsDataLogPanel < topsPanel
                 self.parentFigure.setCurrentItem(...
                     self.baseItem, self.baseItemName);
                 set(self.rasterCursor, 'Visible', 'off');
+                
             else
                 % clicked on a data point
                 
@@ -75,21 +76,21 @@ classdef topsDataLogPanel < topsPanel
                 clickPoint = get(self.rasterAxes, 'CurrentPoint');
                 clickTime = clickPoint(1,1);
                 lineTimes = get(object, 'XData');
+                lineRows = get(object, 'YData');
                 [nearest, nearestIndex] = min(abs(lineTimes-clickTime));
                 time = lineTimes(nearestIndex);
-                
-                % move the data cursor to this new point
-                rows = get(object, 'YData');
-                set(self.rasterCursor, ...
-                    'XData', time, ...
-                    'YData', rows(1), ...
-                    'Visible', 'on');
                 
                 if self.baseItem.containsMnemonicInGroup(time, group);
                     item = self.baseItem.getItemFromGroupWithMnemonic( ...
                         group, time);
                     name = sprintf('%s at %.4f', group, time);
                     self.parentFigure.setCurrentItem(item, name);
+                    
+                    % move the data cursor to this data item
+                    set(self.rasterCursor, ...
+                        'XData', time, ...
+                        'YData', lineRows(1), ...
+                        'Visible', 'on');
                 end
             end
         end
