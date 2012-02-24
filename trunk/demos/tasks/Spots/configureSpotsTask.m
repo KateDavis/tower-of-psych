@@ -1,35 +1,34 @@
 function [tree, list] = configureSpotsTask(figurePosition)
-%Configure tops for a demo psychophysics task, with two task types
+%Configure the "Spots" demo task, using only built-in Matlab functionality.
 %
 %   [tree, list] = configureSpotsTask(figurePosition)
 %
 %   tree is a topsTreeNode object which organizes tasks and trials.
-%   tree and list "know about" each other.
-%
-%   tree.run(); will start the "spots" experiment.
+%   tree.run(); will start the "Spots" demo task.
 %
 %   list is a topsGroupedList object which holds all the data needed
-%   to run the "spots" experiment.
+%   to run the "Spots" task.
 %
 %   figurePosition is optional.  It should contain a postion rectangle of
 %   the form [x, y, w, h]--where to put the expermient figure window.
 %
-%   The "spots" experiment is a demo for the Tower of Psych.  It uses the
-%   tops foundataion classes to implement an experiment similar to a real
-%   psychophysics experiment.
+%   The "Spots" task is a demo for the Tower of Psych.  It uses some
+%   tops foundataion classes to implement a task similar to a real
+%   psychophysics task.  The task uses only built-in Matlab functionality,
+%   so it can run without special installations or configuration.
 %
-%   There are two tasks: a reaction time (rt) task and a fixed viewing time
-%   (fvt) task.  In both, the subject (you) uses the mouse to click on one
+%   There are two trial types: reaction time (RT) and fixed viewing time
+%   (FVT).  In both, the subject (you) uses the mouse to click on one
 %   of several spots that appear.
 %
-%   For the rt task, the trials go like this:
+%   RT trials go like this:
 %       -several blue spots and one red spot appear in the figure.
 %       -at any time, the subject may click on one of the spots.  The red
 %       spot is "correct" and the rest "incorrect".
 %       -the spots disappear and the figure is blank for an interval
 %       -the next trial begins...
 %
-%   For the fvt task, the trials go like this:
+%   FVT trials go like this:
 %       -several blue and one red spot appear in the figure, then quickly
 %       all turn black
 %       -after the spots are black, the subject may click on one of the
@@ -37,7 +36,7 @@ function [tree, list] = configureSpotsTask(figurePosition)
 %       -the spots disappear and the figure is blank for an interval.
 %       -the next trial begins.
 %
-%   Several experiment parameters may be controlled by editing values near
+%   Several task parameters may be controlled by editing values near
 %   the top of configureSpotsTask.m.
 %
 % See also, demoSpotsTask, topsGroupedList, topsTreeNode
@@ -51,7 +50,7 @@ end
 
 
 %%%
-%%% experiment parameters to edit:
+%%% task parameters to edit:
 %%%
 spotRows = 5;
 spotColumns = 5;
@@ -71,8 +70,7 @@ taskOrder = 'random'; % 'sequential' or 'random'
 
 % topsGroupedList
 % list list will hold all parameters and other data for the spots
-%   experiment, somewhat like the ROOT_STRUCT of dotsx
-list = topsGroupedList;
+list = topsGroupedList();
 list.addItemToGroupWithMnemonic(figurePosition, 'spots', 'figurePosition');
 list.addItemToGroupWithMnemonic(spotRows, 'spots', 'spotRows');
 list.addItemToGroupWithMnemonic(spotColumns, 'spots', 'spotColumns');
@@ -87,13 +85,13 @@ list.addItemToGroupWithMnemonic(taskOrder, 'spots', 'taskOrder');
 % spotsCalls can hold function calls, with arguments, that can be
 % called as a batch.  spotsCalls just needs to call drawnow()
 spotsCalls = topsCallList();
-spotsCalls.addCall({@drawnow}, 'draw');
+spotsCalls.addCall({@drawnow}, 'update');
 list.addItemToGroupWithMnemonic(spotsCalls, 'spots', 'spotsCalls');
 
 % topsTreeNode
 % tree manages the main figure window
-%   it also will have the rt and fvt tasks as its "children"
-tree = topsTreeNode;
+%   it also will have the RT and FVT tasks as its "children"
+tree = topsTreeNode();
 tree.name = 'spots';
 tree.iterations = taskRepetitions;
 tree.iterationMethod = taskOrder;
@@ -139,7 +137,7 @@ list.addItemToGroupWithMnemonic(fvtTrial, taskName, 'fvtTrial');
 
 
 %%%
-%%% Functions for the overall experiment (the top level)
+%%% Functions for the overall task (the top level)
 %%%
 function spotsSetup(list, modeName)
 fp = list.getItemFromGroupWithMnemonic(modeName, 'figurePosition');
@@ -184,7 +182,7 @@ drawnow();
 
 
 %%%
-%%% Functions for the rt task (a middle level)
+%%% Functions for the RT task (a middle level)
 %%%
 function rtTaskSetup(list, modeName)
 % build stimulus spots in the axes
@@ -216,7 +214,7 @@ delete(spots);
 
 
 %%%
-%%% Functions for the rt trial (a bottom level)
+%%% Functions for the RT trial (a bottom level)
 %%%
 function rtTrialSetup(list, modeName)
 spotsCalls = list.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
