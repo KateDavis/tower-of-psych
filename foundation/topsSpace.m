@@ -23,6 +23,9 @@ classdef topsSpace
         % number of points in each dimension
         nDimPoints;
         
+        % name of each dimension
+        dimNames;
+        
         % subscript coefficients for each dimension
         subscriptCoefs;
         
@@ -66,6 +69,7 @@ classdef topsSpace
             
             % Cache arrays of dimension properties for access speed
             self.nDimPoints = [self.dimensions.nPoints];
+            self.dimNames = {self.dimensions.name};
             self.subscriptCoefs = ...
                 cumprod([1, self.dimensions(1:end-1).nPoints]);
             self.minimums = [self.dimensions.minimum];

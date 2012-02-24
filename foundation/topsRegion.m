@@ -106,7 +106,7 @@ classdef topsRegion
         % Returns the updated region object. description will be filled in
         % with a description of how the partition was formed.
         function self = setPartition(self, dimName, value, comparison)
-            dimInd = strcmp(dimName, {self.space.dimensions.name});
+            dimInd = strcmp(dimName, self.space.dimNames);
             if ~any(dimInd)
                 disp(sprintf('space has no dimension named %s', dimName))
                 return;
@@ -147,8 +147,8 @@ classdef topsRegion
             end
             
             % describe this partition
-            self.description = sprintf('%s%s%s', ...
-                dimName, comparison, num2str(value));
+            valStr = sprintf('%.2g\n', value);
+            self.description = [dimName comparison valStr];
             self.nPoints = sum(self.selector(:));
         end
         
