@@ -150,6 +150,7 @@ topsDataLog.logDataInGroup('myData', 'singulars');
 topsDataLog.logDataInGroup('yournData', 'singulars');
 topsDataLog.logDataInGroup('ournData', 'plurals');
 topsDataLog.logDataInGroup('theirnData', 'plurals');
+%topsDataLog.logDataInGroup(47, 'taco time!!');
 
 fig = topsFigure('loggins');
 logPan = topsDataLogPanel(fig);

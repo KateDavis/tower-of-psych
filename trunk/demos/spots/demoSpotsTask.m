@@ -13,13 +13,17 @@ treeGUIPosition = [0 0 w h];
 logGUIPosition = [x 0 w 2*h];
 
 % configure the Spots Task
-[spotsTree, spotsList] = configureSpotsTask(taskPosition);
+[tree, list] = configureSpotsTask(taskPosition);
 
 % launch the treeNodeGUI
-treeGUI = spotsTree.gui;
-set(treeGUI.figure, 'Position', treeGUIPosition);
+g = tree.gui();
+set(g.fig, ...
+    'Units', 'normalized', ...
+    'Position', treeGUIPosition);
 
 % launch the dataLogGUI
-topsDataLog.flushAllData;
-logGUI = topsDataLog.gui;
-set(logGUI.figure, 'Position', logGUIPosition);
+topsDataLog.flushAllData();
+g = topsDataLog.gui();
+set(g.fig, ...
+    'Units', 'normalized', ...
+    'Position', logGUIPosition);

@@ -1,14 +1,14 @@
-function [spotsTree, spotsList] = configureSpotsTask(figurePosition)
+function [tree, list] = configureSpotsTask(figurePosition)
 %Configure tops for a demo psychophysics task, with two task types
 %
-%   [spotsTree, spotsList] = configureSpotsTask(figurePosition)
+%   [tree, list] = configureSpotsTask(figurePosition)
 %
-%   spotsTree is a topsTreeNode object which organizes tasks and trials.
-%   spotsTree and spotsList "know about" each other.
+%   tree is a topsTreeNode object which organizes tasks and trials.
+%   tree and list "know about" each other.
 %
-%   spotsTree.run(); will start the "spots" experiment.
+%   tree.run(); will start the "spots" experiment.
 %
-%   spotsList is a topsGroupedList object which holds all the data needed
+%   list is a topsGroupedList object which holds all the data needed
 %   to run the "spots" experiment.
 %
 %   figurePosition is optional.  It should contain a postion rectangle of
@@ -70,80 +70,79 @@ taskOrder = 'random'; % 'sequential' or 'random'
 %%%
 
 % topsGroupedList
-% spotsList list will hold all parameters and other data for the spots
+% list list will hold all parameters and other data for the spots
 %   experiment, somewhat like the ROOT_STRUCT of dotsx
-spotsList = topsGroupedList;
-spotsList.addItemToGroupWithMnemonic(figurePosition, 'spots', 'figurePosition');
-spotsList.addItemToGroupWithMnemonic(spotRows, 'spots', 'spotRows');
-spotsList.addItemToGroupWithMnemonic(spotColumns, 'spots', 'spotColumns');
-spotsList.addItemToGroupWithMnemonic(spotCount, 'spots', 'spotCount');
-spotsList.addItemToGroupWithMnemonic(spotViewingTime, 'spots', 'spotViewingTime');
-spotsList.addItemToGroupWithMnemonic(intertrialInterval, 'spots', 'intertrialInterval');
-spotsList.addItemToGroupWithMnemonic(trialsInARow, 'spots', 'trialsInARow');
-spotsList.addItemToGroupWithMnemonic(taskRepetitions, 'spots', 'taskRepetitions');
-spotsList.addItemToGroupWithMnemonic(taskOrder, 'spots', 'taskOrder');
+list = topsGroupedList;
+list.addItemToGroupWithMnemonic(figurePosition, 'spots', 'figurePosition');
+list.addItemToGroupWithMnemonic(spotRows, 'spots', 'spotRows');
+list.addItemToGroupWithMnemonic(spotColumns, 'spots', 'spotColumns');
+list.addItemToGroupWithMnemonic(spotCount, 'spots', 'spotCount');
+list.addItemToGroupWithMnemonic(spotViewingTime, 'spots', 'spotViewingTime');
+list.addItemToGroupWithMnemonic(intertrialInterval, 'spots', 'intertrialInterval');
+list.addItemToGroupWithMnemonic(trialsInARow, 'spots', 'trialsInARow');
+list.addItemToGroupWithMnemonic(taskRepetitions, 'spots', 'taskRepetitions');
+list.addItemToGroupWithMnemonic(taskOrder, 'spots', 'taskOrder');
 
 % topsCallList
 % spotsCalls can hold function calls, with arguments, that can be
 % called as a batch.  spotsCalls just needs to call drawnow()
-spotsCalls = topsCallList;
-spotsCalls.alwaysRunning = true;
-spotsCalls.addCall({@drawnow});
-spotsList.addItemToGroupWithMnemonic(spotsCalls, 'spots', 'spotsCalls');
+spotsCalls = topsCallList();
+spotsCalls.addCall({@drawnow}, 'draw');
+list.addItemToGroupWithMnemonic(spotsCalls, 'spots', 'spotsCalls');
 
 % topsTreeNode
-% spotsTree manages the main figure window
+% tree manages the main figure window
 %   it also will have the rt and fvt tasks as its "children"
-spotsTree = topsTreeNode;
-spotsTree.name = 'spots';
-spotsTree.iterations = taskRepetitions;
-spotsTree.iterationMethod = taskOrder;
-spotsTree.startFevalable = {@spotsSetup, spotsList, 'spots'};
-spotsTree.finishFevalable = {@spotsTearDown, spotsList, 'spots'};
-spotsList.addItemToGroupWithMnemonic(spotsTree, 'spots', 'spotsTopLevel');
+tree = topsTreeNode;
+tree.name = 'spots';
+tree.iterations = taskRepetitions;
+tree.iterationMethod = taskOrder;
+tree.startFevalable = {@spotsSetup, list, 'spots'};
+tree.finishFevalable = {@spotsTearDown, list, 'spots'};
+list.addItemToGroupWithMnemonic(tree, 'spots', 'spotsTopLevel');
 
 % rtTask manages the reaction time task
 %   it will also have a reaction time *trial* as its child
-rtTask = spotsTree.newChildNode;
+rtTask = tree.newChildNode;
 taskName = 'rt_task';
 rtTask.name = taskName;
 rtTask.iterations = trialsInARow;
-rtTask.startFevalable = {@rtTaskSetup, spotsList, taskName};
-rtTask.finishFevalable = {@rtTaskTearDown, spotsList, taskName};
-spotsList.addItemToGroupWithMnemonic(rtTask, taskName, 'rtTask');
+rtTask.startFevalable = {@rtTaskSetup, list, taskName};
+rtTask.finishFevalable = {@rtTaskTearDown, list, taskName};
+list.addItemToGroupWithMnemonic(rtTask, taskName, 'rtTask');
 
 % rtTrial manages individual reaction time trials
 rtTrial = rtTask.newChildNode;
 rtTrial.name = 'rt_trial';
-rtTrial.startFevalable = {@rtTrialSetup, spotsList, taskName};
+rtTrial.startFevalable = {@rtTrialSetup, list, taskName};
 rtTrial.addChild(spotsCalls);
-rtTrial.finishFevalable = {@rtTrialTeardown, spotsList, taskName};
-spotsList.addItemToGroupWithMnemonic(rtTrial, taskName, 'rtTrial');
+rtTrial.finishFevalable = {@rtTrialTeardown, list, taskName};
+list.addItemToGroupWithMnemonic(rtTrial, taskName, 'rtTrial');
 
 % fvtTask manages the fixed viewing time task
 %   it will also have a fixed viewing time time *trial* as its child
-fvtTask = spotsTree.newChildNode;
+fvtTask = tree.newChildNode;
 taskName = 'fvt_task';
 fvtTask.name = taskName;
 fvtTask.iterations = trialsInARow;
-fvtTask.startFevalable = {@fvtTaskSetup, spotsList, taskName};
-fvtTask.finishFevalable = {@fvtTaskTearDown, spotsList, taskName};
-spotsList.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
+fvtTask.startFevalable = {@fvtTaskSetup, list, taskName};
+fvtTask.finishFevalable = {@fvtTaskTearDown, list, taskName};
+list.addItemToGroupWithMnemonic(fvtTask, taskName, 'fvtTask');
 
 % another bottom level node, to manage a fixed viewing time trial
 fvtTrial = fvtTask.newChildNode;
 fvtTrial.name = 'fvt_trial';
-fvtTrial.startFevalable = {@fvtTrialSetup, spotsList, taskName};
+fvtTrial.startFevalable = {@fvtTrialSetup, list, taskName};
 fvtTrial.addChild(spotsCalls);
-fvtTrial.finishFevalable = {@fvtTrialTeardown, spotsList, taskName};
-spotsList.addItemToGroupWithMnemonic(fvtTrial, taskName, 'fvtTrial');
+fvtTrial.finishFevalable = {@fvtTrialTeardown, list, taskName};
+list.addItemToGroupWithMnemonic(fvtTrial, taskName, 'fvtTrial');
 
 
 %%%
 %%% Functions for the overall experiment (the top level)
 %%%
-function spotsSetup(spotsList, modeName)
-fp = spotsList.getItemFromGroupWithMnemonic(modeName, 'figurePosition');
+function spotsSetup(list, modeName)
+fp = list.getItemFromGroupWithMnemonic(modeName, 'figurePosition');
 fig = figure( ...
     'Name', 'See Spots', ...
     'Units', 'normalized', ...
@@ -152,7 +151,7 @@ fig = figure( ...
 if ~isempty(fp)
     set(fig, 'Position', fp);
 end
-spotsList.addItemToGroupWithMnemonic(fig, modeName, 'figure');
+list.addItemToGroupWithMnemonic(fig, modeName, 'figure');
 
 ax = axes('Parent', fig, ...
     'Units', 'normalized', ...
@@ -162,14 +161,14 @@ ax = axes('Parent', fig, ...
     'XTick', [], ...
     'YTick', [], ...
     'Box', 'on');
-spotsList.addItemToGroupWithMnemonic(ax, modeName, 'axes');
+list.addItemToGroupWithMnemonic(ax, modeName, 'axes');
 
-function spotsTearDown(spotsList, modeName)
-fig = spotsList.getItemFromGroupWithMnemonic(modeName, 'figure');
+function spotsTearDown(list, modeName)
+fig = list.getItemFromGroupWithMnemonic(modeName, 'figure');
 close(fig);
 
-function waitForUserClick(spotsList, message)
-fig = spotsList.getItemFromGroupWithMnemonic('spots', 'figure');
+function waitForUserClick(list, message)
+fig = list.getItemFromGroupWithMnemonic('spots', 'figure');
 button = uicontrol( ...
     'Parent', fig, ...
     'Style', 'togglebutton', ...
@@ -181,18 +180,18 @@ while get(button, 'Value') == false
     drawnow;
 end
 delete(button);
-drawnow
+drawnow();
 
 
 %%%
 %%% Functions for the rt task (a middle level)
 %%%
-function rtTaskSetup(spotsList, modeName)
+function rtTaskSetup(list, modeName)
 % build stimulus spots in the axes
-ax = spotsList.getItemFromGroupWithMnemonic('spots', 'axes');
-n = spotsList.getItemFromGroupWithMnemonic('spots', 'spotCount');
-r = spotsList.getItemFromGroupWithMnemonic('spots', 'spotRows');
-c = spotsList.getItemFromGroupWithMnemonic('spots', 'spotColumns');
+ax = list.getItemFromGroupWithMnemonic('spots', 'axes');
+n = list.getItemFromGroupWithMnemonic('spots', 'spotCount');
+r = list.getItemFromGroupWithMnemonic('spots', 'spotRows');
+c = list.getItemFromGroupWithMnemonic('spots', 'spotColumns');
 shuffle = randperm(r*c);
 area = [-1 -1 2 2];
 for ii = 1:n
@@ -205,23 +204,23 @@ for ii = 1:n
         'FaceColor', [1 1 1], ...
         'Visible', 'off');
 end
-spotsList.addItemToGroupWithMnemonic(spots, modeName, 'spots');
+list.addItemToGroupWithMnemonic(spots, modeName, 'spots');
 
 msg = 'Click the red spot--as soon as you can.';
-waitForUserClick(spotsList, msg);
+waitForUserClick(list, msg);
 
 
-function rtTaskTearDown(spotsList, modeName)
-spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
+function rtTaskTearDown(list, modeName)
+spots = list.getItemFromGroupWithMnemonic(modeName, 'spots');
 delete(spots);
 
 
 %%%
 %%% Functions for the rt trial (a bottom level)
 %%%
-function rtTrialSetup(spotsList, modeName)
-spotsCalls = spotsList.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
-spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
+function rtTrialSetup(list, modeName)
+spotsCalls = list.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
+spots = list.getItemFromGroupWithMnemonic(modeName, 'spots');
 redSpot = spots(ceil(rand*length(spots)));
 set(spots, ...
     'FaceColor', [0 0 1], ...
@@ -239,9 +238,9 @@ else
 end
 spotsCalls.isRunning = false;
 
-function rtTrialTeardown(spotsList, modeName)
-spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
-iti = spotsList.getItemFromGroupWithMnemonic('spots', 'intertrialInterval');
+function rtTrialTeardown(list, modeName)
+spots = list.getItemFromGroupWithMnemonic(modeName, 'spots');
+iti = list.getItemFromGroupWithMnemonic('spots', 'intertrialInterval');
 set(spots, 'Visible', 'off');
 pause(iti);
 
@@ -249,12 +248,12 @@ pause(iti);
 %%%
 %%% Functions for the fixed viewing time task
 %%%
-function fvtTaskSetup(spotsList, modeName)
+function fvtTaskSetup(list, modeName)
 % build stimulus spots in the axes
-ax = spotsList.getItemFromGroupWithMnemonic('spots', 'axes');
-n = spotsList.getItemFromGroupWithMnemonic('spots', 'spotCount');
-r = spotsList.getItemFromGroupWithMnemonic('spots', 'spotRows');
-c = spotsList.getItemFromGroupWithMnemonic('spots', 'spotColumns');
+ax = list.getItemFromGroupWithMnemonic('spots', 'axes');
+n = list.getItemFromGroupWithMnemonic('spots', 'spotCount');
+r = list.getItemFromGroupWithMnemonic('spots', 'spotRows');
+c = list.getItemFromGroupWithMnemonic('spots', 'spotColumns');
 shuffle = randperm(r*c);
 area = [-1 -1 2 2];
 for ii = 1:n
@@ -269,24 +268,24 @@ for ii = 1:n
         'LineWidth', 2, ...
         'Visible', 'off');
 end
-spotsList.addItemToGroupWithMnemonic(spots, modeName, 'spots');
+list.addItemToGroupWithMnemonic(spots, modeName, 'spots');
 
 msg = 'Click the red spot--after it turns black.';
-waitForUserClick(spotsList, msg);
+waitForUserClick(list, msg);
 
-function fvtTaskTearDown(spotsList, modeName)
-spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
+function fvtTaskTearDown(list, modeName)
+spots = list.getItemFromGroupWithMnemonic(modeName, 'spots');
 delete(spots);
 
 
 %%%
 %%% Functions for the fixed viewing time trial
 %%%
-function fvtTrialSetup(spotsList, modeName)
-spotsCalls = spotsList.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
-vt = spotsList.getItemFromGroupWithMnemonic('spots', 'spotViewingTime');
+function fvtTrialSetup(list, modeName)
+spotsCalls = list.getItemFromGroupWithMnemonic('spots', 'spotsCalls');
+vt = list.getItemFromGroupWithMnemonic('spots', 'spotViewingTime');
 
-spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
+spots = list.getItemFromGroupWithMnemonic(modeName, 'spots');
 redSpot = spots(ceil(rand*length(spots)));
 set(spots, ...
     'FaceColor', [0 0 1], ...
@@ -306,8 +305,8 @@ else
 end
 spotsCalls.isRunning = false;
 
-function fvtTrialTeardown(spotsList, modeName)
-spots = spotsList.getItemFromGroupWithMnemonic(modeName, 'spots');
-iti = spotsList.getItemFromGroupWithMnemonic('spots', 'intertrialInterval');
+function fvtTrialTeardown(list, modeName)
+spots = list.getItemFromGroupWithMnemonic(modeName, 'spots');
+iti = list.getItemFromGroupWithMnemonic('spots', 'intertrialInterval');
 set(spots, 'Visible', 'off');
 pause(iti);

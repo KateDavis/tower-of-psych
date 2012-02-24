@@ -33,6 +33,10 @@ classdef topsRunnableComposite < topsRunnable
             infoPan = topsInfoPanel(fig);
             fig.usePanels({treePan, infoPan});
             treePan.setBaseItem(self, self.name);
+                        
+            % add a "run" button to the figure
+            fig.addButton('run', @(button, event)self.run());
+
         end
 
         % Add a child beneath this object.
