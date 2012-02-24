@@ -62,8 +62,16 @@ classdef SquareTagLogic < handle
     end
     
     methods
-        % Make a new logic object
-        function self = SquareTagLogic()
+        % Make a new logic object.
+        function self = SquareTagLogic(name, time)
+            if nargin >= 1
+                self.name = name;
+            end
+            
+            if nargin >= 2
+                self.time = time;
+            end
+            
             self.startSession();
         end
         
@@ -123,7 +131,32 @@ classdef SquareTagLogic < handle
         
         % Get a topsClassification suitable for the current square.
         function classn = makeClassification(self)
+            % make a classification that can read unitless cursorLocation
+            classn = topsClassification('SquareTag');
+            n = 100;
+            classn.addSource('x', self.getCursorLocation('x'), 0, 1, n);
+            classn.addSource('y', self.getCursorLocation('y'), 0, 1, n);
             
+            % define a region for each square
+            %   map most regions to the "miss" output
+            %   map the the current square's region to the "tag" output
+            for ii = 1:self.nSquares
+                % make a region to represent this square
+                squareName = sprintf('square-%d', ii);
+                region = topsRegion(squareName, classn.space);
+
+                % set the square's position in the region
+                position = self.squarePositions(ii,:);
+                region = region.setRectangle('x', 'y', position, 'in');
+
+                % classify this region as "tag" or "miss"
+                if ii == self.currentSquare
+                    output = self.tagOutput;
+                else
+                    output = self.missOutput;
+                end
+                classn.addOutput(squareName, region, output);
+            end
         end
         
         % Increment the runnign count of square misses in a trial
