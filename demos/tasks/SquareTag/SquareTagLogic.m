@@ -85,7 +85,7 @@ classdef SquareTagLogic < handle
         % Initialize for a new SquareTag session.
         function startSession(self)
             self.currentTrial = 0;
-            self.cursorLocation = [0 0];
+            self.cursorLocation = [0.5 0.5];
         end
         
         % Finish up after SquareTag session.
