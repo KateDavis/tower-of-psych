@@ -41,9 +41,13 @@ classdef SquareTagAV < handle
             s = dbstack();
             disp(s(1).name)
         end
+
+        % Update the subject's cursor.
+        function updateCursor(self)
+        end
         
-        % Indicate ready to tag the first square.
-        function doFirstSquare(self)
+        % Indicate start of trial.
+        function doBeforeSquares(self)
             s = dbstack();
             disp(s(1).name)
         end
@@ -53,9 +57,11 @@ classdef SquareTagAV < handle
             s = dbstack();
             disp(s(1).name)
         end
-        
-        % Update the subject's cursor.
-        function updateCursor(self)
+
+        % Indicate end of trial.
+        function doAfterSquares(self)
+            s = dbstack();
+            disp(s(1).name)
         end
     end
 end

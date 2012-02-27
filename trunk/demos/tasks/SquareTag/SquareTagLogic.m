@@ -27,16 +27,16 @@ classdef SquareTagLogic < handle
         time = 0;
         
         % how many trials per session
-        nTrials = 10;
+        nTrials = 2;
         
         % number of squares that the subject must tag
         nSquares = 3;
         
         % mimimum side length for a square
-        minSide = 0.1;
+        minSide = 0.05;
         
         % maximum side length for a square
-        maxSide = 0.2;
+        maxSide = 0.1;
         
         % string indicating that the user tagged the correct square
         tagOutput = 'tag';
@@ -154,8 +154,8 @@ classdef SquareTagLogic < handle
             % make a classification that can read unitless cursorLocation
             classn = topsClassification('SquareTag');
             n = 100;
-            classn.addSource('x', self.getCursorLocation('x'), 0, 1, n);
-            classn.addSource('y', self.getCursorLocation('y'), 0, 1, n);
+            classn.addSource('x', @()self.getCursorLocation('x'), 0, 1, n);
+            classn.addSource('y', @()self.getCursorLocation('y'), 0, 1, n);
             
             % define a region for each square
             %   map most regions to the "miss" output
@@ -176,6 +176,10 @@ classdef SquareTagLogic < handle
         
         % Set the subject's cursor location in unitless space.
         function setCursorLocation(self, location, xy)
+            % clip to valid locations
+            location(location < 0) = 0;
+            location(location > 1) = 1;
+            
             if nargin < 3
                 self.cursorLocation = location;
             elseif strcmp(xy, 'x')
