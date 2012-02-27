@@ -13,8 +13,9 @@ classdef SquareTagAV < handle
     % @details
     % SquareTagAV doesn't know *when* do do graphics and sound behaviors.
     % It's up to some other function or class to coordinate the behaviors
-    % of a SquareTagLogic and SquareTagAV object, probably in conjunction
-    % with user input.
+    % of a SquareTagAV object, a SquareTagLogic object, and user input.
+    %
+    % @ingroup demos
     
     properties
         % the SquareTagLogic object to work with
@@ -31,6 +32,12 @@ classdef SquareTagAV < handle
         
         % Set up audio-visual resources as needed.
         function initialize(self)
+            s = dbstack();
+            disp(s(1).name)
+        end
+        
+        % Clean up audio-visual resources from initialize().
+        function terminate(self)
             s = dbstack();
             disp(s(1).name)
         end

@@ -65,5 +65,32 @@ classdef TestTopsClassification < TestTopsFoundation
             assertEqual('middle', output, 'middle should take precedence')
             assertEqual('middle', outputName, 'wrong name for middle')
         end
+        
+        function testEditOutputValue(self)
+            % classify in the unit square
+            classn = self.newObject('unit square');
+            nPoints = 10;
+            classn.addSource('x', @()getX(self), 0, 1, nPoints);
+            classn.addSource('y', @()getY(self), 0, 1, nPoints);
+            
+            % map the entire square to an arbitrary value
+            entire = topsRegion('entire square', classn.space);
+            entire = entire.setRectangle('x', 'y', [0 0 1 1], 'in');
+            originalValue = 'original value';
+            classn.addOutput('entire square', entire, originalValue);
+            
+            % set a point in the middle
+            self.xSample = 0.5;
+            self.ySample = 0.5;
+            classn.updateSamples();
+            output = classn.getOutput();
+            assertEqual(originalValue, output, 'wrong output for original value')
+            
+            % change the value for this ouput
+            newValue = 'new value';
+            classn.editOutputValue('entire square', newValue);
+            output = classn.getOutput();
+            assertEqual(newValue, output, 'wrong output for new value')
+        end
     end
 end
