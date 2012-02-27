@@ -1,4 +1,4 @@
-% Run SquareTagLogic through its paces.
+% Demonstrate SquareTagLogic and SquareTagAV without user input.
 clear
 clear classes
 close all
@@ -13,12 +13,8 @@ logic.nSquares = 5;
 av = SquareTagAVPlotter(logic);
 av.initialize();
 
-% figure out the range of the cursor in pixels
-%   shrink it into the unit square
-screens = get(0, 'MonitorPositions');
-width = screens(1,3);
-height = screens(1,4);
-pointScale = [width height];
+% choose how long it takes the computer to tag each square
+tagSteps = 10;
 
 % start playing SquareTag!
 logic.startSession();
@@ -34,14 +30,20 @@ for ii = 1:logic.nTrials
         % indicate which squares are already tagged
         av.doNextSquare();
         
+        % peek at the location of the current square
+        %   plan programmatic movement towards it
+        squarePos = logic.squarePositions(logic.currentSquare, :);
+        cursorTarget = squarePos(1:2) + squarePos(3:4)/2;
+        cursorGap = cursorTarget - logic.getCursorLocation();
+        cursorDelta = cursorGap / tagSteps;
+        
         % wait for the next square to be tagged
         %   logic.cursorMap maps cursor location onto squares
         %   and knows which square should be tagged next
         while ~strcmp(logic.cursorMap.getOutput(true), logic.tagOutput)
-            % get the latest cursor position and send it to the logic
-            %   apply the unit square mapping from above
-            point = get(0, 'PointerLocation');
-            logic.setCursorLocation(point ./ pointScale);
+            % programmatically step the cursor towards the next square
+            cursorPos = logic.getCursorLocation() + cursorDelta;
+            logic.setCursorLocation(cursorPos);
             
             % let the av object draw a new cursor location
             av.updateCursor();
