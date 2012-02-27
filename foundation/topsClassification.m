@@ -180,6 +180,28 @@ classdef topsClassification < topsFoundation
             % rebuild the data space
             self.buildOutputTable();
         end
+
+        % Change the value mapped from an existing output.
+        % @param name unique name of a classification output
+        % @param value new value for the named output
+        % @details
+        % Change the output value associated with the given @a name.  The
+        % spatial region associated with @a name remians the same, but the
+        % value, as returned from getOutput() is replaced with the new @a
+        % value.
+        % @details
+        % Returns the index into outputs where the named value was
+        % changed, or [] if no output was found.
+        function index = editOutputValue(self, name, value)
+            % find the named output
+            [index, selector] = ...
+                topsFoundation.findStructName(self.outputs, name);
+            if any(selector)
+                self.outputs(index).value = value;
+            else
+                index = [];
+            end
+        end
         
         % Update source samples.
         % @details

@@ -11,6 +11,13 @@ classdef SquareTagLogic < handle
     % it only represents geometry within unitless square, with location [0
     % 0] and dimensions [1 1].  It doesn't know anything about how to draw
     % graphics on the screen or how to read where the subject is pointing.
+    % @details
+    % SquareTagLogic knows a lot about *what* to do, but it doesn't know
+    % *when* do anything.  It's up to some other function or class to
+    % invoke SquareTagLogic behaviors in corrdination with things like
+    % graphics and subject inputs.
+    %
+    % @ingroup demos
     
     properties
         % a name to identify a SquareTag session
@@ -54,11 +61,11 @@ classdef SquareTagLogic < handle
         % index of the current square in a trial
         currentSquare;
         
-        % how many times the subject hit the wrong square in a trial
-        squareMisses;
-        
         % location of the subjcet's cursor [x y]
         cursorLocation;
+
+        % topsClassification mapping cursor position to "tag" or "miss"
+        cursorMap;
     end
     
     methods
@@ -88,8 +95,8 @@ classdef SquareTagLogic < handle
         % Initialize for a new SquareTag trial.
         function startTrial(self)
             self.makeSquares();
+            self.cursorMap = self.makeCursorMap();
             self.currentSquare = 0;
-            self.squareMisses = 0;
             self.currentTrial = self.currentTrial + 1;
         end
         
@@ -120,17 +127,30 @@ classdef SquareTagLogic < handle
         % Increment the current square in a trial.
         function output = nextSquare(self)
             if self.currentSquare < self.nSquares
-                % increment and report that next square is ready
+                % increment the current square
                 self.currentSquare = self.currentSquare + 1;
+
+                % assign "tag" and "miss" values for the current square
+                values = cell(1, self.nSquares);
+                [values{:}] = deal(self.missOutput);
+                values{self.currentSquare} = self.tagOutput;
+                for ii = 1:self.nSquares
+                    % re-map each square to an appropriate value
+                    squareName = sprintf('square-%d', ii);
+                    self.cursorMap.editOutputValue(squareName, values{ii});
+                end
+                
+                % report that the next square is ready
                 output = self.nextOutput;
+                
             else
                 % report that there are no more squares!
                 output = self.doneOutput;
             end
         end
         
-        % Get a topsClassification suitable for the current square.
-        function classn = makeClassification(self)
+        % Get a topsClassification suitable for new squarePositions.
+        function classn = makeCursorMap(self)
             % make a classification that can read unitless cursorLocation
             classn = topsClassification('SquareTag');
             n = 100;
@@ -149,19 +169,9 @@ classdef SquareTagLogic < handle
                 position = self.squarePositions(ii,:);
                 region = region.setRectangle('x', 'y', position, 'in');
 
-                % classify this region as "tag" or "miss"
-                if ii == self.currentSquare
-                    output = self.tagOutput;
-                else
-                    output = self.missOutput;
-                end
-                classn.addOutput(squareName, region, output);
+                % initially, classify all regions as "miss"
+                classn.addOutput(squareName, region, self.missOutput);
             end
-        end
-        
-        % Increment the runnign count of square misses in a trial
-        function incrementMisses(self)
-            self.squareMisses = self.squareMisses + 1;
         end
         
         % Set the subject's cursor location in unitless space.
