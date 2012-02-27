@@ -16,6 +16,9 @@ classdef SquareTagAVPlotter < SquareTagAV
         
         % color for squares already tagged
         taggedColor = [0 .75 .1];
+        
+        % color for the subject's cursor
+        cursorColor = [.75 .25 0];
     end
     
     properties(SetAccess = protected)
@@ -27,6 +30,9 @@ classdef SquareTagAVPlotter < SquareTagAV
         
         % Matlab graphics objects to represent task squares
         squares;
+        
+        % Matlab line to represent the user's cursor
+        cursor;
     end
     
     methods
@@ -43,7 +49,8 @@ classdef SquareTagAVPlotter < SquareTagAV
                 'NumberTitle', 'off', ...
                 'MenuBar', 'none', ...
                 'Name', mfilename(), ...
-                'Pointer', 'circle', ...
+                'Pointer', 'custom', ...
+                'PointerShapeCData', nan(16, 16), ...
                 'Units', 'pixels', ...
                 'Position', monitorPos(1,:), ...
                 'ToolBar', 'none', ...
@@ -86,6 +93,17 @@ classdef SquareTagAVPlotter < SquareTagAV
                 
             end
             
+            self.cursor = line(0, 0, ...
+                'Parent', self.ax, ...
+                'Color', self.cursorColor, ...
+                'LineStyle', 'none', ...
+                'Marker', '.', ...
+                'MarkerSize', 30, ...
+                'HitTest', 'off', ...
+                'Selected', 'off', ...
+                'SelectionHighlight', 'off', ...
+                'Visible', 'off');
+            
             % block to let Matlab process new graphics
             drawnow();
         end
@@ -107,6 +125,8 @@ classdef SquareTagAVPlotter < SquareTagAV
                     'EdgeColor', self.squareColor, ...
                     'Position', squarePos, ...
                     'Visible', 'on');
+
+                set(self.cursor, 'Visible', 'on');
             end
         end
         
@@ -123,11 +143,15 @@ classdef SquareTagAVPlotter < SquareTagAV
         % Indicate end of trial.
         function doAfterSquares(self)
             set(self.squares, 'Visible', 'off');
+            set(self.cursor, 'Visible', 'off');
         end
         
         % Update the subject's cursor.
         function updateCursor(self)
-            
+            point = self.logic.cursorLocation;
+            set(self.cursor, ...
+                'XData', point(1), ...
+                'YData', point(2));
         end
     end
 end

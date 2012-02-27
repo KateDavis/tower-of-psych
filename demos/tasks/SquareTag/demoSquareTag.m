@@ -1,6 +1,7 @@
 % Run SquareTagLogic through its paces.
 clear
 clear classes
+close all
 clc
 
 % create the logical "back end" of the SquareTag task
@@ -12,15 +13,12 @@ logic.nSquares = 5;
 av = SquareTagAVPlotter(logic);
 av.initialize();
 
-% figure out the range of the cursor
+% figure out the range of the cursor in pixels
+%   shrink it into the unit square
 screens = get(0, 'MonitorPositions');
 width = screens(1,3);
 height = screens(1,4);
-
-% map the cursor range into the unit square
-%   fudge these as necessary, depending on your desktop
-pointScale = [width-50 height-25];
-pointOffset = [0 21];
+pointScale = [width height];
 
 % start playing SquareTag!
 logic.startSession();
@@ -43,7 +41,7 @@ for ii = 1:logic.nTrials
             % get the latest cursor position and send it to the logic
             %   apply the unit square mapping from above
             point = get(0, 'PointerLocation');
-            logic.setCursorLocation((point + pointOffset) ./ pointScale);
+            logic.setCursorLocation(point ./ pointScale);
             
             % let the av object draw a new cursor location
             av.updateCursor();
@@ -53,7 +51,7 @@ for ii = 1:logic.nTrials
     
     % indicate trial completion and wait for an interval
     av.doAfterSquares();
-    pause(1);
+    pause(0.5);
     
     % account for the completed trial
     logic.finishTrial();
