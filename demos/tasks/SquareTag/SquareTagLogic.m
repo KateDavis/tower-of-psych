@@ -39,13 +39,13 @@ classdef SquareTagLogic < handle
         maxSide = 0.1;
         
         % string indicating that the user tagged the correct square
-        tagOutput = 'tag';
+        tagOutput = 'tagged';
         
         % string indicating that the user tagged an incorrect square
-        missOutput = 'miss';
+        missOutput = 'missed';
         
         % string indicating that there's another square to be tagged
-        nextOutput = 'nextSquare';
+        nextOutput = 'ready';
         
         % string indicating that there are no more squares to tag
         doneOutput = 'done';
@@ -58,13 +58,16 @@ classdef SquareTagLogic < handle
         % running count of trials in a session
         currentTrial;
         
+        % running count of missed squares in a trial
+        squareMisses;
+        
         % index of the current square in a trial
         currentSquare;
         
         % location of the subjcet's cursor [x y]
         cursorLocation;
-
-        % topsClassification mapping cursor position to "tag" or "miss"
+        
+        % topsClassification maps cursor position to "tagged" or "missed"
         cursorMap;
     end
     
@@ -78,6 +81,13 @@ classdef SquareTagLogic < handle
             if nargin >= 2
                 self.time = time;
             end
+            
+            % make a classification that can read unitless cursorLocation
+            classn = topsClassification('SquareTag');
+            n = 100;
+            classn.addSource('x', @()self.getCursorLocation('x'), 0, 1, n);
+            classn.addSource('y', @()self.getCursorLocation('y'), 0, 1, n);
+            self.cursorMap = classn;
             
             self.startSession();
         end
@@ -95,9 +105,16 @@ classdef SquareTagLogic < handle
         % Initialize for a new SquareTag trial.
         function startTrial(self)
             self.makeSquares();
-            self.cursorMap = self.makeCursorMap();
+            self.updateCursorMapRegions();
             self.currentSquare = 0;
+            self.squareMisses = 0;
             self.currentTrial = self.currentTrial + 1;
+        end
+        
+        % Start a trial over when the subject misses.
+        function restartTrial(self)
+            self.squareMisses = self.squareMisses + 1;
+            self.currentSquare = 0;
         end
         
         % Finish up after SquareTag trial.
@@ -129,15 +146,23 @@ classdef SquareTagLogic < handle
             if self.currentSquare < self.nSquares
                 % increment the current square
                 self.currentSquare = self.currentSquare + 1;
-
-                % assign "tag" and "miss" values for the current square
-                values = cell(1, self.nSquares);
-                [values{:}] = deal(self.missOutput);
-                values{self.currentSquare} = self.tagOutput;
+                
+                % re-map each square to an appropriate value
                 for ii = 1:self.nSquares
-                    % re-map each square to an appropriate value
+                    if ii < self.currentSquare
+                        % default output for already tagged squares
+                        value = self.cursorMap.defaultOutput;
+                        
+                    elseif ii == self.currentSquare
+                        % "tagged" output for next square
+                        value = self.tagOutput;
+                        
+                    else
+                        % "missed" output for remaining squares
+                        value = self.missOutput;
+                    end
                     squareName = sprintf('square-%d', ii);
-                    self.cursorMap.editOutputValue(squareName, values{ii});
+                    self.cursorMap.editOutputValue(squareName, value);
                 end
                 
                 % report that the next square is ready
@@ -149,28 +174,22 @@ classdef SquareTagLogic < handle
             end
         end
         
-        % Get a topsClassification suitable for new squarePositions.
-        function classn = makeCursorMap(self)
-            % make a classification that can read unitless cursorLocation
-            classn = topsClassification('SquareTag');
-            n = 100;
-            classn.addSource('x', @()self.getCursorLocation('x'), 0, 1, n);
-            classn.addSource('y', @()self.getCursorLocation('y'), 0, 1, n);
-            
-            % define a region for each square
-            %   map most regions to the "miss" output
-            %   map the the current square's region to the "tag" output
+        % Update cursorMap to use new squarePositions.
+        function updateCursorMapRegions(self)
+            % redefine the region for each square
             for ii = 1:self.nSquares
                 % make a region to represent this square
                 squareName = sprintf('square-%d', ii);
-                region = topsRegion(squareName, classn.space);
-
+                region = topsRegion(squareName, self.cursorMap.space);
+                
                 % set the square's position in the region
                 position = self.squarePositions(ii,:);
                 region = region.setRectangle('x', 'y', position, 'in');
-
-                % initially, classify all regions as "miss"
-                classn.addOutput(squareName, region, self.missOutput);
+                
+                % replace the existing region
+                %   initially classify each region as "miss"
+                self.cursorMap.addOutput( ...
+                    squareName, region, self.missOutput);
             end
         end
         

@@ -83,13 +83,13 @@ classdef TestTopsClassification < TestTopsFoundation
             self.xSample = 0.5;
             self.ySample = 0.5;
             classn.updateSamples();
-            output = classn.getOutput();
+            output = classn.getOutput(false);
             assertEqual(originalValue, output, 'wrong output for original value')
             
             % change the value for this ouput
             newValue = 'new value';
             classn.editOutputValue('entire square', newValue);
-            output = classn.getOutput();
+            output = classn.getOutput(false);
             assertEqual(newValue, output, 'wrong output for new value')
         end
     end

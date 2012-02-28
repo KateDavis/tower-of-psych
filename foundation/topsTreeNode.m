@@ -96,7 +96,7 @@ classdef topsTreeNode < topsRunnableComposite
         % Then finishFevalables will tend to happen last, with children
         % finishing before higher nodes.
         function run(self)
-            self.start;
+            self.start();
             
             % recursive
             try
@@ -138,7 +138,7 @@ classdef topsTreeNode < topsRunnableComposite
                 rethrow(recurErr);
             end
             
-            self.finish;
+            self.finish();
         end
     end
 end

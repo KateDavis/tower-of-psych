@@ -220,15 +220,16 @@ classdef topsClassification < topsFoundation
         % @details
         % Uses the current sample value of all sources to locate a point in
         % the spatial model and return the associated output value.
-        % Returns as a second output the name of the output.  @a doUpdate
-        % is optional.  If provided and true, invokes updateSamples()
-        % before performing classification.
+        % Returns as a second output the name of the output.  By default,
+        % invokes updateSamples() to refresh source sample values. if @a
+        % doUpdate is provided and false, leaves source samples as they
+        % are.
         function [value, name] = getOutput(self, doUpdate)
             value = self.defaultOutput;
             name = self.defaultOutputName;
             
             if nargin < 2
-                doUpdate = false;
+                doUpdate = true;
             end
             
             % get fresh data

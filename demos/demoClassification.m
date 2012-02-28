@@ -47,7 +47,7 @@ f = figure( ...
     'ToolBar', 'none', ...
     'MenuBar', 'none');
 while ishandle(f)
-    [output, outputName] = classn.getOutput(true);
+    [output, outputName] = classn.getOutput();
     set(f, 'Name', [outputName ': ' output])
     drawnow();
 end
