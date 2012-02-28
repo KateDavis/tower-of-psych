@@ -1,23 +1,37 @@
-% Demonstrate SquareTagLogic and SquareTagAV without user input.
-clear
-clear classes
-close all
-clc
+% Demonstrate the SquareTag task, without user input.
+% @param logic SquareTagLogic object, the "back end" of SquareTag
+% @param av SquareTagAV object, the audio-visual "front end" of SquareTag
+% @param tagSteps number of frames to tag each square programmatically
+% @details
+% demoSquareTag() runs through the SquareTag demo task without user
+% intervention.  It coordinates the behaviors of the given @a logic and @a
+% av objects to make a complete task-like demo.  If @a logic or @a
+% av is omitted, demoSquareTag() creates a default object.  Instead of
+% accepting inputs from a user or subject, demoSquareTag() moves the
+% subject's cursor programmatically, over the given @a tagSteps number of
+% animation frames.
+function demoSquareTag(logic, av, tagSteps)
 
-% create the logical "back end" of the SquareTag task
-logic = SquareTagLogic('demo', now());
-logic.nTrials = 4;
-logic.nSquares = 5;
+if nargin < 1 || isempty(logic)
+    % create a logical "back end" of the SquareTag task
+    logic = SquareTagLogic('SquareTag demo', now());
+    logic.nTrials = 3;
+    logic.nSquares = 5;
+end
 
-% chose which kind of audio-visual "front end" to use
-av = SquareTagAVPlotter(logic);
-av.initialize();
+if nargin < 2 || isempty(av)
+    % chose a default audio-visual "front end" to for the task
+    av = SquareTagAVPlotter(logic);
+end
 
-% choose how long it takes the computer to tag each square
-tagSteps = 10;
+if nargin < 3 || isempty(tagSteps)
+    % choose how long it takes the computer to tag each square
+    tagSteps = 10;
+end
 
 % start playing SquareTag!
 logic.startSession();
+av.initialize();
 for ii = 1:logic.nTrials
     
     % initialize the logic and av objects for each trial
