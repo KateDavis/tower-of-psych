@@ -128,6 +128,7 @@ classdef SquareTagAVPlotter < SquareTagAV
 
                 set(self.cursor, 'Visible', 'on');
             end
+            drawnow();
         end
         
         % Indicate ready to tag next square.
@@ -138,12 +139,14 @@ classdef SquareTagAVPlotter < SquareTagAV
                     'FaceColor', self.taggedColor, ...
                     'EdgeColor', self.taggedColor)
             end
+            drawnow();
         end
         
         % Indicate end of trial.
         function doAfterSquares(self)
             set(self.squares, 'Visible', 'off');
             set(self.cursor, 'Visible', 'off');
+            drawnow();
         end
         
         % Update the subject's cursor.
@@ -152,6 +155,7 @@ classdef SquareTagAVPlotter < SquareTagAV
             set(self.cursor, ...
                 'XData', point(1), ...
                 'YData', point(2));
+            drawnow();
         end
     end
 end

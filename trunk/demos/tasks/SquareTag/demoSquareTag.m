@@ -54,7 +54,7 @@ for ii = 1:logic.nTrials
         % wait for the next square to be tagged
         %   logic.cursorMap maps cursor location onto squares
         %   and knows which square should be tagged next
-        while ~strcmp(logic.cursorMap.getOutput(true), logic.tagOutput)
+        while ~strcmp(logic.cursorMap.getOutput(), logic.tagOutput)
             % programmatically step the cursor towards the next square
             cursorPos = logic.getCursorLocation() + cursorDelta;
             logic.setCursorLocation(cursorPos);

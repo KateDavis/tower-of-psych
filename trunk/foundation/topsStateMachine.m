@@ -364,7 +364,7 @@ classdef topsStateMachine < topsConcurrent
         function runBriefly(self)
             % poll for classification result
             if ~isempty(self.currentClassification)
-                nextName = self.currentClassification.getOutput();
+                nextName = self.currentClassification.getOutput(true);
                 if self.isStateName(nextName)
                     self.transitionToStateWithName(nextName);
                     return;
