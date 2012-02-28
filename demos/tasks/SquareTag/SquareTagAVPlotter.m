@@ -1,6 +1,6 @@
 classdef SquareTagAVPlotter < SquareTagAV
     % @class SquareTagAVPlotter
-    % Plot Squaretag graphics in Matlab axes.
+    % Plot Square Tag graphics in Matlab axes.
     % @details
     % SquareTagAVPlotter is a graphical "front end" of the SquareTag task.
     % It plots graphics in a Matlab figure and axes.
