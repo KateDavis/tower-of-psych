@@ -1,4 +1,4 @@
-% Play the SquareTag task.
+% Play the SquareTag task with built-in Matlab graphics and inputs.
 clear
 close all
 
@@ -17,7 +17,7 @@ av = SquareTagAVPlotter(logic);
 % runnable.gui();
 % list.gui();
 
-% execute the 2afc task by invoking run() on the top-level object
+% execute SquareTag!
 topsDataLog.flushAllData();
 runnable.run();
 
