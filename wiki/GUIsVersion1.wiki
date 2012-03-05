@@ -1,5 +1,4 @@
 #summary Notes about redesigned Graphical User Interfaces
-#labels Phase-Design
 
 I hit the GUI code pretty hard, in preparation for [Version1].  The result is a total overhaul of the Tower of Psych GUIs!
 
