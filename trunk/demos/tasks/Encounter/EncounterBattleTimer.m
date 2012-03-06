@@ -1,33 +1,35 @@
 classdef EncounterBattleTimer < handle
-    % Timer class to help schedule events in the "encounter" demo game.
+    % @class EncounterBattleTimer
+    % Timer class to help schedule events in the "Encounter" demo game.
     
     properties
-        % clockFunction time when the next event should occur
-        nextFire=inf;
+        % when the next event should occur in units of clockFunction
+        nextFire = inf;
         
-        % clockFunction interval between scheculed events
-        repeatInterval=inf;
+        % interval between scheculed events in units of clockFunction
+        repeatInterval = inf;
         
         % fevalable cell array to invoke when the timer fires
-        callback={};
+        callback = {};
         
-        % a function that returns the current time as a number
+        % function that returns the current time as a number
         clockFunction = @topsClock;
     end
     
     methods
         % Create a new timer object.
-        function self = EncounterBattleTimer
+        function self = EncounterBattleTimer()
         end
-
+        
         % Load the timer to fire later and invoke a callback, once.
         function loadForTimeWithCallback(self, time, callback)
             self.nextFire = time;
             self.callback = callback;
         end
-
+        
         % Load the timer to fire later and invoke a callback, repeatedly.
-        function loadForRepeatIntervalWithCallback(self, interval, callback)
+        function loadForRepeatIntervalWithCallback( ...
+                self, interval, callback)
             self.repeatInterval = interval;
             self.callback = callback;
         end
@@ -45,7 +47,8 @@ classdef EncounterBattleTimer < handle
             
             if didFire
                 feval(self.callback{:});
-                topsDataLog.logDataInGroup(self.callback, 'battleTimer fired');
+                topsDataLog.logDataInGroup( ...
+                    self.callback, 'battleTimer fired');
                 self.nextFire = nowTime + self.repeatInterval;
             end
         end
