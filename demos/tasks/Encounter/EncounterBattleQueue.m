@@ -1,5 +1,6 @@
 classdef EncounterBattleQueue < handle
-    % Queue of feval()able cell arrays, for "encounter" demo game.
+    % @class EncounterBattleQueue
+    % Queue of feval()able cell arrays, for "Encounter" demo game.
     
     properties
         % cell array of fevalable cell arrays
@@ -11,7 +12,7 @@ classdef EncounterBattleQueue < handle
     
     methods
         % Create a new queue object.
-        function self = EncounterBattleQueue
+        function self = EncounterBattleQueue()
         end
         
         % Clear out all queued fevalables without invoking them.
@@ -28,10 +29,10 @@ classdef EncounterBattleQueue < handle
         % @details
         % If isLocked is true, does nothing.
         function dispatchNextFevalable(self)
-            if ~self.isLocked && length(self.fevalables) > 0
+            if ~self.isLocked && ~isempty(self.fevalables)
                 feval(self.fevalables{1}{:});
-                topsDataLog.logDataInGroup(self.fevalables{1}, ...
-                    'battleQueue dispatched');
+                topsDataLog.logDataInGroup( ...
+                    self.fevalables{1}, 'battleQueue dispatched');
                 self.fevalables(1) = [];
             end
         end
