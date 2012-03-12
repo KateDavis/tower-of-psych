@@ -42,6 +42,8 @@ topsFoundation subclasses should all take a "name" argument in their constructor
 I want move encounter/ and spots/ demos into a tasks/ folder
  (small)
 
+_This was done in March 2012._
+
 ===Foundation===
 I want to rename EventWithData -> topsEvent
  (small)
@@ -51,7 +53,7 @@ _This became moot in February, 2012.  See [GUIsVersion1]_
 ===Utilities===
 Several of the utilities/ functions can be cleaned up or organized.
 
-  * Retain spacedColors, but implement "pueblo" as well
+  * Retain spacedColors, but implement "puebloColors" as well
   * summarizeValue may truncate internally
   * "bench_" -> "benchmark_", retain all as points of interest
   * "Grapher" -> "tops_Grapher"
@@ -89,6 +91,8 @@ The issues database has become stale and irrelevant.
   * Close issues solved in 1.0
   * _No-Solve other issues with a note (did on 8 Jan)_
  (small)
+
+_I worked through and closed all the outstanding issues in March 2012._
 
 ===Main Page===
 The project main page should be updated.
