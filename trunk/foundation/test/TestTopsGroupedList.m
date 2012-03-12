@@ -73,22 +73,6 @@ classdef TestTopsGroupedList < TestTopsFoundation
                 'should get same group items for subs or normal syntax');
         end
         
-        function testAddIdea(self)
-            ideas = sort(self.stringMnemonics);
-            for ii = 1:length(ideas)
-                returnedIdeas{ii} = self.groupedList.addIdea(ideas{ii});
-            end
-            [groupItems, groupMnemonics] = ...
-                self.groupedList.getAllItemsFromGroup( ...
-                self.groupedList.ideasGroup);
-            assertEqual(ideas, returnedIdeas, ...
-                'should return passed in idea')
-            assertEqual(ideas, groupItems, ...
-                'ideas group should contain all ideas')
-            assertEqual(ideas, groupMnemonics, ...
-                'ideas group should use ideas as mnemonics')
-        end
-        
         function testAddStringGroupsStringMnemonics(self)
             % add same items to each group
             groups = self.stringGroups;

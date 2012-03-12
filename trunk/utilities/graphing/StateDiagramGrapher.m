@@ -106,8 +106,10 @@ classdef StateDiagramGrapher < handle
                 funName = funs{ii};
                 fun = id.(funName);
                 if ~isempty(fun)
+                    func = evalc('disp(fun{1})');
+                    func = func(~isspace(func));
                     description{end+1} = sprintf('%s: %s', ...
-                        funName, summarizeValue(fun{1}));
+                        funName, func);
                 end
             end
             
@@ -137,7 +139,7 @@ classdef StateDiagramGrapher < handle
             
             % check the state's classification object
             if ~isempty(id.classification)
-                default = id.classification.defaultOutput;
+                default = id.classification.defaultOutput
                 defaultIndex = find(strcmp(stateNames, default), 1);
                 if ~isempty(defaultIndex)
                     edgeIndexes(end+1) = defaultIndex;
@@ -147,8 +149,8 @@ classdef StateDiagramGrapher < handle
                 outputs = id.classification.outputs;
                 for ii = 1:numel(outputs)
                     edgeIndexes(end+1) = ...
-                        find(strcmp(stateNames, outputs.value), 1);
-                    edgeNames{end+1} = outputs.name;
+                        find(strcmp(stateNames, outputs(ii).value), 1);
+                    edgeNames{end+1} = outputs(ii).name;
                 end
             end
             
