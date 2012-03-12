@@ -10,7 +10,7 @@ classdef topsStateMachine < topsConcurrent
     %
     % @ingroup foundataion
     
-    properties (SetObservable)
+    properties
         % struct array of data for each state
         % @details
         % Each element of allStates represents a single state.  See
@@ -60,7 +60,7 @@ classdef topsStateMachine < topsConcurrent
             'fevalable', {});
     end
     
-    properties (Hidden)
+    properties (SetAccess = protected)
         % allStates array index for the current state
         currentIndex = [];
         

@@ -256,7 +256,7 @@ classdef ObjectGrapher < handle
         end
     end
     
-    methods(Static)
+    methods (Static)
         % Make a name for an object based on its class name an a "serial
         % letter".
         function nodeName = classNameWithLetter(inputData, index)
@@ -277,19 +277,14 @@ classdef ObjectGrapher < handle
             end
         end
         
-        % Put the public properties of the object into a struct.
+        % Put the public properties of the given object into a struct.
         function structObj = objectToStruct(object)
-            metaObj = metaclass(object);
-            metaProps = [metaObj.Properties{:}];
-            propNames = {metaProps.Name};
-            isGetAllowed = strcmp({metaProps.GetAccess}, 'public');
-            isSetAllowed = strcmp({metaProps.SetAccess}, 'public');
-            allowedNames = propNames(isGetAllowed & isSetAllowed);
-            structObj = cell2struct(allowedNames, allowedNames, 2);
-            for ii = 1:length(allowedNames)
-                name = allowedNames{ii};
-                structObj.(name) = object.(name);
+            props = properties(object);
+            vals = cell(size(props));
+            for ii = 1:numel(props)
+                vals{ii} = object.(props{ii});
             end
+            structObj = cell2struct(vals, props);
         end
     end
 end

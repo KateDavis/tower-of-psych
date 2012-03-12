@@ -17,7 +17,7 @@ classdef topsConcurrent < topsRunnable
     % objects to be treated like a single topsRunnable object.
     % @ingroup foundation
     
-    properties (Hidden)
+    properties
         % string used for topsDataLog entry just before runBriefly()
         runBrieflyString = 'runBriefly';
     end

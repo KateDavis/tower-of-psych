@@ -39,20 +39,12 @@ if nargin < 4 || isempty(getYFunction)
     getYFunction = @()getRootCursor('y');
 end
 
-% debugging
-topsDataLog.flushAllData();
-l = topsDataLog.theDataLog();
-l.printLogging = false;
-
 %% Make a container for all kinds of data.
 list = topsGroupedList();
 list{'logic'}{'object'} = logic;
+list{'av'}{'object'} = av;
 list{'input'}{'getXFunction'} = getXFunction;
 list{'input'}{'getYFunction'} = getYFunction;
-
-% @TODO what if I wanted to wrap av in an ensemble?
-%   is it cheating to accept an ensemble argument?
-list{'av'}{'object'} = av;
 
 %% Make runnables which can execute the task.
 runnable = topsTreeNode('SquareTag session');
