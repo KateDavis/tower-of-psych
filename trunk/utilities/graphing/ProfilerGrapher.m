@@ -7,15 +7,6 @@ classdef ProfilerGrapher < handle
     % to graph which functions called which, and how many times.
     % @ingroup utilities
     
-    % @todo
-    % DataGrapher can ignore and not write nodes empty names.
-    % ProfilerGrapher can go through and blank out function names that
-    % match or fail some criteria (whatever they be).  It can also clear
-    % out Children references for those nodes parents.  That way some
-    % profiler results can be ignored.
-    %
-    % So the question is, what are the criteria?  Positive or negative?
-    
     properties
         % string, a Matlab expression to eval() under the Matlab profiler
         toDo = '';
@@ -51,17 +42,15 @@ classdef ProfilerGrapher < handle
         end
         
         % Generate profiler data with the given toDo expression.
-        function info = runProfiler(self)
+        function run(self)
             profile('on');
             try
                 eval(self.toDo);
             catch err
-                profile('off');
-                rethrow(err);
+                disp(err.message);
             end
             profile('off');
-            info = profile('info');
-            self.profilerInfo = info;
+            self.profilerInfo = profile('info');
         end
         
         % Filter graphed functions based on includePaths and ignoredPaths.
