@@ -5,7 +5,6 @@ classdef TestTopsCallList < TestCase
         nFunctions;
         orderedFunctions;
         order;
-        eventCount;
     end
     
     methods
@@ -89,26 +88,6 @@ classdef TestTopsCallList < TestCase
             self.callList.runBriefly;
             assertEqual(length(self.order), 3, ...
                 'should have called three functions')
-        end
-        
-        function testPropertyChangeEventPosting(self)
-            % listen for event postings
-            props = properties(self.callList);
-            n = length(props);
-            for ii = 1:n
-                self.callList.addlistener(props{ii}, 'PostSet', @self.hearEvent);
-            end
-            
-            % trigger a posting for each property
-            self.eventCount = 0;
-            for ii = 1:n
-                self.callList.(props{ii}) = self.callList.(props{ii});
-            end
-            assertEqual(self.eventCount, n, 'heard wrong number of property set events');
-        end
-        
-        function hearEvent(self, metaProp, event)
-            self.eventCount = self.eventCount + 1;
         end
     end
 end

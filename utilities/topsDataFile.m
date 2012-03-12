@@ -54,7 +54,7 @@ classdef topsDataFile
     end
     
     methods (Access = private)
-        function fObj = topsDataFile
+        function fObj = topsDataFile()
         end
         
         % Convert a topsDataFile object to an equivalent struct.
@@ -76,7 +76,7 @@ classdef topsDataFile
         % those of the topsDataFile class.  @a varargin may contain pairs
         % of property names and values to be assigned to the new struct.
         function fHeader = newHeader(varargin)
-            fObj = topsDataFile;
+            fObj = topsDataFile();
             for ii = 1:2:length(varargin)
                 fObj.(varargin{ii}) = varargin{ii+1};
             end
@@ -133,7 +133,8 @@ classdef topsDataFile
                     
                     % actually read increments from the file
                     nIncrements = numel(increments);
-                    incrementNames = topsDataFile.incrementNamesFromNumbers( ...
+                    incrementNames = ...
+                        topsDataFile.incrementNamesFromNumbers( ...
                         fHeader, increments);
                     incrementCell = cell(1,nIncrements);
                     for ii = 1:nIncrements

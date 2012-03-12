@@ -30,7 +30,7 @@ classdef topsCallList < topsConcurrent
     % with the same name to addCall().
     % @ingroup foundation
     
-    properties (SetObservable)
+    properties
         % struct array with fevalable cell arrays to call as a batch
         calls = struct( ...
             'name', {}, ...

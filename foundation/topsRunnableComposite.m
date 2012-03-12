@@ -9,7 +9,7 @@ classdef topsRunnableComposite < topsRunnable
     % any way.
     % @ingroup foundation
     
-    properties (SetObservable)
+    properties
         % cell array of topsRunnable (or subclass) objects
         children = {};
     end

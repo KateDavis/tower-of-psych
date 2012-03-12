@@ -58,17 +58,20 @@ classdef TestObjectGrapher < TestCase
             og.addSeedObject(listSeed);
             og.addSeedObject(listSeed);
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, n, 'wrong number of uniques for redunant seeds')
+            assertEqual(og.uniqueObjects.length, n, ...
+                'wrong number of uniques for redunant seeds')
         end
         
         function testCrawlCyclic(self)
             [cyclicSeed, n] = self.groupedListSeed;
-            cyclicSeed.addItemToGroupWithMnemonic(cyclicSeed, 'a', 'three')
+            cyclicSeed.addItemToGroupWithMnemonic( ...
+                cyclicSeed, 'a', 'three')
             
             og = ObjectGrapher;
             og.addSeedObject(cyclicSeed);
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, n, 'wrong number of uniques for cyclic seed')
+            assertEqual(og.uniqueObjects.length, n, ...
+                'wrong number of uniques for cyclic seed')
         end
         
         function testCrawlOddObjects(self)
@@ -77,7 +80,8 @@ classdef TestObjectGrapher < TestCase
             og = ObjectGrapher;
             og.addSeedObject(stupidSeed);
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, n, 'wrong number of uniques for stupid seed')
+            assertEqual(og.uniqueObjects.length, n, ...
+                'wrong number of uniques for stupid seed')
         end
         
         function testCrawlVariousTypes(self)
@@ -86,37 +90,42 @@ classdef TestObjectGrapher < TestCase
             og = ObjectGrapher;
             og.addSeedObject(mixedSeed);
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, n, 'wrong number of uniques for cyclic seed')
+            assertEqual(og.uniqueObjects.length, n, ...
+                'wrong number of uniques for cyclic seed')
         end
         
         function testCrawlSeveralSeeds(self)
             [listSeed, m] = self.groupedListSeed;
             [mixedSeed, n] = self.mixedSeed;
             [cyclicSeed, p] = self.groupedListSeed;
-            cyclicSeed.addItemToGroupWithMnemonic(cyclicSeed, 'a', 'three');
+            cyclicSeed.addItemToGroupWithMnemonic( ...
+                cyclicSeed, 'a', 'three');
             
-            og = ObjectGrapher;
+            og = ObjectGrapher();
             og.addSeedObject(self.mixedSeed);
             og.addSeedObject(listSeed);
             og.addSeedObject(listSeed);
             og.addSeedObject(cyclicSeed);
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, m+n+p, 'wrong number of uniques for cyclic seed')
+            assertEqual(og.uniqueObjects.length, m+n+p, ...
+                'wrong number of uniques for cyclic seed')
         end
         
         function testCrawlLimitedElementDepth(self)
             [deepSeed, n] = self.deepSeed;
             
-            og = ObjectGrapher;
+            og = ObjectGrapher();
             og.addSeedObject(deepSeed);
             
             og.maxElementDepth = 1;
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, 0, 'should not have reached any object')
+            assertEqual(og.uniqueObjects.length, 0, ...
+                'should not have reached any object')
             
             og.maxElementDepth = 10;
             og.crawlForUniqueObjects;
-            assertEqual(og.uniqueObjects.length, n, 'should have reached one buried object')
+            assertEqual(og.uniqueObjects.length, n, ...
+                'should have reached one buried object')
         end
         
         function testLookupKey(self)
@@ -124,8 +133,10 @@ classdef TestObjectGrapher < TestCase
             obj = topsGroupedList;
             key = og.addUniqueObject(obj);
             [containsObj, gotKey] = og.containsUniqueObject(obj);
-            assertTrue(containsObj, 'grapher should contain unique object just added!')
-            assertEqual(key, gotKey, 'grapher should return correct key for added object')
+            assertTrue(containsObj, ...
+                'grapher should contain unique object just added!')
+            assertEqual(key, gotKey, ...
+                'grapher should return correct key for added object')
         end
     end
 end

@@ -9,15 +9,13 @@ classdef topsConcurrentComposite < topsRunnableComposite
     % soon as one of its children has isRunning equal to false.
     % @ingroup foundation
     
-    properties (SetObservable)
+    properties
         % logical array reflecting isRunning for each child object
         childIsRunning;
         
         % count of child runBriefly() invocations during the current run()
         runBrieflyCount;
-    end
-    
-    properties (Hidden, SetObservable = false)
+
         % string name for topsDataLog entries about runBriefly invokations
         runBrieflyString = 'runBriefly count';
     end

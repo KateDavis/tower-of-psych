@@ -13,7 +13,7 @@ classdef topsRunnable < topsFoundation
     % @details
     % @ingroup foundation
     
-    properties (SetObservable)
+    properties
         % optional fevalable cell array to invoke just before running
         startFevalable = {};
         
@@ -25,9 +25,7 @@ classdef topsRunnable < topsFoundation
         
         % topsRunnable that invoked run() on this object, or empty
         caller;
-    end
-    
-    properties (Hidden)
+
         % string used for topsDataLog entry just before run()
         startString = 'start';
         

@@ -7,7 +7,7 @@ classdef topsFoundation < handle
     % generating graphical interfaces.
     % @ingroup foundation
     
-    properties (SetObservable)
+    properties
         % a string name to indentify the object
         name = '';
     end

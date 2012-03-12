@@ -25,7 +25,7 @@ classdef topsConditions < topsRunnable
     % false for that object.
     % @ingroup foundation
     
-    properties (SetObservable)
+    properties
         % struct array of parameter names, values and assignment targets
         % @details
         % Each field name of allParameters is the name of an arbitrary
@@ -105,9 +105,7 @@ classdef topsConditions < topsRunnable
         
         % optional fevalable cell array to invoke when isDone
         donePickingFevalable = {};
-    end
-    
-    properties (Hidden, SetObservable = false)
+
         % array of sizes for each parameter's @b values
         allSizes;
         

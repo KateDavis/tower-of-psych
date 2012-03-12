@@ -37,17 +37,18 @@ classdef topsGroupedList < topsFoundation
     % your list by using its gui() method.
     % @ingroup foundation
     
-    properties (SetObservable)
-        % Cell array of strings or numbers identifying all the groups in
-        % the list.
+    properties
+        % cell array of strings or numbers for all list groups
         groups = {};
         
-        % The number of items contained among all groups.
+        % number of items contained among all groups
         length = 0;
     end
     
-    properties(Hidden)
+    properties (SetAccess = protected)
+        % containers.Map of data for each group
         allGroupsMap;
+        
         ideasGroup = 'ideas';
     end
     
@@ -441,7 +442,7 @@ classdef topsGroupedList < topsFoundation
         end
     end
     
-    methods(Static)
+    methods (Static)
         % Does the containers.Map contain the given item?
         % @param map an instance of containers.Map
         % @param item a value or object that might be in the map

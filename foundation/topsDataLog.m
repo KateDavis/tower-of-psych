@@ -47,7 +47,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
         fileWithPath = '';
     end
     
-    properties (SetAccess=private)
+    properties (SetAccess = protected)
         % the time of the first logged data, as reported by clockFunction
         earliestTime;
         
@@ -204,8 +204,22 @@ classdef (Sealed) topsDataLog < topsGroupedList
             infoPan = topsInfoPanel(fig);
             fig.usePanels({infoPan; logPan}, [2 8]);
         end
+
+        % Toggle verbose printouts for data logging.
+        % @param isVerbose whether to print as data are logged
+        % @details
+        % If @a isVerbose is true, topsDataLog will print a message to the
+        % Command Window whenever data is added to the log.  If @a
+        % isVerbose is false or omitted, topsDataLog will print nothing. 
+        function setVerbose(isVerbose)
+            if nargin < 1
+                isVerbose = false;
+            end
+            self = topsDataLog.theDataLog();
+            self.printLogging = isVerbose;
+        end
         
-        % Clear out all data from the log
+        % Clear out all data from the log.
         % @details
         % You can't create new instances of topsDataLog, but you can
         % always clear out the existing instance.  You probably should do
