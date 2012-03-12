@@ -195,7 +195,7 @@ function gameSetup(list)
 fig = figure( ...
     'MenuBar', 'none', ...
     'ToolBar', 'none', ...
-    'Name', 'Click on a bad guy, when a hero wake up.', ...
+    'Name', 'When a hero wakes up, click on a bad guy.', ...
     'NumberTitle', 'off', ...
     'Color', [1 1 1]*0.5);
 list.addItemToGroupWithMnemonic(fig, 'game', 'figure');
@@ -226,6 +226,9 @@ function battleSetup(battleNode, list)
 % show the name of this battle.
 groupName = battleNode.name;
 ax = list.getItemFromGroupWithMnemonic('game', 'axes');
+if ~ishandle(ax)
+    return;
+end
 xlabel(ax, sprintf('You encountered %s!', groupName));
 
 % refresh characters for the next battle
@@ -352,6 +355,13 @@ if all([monsterGroup.isDead])
     disp('Victory!')
 end
 
+% check if the game figure was closed
+fig = list.getItemFromGroupWithMnemonic('game', 'figure');
+if ~ishandle(fig)
+    battleCalls.isRunning = false;
+    disp('Quit.')
+end
+
 % Clean up after each battle.
 function battleTearDown(battleNode, list)
 % clear monster group from axes
@@ -370,4 +380,6 @@ for ii = 1:length(nChars)
     characters(ii).deleteGraphics();
 end
 f = list.getItemFromGroupWithMnemonic('game', 'figure');
-close(f)
+if ishandle(f)
+    close(f)
+end
