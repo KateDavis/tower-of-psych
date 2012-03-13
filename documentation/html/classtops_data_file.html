@@ -19,7 +19,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -49,8 +48,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Utility to organize incremental reading and writing of data. </p>
 <p><a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> facilitates writing data to a single file, incrementally, over time. It keeps track of data increments themeselves as well as metadata related to which increments have already been written. It also facilitates reading incremental data and keeps track of which increments have already been read out.</p>
 <p><a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> is suitable for sharing data (such as <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> data) between separate instance of Matlab running on the same machine. Each Matlab instance should be able to write data increments and read in increments that were written by the other. <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> attempts to prevent data corruption due to poorly timed access by saving data and metadata separately, and using metadata to coordinate file access.  Note that <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> objects are not handle objects, and <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> objects themselves are not returned directly. Instead, the <a class="el" href="classtops_data_file.html#a932f7761ec6c24ffbfa78c05ce94bfba" title="Create a header struct with fields that match the properties of the topsDataFile...">newHeader()</a> methods returns a struct with fields that match the properties of the <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> class, and other <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> methods expect to work with these "header" structs. This pattern faciliitates writing and reading of header meta data to file. It also makes explicit the idea that <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> objects represent data on the hard disk, and should not themselves contain much data or maintain much internal state. </p>
-
-<p>Definition at line <a class="el" href="tops_data_file_8m_source.html#l00001">1</a> of file <a class="el" href="tops_data_file_8m_source.html">topsDataFile.m</a>.</p>
 
 <p><a href="classtops_data_file-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
@@ -114,8 +111,6 @@ static names&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Use this method instead of the <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> constructor.</p>
 <p>Returns a header struct with fields and default values that match those of the <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> class. <em>varargin</em> may contain pairs of property names and values to be assigned to the new struct. </p>
 
-<p>Definition at line <a class="el" href="tops_data_file_8m_source.html#l00086">86</a> of file <a class="el" href="tops_data_file_8m_source.html">topsDataFile.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a1e42f6b536f6148fb314ce8787e6710c"></a><!-- doxytag: member="topsDataFile::read" ref="a1e42f6b536f6148fb314ce8787e6710c" args="(fHeader, increments)" -->
@@ -154,8 +149,6 @@ static names&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Uses <em>fHeader</em> to locate a <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> on disk. If the file exists and contains <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> header metadata, loads the metadata from disk and updates <em>fHeader</em> to match. Returns the updated <em>fHeader</em> </p>
 <p>Also returns a cell array containing any data increments that have not yet been read from disk. These increments correspond to values in <em>fHeader.writtenIncrements</em> that are not yet present in <em>fHeader.readIncrements</em>.</p>
 <p>If <em>increments</em> is provided, attempts to read or re-read the specified data increments from the <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a>. Returns a cell array with the same size as <em>increments</em>. Where the specified <em>increments</em> are not present in the <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a>, the returned cell array will be empty. Using <a class="el" href="classtops_data_file.html#a1e42f6b536f6148fb314ce8787e6710c" title="Read any new data increments from a topsDataFile.">read()</a> in this way will not affect <em>fHeader.readIncrements</em>, or subsequent calls to <a class="el" href="classtops_data_file.html#a1e42f6b536f6148fb314ce8787e6710c" title="Read any new data increments from a topsDataFile.">read()</a>. </p>
-
-<p>Definition at line <a class="el" href="tops_data_file_8m_source.html#l00121">121</a> of file <a class="el" href="tops_data_file_8m_source.html">topsDataFile.m</a>.</p>
 
 </div>
 </div>
@@ -196,12 +189,10 @@ static names&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Since <a class="el" href="classtops_data_file.html#a9c2841b8cc5ac05d5193040fbbe14e8d" title="Write a new data increment to a topsDataFile.">write()</a> updates header metadata only after writing the new increment data, concurrent <a class="el" href="classtops_data_file.html#a1e42f6b536f6148fb314ce8787e6710c" title="Read any new data increments from a topsDataFile.">read()</a> calls, such as from a separate Matlab instance, should be able to safely ignore increment data that's in the process of being written.</p>
 <p>Returns <em>fHeader</em>, which may have been modified with new metadata. </p>
 
-<p>Definition at line <a class="el" href="tops_data_file_8m_source.html#l00194">194</a> of file <a class="el" href="tops_data_file_8m_source.html">topsDataFile.m</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="tops_data_file_8m_source.html">topsDataFile.m</a></li>
+<li>topsDataFile.m</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -218,7 +209,7 @@ static names&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:41:48 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

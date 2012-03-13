@@ -19,7 +19,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -48,8 +47,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>topsFoundation Class Reference</h1><!-- doxytag: class="topsFoundation" --><!-- doxytag: inherits="handle" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>Superclass for all of the funtamental Tower of Psych classes. </p>
 <p>The <a class="el" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes.">topsFoundation</a> superclass provides a common interface for Tower of Psych classes. This includes naming, cell array manipulation, and generating graphical interfaces. </p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00001">1</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
 <div class="dynheader">
 Inheritance diagram for topsFoundation:</div>
 <div class="dynsection">
@@ -109,12 +106,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </dl>
 <p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00020">20</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>.</p>
-
-<p>Referenced by <a class="el" href="classtops_classification.html#a601baeedd432b8b8da8de620bbdb793e">topsClassification::topsClassification()</a>, <a class="el" href="classtops_grouped_list.html#a04e34d3658776f5e027c7cc96e624cde">topsGroupedList::topsGroupedList()</a>, and <a class="el" href="classtops_runnable.html#ac2d99288ac4134628ccd375d4681b764">topsRunnable::topsRunnable()</a>.</p>
-
 </div>
 </div>
 <hr/><h2>Methods</h2>
@@ -138,10 +129,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_call_list.html#abf424157a1ca067a83cc8260bc34c17d">topsCallList</a>, <a class="el" href="classtops_conditions.html#abf424157a1ca067a83cc8260bc34c17d">topsConditions</a>, <a class="el" href="classtops_ensemble.html#abf424157a1ca067a83cc8260bc34c17d">topsEnsemble</a>, <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>, <a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d">topsRunnableComposite</a>, <a class="el" href="classtops_state_machine.html#abf424157a1ca067a83cc8260bc34c17d">topsStateMachine</a>, <a class="el" href="classtops_classification.html#abf424157a1ca067a83cc8260bc34c17d">topsClassification</a>, and <a class="el" href="classtops_grouped_list.html#abf424157a1ca067a83cc8260bc34c17d">topsGroupedList</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00034">34</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>.</p>
 
 </div>
 </div>
@@ -181,8 +168,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Subclasses may overrride to return a specific topsDetailPanel subclass, or let topsFoundataion generate a generic topsValuePanel. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">topsGroupedList</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00050">50</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
 
 </div>
 </div>
@@ -229,8 +214,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>add() inserts <em>item</em> into <em>c</em> at the given <em>index</em>. If no <em>index</em> is given, add() appends <em>item</em> to the end of <em>c</em>.</p>
 <p>Returns the modified cell array <em>c</em>. May also return the index into <em>c</em> where <em>item</em> was inserted. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00071">71</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="aaa149dacf5a0f361cda5f1aa0832ac4f"></a><!-- doxytag: member="topsFoundation::cellContains" ref="aaa149dacf5a0f361cda5f1aa0832ac4f" args="(c, item)" -->
@@ -268,8 +251,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </dl>
 <p>Returns a logical array the same size as c, which is true where elements of <em>c</em> are equal to <em>item</em>.</p>
 <p><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f" title="Does a cell array conatin an item?">cellContains()</a> compares items for equality using Matlab's built-in eq() when it can, or else isequal(). </p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00099">99</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
 
 </div>
 </div>
@@ -309,8 +290,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Removes all elements of <em>c</em> that are equal to the given <em>item</em>.</p>
 <p>Returns the modified cell array, <em>c</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00123">123</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="af7c2c51ecb1a04fd026c7ad28c87968b"></a><!-- doxytag: member="topsFoundation::cellRemoveElement" ref="af7c2c51ecb1a04fd026c7ad28c87968b" args="(c, index)" -->
@@ -349,8 +328,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Removes the indexed element or elements of <em>c</em>.</p>
 <p>Returns the modified cell array, <em>c</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00139">139</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a1db67e09e0d779cafcabc4eed2bf2de5"></a><!-- doxytag: member="topsFoundation::findStructName" ref="a1db67e09e0d779cafcabc4eed2bf2de5" args="(s, name)" -->
@@ -388,14 +365,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </dl>
 <p>Assumes that <em>s</em> is a struct array with a "name" field. Searches the elements of <em>s</em> for the given <em>name</em>. Returns the index of the first occurence of <em>name</em>. If <em>name</em> was not found, returns numel(<em>s</em>) plus 1. Returns as a second output a logical selector for the elements of <em>s</em>, set to true where <em>name</em> was found. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00159">159</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a></li>
+<li>topsFoundation.m</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -412,7 +385,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:41:49 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

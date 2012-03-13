@@ -19,7 +19,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -48,8 +47,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>DataGrapher Class Reference</h1><!-- doxytag: class="DataGrapher" --><!-- doxytag: inherits="handle" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>A Matlab interface for the GraphViz graphing tool. </p>
 <p><a class="el" href="class_data_grapher.html" title="A Matlab interface for the GraphViz graphing tool.">DataGrapher</a> uses the GraphViz graphing tool to generate nice-looking graphs of arbitrary data. The input data are a Matlab struct array, each element of which defines a node to be plotted. User-supplied functions generate a name for each node as well as "edges" that connect nodes. Properties of <a class="el" href="class_data_grapher.html" title="A Matlab interface for the GraphViz graphing tool.">DataGrapher</a> control the general behavior of GraphViz. </p>
-
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00001">1</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
 
 <p>Inherits handle.</p>
 
@@ -169,10 +166,6 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 
 <p>struct array containing node data The graph will contain one node per element of inputData. </p>
 
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00032">32</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
-
-<p>Referenced by <a class="el" href="class_data_grapher.html#ac22c45f4ea79cc49183f2b2ee5350ea4">edgeFromField()</a>, <a class="el" href="class_data_grapher.html#a9160abea4b47bfd73d98a9991af966b2">nodeNameFromField()</a>, and <a class="el" href="class_data_grapher.html#ae66cb68ee45079c54d7b7951be227fe2">parseNodes()</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a4d34595e122476f03a43a0bb838c4196"></a><!-- doxytag: member="DataGrapher::nodeNameFunction" ref="a4d34595e122476f03a43a0bb838c4196" args="" -->
@@ -188,8 +181,6 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 
 <p>function to generate graph node names Should take inputData and an index into inputData and return a string name for the indexth node. </p>
 
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00040">40</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a3ddec499c7e57454338693ed62f9bdf3"></a><!-- doxytag: member="DataGrapher::nodeDescriptionFunction" ref="a3ddec499c7e57454338693ed62f9bdf3" args="" -->
@@ -204,8 +195,6 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 <div class="memdoc">
 
 <p>function to generate graph node descriptions (optional) Should take inputData and an index into inputData and return a cell array of strings describing the indexth node. </p>
-
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00045">45</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
 
 </div>
 </div>
@@ -223,8 +212,6 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 <p>function to generate graph edges Should take inputData and an index into inputData and return an array of other indexes. </p>
 <p>These specify edges from the given indexth node to the returned indexth nodes. Should also return as a second output a cell array with a string name for each edge. </p>
 
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00052">52</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a122abd855a65a7b36bc3bba0636c5b34"></a><!-- doxytag: member="DataGrapher::floatingEdgeNames" ref="a122abd855a65a7b36bc3bba0636c5b34" args="" -->
@@ -239,8 +226,6 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 <div class="memdoc">
 
 <p>true or false whether to write edge names on the edges themselves. </p>
-
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00063">63</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
 
 </div>
 </div>
@@ -257,12 +242,10 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 
 <p>true or false whether to list edge names inside their originating nodes. </p>
 
-<p>Definition at line <a class="el" href="_data_grapher_8m_source.html#l00067">67</a> of file <a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="_data_grapher_8m_source.html">DataGrapher.m</a></li>
+<li>DataGrapher.m</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -279,7 +262,7 @@ static edgeIndexes edgeNames&nbsp;</td><td class="memItemRight" valign="bottom">
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:41:48 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

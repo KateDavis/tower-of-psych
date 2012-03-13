@@ -19,7 +19,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -48,8 +47,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>topsStateMachine Class Reference</h1><!-- doxytag: class="topsStateMachine" --><!-- doxytag: inherits="topsConcurrent" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>A state machine for controlling flow through predefined states. </p>
 <p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> may contain arbitrary states to be traversed when it <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a>s. Each state may invoke functions and transition to other states with specified timing. State traversal may be deterministic, or may be conditional and branching based on classifications or input functions. </p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00001">1</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
 <div class="dynheader">
 Inheritance diagram for topsStateMachine:</div>
 <div class="dynsection">
@@ -226,10 +223,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </dl>
 <p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
 
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00097">97</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#adfa93e512ddbfdc83d7080d1c7ce2cfe">stateNameToIndex</a>, and <a class="el" href="classtops_concurrent.html#a4241207816794aa2ccddffe1dd405582">topsConcurrent::topsConcurrent()</a>.</p>
-
 </div>
 </div>
 <hr/><h2>Methods</h2>
@@ -253,10 +246,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00113">113</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a>, and <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
 
 </div>
 </div>
@@ -297,8 +286,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Each additional row of <em>statesInfo</em> shoud contain values aligned with the field names in the first row. A new state will be added using each row of values. Default values will be used where fields are omitted. The <b>name</b> field is mandatory.</p>
 <p>The values in the <b>name</b> column should be unique with respect to each other and any existing states. When names collide, new states will replace existing states.</p>
 <p>Returns an array of indexes into allStates where the new states were appended or inserted. </p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00158">158</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
 
 </div>
 </div>
@@ -349,10 +336,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Fields of stateInfo may correspond to one of the names in sharedEntry or sharedExit. Values in these fields will be passed as state-specific arguments to the shared fevalable.</p>
 <p>Returns the index into allStates where the new state was appended or inserted. </p>
 
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00207">207</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a>, <a class="el" href="classtops_state_machine.html#af368847f7002cf657df3358f019dff16">sharedEntry</a>, <a class="el" href="classtops_state_machine.html#a9afae22f20f34a634ed9ced8b18f7f47">sharedExit</a>, <a class="el" href="classtops_state_machine.html#ae202b93b5e7da3a76264604ca53637e3">stateDefaults</a>, and <a class="el" href="classtops_state_machine.html#a2182892bae7c65ccf7c215b5b5664c61">stateFields</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a9e441d0cfe10bf3c787028c1cf3c5ad7"></a><!-- doxytag: member="topsStateMachine::editStateByName" ref="a9e441d0cfe10bf3c787028c1cf3c5ad7" args="(self, stateName, varargin)" -->
@@ -397,10 +380,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Assigns the given values to the given fields of the existing state that has the name <em>stateName</em>. <em>varargin</em> represents a flexible number of traling arguments passed to <a class="el" href="classtops_state_machine.html#a9e441d0cfe10bf3c787028c1cf3c5ad7" title="Edit fields of an existing state.">editStateByName()</a>. The first argument in each pair should be one of the field names of the allStates struct, which include the default state fields described for addField() and the names of any sharedEntry or sharedExit fevalables. The second argument in each pair should be a value to assign to the named field.</p>
 <p>Editing the <b>name</b> field of a state might cause the state machine to misbehave.</p>
 <p>Returns the index into allStates of the <em>stateName</em> state. If <em>stateName</em> is not the name of an existing state, returns []. </p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00263">263</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a>.</p>
 
 </div>
 </div>
@@ -454,10 +433,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Each state may specify additional arguments to pass to <em>fevalable</em>. These may be specified like other state data, using <em>name</em> as the state field. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> and <a class="el" href="classtops_state_machine.html#a5ae2f5eec8740c5c2c4ddc2d3eb78d18" title="Add multiple states to the state machine.">addMultipleStates()</a> for details on specifying state data.</p>
 <p><em>name</em> must be unique with respect to other sharedEntry or sharedExit fevalables. If <em>name</em> matches an existing sharedEntry or sharedExit, <em>fevalable</em> will replace the existing function. </p>
 
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00301">301</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a>, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>, <a class="el" href="classtops_state_machine.html#af368847f7002cf657df3358f019dff16">sharedEntry</a>, and <a class="el" href="classtops_state_machine.html#a9afae22f20f34a634ed9ced8b18f7f47">sharedExit</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="aeb3b30c60946a22761128cbd397add94"></a><!-- doxytag: member="topsStateMachine::start" ref="aeb3b30c60946a22761128cbd397add94" args="(self)" -->
@@ -480,10 +455,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> extends the <a class="el" href="classtops_state_machine.html#aeb3b30c60946a22761128cbd397add94" title="Prepare for state traversal.">start()</a> method of <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> to record the startTime and enter the first state in allStates. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94">topsRunnable</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00363">363</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a18414c54c7ec4b757437956d8e2bfd3f">clockFunction</a>.</p>
 
 </div>
 </div>
@@ -508,10 +479,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsRunnable</a>.</p>
 
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00378">378</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a>, <a class="el" href="classtops_state_machine.html#a18414c54c7ec4b757437956d8e2bfd3f">clockFunction</a>, and <a class="el" href="classtops_state_machine.html#a091ba6272137818a9f60c86d5deb2ace">currentIndex</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="ad39f1b8814f26d4d247d7da89dcd1173"></a><!-- doxytag: member="topsStateMachine::runBriefly" ref="ad39f1b8814f26d4d247d7da89dcd1173" args="(self)" -->
@@ -534,10 +501,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> extends the <a class="el" href="classtops_state_machine.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control within the state list.">runBriefly()</a> method of <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> to do state traversal. It checks the <b>input</b> fevalable and <b>classification</b> for the current state. If <b>input</b> or <b>classification</b> returns a state name, transitions to that state immediately. If not, checks whether the current state's timeout has expired. If timeout has expired, transitions to the next state immediately. If there is no next state, traversal ends. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_concurrent.html#ad39f1b8814f26d4d247d7da89dcd1173">topsConcurrent</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00402">402</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>References <a class="el" href="classtops_state_machine.html#a18414c54c7ec4b757437956d8e2bfd3f">clockFunction</a>, <a class="el" href="classtops_state_machine.html#a759cef2d989439c304dc0558cc110ee6">currentClassification</a>, <a class="el" href="classtops_state_machine.html#a091ba6272137818a9f60c86d5deb2ace">currentIndex</a>, and <a class="el" href="classtops_state_machine.html#af0873f1a8591d6a832b4cebdb06435ee">currentInput</a>.</p>
 
 </div>
 </div>
@@ -575,10 +538,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </dl>
 <p><a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> redefines the <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a>. It uses <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log action and prepare to do flow control.">start()</a>, <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, action and finish doing flow control.">finish()</a>, and repeated calls to <a class="el" href="classtops_concurrent.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control and return as soon as possible.">runBriefly()</a> to accomplish <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a> behaviors. By default, <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a> takes over flow-control from the caller until isRunning becomes false. If <em>duration</em> is provided, runs until isRunning becomes false, or <em>duration</em> elapses, then sets isRunning to false. </p>
 
-<p>Definition at line <a class="el" href="tops_concurrent_8m_source.html#l00047">47</a> of file <a class="el" href="tops_concurrent_8m_source.html">topsConcurrent.m</a>.</p>
-
-<p>References <a class="el" href="classtops_concurrent.html#ad39f1b8814f26d4d247d7da89dcd1173">topsConcurrent::runBriefly()</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a08060e0924949738f75a0cdd8b49cef4"></a><!-- doxytag: member="topsStateMachine::run" ref="a08060e0924949738f75a0cdd8b49cef4" args="(self)" -->
@@ -602,10 +561,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Subclasses should redefine <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> to do custom behaviors. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_concurrent_composite.html#a08060e0924949738f75a0cdd8b49cef4">topsConcurrentComposite</a>, <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4">topsConditions</a>, and <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4">topsTreeNode</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00055">55</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
-
-<p>Referenced by <a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d">topsRunnableComposite::gui()</a>.</p>
 
 </div>
 </div>
@@ -649,10 +604,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
   </dd>
 </dl>
 <p>logAction is a convenient way to note in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> that some event of interest has occurred. The log entry will contain the name of this <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object, concatenated with <em>actionName</em>. It will store <em>actionData</em>, if given. </p>
-
-<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00106">106</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
 
 </div>
 </div>
@@ -699,10 +650,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>The log entry will not store any of the arguments from the second or later elements of <em>fevalable</em>. This is because the arguments may be handle objects, and Matlab does a bad job of storing large collections of handle objects--both in memory and in .mat files.</p>
 <p>After making a new entry in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, logFeval also invokes <em>fevalable</em> with the feval() function. </p>
 
-<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00141">141</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="acc772c903527cca8657740197f30c34b"></a><!-- doxytag: member="topsStateMachine::guiPanel" ref="acc772c903527cca8657740197f30c34b" args="(self, varargin)" -->
@@ -741,8 +688,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Subclasses may overrride to return a specific topsDetailPanel subclass, or let topsFoundataion generate a generic topsValuePanel. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">topsGroupedList</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00050">50</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
 
 </div>
 </div>
@@ -789,8 +734,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>add() inserts <em>item</em> into <em>c</em> at the given <em>index</em>. If no <em>index</em> is given, add() appends <em>item</em> to the end of <em>c</em>.</p>
 <p>Returns the modified cell array <em>c</em>. May also return the index into <em>c</em> where <em>item</em> was inserted. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00071">71</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="aaa149dacf5a0f361cda5f1aa0832ac4f"></a><!-- doxytag: member="topsStateMachine::cellContains" ref="aaa149dacf5a0f361cda5f1aa0832ac4f" args="(c, item)" -->
@@ -828,8 +771,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </dl>
 <p>Returns a logical array the same size as c, which is true where elements of <em>c</em> are equal to <em>item</em>.</p>
 <p><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f" title="Does a cell array conatin an item?">cellContains()</a> compares items for equality using Matlab's built-in eq() when it can, or else isequal(). </p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00099">99</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
 
 </div>
 </div>
@@ -869,8 +810,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Removes all elements of <em>c</em> that are equal to the given <em>item</em>.</p>
 <p>Returns the modified cell array, <em>c</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00123">123</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="af7c2c51ecb1a04fd026c7ad28c87968b"></a><!-- doxytag: member="topsStateMachine::cellRemoveElement" ref="af7c2c51ecb1a04fd026c7ad28c87968b" args="(c, index)" -->
@@ -909,8 +848,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Removes the indexed element or elements of <em>c</em>.</p>
 <p>Returns the modified cell array, <em>c</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00139">139</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a1db67e09e0d779cafcabc4eed2bf2de5"></a><!-- doxytag: member="topsStateMachine::findStructName" ref="a1db67e09e0d779cafcabc4eed2bf2de5" args="(s, name)" -->
@@ -948,10 +885,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </dl>
 <p>Assumes that <em>s</em> is a struct array with a "name" field. Searches the elements of <em>s</em> for the given <em>name</em>. Returns the index of the first occurence of <em>name</em>. If <em>name</em> was not found, returns numel(<em>s</em>) plus 1. Returns as a second output a logical selector for the elements of <em>s</em>, set to true where <em>name</em> was found. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00159">159</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
-
 </div>
 </div>
 <hr/><h2>Properties and Events</h2>
@@ -969,10 +902,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>struct array of data for each state </p>
 <p>Each element of allStates represents a single state. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details about the struct fields and state properties. </p>
 
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00018">18</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>Referenced by <a class="el" href="classtops_state_machine.html#a699ede3741dfdf33ddee4f8b32973218">addSharedFevalableWithName()</a>, <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561">addState()</a>, <a class="el" href="classtops_state_machine.html#a9e441d0cfe10bf3c787028c1cf3c5ad7">editStateByName()</a>, <a class="el" href="classtops_state_machine.html#a7ec46371e9a360334621a2f4f3ef7408">enterStateAtIndex()</a>, <a class="el" href="classtops_state_machine.html#a398a82043f7493f0ec73b0a57fa4c5b7">finish()</a>, and <a class="el" href="classtops_state_machine.html#abf424157a1ca067a83cc8260bc34c17d">gui()</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a24701c49c20d912138a10311f57be1e2"></a><!-- doxytag: member="topsStateMachine::transitionFevalable" ref="a24701c49c20d912138a10311f57be1e2" args="" -->
@@ -988,10 +917,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 <p>optional fevalable cell array to invoke during state transitions </p>
 <p>The function should expect as the first argument a 1x2 struct array of information about the previous state and the next state, with elements in that order. Any other arguments in the cell array will be passed to the function starting at the second place. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details of the struct state information. </p>
-
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00028">28</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
-<p>Referenced by <a class="el" href="classtops_state_machine.html#aec3bd1393887c8291a08feec58b38bdb">transitionToStateWithName()</a>.</p>
 
 </div>
 </div>
@@ -1009,12 +934,10 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>struct of information about the last state encountered during traversal. </p>
 <p>See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details of the struct state information. </p>
 
-<p>Definition at line <a class="el" href="tops_state_machine_8m_source.html#l00043">43</a> of file <a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="tops_state_machine_8m_source.html">topsStateMachine.m</a></li>
+<li>topsStateMachine.m</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -1031,7 +954,7 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:41:49 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

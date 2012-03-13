@@ -19,7 +19,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -53,8 +52,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>There is one important constriant on groups and mnemonics: for each instance of <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, all groups must be identified by <em>either</em> strings <em>or</em> numbers, but not a mixture of the two. Likewise, the mnemonics used in each group must be all strings or all numbers.</p>
 <p>One way in which <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> is better organized than a random collection of structs and cell arrays is that you can always "ask" it what groups, mnemonics, and items it contains, and it knows where to look for them. You can also ask it <em>if</em> it contains a certain group, mnemonic, or item.</p>
 <p>The big idea is that you can neatly list whatever data and objects you need for an experiment. As long as you give the list to your other functions and objects (as an argument, for example), they can access all of your stuff. Moreover, you can always view what's in your list by using its <a class="el" href="classtops_grouped_list.html#abf424157a1ca067a83cc8260bc34c17d" title="Open a GUI to view object details.">gui()</a> method. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00001">1</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
 <div class="dynheader">
 Inheritance diagram for topsGroupedList:</div>
 <div class="dynsection">
@@ -162,10 +159,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00056">56</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#ad0781bb0cad08b538c55c3beaa019609">topsFoundation::topsFoundation()</a>.</p>
-
 </div>
 </div>
 <hr/><h2>Methods</h2>
@@ -189,10 +182,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_foundation.html#abf424157a1ca067a83cc8260bc34c17d">topsFoundation</a>.</p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00068">68</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
 
 </div>
 </div>
@@ -244,10 +233,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Note: for each <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, group values must be all strings or all numbers. Likewise, for each group, mnemonics must be all strings or all numbers. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00101">101</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#acc938317d4f9988fe0c818f0afdc4ad5">allGroupsMap</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a732f98799efeda7ae52e1e70efce809e"></a><!-- doxytag: member="topsGroupedList::removeItemFromGroup" ref="a732f98799efeda7ae52e1e70efce809e" args="(self, item, group)" -->
@@ -292,10 +277,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>Searches <em>group</em> for items that isequal() to <em>item</em>. Removes all such items, along with their mnemonics.</p>
 <p>This method is likely to be very slow. Use removeMnemonicFromGroup for better performance. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00141">141</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="acbbda56a3a47b4e16df6c75c947beb39"></a><!-- doxytag: member="topsGroupedList::removeMnemonicFromGroup" ref="acbbda56a3a47b4e16df6c75c947beb39" args="(self, mnemonic, group)" -->
@@ -339,8 +320,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Removes <em>mnemonic</em> and its item from <em>group</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00162">162</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="aee8be8312278490ab0e6868fd54d2690"></a><!-- doxytag: member="topsGroupedList::removeGroup" ref="aee8be8312278490ab0e6868fd54d2690" args="(self, group)" -->
@@ -377,10 +356,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Removes all mnemonics and items from <em>group</em>, then removes <em>group</em> itself from the list. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00177">177</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a7887afcb1cee067b8acfc74d19f37e48"></a><!-- doxytag: member="topsGroupedList::removeAllGroups" ref="a7887afcb1cee067b8acfc74d19f37e48" args="(self)" -->
@@ -401,8 +376,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 
 <p>Remove a whole groups from the list. </p>
 <p>Removes each item from each group, and each group itself, one at a time. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00192">192</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
 
 </div>
 </div>
@@ -449,10 +422,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>An exception is when the destination group already exists and uses some of the same mnemonics as the source groups. In that case, an item from a source group will overwrite any item in the destination group that has the same mnemonic. Thus, meging group A into group A (itself) should have no effect.</p>
 <p>Another exception is when the source groups share some mnemonics among them. In that case, groups listed later in <em>soureGroups</em> will win out, and their items will overwrite items from other groups that share the same mnemonics. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00226">226</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a784c426b2ccd57f3e3b8b17e3d40d4d9"></a><!-- doxytag: member="topsGroupedList::getItemFromGroupWithMnemonic" ref="a784c426b2ccd57f3e3b8b17e3d40d4d9" args="(self, group, mnemonic)" -->
@@ -496,8 +465,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Returns the item listed under <em>group</em> and <em>mnemonic</em>. If <em>group</em> isn't in the list, or doesn't contain <em>mnemonic</em>, returns []. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00253">253</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="ac3e45f0ed766f8abca5d1b0e3aa2c3c4"></a><!-- doxytag: member="topsGroupedList::subsref" ref="ac3e45f0ed766f8abca5d1b0e3aa2c3c4" args="(self, info)" -->
@@ -531,10 +498,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <li>item = l{g}{m} is the same as item = l.getItemFromGroupWithMnemonic(g,m)</li>
 <li>allItems = l{g} is the same as allItems = l.getAllItemsFromGroup(g) Beware: [allItems, allMnemonics] = l{g} makes Matlab crash. But [allItems, allMnemonics] = l.getAllItemsFromGroup(g) works. </li>
 </ul>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00273">273</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a>.</p>
 
 </div>
 </div>
@@ -575,10 +538,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <li>l{g}{m} = item is the same as l.addItemToGroupWithMnemonic(item, g, m) </li>
 </ul>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00303">303</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a5e7fd94eee4ffc8abf1b78df8255b002"></a><!-- doxytag: member="topsGroupedList::getAllMnemonicsFromGroup" ref="a5e7fd94eee4ffc8abf1b78df8255b002" args="(self, group)" -->
@@ -614,8 +573,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
   </dd>
 </dl>
 <p>Returns a cell array containing all mnemonics from <em>group</em>, or {} if <em>group</em> isn't in the list. The mnemonics will be sorted alphabetically or numerically. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00345">345</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
 
 </div>
 </div>
@@ -653,8 +610,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Returns a cell array of all items from <em>group</em>. If <em>group</em> isn't in the list, returns {}. Items will be sorted alphabetically or numerically, by mnemonic.</p>
 <p>Optionally returns all mnemonics from <em>group</em>, as well. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00362">362</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
 
 </div>
 </div>
@@ -698,8 +653,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </ul>
 <p>If <em>group</em> isn't in the list, the struct array will have zero length. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00385">385</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="ab4c74d6518a321ed20e76bb8d7dd5890"></a><!-- doxytag: member="topsGroupedList::containsGroup" ref="ab4c74d6518a321ed20e76bb8d7dd5890" args="(self, group)" -->
@@ -735,10 +688,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
   </dd>
 </dl>
 <p>Returns true if the list contains <em>group</em>. Otherwise returns false. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00410">410</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a>.</p>
 
 </div>
 </div>
@@ -777,10 +726,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>Compares <em>expression</em> to the names of groups in the list. Returns a cell array of strings of group names that match <em>expression</em>. If the list uses numeric group names, returns an empty cell array.</p>
 <p>Also returns as a second ouput a logical selector with one element per list group, set to true where a group matches <em>expression</em>.</p>
 <p>Regular expressions are specially formatted strings used for matching patterns in other strings. See Matlab's builtin regexp() and "Regular Expressions" documentation. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00438">438</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a>, and <a class="el" href="classtops_grouped_list.html#a3129092463ce8f56ba6726b4ccf73822">numel()</a>.</p>
 
 </div>
 </div>
@@ -825,8 +770,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Returns true if the list contains <em>group</em> and <em>group</em> contains <em>mnemonic</em>. Otherwise returns false. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00463">463</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a55f26b6b59e31d3698bbbf8072ae9271"></a><!-- doxytag: member="topsGroupedList::containsItemInGroup" ref="a55f26b6b59e31d3698bbbf8072ae9271" args="(self, item, group)" -->
@@ -870,10 +813,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Searches <em>group</em> for any occurence of <em>item</em>. Returns true if the list contains <em>group</em> and <em>group</em> contains at least on item that isequal() to <em>item</em>. Otherwise returns false. </p>
 
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00485">485</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#acc938317d4f9988fe0c818f0afdc4ad5">allGroupsMap</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a4dedfbbb1aa700dc52d38e0808a067c0"></a><!-- doxytag: member="topsGroupedList::mapContainsItem" ref="a4dedfbbb1aa700dc52d38e0808a067c0" args="(map, item)" -->
@@ -910,10 +849,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
   </dd>
 </dl>
 <p>Searches the map for the <em>item</em>. Returns true if any value in <em>map</em> isequal() to <em>item</em>. Otherwise returns false. </p>
-
-<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00515">515</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
-
-<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a>.</p>
 
 </div>
 </div>
@@ -960,8 +895,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>add() inserts <em>item</em> into <em>c</em> at the given <em>index</em>. If no <em>index</em> is given, add() appends <em>item</em> to the end of <em>c</em>.</p>
 <p>Returns the modified cell array <em>c</em>. May also return the index into <em>c</em> where <em>item</em> was inserted. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00071">71</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="aaa149dacf5a0f361cda5f1aa0832ac4f"></a><!-- doxytag: member="topsGroupedList::cellContains" ref="aaa149dacf5a0f361cda5f1aa0832ac4f" args="(c, item)" -->
@@ -999,8 +932,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Returns a logical array the same size as c, which is true where elements of <em>c</em> are equal to <em>item</em>.</p>
 <p><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f" title="Does a cell array conatin an item?">cellContains()</a> compares items for equality using Matlab's built-in eq() when it can, or else isequal(). </p>
-
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00099">99</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
 
 </div>
 </div>
@@ -1040,8 +971,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>Removes all elements of <em>c</em> that are equal to the given <em>item</em>.</p>
 <p>Returns the modified cell array, <em>c</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00123">123</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="af7c2c51ecb1a04fd026c7ad28c87968b"></a><!-- doxytag: member="topsGroupedList::cellRemoveElement" ref="af7c2c51ecb1a04fd026c7ad28c87968b" args="(c, index)" -->
@@ -1080,8 +1009,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <p>Removes the indexed element or elements of <em>c</em>.</p>
 <p>Returns the modified cell array, <em>c</em>. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00139">139</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a1db67e09e0d779cafcabc4eed2bf2de5"></a><!-- doxytag: member="topsGroupedList::findStructName" ref="a1db67e09e0d779cafcabc4eed2bf2de5" args="(s, name)" -->
@@ -1119,14 +1046,10 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </dl>
 <p>Assumes that <em>s</em> is a struct array with a "name" field. Searches the elements of <em>s</em> for the given <em>name</em>. Returns the index of the first occurence of <em>name</em>. If <em>name</em> was not found, returns numel(<em>s</em>) plus 1. Returns as a second output a logical selector for the elements of <em>s</em>, set to true where <em>name</em> was found. </p>
 
-<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00159">159</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
-
-<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a></li>
+<li>topsGroupedList.m</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -1143,7 +1066,7 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:41:49 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
