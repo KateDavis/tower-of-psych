@@ -38,6 +38,8 @@ Class members that are intuitively "internal" to a class should all use the SetA
 topsFoundation subclasses should all take a "name" argument in their constructors.  Matlab makes this a pain in the neck because it requires such a constructor to be cut and pasted.  But I think it's worth having a name appear in the same line where an object is created, to make code easy to scan
  (small)
   
+_These are done as of 13 March 2012._
+
 ===Demos===
 I want move encounter/ and spots/ demos into a tasks/ folder
  (small)
@@ -54,10 +56,13 @@ _This became moot in February, 2012.  See [GUIsVersion1]_
 Several of the utilities/ functions can be cleaned up or organized.
 
   * Retain spacedColors, but implement "puebloColors" as well
+    *_done as of January2012._
   * summarizeValue may truncate internally
+    *_made moot as of January2012, removed_
   * "bench_" -> "benchmark_", retain all as points of interest
-  * "Grapher" -> "tops_Grapher"
+    *_done as of 13 March 2012_
   * "GrapherSandbox" -> "demo_Grapher", comment, move to demos/graphing/
+    *_done as of 13 March 2012_
  (small)
 
 ===Tests===
@@ -67,6 +72,8 @@ Some unit tests need renaming.
   * TestStringifyValue -> TestSummarizeValue
     * _This became moot in February, 2012.  See [GUIsVersion1]_
  (small)
+
+_Done as of 13 March 2012_
 
 ===Wiki===
 The wiki should be filled out and brought into agreement with the code and docs.
