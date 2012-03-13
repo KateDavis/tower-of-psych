@@ -86,6 +86,8 @@ The issues database has become stale and irrelevant.
 
 _I worked through and closed all the outstanding issues in March 2012._
 
+----
+
 ===Docs===
 The role and form of the Doxygen docs should be tweaked.
 
