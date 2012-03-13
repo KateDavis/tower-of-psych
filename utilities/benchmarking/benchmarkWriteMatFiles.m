@@ -1,4 +1,4 @@
-function benchWriteMatFiles
+function benchmarkWriteMatFiles
 % Time how .mat file overwriting time depends on double variable size.
 %
 % With Matlab 7.11.0.584 (R2010b) on a MACI64, overwrite time was quite
