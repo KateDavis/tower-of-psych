@@ -1,4 +1,4 @@
-function benchTopsGroupedList(n, useStrings)
+function benchmarkTopsGroupedList(n, useStrings)
 % Measure add, get, and remove times for topsDataLog
 %   The type of item added matters a lot.
 %   Access times for objects--even "value" objects are terrible and
