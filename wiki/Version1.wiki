@@ -12,12 +12,12 @@ This page contains my laundry list of changes to Tower of Psych.
 
 <wiki:toc max_depth="4" />
 
-===January2010===
+===_January2010_===
 The first goal is to complete the changes in the [January2012] milestone.
 
 _This was done at the end of January, 2012._
 
-===GUIs===
+===_GUIs_===
 The topsGUI code evolved into a mess.  I want to clean it up so that it can become more useful.
 
   * ScrollingControlGrid -> topsControlGrid
@@ -31,7 +31,7 @@ The topsGUI code evolved into a mess.  I want to clean it up so that it can beco
 
 _This was done in February, 2012.  See [GUIsVersion1]_
 
-===Code Style===
+===_Code Style_===
 Class members that are intuitively "internal" to a class should all use the SetAccess = protected or Access = protected modifier.  That way members are viewable but won't get messed with by accident.  Now, there's a mix of access modifiers and hidden status, for no good reason.
  (small)
 
@@ -40,19 +40,19 @@ topsFoundation subclasses should all take a "name" argument in their constructor
   
 _These are done as of 13 March 2012._
 
-===Demos===
+===_Demos_===
 I want move encounter/ and spots/ demos into a tasks/ folder
  (small)
 
 _This was done in March 2012._
 
-===Foundation===
+===_Foundation_===
 I want to rename EventWithData -> topsEvent
  (small)
 
 _This became moot in February, 2012.  See [GUIsVersion1]_
 
-===Utilities===
+===_Utilities_===
 Several of the utilities/ functions can be cleaned up or organized.
 
   * Retain spacedColors, but implement "puebloColors" as well
@@ -65,7 +65,9 @@ Several of the utilities/ functions can be cleaned up or organized.
     *_done as of 13 March 2012_
  (small)
 
-===Tests===
+_These are all done as of 13 March 2012._
+
+===_Tests_===
 Some unit tests need renaming.
 
   * Rename tests to agree with 1.0
@@ -75,14 +77,14 @@ Some unit tests need renaming.
 
 _Done as of 13 March 2012_
 
-===Wiki===
-The wiki should be filled out and brought into agreement with the code and docs.
+===_Issues_===
+The issues database has become stale and irrelevant.
 
-  * Replace aboutTowerOfPsych with ComponentsAndConcepts page
-    * component descriptions
-    * checkout links for component folders
-    * sweet diagram
- (big - 1 day)
+  * Close issues solved in 1.0
+  * _No-Solve other issues with a note (did on 8 Jan)_
+ (small)
+
+_I worked through and closed all the outstanding issues in March 2012._
 
 ===Docs===
 The role and form of the Doxygen docs should be tweaked.
@@ -92,14 +94,14 @@ The role and form of the Doxygen docs should be tweaked.
   * Remove confusing nav tabs
  (small)
 
-===Issues===
-The issues database has become stale and irrelevant.
+===Wiki===
+The wiki should be filled out and brought into agreement with the code and docs.
 
-  * Close issues solved in 1.0
-  * _No-Solve other issues with a note (did on 8 Jan)_
- (small)
-
-_I worked through and closed all the outstanding issues in March 2012._
+  * Replace aboutTowerOfPsych with ComponentsAndConcepts page
+    * component descriptions
+    * checkout links for component folders
+    * sweet diagram
+ (big - 1 day)
 
 ===Main Page===
 The project main page should be updated.
