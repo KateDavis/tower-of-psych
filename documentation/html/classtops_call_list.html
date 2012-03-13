@@ -45,10 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <div class="contents">
-<h1>topsCallList Class Reference<br/>
-<small>
-[<a class="el" href="group__foundation.html">Foundation</a>]</small>
-</h1><!-- doxytag: class="topsCallList" --><!-- doxytag: inherits="topsConcurrent" --><hr/><a name="_details"></a><h2>Overview</h2>
+<h1>topsCallList Class Reference</h1><!-- doxytag: class="topsCallList" --><!-- doxytag: inherits="topsConcurrent" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>A list of functions to call sequentially, as a batch. </p>
 <p><a class="el" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch.">topsCallList</a> manages a list of functions to be called as a batch.</p>
 <p>Since <a class="el" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch.">topsCallList</a> extends <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a>, a <a class="el" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch.">topsCallList</a> object can be added as one of the components of a <a class="el" href="classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently.">topsConcurrentComposite</a> object, and its batch of functions can be invoked concurrently with other <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> objects.</p>
@@ -67,9 +64,7 @@ Inheritance diagram for topsCallList:</div>
 <p><a href="classtops_call_list-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1e8e71657cd2edd77c16dc4978b5690"></a><!-- doxytag: member="topsCallList::calls" ref="af1e8e71657cd2edd77c16dc4978b5690" args="" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#af1e8e71657cd2edd77c16dc4978b5690">calls</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array with fevalable cell arrays to call as a batch <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__runnable.html#gaf1e8e71657cd2edd77c16dc4978b5690">calls</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab21d88606077d3889c06e727761f09ec"></a><!-- doxytag: member="topsCallList::alwaysRunning" ref="ab21d88606077d3889c06e727761f09ec" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ab21d88606077d3889c06e727761f09ec">alwaysRunning</a> = true</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">true or false, whether to run indefinitely <br/></td></tr>
@@ -78,11 +73,11 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#a059e87f5ec36f8e477e7e7fcbb3cf535"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38">addCall</a> (self, fevalable, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38">addCall</a> (self, fevalable, <a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an "fevalable" to the call list.  <a href="#a5ffbc9f2b4079043a66289e71bc19a38"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999">setActiveByName</a> (self, isActive, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999">setActiveByName</a> (self, isActive, <a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Toggle whether a call is active.  <a href="#a30972320684a68673d9ff8595acbc999"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">result&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ab1eb32032f81fcb1c88dd795a976580d">callByName</a> (self, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>, isActive)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">result&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ab1eb32032f81fcb1c88dd795a976580d">callByName</a> (self, <a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>, isActive)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Invoke a call now, whether or not it's active.  <a href="#ab1eb32032f81fcb1c88dd795a976580d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad39f1b8814f26d4d247d7da89dcd1173"></a><!-- doxytag: member="topsCallList::runBriefly" ref="ad39f1b8814f26d4d247d7da89dcd1173" args="(self)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173">runBriefly</a> (self)</td></tr>
@@ -161,7 +156,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramtype"><a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
           <td class="paramname"></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -205,7 +200,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramtype"><a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
           <td class="paramname"></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -242,7 +237,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramtype"><a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -291,7 +286,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:51:42 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

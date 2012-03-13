@@ -59,8 +59,8 @@ Inheritance diagram for topsStateMachine:</div>
 <p><a href="classtops_state_machine-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a> = struct([])</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of data for each state  <a href="#a7861e769bf7518302516cfabc3f611a6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__runnable.html#ga7861e769bf7518302516cfabc3f611a6">allStates</a> = struct([])</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of data for each state  <a href="group__runnable.html#ga7861e769bf7518302516cfabc3f611a6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a24701c49c20d912138a10311f57be1e2">transitionFevalable</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">optional fevalable cell array to invoke during state transitions  <a href="#a24701c49c20d912138a10311f57be1e2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18414c54c7ec4b757437956d8e2bfd3f"></a><!-- doxytag: member="topsStateMachine::clockFunction" ref="a18414c54c7ec4b757437956d8e2bfd3f" args="" -->
@@ -125,7 +125,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a new state to the state machine.  <a href="#a0f5d6dba6767f2d089191e1925e04561"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a9e441d0cfe10bf3c787028c1cf3c5ad7">editStateByName</a> (self, stateName, varargin)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Edit fields of an existing state.  <a href="#a9e441d0cfe10bf3c787028c1cf3c5ad7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a699ede3741dfdf33ddee4f8b32973218">addSharedFevalableWithName</a> (self, fevalable, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>, when)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a699ede3741dfdf33ddee4f8b32973218">addSharedFevalableWithName</a> (self, fevalable, <a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>, when)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a function to be invoked during every state.  <a href="#a699ede3741dfdf33ddee4f8b32973218"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a966e4981280cce4a76731b409a8669a0"></a><!-- doxytag: member="topsStateMachine::isStateName" ref="a966e4981280cce4a76731b409a8669a0" args="(self, stateName)" -->
 isState index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a966e4981280cce4a76731b409a8669a0">isStateName</a> (self, stateName)</td></tr>
@@ -358,7 +358,7 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramtype"><a class="el" href="group__foundation.html#ga73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -461,22 +461,6 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </div>
 </div>
 <hr/><h2>Properties and Events</h2>
-<a class="anchor" id="a7861e769bf7518302516cfabc3f611a6"></a><!-- doxytag: member="topsStateMachine::allStates" ref="a7861e769bf7518302516cfabc3f611a6" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Property <a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a> = struct([])</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>struct array of data for each state </p>
-<p>Each element of allStates represents a single state. See <a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561" title="Add a new state to the state machine.">addState()</a> for details about the struct fields and state properties. </p>
-
-</div>
-</div>
 <a class="anchor" id="a24701c49c20d912138a10311f57be1e2"></a><!-- doxytag: member="topsStateMachine::transitionFevalable" ref="a24701c49c20d912138a10311f57be1e2" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -527,7 +511,7 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:51:44 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

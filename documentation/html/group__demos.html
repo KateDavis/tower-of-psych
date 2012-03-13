@@ -38,18 +38,337 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <h1>Demos</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">sm&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga165f43a928b000716382ea8012f2ec83">demoStateMachine</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Demonstrate some key behaviors of the <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> class.  <a href="#ga165f43a928b000716382ea8012f2ec83"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">runnable list&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga3af195f00adc465271945fb7d19eb4eb">configureSquareTag</a> (<a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a>, av, getXFunction, getYFunction)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set up the SquareTag demo task, with user inputs.  <a href="#ga3af195f00adc465271945fb7d19eb4eb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#gac8541df61b0eee7c95d1822087eb446c">demoSquareTag</a> (<a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a>, av, tagSteps)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Demonstrate the SquareTag task, without user input.  <a href="#gac8541df61b0eee7c95d1822087eb446c"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#gacd2903e8327ed133164fb0cb2ff4a614">c</a> = <a class="el" href="classtops_conditions.html">topsConditions</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Demonstrate some key functions of the <a class="el" href="classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects.">topsConditions</a> class.  <a href="#gacd2903e8327ed133164fb0cb2ff4a614"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga92b9868f03333336e94a1bfd530d87a3">hello</a> = {@disp, 'Hello.'}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Demonstrate some key behaviors of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> and <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> objects.  <a href="#ga92b9868f03333336e94a1bfd530d87a3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga688d41daa2e31bd25b9d4ed5659a23a1">dg</a> = <a class="el" href="class_data_grapher.html">DataGrapher</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Try graphing some arbitrary Matlab data with Graphviz.  <a href="#ga688d41daa2e31bd25b9d4ed5659a23a1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear clear classes&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga982b5593d15ee42dfba085b971306134">clc</a> [tree, list] = configureSpotsTask</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Try graphing the references among objects in a workspace.  <a href="#ga982b5593d15ee42dfba085b971306134"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga0a7c6d934ace1e7411eed3cd157e8f7f">pg</a> = <a class="el" href="class_profiler_grapher.html">ProfilerGrapher</a>()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Try graphing the output of the Matlab profiler.  <a href="#ga0a7c6d934ace1e7411eed3cd157e8f7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear clear classes&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a> [runnable, list] = configureSquareTag()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Try graphing state machine states from the SquareTag game.  <a href="#gaf1608441938d23a6e13707673e4b01f7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga99e26599d69a326821fa3af58f6a1e6f">fevalables</a> = {}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga73d044705182dce0379a1c211dca6ec6">name</a> = 'nameless'</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Class to represent character or monster in the "Encounter" demo game.  <a href="#ga73d044705182dce0379a1c211dca6ec6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#gab6dadac4a1b441be8e6bfd9781616aa6">nextFire</a> = inf</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga9336ebf25087d91c818ee6e9ec29f8c1">x</a> = .46</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Run the "Spots Task" demo for Tower of Psych.  <a href="#ga9336ebf25087d91c818ee6e9ec29f8c1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">clear close all&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a> = <a class="el" href="class_square_tag_logic.html">SquareTagLogic</a>('SquareTag demo')</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Play the SquareTag task with built-in Matlab graphics and inputs.  <a href="#ga5de8d95955ddb34978b3cef268b2e736"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#gabe6b1f49ae18eabd8d9a675fc8212cd2">logic</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga7ce953bfc28ffe6e4967632e2fb84d22">backgroundColor</a> = [.7 .7 .8]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__demos.html#ga73d044705182dce0379a1c211dca6ec6">name</a> = ''</td></tr>
 </table>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ga165f43a928b000716382ea8012f2ec83"></a><!-- doxytag: member="demoStateMachine.m::demoStateMachine" ref="ga165f43a928b000716382ea8012f2ec83" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sm demoStateMachine </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Demonstrate some key behaviors of the <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> class. </p>
+<p>Returns a the <a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> object used in the demo. The gui() method of the object will let you visualize its state data. </p>
+<div class="fragment"><pre class="fragment"> sm = <a class="code" href="group__demos.html#ga165f43a928b000716382ea8012f2ec83" title="Demonstrate some key behaviors of the topsStateMachine class.">demoStateMachine</a>;
+ ...
+ sm.gui
+</pre></div> 
+</div>
+</div>
+<a class="anchor" id="ga3af195f00adc465271945fb7d19eb4eb"></a><!-- doxytag: member="configureSquareTag.m::configureSquareTag" ref="ga3af195f00adc465271945fb7d19eb4eb" args="(logic, av, getXFunction, getYFunction)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">runnable list configureSquareTag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a>&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">av&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">getXFunction&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">getYFunction&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set up the SquareTag demo task, with user inputs. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>logic</em>&nbsp;</td><td><a class="el" href="class_square_tag_logic.html" title="Manage state and logical behaviors for the &quot;SquareTag&quot; task.">SquareTagLogic</a> object, the "back end" of SquareTag </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>av</em>&nbsp;</td><td><a class="el" href="class_square_tag_a_v.html" title="Manage graphics and sound for the &quot;SquareTag&quot; task.">SquareTagAV</a> object, the audio-visual "front end" of SquareTag </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>getXFunction</em>&nbsp;</td><td>function that returns x-position, as from a mouse </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>getYFunction</em>&nbsp;</td><td>function that returns y-position, as from a mouse</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Set up to play SquareTag interactively. Uses <em>logic</em> and <em>av</em> as the "back end" and "front end" of the task, respectively. If either is omitted, configureSquareTag makes defaults. <em>getXFunction</em> and <em>getYFunction</em> must be functions_handles. Each funciton should return an x- or y-position input by the subject, for example from a mouse or joystick. x- and y-values should be scaled to the unit square, so that left and bottom are at 0 and top and right are at 1.</p>
+<p>Returns a <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object which can be run() to start playing SquareTag. Also returns as a second output a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> which contains data and objects related to the SquarTag session, including <em>logic</em>, <em>av</em>, <em>getXFunction</em>, and <em>getYFunction</em>. </p>
+
+</div>
+</div>
+<a class="anchor" id="gac8541df61b0eee7c95d1822087eb446c"></a><!-- doxytag: member="demoSquareTag.m::demoSquareTag" ref="gac8541df61b0eee7c95d1822087eb446c" args="(logic, av, tagSteps)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">demoSquareTag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a>&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">av&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tagSteps&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Demonstrate the SquareTag task, without user input. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>logic</em>&nbsp;</td><td><a class="el" href="class_square_tag_logic.html" title="Manage state and logical behaviors for the &quot;SquareTag&quot; task.">SquareTagLogic</a> object, the "back end" of SquareTag </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>av</em>&nbsp;</td><td><a class="el" href="class_square_tag_a_v.html" title="Manage graphics and sound for the &quot;SquareTag&quot; task.">SquareTagAV</a> object, the audio-visual "front end" of SquareTag </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>tagSteps</em>&nbsp;</td><td>number of frames to tag each square programmatically</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><a class="el" href="group__demos.html#gac8541df61b0eee7c95d1822087eb446c" title="Demonstrate the SquareTag task, without user input.">demoSquareTag()</a> runs through the SquareTag demo task without user intervention. It coordinates the behaviors of the given <em>logic</em> and <em>av</em> objects to make a complete task-like demo. If <em>logic</em> or <em>av</em> is omitted, <a class="el" href="group__demos.html#gac8541df61b0eee7c95d1822087eb446c" title="Demonstrate the SquareTag task, without user input.">demoSquareTag()</a> creates a default object. Instead of accepting inputs from a user or subject, <a class="el" href="group__demos.html#gac8541df61b0eee7c95d1822087eb446c" title="Demonstrate the SquareTag task, without user input.">demoSquareTag()</a> moves the subject's cursor programmatically, over the given <em>tagSteps</em> number of animation frames. </p>
+
+</div>
+</div>
 <hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="gacd2903e8327ed133164fb0cb2ff4a614"></a><!-- doxytag: member="demoConditions.m::c" ref="gacd2903e8327ed133164fb0cb2ff4a614" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a> <a class="el" href="group__demos.html#gacd2903e8327ed133164fb0cb2ff4a614">c</a> = <a class="el" href="classtops_conditions.html">topsConditions</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Demonstrate some key functions of the <a class="el" href="classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects.">topsConditions</a> class. </p>
+<p>Create the conditions object </p>
+
+</div>
+</div>
+<a class="anchor" id="ga92b9868f03333336e94a1bfd530d87a3"></a><!-- doxytag: member="demoRunnables.m::hello" ref="ga92b9868f03333336e94a1bfd530d87a3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a> <a class="el" href="group__demos.html#ga92b9868f03333336e94a1bfd530d87a3">hello</a> = {@disp, 'Hello.'}</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Demonstrate some key behaviors of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> and <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> objects. </p>
+<p>% First, define some arbitrary behaviors in "fevalable" cell arrays Using feval() for each of these cell arrays will print a message to the command window. </p>
+
+</div>
+</div>
+<a class="anchor" id="ga688d41daa2e31bd25b9d4ed5659a23a1"></a><!-- doxytag: member="demoDataGrapher.m::dg" ref="ga688d41daa2e31bd25b9d4ed5659a23a1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a> <a class="el" href="group__demos.html#ga688d41daa2e31bd25b9d4ed5659a23a1">dg</a> = <a class="el" href="class_data_grapher.html">DataGrapher</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Try graphing some arbitrary Matlab data with Graphviz. </p>
+<p>Create the grapher object. configure it to make a nice-looking graph. </p>
+
+</div>
+</div>
+<a class="anchor" id="ga982b5593d15ee42dfba085b971306134"></a><!-- doxytag: member="demoObjectGrapher.m::clc" ref="ga982b5593d15ee42dfba085b971306134" args="[tree, list]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a>[tree, list] = configureSpotsTask</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Try graphing the references among objects in a workspace. </p>
+<p>Create some objects that refer to each other, from the "spots" demo task. </p>
+
+</div>
+</div>
+<a class="anchor" id="ga0a7c6d934ace1e7411eed3cd157e8f7f"></a><!-- doxytag: member="demoProfilerGrapher.m::pg" ref="ga0a7c6d934ace1e7411eed3cd157e8f7f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a> <a class="el" href="group__demos.html#ga0a7c6d934ace1e7411eed3cd157e8f7f">pg</a> = <a class="el" href="class_profiler_grapher.html">ProfilerGrapher</a>()</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Try graphing the output of the Matlab profiler. </p>
+<p>Create the grapher object. tell it to generate profiler data with the "encounter" demo game configuraiton. </p>
+
+</div>
+</div>
+<a class="anchor" id="gaf1608441938d23a6e13707673e4b01f7"></a><!-- doxytag: member="demoStateGrapher.m::clc" ref="gaf1608441938d23a6e13707673e4b01f7" args="[runnable, list]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear clear classes <a class="el" href="group__demos.html#gaf1608441938d23a6e13707673e4b01f7">clc</a>[runnable, list] = configureSquareTag()</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Try graphing state machine states from the SquareTag game. </p>
+<p>configure the full dotris game </p>
+
+</div>
+</div>
+<a class="anchor" id="ga99e26599d69a326821fa3af58f6a1e6f"></a><!-- doxytag: member="EncounterBattleQueue::fevalables" ref="ga99e26599d69a326821fa3af58f6a1e6f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Property fevalables = {}<code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>cell array of fevalable cell arrays </p>
+
+</div>
+</div>
+<a class="anchor" id="ga73d044705182dce0379a1c211dca6ec6"></a><!-- doxytag: member="EncounterBattler::name" ref="ga73d044705182dce0379a1c211dca6ec6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Property name = 'nameless'<code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Class to represent character or monster in the "Encounter" demo game. </p>
+<p>string name to display for this battler </p>
+
+</div>
+</div>
+<a class="anchor" id="gab6dadac4a1b441be8e6bfd9781616aa6"></a><!-- doxytag: member="EncounterBattleTimer::nextFire" ref="gab6dadac4a1b441be8e6bfd9781616aa6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Property nextFire = inf<code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>when the next event should occur in units of clockFunction </p>
+
+</div>
+</div>
+<a class="anchor" id="ga9336ebf25087d91c818ee6e9ec29f8c1"></a><!-- doxytag: member="demoSpotsTask.m::x" ref="ga9336ebf25087d91c818ee6e9ec29f8c1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__demos.html#ga9336ebf25087d91c818ee6e9ec29f8c1">x</a> = .46</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Run the "Spots Task" demo for Tower of Psych. </p>
+<p>demoSpotsTask configures and launches the "Spots Task" demo of Tower of Psych. It also launches the topsDataLogGUI in a separate figure. manage screen real estate for the task and two tops GUIs </p>
+
+</div>
+</div>
+<a class="anchor" id="ga5de8d95955ddb34978b3cef268b2e736"></a><!-- doxytag: member="squareTag.m::logic" ref="ga5de8d95955ddb34978b3cef268b2e736" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">clear close all <a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a> = <a class="el" href="class_square_tag_logic.html">SquareTagLogic</a>('SquareTag demo')</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Play the SquareTag task with built-in Matlab graphics and inputs. </p>
+<p>make a new "back end" for SquareTag </p>
+
+</div>
+</div>
 <a class="anchor" id="gabe6b1f49ae18eabd8d9a675fc8212cd2"></a><!-- doxytag: member="SquareTagAV::logic" ref="gabe6b1f49ae18eabd8d9a675fc8212cd2" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Property logic<code> [inherited]</code></td>
+          <td class="memname">Property <a class="el" href="group__demos.html#ga5de8d95955ddb34978b3cef268b2e736">logic</a><code> [inherited]</code></td>
         </tr>
       </table>
 </div>
@@ -101,7 +420,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:51:42 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

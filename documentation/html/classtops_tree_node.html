@@ -45,10 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <div class="contents">
-<h1>topsTreeNode Class Reference<br/>
-<small>
-[<a class="el" href="group__foundation.html">Foundation</a>]</small>
-</h1><!-- doxytag: class="topsTreeNode" --><!-- doxytag: inherits="topsRunnableComposite" --><hr/><a name="_details"></a><h2>Overview</h2>
+<h1>topsTreeNode Class Reference</h1><!-- doxytag: class="topsTreeNode" --><!-- doxytag: inherits="topsRunnableComposite" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>A tree-like way to organize an experiment. </p>
 <p><a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> gives you a uniform, tree-like framework for organizing the different components of an experiment. All levels of organization--trials, sets of trials, tasks, paradigmns, whole experiments--can be represented by interconnected <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> objects, as one large tree.</p>
 <p>Every node may have other <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> objects as "children". You start an experiment by calling <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a> on the topmost node. It invokes a "start" function and then calls <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a> each of its child nodes. Each child does the same, invoking its own "start" function and then invoking <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a> on each of its children.</p>
@@ -71,9 +68,7 @@ Inheritance diagram for topsTreeNode:</div>
 <p><a href="classtops_tree_node-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a177faeeb707c32e20ea096951eb63e3b"></a><!-- doxytag: member="topsTreeNode::iterations" ref="a177faeeb707c32e20ea096951eb63e3b" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a177faeeb707c32e20ea096951eb63e3b">iterations</a> = 1</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">number of times to run through this node's children <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__runnable.html#ga177faeeb707c32e20ea096951eb63e3b">iterations</a> = 1</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13d92241cc55b3da9e48867f0fd660ba"></a><!-- doxytag: member="topsTreeNode::iterationCount" ref="a13d92241cc55b3da9e48867f0fd660ba" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a13d92241cc55b3da9e48867f0fd660ba">iterationCount</a> = 0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">count of iterations while running <br/></td></tr>
@@ -204,7 +199,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:51:44 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
