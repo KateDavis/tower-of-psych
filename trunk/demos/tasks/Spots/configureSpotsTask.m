@@ -40,8 +40,6 @@ function [tree, list] = configureSpotsTask(figurePosition)
 %   the top of configureSpotsTask.m.
 %
 % See also, demoSpotsTask, topsGroupedList, topsTreeNode
-%
-% @ingroup demos
 
 % 2009 benjamin.heasly@gmail.com
 %   Seattle, WA

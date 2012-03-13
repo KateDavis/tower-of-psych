@@ -5,8 +5,6 @@ classdef topsSpace
     % @details
     % Each topsSpace object represents a finite, discrete rectangular
     % space.
-    %
-    % @ingroup foundation
     
     properties
         % string name to describe the space

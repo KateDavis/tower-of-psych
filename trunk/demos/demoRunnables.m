@@ -1,6 +1,4 @@
 % Demonstrate some key behaviors of topsRunnable and topsConcurrent objects
-%
-% @ingroup demos
 
 %% First, define some arbitrary behaviors in "fevalable" cell arrays
 % Using feval() for each of these cell arrays will print a message to the

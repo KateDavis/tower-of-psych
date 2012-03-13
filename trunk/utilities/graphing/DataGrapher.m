@@ -8,8 +8,6 @@ classdef DataGrapher < handle
     % functions generate a name for each node as well as "edges" that
     % connect nodes.  Properties of DataGrapher control the general
     % behavior of GraphViz.
-    %
-    % @ingroup utilities
     
     properties
         % file path to the GraphViz executables, like "dot" and "neato"

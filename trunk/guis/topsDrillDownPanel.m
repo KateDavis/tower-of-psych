@@ -5,9 +5,7 @@ classdef topsDrillDownPanel < topsTreePanel
     % item".  The user can view and select struct fields, object
     % properties, and cell array elements, to arbitrary depth.  Each
     % selection updates the "current item" of a Tower of Psych GUI.
-    %
-    % @ingroup guis
-    
+
     methods
         % Make a new panel in the given figure.
         % @param parentFigure topsFigure to work with

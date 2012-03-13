@@ -25,8 +25,6 @@ classdef topsDataFile
     % file.  It also makes explicit the idea that topsDataFile objects
     % represent data on the hard disk, and should not themselves contain
     % much data or maintain much internal state.
-    %
-    % @ingroup utilities
     
     properties
         % string name of the file to read from and write to, which may

@@ -15,8 +15,6 @@
 % Here are some examples:
 % everythingPassed = topsRunTests();
 % foundationPassed = topsRunTests('foundation');
-%
-% @ingroup utilities
 function didPass = topsRunTests(fileFilter)
 initialFolder = pwd();
 tic();

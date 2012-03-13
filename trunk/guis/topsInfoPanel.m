@@ -5,8 +5,6 @@ classdef topsInfoPanel < topsPanel
     % Psych GUI.  The summary comes from the built-in disp() command,
     % captured as a string.  Data of type char are highlighted according to
     % their spelling.
-    %
-    % @ingroup guis
     
     properties (SetAccess = protected)
         % handle for an HTML display panel

@@ -5,8 +5,6 @@ classdef topsGUIUtilities
     % topsGUIUtilities provides static methods for creating and working
     % with Tower of Psych graphical user interfaces (GUIs).  They deal with
     % tasks like manipulating strings and positions.
-    %
-    % @ingroup guis
     
     methods (Static)
         % Open a GUI that can explore any item.

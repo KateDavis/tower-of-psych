@@ -4,9 +4,7 @@ classdef SquareTagAVPlotter < SquareTagAV
     % @details
     % SquareTagAVPlotter is a graphical "front end" of the SquareTag task.
     % It plots graphics in a Matlab figure and axes.
-    %
-    % @ingroup demos
-    
+
     properties
         % background color for the task
         backgroundColor = [.7 .7 .8];

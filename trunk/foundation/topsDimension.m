@@ -5,9 +5,7 @@ classdef topsDimension
     % Each topsDimension object represents one dimension of a finite,
     % discrete space.  It has evenly spaced points which define the
     % dimension itself, and a descriptive name.
-    %
-    % @ingroup foundation
-    
+
     properties
         % string name to describe the dimension
         name = '';

@@ -13,9 +13,7 @@ classdef topsClassification < topsFoundation
     % The spatial model is backed up by a high-dimensional matrix.  Picking
     % a point in space boils down to indexing into the matrix.  The key is
     % to convert arbitrary data samples into matrix indices.
-    %
-    % @ingroup foundation
-    
+
     properties
         % default output when no other output is defined
         defaultOutput = [];

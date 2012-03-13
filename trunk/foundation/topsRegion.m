@@ -19,9 +19,7 @@ classdef topsRegion
     %   .
     % Combining these four regions by intersection would result in a new,
     % complex region with rectanglular shape.
-    %
-    % @ingroup foundation
-    
+
     properties
         % string name to describe the region
         name = '';

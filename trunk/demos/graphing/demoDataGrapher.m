@@ -1,6 +1,4 @@
 % Try graphing some arbitrary Matlab data with Graphviz.
-%
-% @ingroup demos
 clear
 clear classes
 clc

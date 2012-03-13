@@ -1,6 +1,4 @@
 % Try graphing the references among objects in a workspace.
-%
-% @ingroup demos
 clear
 clear classes
 clc

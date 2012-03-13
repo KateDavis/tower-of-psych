@@ -1,9 +1,7 @@
 classdef EncounterBattleQueue < handle
     % @class EncounterBattleQueue
     % Queue of feval()able cell arrays, for "Encounter" demo game.
-    %
-    % @ingroup demos
-    
+
     properties
         % cell array of fevalable cell arrays
         fevalables = {};

@@ -5,8 +5,6 @@ classdef ProfilerGrapher < handle
     % ProfilerGrapher evaluates a given "toDo" expression under the Matlab
     % profiler and gathers function call data.  It confugures a DataGrapher
     % to graph which functions called which, and how many times.
-    %
-    % @ingroup utilities
     
     properties
         % string, a Matlab expression to eval() under the Matlab profiler

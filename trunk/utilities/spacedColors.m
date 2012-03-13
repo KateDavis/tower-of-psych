@@ -16,8 +16,6 @@
 %   greater the spacing.
 %
 %   See also colormap colorcube
-%
-%   @ingroup utilities
 function colors = spacedColors(n)
 
 if nargin < 1

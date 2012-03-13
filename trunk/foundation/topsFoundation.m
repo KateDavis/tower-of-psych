@@ -5,9 +5,7 @@ classdef topsFoundation < handle
     % The topsFoundation superclass provides a common interface for Tower
     % of Psych classes.  This includes naming, cell array manipulation, and
     % generating graphical interfaces.
-    %
-    % @ingroup foundation
-    
+
     properties
         % a string name to indentify the object
         name = '';

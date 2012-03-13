@@ -7,9 +7,7 @@ classdef topsRunnableComposite < topsRunnable
     % these as "children".  topsRunnableComposite objects run() by
     % combining the run() behaviors of their children.  They may do this in
     % any way.
-    %
-    % @ingroup runnable
-    
+
     properties
         % cell array of topsRunnable (or subclass) objects
         children = {};

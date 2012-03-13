@@ -33,9 +33,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % The log's gui() method should make this even easier.  You can use it
     % to launch topsDataLogGUI, which plots a raster of all logged data
     % over time, with data groups as rows.
-    %
-    % @ingroup foundation
-    
+
     properties
         % any function that returns the current time as a number
         clockFunction = @topsClock;

@@ -4,8 +4,6 @@ classdef topsTreePanel < topsPanel
     % topsTreePanel shows tree that can browse items connected to baseItem.
     % The user can select individual nodes of the tree to set the
     % currentItem for a Tower of Psych GUI.
-    %
-    % @ingroup guis
     
     properties
         % how far to expand the tree automatically when building it

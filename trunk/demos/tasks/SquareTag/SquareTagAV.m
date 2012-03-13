@@ -14,9 +14,7 @@ classdef SquareTagAV < handle
     % SquareTagAV doesn't know *when* do do graphics and sound behaviors.
     % It's up to some other function or class to coordinate the behaviors
     % of a SquareTagAV object, a SquareTagLogic object, and user input.
-    %
-    % @ingroup demos
-    
+
     properties
         % the SquareTagLogic object to work with
         logic;
