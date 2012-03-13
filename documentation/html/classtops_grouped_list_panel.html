@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -45,119 +44,56 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <div class="contents">
-<h1>topsGroupedListPanel Class Reference</h1><!-- doxytag: class="topsGroupedListPanel" --><!-- doxytag: inherits="topsDetailPanel" --><hr/><a name="_details"></a><h2>Overview</h2>
-<p>Resuable 3-column view for topsGroupedLists in <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> interfaces. </p>
-<p>Many interface classes, not just <a class="el" href="classtops_grouped_list_g_u_i.html" title="Visualize the items stored in a grouped list.">topsGroupedListGUI</a>, need to present controls for interacting with <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> objects. <a class="el" href="classtops_grouped_list_panel.html" title="Resuable 3-column view for topsGroupedLists in topsGUI interfaces.">topsGroupedListPanel</a> supports <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> interactions as a uipanel within any <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> subclass. </p>
-<div class="dynheader">
+<h1>topsGroupedListPanel Class Reference</h1><!-- doxytag: class="topsGroupedListPanel" --><!-- doxytag: inherits="topsPanel" --><div class="dynheader">
 Inheritance diagram for topsGroupedListPanel:</div>
 <div class="dynsection">
 <div class="center"><img src="classtops_grouped_list_panel__inherit__graph.png" border="0" usemap="#tops_grouped_list_panel_inherit__map" alt="Inheritance graph"/></div>
 <map name="tops_grouped_list_panel_inherit__map" id="tops_grouped_list_panel_inherit__map">
-<area shape="rect" id="node2" href="classtops_detail_panel.html" title="Superclass to manage each reusable, movable uipanel portion of a topsGUI graphical..." alt="" coords="25,83,156,112"/><area shape="rect" id="node4" href="classhandle.html" title="handle" alt="" coords="57,5,124,35"/></map>
+<area shape="rect" id="node2" href="classtops_panel.html" title="topsPanel" alt="" coords="38,83,111,111"/><area shape="rect" id="node4" href="classhandle.html" title="handle" alt="" coords="46,6,103,34"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classtops_grouped_list_panel-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4bbb571b62ad2ed3c9194378f54c44a1"></a><!-- doxytag: member="topsGroupedListPanel::groupedList" ref="a4bbb571b62ad2ed3c9194378f54c44a1" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a4bbb571b62ad2ed3c9194378f54c44a1">groupedList</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> to interact with <br/></td></tr>
+<tr><td colspan="2"><h2>Protected Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a400ed40fb4a2cc584137aff13e0a5419">groupTable</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Browse a grouped list by group and mnemonic.  <a href="#a400ed40fb4a2cc584137aff13e0a5419"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80883143c05f1b8fe4f60d782b9704ee"></a><!-- doxytag: member="topsGroupedListPanel::mnemonicTable" ref="a80883143c05f1b8fe4f60d782b9704ee" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a80883143c05f1b8fe4f60d782b9704ee">mnemonicTable</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the uitable for mnemonic names <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08c0fc766c3d53a449f2ab7d9ca29bec"></a><!-- doxytag: member="topsGroupedListPanel::editField" ref="a08c0fc766c3d53a449f2ab7d9ca29bec" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a08c0fc766c3d53a449f2ab7d9ca29bec">editField</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol for editing the current item <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05b25cec79e941c4b81447269a65220e"></a><!-- doxytag: member="topsGroupedListPanel::currentGroup" ref="a05b25cec79e941c4b81447269a65220e" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a05b25cec79e941c4b81447269a65220e">currentGroup</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string or number identifying the currently selected group <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the value of the currently selected group <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35451745451a50ec53db6b7f74a02749"></a><!-- doxytag: member="topsGroupedListPanel::currentMnemonic" ref="a35451745451a50ec53db6b7f74a02749" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a35451745451a50ec53db6b7f74a02749">currentMnemonic</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string or number identifying the currently selected mnemonic <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1da0eadf32a89e988cc375d99538e80c"></a><!-- doxytag: member="topsGroupedListPanel::groupString" ref="a1da0eadf32a89e988cc375d99538e80c" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a1da0eadf32a89e988cc375d99538e80c">groupString</a> = 'group:'</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string title for the "groups" column at left <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af249726fd57199ec5a2bf410943b4d1d"></a><!-- doxytag: member="topsGroupedListPanel::groupLabel" ref="af249726fd57199ec5a2bf410943b4d1d" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#af249726fd57199ec5a2bf410943b4d1d">groupLabel</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol label for the "groups" column at left <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8532744aece4b1a8c3ebb4082c51bd5"></a><!-- doxytag: member="topsGroupedListPanel::groupsGrid" ref="ab8532744aece4b1a8c3ebb4082c51bd5" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#ab8532744aece4b1a8c3ebb4082c51bd5">groupsGrid</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="class_scrolling_control_grid.html" title="A grid of uicontrol objects.">ScrollingControlGrid</a> for the "groups" column at left. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb0ad4dc734c124f9b7fbabfeba1f645"></a><!-- doxytag: member="topsGroupedListPanel::mnemonicString" ref="abb0ad4dc734c124f9b7fbabfeba1f645" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#abb0ad4dc734c124f9b7fbabfeba1f645">mnemonicString</a> = 'mnemonic:'</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string title for the "mnemonics" column in the middle <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9588c508bc8d1d69b8786ef1bca16bb5"></a><!-- doxytag: member="topsGroupedListPanel::mnemonicLabel" ref="a9588c508bc8d1d69b8786ef1bca16bb5" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a9588c508bc8d1d69b8786ef1bca16bb5">mnemonicLabel</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol label for the "mnemonics" column in the middle <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbfb2729c0cb5b533afb3a9da389f8ea"></a><!-- doxytag: member="topsGroupedListPanel::mnemonicsGrid" ref="acbfb2729c0cb5b533afb3a9da389f8ea" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#acbfb2729c0cb5b533afb3a9da389f8ea">mnemonicsGrid</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="class_scrolling_control_grid.html" title="A grid of uicontrol objects.">ScrollingControlGrid</a> for the "mnemonics" column in the middle. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0ab132eb807e03d53fdf386ee346e6b"></a><!-- doxytag: member="topsGroupedListPanel::itemString" ref="aa0ab132eb807e03d53fdf386ee346e6b" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#aa0ab132eb807e03d53fdf386ee346e6b">itemString</a> = 'item:'</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string title for the "item" column at right <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52e90d3408fcf693eaa391e0fbe14df0"></a><!-- doxytag: member="topsGroupedListPanel::itemLabel" ref="a52e90d3408fcf693eaa391e0fbe14df0" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a52e90d3408fcf693eaa391e0fbe14df0">itemLabel</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol label for the "item" column at right <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5eab6fee22c61f3246df1364eccea857"></a><!-- doxytag: member="topsGroupedListPanel::itemToWorkspaceButton" ref="a5eab6fee22c61f3246df1364eccea857" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a5eab6fee22c61f3246df1364eccea857">itemToWorkspaceButton</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol button to send the current item to the base workspace <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff09dfe633e96238991cd53f8b786bca"></a><!-- doxytag: member="topsGroupedListPanel::itemDetailPanel" ref="aff09dfe633e96238991cd53f8b786bca" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#aff09dfe633e96238991cd53f8b786bca">itemDetailPanel</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_value_panel.html" title="Generic topsDetailPanel suitable for showing the class and size of any value.">topsValuePanel</a> for the "item" column at right <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa7aa54b8c3b60e888f86085667f98ca"></a><!-- doxytag: member="topsGroupedListPanel::itemEditableControl" ref="aaa7aa54b8c3b60e888f86085667f98ca" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#aaa7aa54b8c3b60e888f86085667f98ca">itemEditableControl</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uicontrol checkbox to select editable mode <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac733e24e22794e06b7e330c1e56f1a7e"></a><!-- doxytag: member="topsGroupedListPanel::listenerIndex" ref="ac733e24e22794e06b7e330c1e56f1a7e" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#ac733e24e22794e06b7e330c1e56f1a7e">listenerIndex</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">index of event listener added to parentGUI <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the value of the currently selected mnemonic <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a317667663e91c96ce7a0beb7119bc42d">topsGroupedListPanel</a> (varargin)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes one optional argument.  <a href="#a317667663e91c96ce7a0beb7119bc42d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a1fe55b3b9365651be8ab93ce9ce9499c">populateWithGroupedList</a> (self, <a class="el" href="classtops_grouped_list_panel.html#a4bbb571b62ad2ed3c9194378f54c44a1">groupedList</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Populate this panel with the contents of a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>.  <a href="#a1fe55b3b9365651be8ab93ce9ce9499c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ae42d62cce49b2d72d3fad7a4677566"></a><!-- doxytag: member="topsGroupedListPanel::setEditable" ref="a6ae42d62cce49b2d72d3fad7a4677566" args="(self, isEditable)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a6ae42d62cce49b2d72d3fad7a4677566">setEditable</a> (self, isEditable)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sync detailsAreEditable with detail panel and "edit" button. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a08cc1f5dfd7770b28c31e387a18f4f30">unpopulate</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Unpopulate this panel so that it uses no <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>.  <a href="#a08cc1f5dfd7770b28c31e387a18f4f30"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af641cfcd0a32eed34f936e5010a9966b"></a><!-- doxytag: member="topsGroupedListPanel::createWidgets" ref="af641cfcd0a32eed34f936e5010a9966b" args="(self)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#af641cfcd0a32eed34f936e5010a9966b">createWidgets</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a new ui panel and add unpopulated controls to it. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56c56d1677f1677a6f85e9ddbd37d63e"></a><!-- doxytag: member="topsGroupedListPanel::set_groupString" ref="a56c56d1677f1677a6f85e9ddbd37d63e" args="(self, groupString)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a56c56d1677f1677a6f85e9ddbd37d63e">set_groupString</a> (self, <a class="el" href="classtops_grouped_list_panel.html#a1da0eadf32a89e988cc375d99538e80c">groupString</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the displayed group column name. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c754faf94eb9446161582b260bd061f"></a><!-- doxytag: member="topsGroupedListPanel::set_mnemonicString" ref="a4c754faf94eb9446161582b260bd061f" args="(self, mnemonicString)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a4c754faf94eb9446161582b260bd061f">set_mnemonicString</a> (self, <a class="el" href="classtops_grouped_list_panel.html#abb0ad4dc734c124f9b7fbabfeba1f645">mnemonicString</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the displayed mnemonic column name. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b57a1f053bd72aa3f39e0c38a2fc9d8"></a><!-- doxytag: member="topsGroupedListPanel::set_itemString" ref="a4b57a1f053bd72aa3f39e0c38a2fc9d8" args="(self, itemString)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a4b57a1f053bd72aa3f39e0c38a2fc9d8">set_itemString</a> (self, <a class="el" href="classtops_grouped_list_panel.html#aa0ab132eb807e03d53fdf386ee346e6b">itemString</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the displayed item column name. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5b94e986bad09c3333b4b51de0f30d2"></a><!-- doxytag: member="topsGroupedListPanel::setCurrentGroup" ref="af5b94e986bad09c3333b4b51de0f30d2" args="(self, group, button)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#af5b94e986bad09c3333b4b51de0f30d2">setCurrentGroup</a> (self, group, button)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display mnemonics for a list group. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01d89ead78caed3a94c9956524cc048a"></a><!-- doxytag: member="topsGroupedListPanel::setCurrentMnemonic" ref="a01d89ead78caed3a94c9956524cc048a" args="(self, mnemonic, button)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a01d89ead78caed3a94c9956524cc048a">setCurrentMnemonic</a> (self, mnemonic, button)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display details for an item with a given mnemonic. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa4b6271fab271d31a4633224ba2b423"></a><!-- doxytag: member="topsGroupedListPanel::repopulateGroupsGrid" ref="afa4b6271fab271d31a4633224ba2b423" args="(self)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#afa4b6271fab271d31a4633224ba2b423">repopulateGroupsGrid</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the diplayed list groups. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b83f61f72adc83285bdad2d457a9d23"></a><!-- doxytag: member="topsGroupedListPanel::repopulateMnemonicsGrid" ref="a0b83f61f72adc83285bdad2d457a9d23" args="(self)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a0b83f61f72adc83285bdad2d457a9d23">repopulateMnemonicsGrid</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the displayed group mnemonics. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51c1b63492adfbda43248999f2ab84b0"></a><!-- doxytag: member="topsGroupedListPanel::addGridButton" ref="a51c1b63492adfbda43248999f2ab84b0" args="(self, grid, row, name, callback)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a51c1b63492adfbda43248999f2ab84b0">addGridButton</a> (self, grid, row, name, callback)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a control to the groups, mnemonics, or item detail column. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a6f9bd79a4c60a36700fff43e238dde3c">currentItemToBaseWorkspace</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Send the currently displayed item to the base workspace.  <a href="#a6f9bd79a4c60a36700fff43e238dde3c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a411b2fa2cdde67e86ee3952ebe12cc2c"></a><!-- doxytag: member="topsGroupedListPanel::listenToGroupedList" ref="a411b2fa2cdde67e86ee3952ebe12cc2c" args="(self, groupedList)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a411b2fa2cdde67e86ee3952ebe12cc2c">listenToGroupedList</a> (self, <a class="el" href="classtops_grouped_list_panel.html#a4bbb571b62ad2ed3c9194378f54c44a1">groupedList</a>)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Register to receive notifications from groupedList. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2240d7b1f9e4e58e1d5651059ff358f8"></a><!-- doxytag: member="topsGroupedListPanel::hearNewAddition" ref="a2240d7b1f9e4e58e1d5651059ff358f8" args="(self, groupedList, event)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a2240d7b1f9e4e58e1d5651059ff358f8">hearNewAddition</a> (self, <a class="el" href="classtops_grouped_list_panel.html#a4bbb571b62ad2ed3c9194378f54c44a1">groupedList</a>, event)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Respond when an item is added to groupedList. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91f82768b1a00540fabc0f69f1e9ad90"></a><!-- doxytag: member="topsGroupedListPanel::repondToResize" ref="a91f82768b1a00540fabc0f69f1e9ad90" args="(self, figure, event)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a91f82768b1a00540fabc0f69f1e9ad90">repondToResize</a> (self, figure, event)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Resize the groups, mnemonics, and item detail columns. <br/></td></tr>
-<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a5c9e81057ff1d4f9571cd8cdb6c79fdc">setValueOfListItem</a> (value, object, subs, self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set a value to an item in groupedList using subsasgn().  <a href="#a5c9e81057ff1d4f9571cd8cdb6c79fdc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static value&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a304294c380cfe9b23fff9ad9558d97b2">getValueOfListItem</a> (object, subs, self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get a value from an item in groupedList using subsref().  <a href="#a304294c380cfe9b23fff9ad9558d97b2"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a new panel in the given figure.  <a href="#a317667663e91c96ce7a0beb7119bc42d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a031a17b2473873b0a714db79dbfa7f19">selectGroup</a> (self, table, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the current list group from a selected table cell.  <a href="#a031a17b2473873b0a714db79dbfa7f19"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#ad2fb0afc602a9638ceb792c72364f86d">selectMnemonic</a> (self, table, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the current list mnemonic from a selected table cell.  <a href="#ad2fb0afc602a9638ceb792c72364f86d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#ab716a93d87c7a18e031f99439f77ec14">editItem</a> (self, <a class="el" href="classtops_grouped_list_panel.html#a08c0fc766c3d53a449f2ab7d9ca29bec">editField</a>, event)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Edit currentItem based on user-entered text.  <a href="#ab716a93d87c7a18e031f99439f77ec14"></a><br/></td></tr>
+<tr><td colspan="2"><h2>Protected Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a385392e20465b3db1a947d2cf6a41aba"></a><!-- doxytag: member="topsGroupedListPanel::initialize" ref="a385392e20465b3db1a947d2cf6a41aba" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a385392e20465b3db1a947d2cf6a41aba">initialize</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create and arrange fresh components. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bafebf1876ddadcc972cd62ae18b3a7"></a><!-- doxytag: member="topsGroupedListPanel::populateGroupTable" ref="a2bafebf1876ddadcc972cd62ae18b3a7" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a2bafebf1876ddadcc972cd62ae18b3a7">populateGroupTable</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Refresh the group table's contents. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e022e8e46e7c5fee10a3f228c56bb27"></a><!-- doxytag: member="topsGroupedListPanel::populateMnemonicTable" ref="a9e022e8e46e7c5fee10a3f228c56bb27" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a9e022e8e46e7c5fee10a3f228c56bb27">populateMnemonicTable</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Refresh the mnemonic table's contents. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90cdfbe8e01de0e43258eba4e57835b2"></a><!-- doxytag: member="topsGroupedListPanel::updateContents" ref="a90cdfbe8e01de0e43258eba4e57835b2" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a90cdfbe8e01de0e43258eba4e57835b2">updateContents</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Refresh the panel's contents. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a284336df134aad2bd14be0b93545f8c1"></a><!-- doxytag: member="topsGroupedListPanel::currentItemForGroupAndMnemonic" ref="a284336df134aad2bd14be0b93545f8c1" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list_panel.html#a284336df134aad2bd14be0b93545f8c1">currentItemForGroupAndMnemonic</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the GUI current item from selected group and mnemonic. <br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
 <a class="anchor" id="a317667663e91c96ce7a0beb7119bc42d"></a><!-- doxytag: member="topsGroupedListPanel::topsGroupedListPanel" ref="a317667663e91c96ce7a0beb7119bc42d" args="(varargin)" -->
@@ -176,25 +112,24 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 <div class="memdoc">
 
-<p>Constructor takes one optional argument. </p>
+<p>Make a new panel in the given figure. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>parentGUI</em>&nbsp;</td><td>a <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> to contains this panel </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>position</em>&nbsp;</td><td>normalized [x y w h] where to locate the new panel in <em>parentGUI</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>parentFigure</em>&nbsp;</td><td><a class="el" href="classtops_figure.html">topsFigure</a> to work with</td></tr>
   </table>
   </dd>
 </dl>
-<p>Returns a <a class="el" href="classhandle.html">handle</a> to the new <a class="el" href="classtops_grouped_list_panel.html" title="Resuable 3-column view for topsGroupedLists in topsGUI interfaces.">topsGroupedListPanel</a>. If <em>parentGUI</em> is missing, the panel will be empty. </p>
+<p>Creates a new <a class="el" href="classtops_grouped_list_panel.html">topsGroupedListPanel</a>. <em>parentFigure</em> must be a <a class="el" href="classtops_figure.html">topsFigure</a> object, otherwise the panel won't display any content. </p>
 
 </div>
 </div>
 <hr/><h2>Methods</h2>
-<a class="anchor" id="a1fe55b3b9365651be8ab93ce9ce9499c"></a><!-- doxytag: member="topsGroupedListPanel::populateWithGroupedList" ref="a1fe55b3b9365651be8ab93ce9ce9499c" args="(self, groupedList)" -->
+<a class="anchor" id="a031a17b2473873b0a714db79dbfa7f19"></a><!-- doxytag: member="topsGroupedListPanel::selectGroup" ref="a031a17b2473873b0a714db79dbfa7f19" args="(self, table, event)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">populateWithGroupedList </td>
+          <td class="memname">selectGroup </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname">, </td>
@@ -202,7 +137,13 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtops_grouped_list_panel.html#a4bbb571b62ad2ed3c9194378f54c44a1">groupedList</a>&nbsp;</td>
+          <td class="paramtype">table&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">event&nbsp;</td>
           <td class="paramname"></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -214,135 +155,118 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 <div class="memdoc">
 
-<p>Populate this panel with the contents of a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>. </p>
+<p>Set the current list group from a selected table cell. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>groupedList</em>&nbsp;</td><td>a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> object to interact with</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>table</em>&nbsp;</td><td>uitable object making the selection </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>event</em>&nbsp;</td><td>struct of data about the selection event</td></tr>
   </table>
   </dd>
 </dl>
-<p>Fills in this panel's controls with data from the given <em>groupedList</em>, and binds the controls to interact with <em>groupedList</em>. If this panel's itemsAreEditable is true, the controls will allow editing of items in <em>groupedList</em>. </p>
+<p>Sets currentGroup and the current item for the parent figure, based on the selected cell in a uitable. </p>
 
 </div>
 </div>
-<a class="anchor" id="a08cc1f5dfd7770b28c31e387a18f4f30"></a><!-- doxytag: member="topsGroupedListPanel::unpopulate" ref="a08cc1f5dfd7770b28c31e387a18f4f30" args="(self)" -->
+<a class="anchor" id="ad2fb0afc602a9638ceb792c72364f86d"></a><!-- doxytag: member="topsGroupedListPanel::selectMnemonic" ref="ad2fb0afc602a9638ceb792c72364f86d" args="(self, table, event)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unpopulate </td>
+          <td class="memname">selectMnemonic </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Unpopulate this panel so that it uses no <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>. </p>
-<p>Clears this panel's controls of data and unbinds them from the current groupedList. This allows the groupedList to be deleted, and possibly swapped with another using <a class="el" href="classtops_grouped_list_panel.html#a1fe55b3b9365651be8ab93ce9ce9499c" title="Populate this panel with the contents of a topsGroupedList.">populateWithGroupedList()</a>, without causing an error for the panel controls </p>
-
-</div>
-</div>
-<a class="anchor" id="a6f9bd79a4c60a36700fff43e238dde3c"></a><!-- doxytag: member="topsGroupedListPanel::currentItemToBaseWorkspace" ref="a6f9bd79a4c60a36700fff43e238dde3c" args="(self)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">currentItemToBaseWorkspace </td>
-          <td>(</td>
-          <td class="paramtype">self&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Send the currently displayed item to the base workspace. </p>
-<p>The "to workspace" button calls this method. This method then uses Matlab's built-in assignin() to put the currently shown item in the base workspace (i.e. the Command Window).</p>
-<p>When the currently selected mnemonic is a valid variable name, creates or overwrites a variable with that name. Otherwise, creates or overwrites a variable named "item". Prints a message about which name was used. </p>
-
-</div>
-</div>
-<a class="anchor" id="a5c9e81057ff1d4f9571cd8cdb6c79fdc"></a><!-- doxytag: member="topsGroupedListPanel::setValueOfListItem" ref="a5c9e81057ff1d4f9571cd8cdb6c79fdc" args="(value, object, subs, self)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static setValueOfListItem </td>
-          <td>(</td>
-          <td class="paramtype">value&nbsp;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">object&nbsp;</td>
+          <td class="paramtype">table&nbsp;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">subs&nbsp;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">self&nbsp;</td>
+          <td class="paramtype">event&nbsp;</td>
           <td class="paramname"></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td><td><code> [static]</code></td>
+          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Set a value to an item in groupedList using subsasgn(). </p>
-<p>Expects the <a class="el" href="classtops_grouped_list_panel.html" title="Resuable 3-column view for topsGroupedLists in topsGUI interfaces.">topsGroupedListPanel</a> (self) as getSetContext. </p>
+<p>Set the current list mnemonic from a selected table cell. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>table</em>&nbsp;</td><td>uitable object making the selection </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>event</em>&nbsp;</td><td>struct of data about the selection event</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Sets currentMnemonic and the current item for the parent figure, based on the selected cell in a uitable. </p>
 
 </div>
 </div>
-<a class="anchor" id="a304294c380cfe9b23fff9ad9558d97b2"></a><!-- doxytag: member="topsGroupedListPanel::getValueOfListItem" ref="a304294c380cfe9b23fff9ad9558d97b2" args="(object, subs, self)" -->
+<a class="anchor" id="ab716a93d87c7a18e031f99439f77ec14"></a><!-- doxytag: member="topsGroupedListPanel::editItem" ref="ab716a93d87c7a18e031f99439f77ec14" args="(self, editField, event)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static value getValueOfListItem </td>
+          <td class="memname">editItem </td>
           <td>(</td>
-          <td class="paramtype">object&nbsp;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">subs&nbsp;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtops_grouped_list_panel.html#a08c0fc766c3d53a449f2ab7d9ca29bec">editField</a>&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">event&nbsp;</td>
           <td class="paramname"></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td><td><code> [static]</code></td>
+          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Get a value from an item in groupedList using subsref(). </p>
-<p>Expects the <a class="el" href="classtops_grouped_list_panel.html" title="Resuable 3-column view for topsGroupedLists in topsGUI interfaces.">topsGroupedListPanel</a> (self) as getSetContext. </p>
+<p>Edit currentItem based on user-entered text. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>editField</em>&nbsp;</td><td>uicontrol edit field which contains new text </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>event</em>&nbsp;</td><td>struct of data about the edit event</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Invokes eval() on the text contained in <em>editField</em>. If eval() succeeds, replaces the item selected item in groupedList, based on currentGroup and currentMnemonic. Also sets the current item of the parent figure, using the new value. </p>
+
+</div>
+</div>
+<hr/><h2>Properties and Events</h2>
+<a class="anchor" id="a400ed40fb4a2cc584137aff13e0a5419"></a><!-- doxytag: member="topsGroupedListPanel::groupTable" ref="a400ed40fb4a2cc584137aff13e0a5419" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Property <a class="el" href="classtops_grouped_list_panel.html#a400ed40fb4a2cc584137aff13e0a5419">groupTable</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Browse a grouped list by group and mnemonic. </p>
+<p><a class="el" href="classtops_grouped_list_panel.html">topsGroupedListPanel</a> shows all of the group names for a <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, and all the mnemonic names for one group at a time. The user can view and select one group and one mnemonic. Each selection updates the "current item" of a Tower of Psych GUI. the uitable for group names </p>
 
 </div>
 </div>
@@ -364,7 +288,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -68,10 +67,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#ad0781bb0cad08b538c55c3beaa019609">topsFoundation</a> (<a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#ad0781bb0cad08b538c55c3beaa019609"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a72e51a8014869030f089a5fb34fdd24f">gui</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> graphical interface for this object.  <a href="#a72e51a8014869030f089a5fb34fdd24f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">p&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#acc772c903527cca8657740197f30c34b">guiPanel</a> (self, varargin)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a <a class="el" href="classtops_detail_panel.html" title="Superclass to manage each reusable, movable uipanel portion of a topsGUI graphical...">topsDetailPanel</a> with details about this object.  <a href="#acc772c903527cca8657740197f30c34b"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a topsDetailPanel with details about this object.  <a href="#acc772c903527cca8657740197f30c34b"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Static Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static c index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#ace953bfc5b718388fd853de1803b4f64">cellAdd</a> (c, item, index)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an item to a cell array.  <a href="#ace953bfc5b718388fd853de1803b4f64"></a><br/></td></tr>
@@ -113,12 +112,12 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 </div>
 <hr/><h2>Methods</h2>
-<a class="anchor" id="a72e51a8014869030f089a5fb34fdd24f"></a><!-- doxytag: member="topsFoundation::gui" ref="a72e51a8014869030f089a5fb34fdd24f" args="(self)" -->
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsFoundation::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">g gui </td>
+          <td class="memname">fig gui </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname"></td>
@@ -129,10 +128,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 <div class="memdoc">
 
-<p>Make a <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> graphical interface for this object. </p>
-<p>Subclasses may overrride to return a specific <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> subclass, or let topsFoundataion generate a generic <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a>. </p>
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a <a class="el" href="classtops_figure.html">topsFigure</a> object which contains the GUI. </p>
 
-<p>Reimplemented in <a class="el" href="classtops_data_log.html#a8e0c7d9085a2a92b7e2bf1ad06c96fb4">topsDataLog</a>, <a class="el" href="classtops_grouped_list.html#a72e51a8014869030f089a5fb34fdd24f">topsGroupedList</a>, <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>, and <a class="el" href="classtops_state_machine.html#a72e51a8014869030f089a5fb34fdd24f">topsStateMachine</a>.</p>
+<p>Reimplemented in <a class="el" href="classtops_call_list.html#abf424157a1ca067a83cc8260bc34c17d">topsCallList</a>, <a class="el" href="classtops_classification.html#abf424157a1ca067a83cc8260bc34c17d">topsClassification</a>, <a class="el" href="classtops_conditions.html#abf424157a1ca067a83cc8260bc34c17d">topsConditions</a>, <a class="el" href="classtops_ensemble.html#abf424157a1ca067a83cc8260bc34c17d">topsEnsemble</a>, <a class="el" href="classtops_grouped_list.html#abf424157a1ca067a83cc8260bc34c17d">topsGroupedList</a>, <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>, <a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d">topsRunnableComposite</a>, and <a class="el" href="classtops_state_machine.html#abf424157a1ca067a83cc8260bc34c17d">topsStateMachine</a>.</p>
 
 </div>
 </div>
@@ -161,15 +160,15 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 <div class="memdoc">
 
-<p>Make a <a class="el" href="classtops_detail_panel.html" title="Superclass to manage each reusable, movable uipanel portion of a topsGUI graphical...">topsDetailPanel</a> with details about this object. </p>
+<p>Make a topsDetailPanel with details about this object. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>parentGUI</em>&nbsp;</td><td>a <a class="el" href="classtops_g_u_i.html" title="Superclass for Tower of Psych graphical interfaces.">topsGUI</a> to contain the new panel </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>parentGUI</em>&nbsp;</td><td>a topsGUI to contain the new panel </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>position</em>&nbsp;</td><td>optional normalized [x y w h] where to locate the new panel within <em>parentGUI</em> </td></tr>
   </table>
   </dd>
 </dl>
-<p>Subclasses may overrride to return a specific <a class="el" href="classtops_detail_panel.html" title="Superclass to manage each reusable, movable uipanel portion of a topsGUI graphical...">topsDetailPanel</a> subclass, or let topsFoundataion generate a generic <a class="el" href="classtops_value_panel.html" title="Generic topsDetailPanel suitable for showing the class and size of any value.">topsValuePanel</a>. </p>
+<p>Subclasses may overrride to return a specific topsDetailPanel subclass, or let topsFoundataion generate a generic topsValuePanel. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">topsGroupedList</a>.</p>
 
@@ -389,7 +388,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

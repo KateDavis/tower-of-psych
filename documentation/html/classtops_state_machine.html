@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -86,7 +85,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9afae22f20f34a634ed9ced8b18f7f47"></a><!-- doxytag: member="topsStateMachine::sharedExit" ref="a9afae22f20f34a634ed9ced8b18f7f47" args="" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a9afae22f20f34a634ed9ced8b18f7f47">sharedExit</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of shared fevalables and names <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
+<tr><td colspan="2"><h2>Protected Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a091ba6272137818a9f60c86d5deb2ace"></a><!-- doxytag: member="topsStateMachine::currentIndex" ref="a091ba6272137818a9f60c86d5deb2ace" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a091ba6272137818a9f60c86d5deb2ace">currentIndex</a> = []</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">allStates array index for the current state <br/></td></tr>
@@ -115,12 +114,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#ae202b93b5e7da3a76264604ca53637e3">stateDefaults</a> = {'', '', 0, {}, {}, {}, []}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">default values of allStates struct array fields <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f470f200b8561fb4539025562dccaef"></a><!-- doxytag: member="topsStateMachine::topsStateMachine" ref="a8f470f200b8561fb4539025562dccaef" args="()" -->
-self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a8f470f200b8561fb4539025562dccaef">topsStateMachine</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72e51a8014869030f089a5fb34fdd24f"></a><!-- doxytag: member="topsStateMachine::gui" ref="a72e51a8014869030f089a5fb34fdd24f" args="(self)" -->
-g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a72e51a8014869030f089a5fb34fdd24f">gui</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Launch a graphical interface showing the states in the machine. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a114554a184adf7e5f3b48c93ca60a4dc">topsStateMachine</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#a114554a184adf7e5f3b48c93ca60a4dc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">indexes&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a5ae2f5eec8740c5c2c4ddc2d3eb78d18">addMultipleStates</a> (self, statesInfo)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add multiple states to the state machine.  <a href="#a5ae2f5eec8740c5c2c4ddc2d3eb78d18"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a0f5d6dba6767f2d089191e1925e04561">addState</a> (self, stateInfo)</td></tr>
@@ -155,7 +152,58 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a7c59265d43bef53d776352ee97fb178e">logStateSharedFeval</a> (self, state, shared)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an entry to <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> for an fevalable shared among states. <br/></td></tr>
 </table>
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="a114554a184adf7e5f3b48c93ca60a4dc"></a><!-- doxytag: member="topsStateMachine::topsStateMachine" ref="a114554a184adf7e5f3b48c93ca60a4dc" args="(varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self <a class="el" href="classtops_state_machine.html">topsStateMachine</a> </td>
+          <td>(</td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+</div>
+</div>
 <hr/><h2>Methods</h2>
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsStateMachine::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fig gui </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a <a class="el" href="classtops_figure.html">topsFigure</a> object which contains the GUI. </p>
+
+<p>Reimplemented from <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a5ae2f5eec8740c5c2c4ddc2d3eb78d18"></a><!-- doxytag: member="topsStateMachine::addMultipleStates" ref="a5ae2f5eec8740c5c2c4ddc2d3eb78d18" args="(self, statesInfo)" -->
 <div class="memitem">
 <div class="memproto">
@@ -478,7 +526,7 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

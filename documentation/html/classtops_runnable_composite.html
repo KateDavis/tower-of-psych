@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -66,12 +65,67 @@ Inheritance diagram for topsRunnableComposite:</div>
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#a03647d9534fdfd33d574792c76fbf67a">children</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> (or subclass) objects <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#ae6540d75fa2136026a8cc23100bb1840">topsRunnableComposite</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#ae6540d75fa2136026a8cc23100bb1840"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#af7be9661eeb0b3ff873194b1b4cc14c2">addChild</a> (self, child)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a child beneath this object.  <a href="#af7be9661eeb0b3ff873194b1b4cc14c2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#aab0e60943c386873ea22ce84926dcbf6">removeChild</a> (self, child)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove a child beneath this object.  <a href="#aab0e60943c386873ea22ce84926dcbf6"></a><br/></td></tr>
 </table>
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="ae6540d75fa2136026a8cc23100bb1840"></a><!-- doxytag: member="topsRunnableComposite::topsRunnableComposite" ref="ae6540d75fa2136026a8cc23100bb1840" args="(varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self <a class="el" href="classtops_runnable_composite.html">topsRunnableComposite</a> </td>
+          <td>(</td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+</div>
+</div>
 <hr/><h2>Methods</h2>
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsRunnableComposite::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fig gui </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a <a class="el" href="classtops_figure.html">topsFigure</a> object which contains the GUI. </p>
+
+<p>Reimplemented from <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="af7be9661eeb0b3ff873194b1b4cc14c2"></a><!-- doxytag: member="topsRunnableComposite::addChild" ref="af7be9661eeb0b3ff873194b1b4cc14c2" args="(self, child)" -->
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +218,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

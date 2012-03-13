@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -68,11 +67,12 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16069ce7d508563b5b10cb9304d03d00"></a><!-- doxytag: member="topsConcurrentComposite::runBrieflyCount" ref="a16069ce7d508563b5b10cb9304d03d00" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#a16069ce7d508563b5b10cb9304d03d00">runBrieflyCount</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">count of child runBriefly() invocations during the current <a class="el" href="classtops_concurrent_composite.html#a08060e0924949738f75a0cdd8b49cef4" title="Interleave runBriefly() behavior of child objects.">run()</a> <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d866f5fd8d038ac35c04657a715757c"></a><!-- doxytag: member="topsConcurrentComposite::runBrieflyString" ref="a6d866f5fd8d038ac35c04657a715757c" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#a6d866f5fd8d038ac35c04657a715757c">runBrieflyString</a> = 'runBriefly count'</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string name for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entries about runBriefly invokations <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#a1f305fd1f3afed18eadbe83cf3f3b119">topsConcurrentComposite</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#a1f305fd1f3afed18eadbe83cf3f3b119"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#af7be9661eeb0b3ff873194b1b4cc14c2">addChild</a> (self, child)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> child beneath this object.  <a href="#af7be9661eeb0b3ff873194b1b4cc14c2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#a08060e0924949738f75a0cdd8b49cef4">run</a> (self)</td></tr>
@@ -84,8 +84,36 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#a00222e9f5bef2563001edb573dc74968">finishChildren</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Let each child object finish doing flow control.  <a href="#a00222e9f5bef2563001edb573dc74968"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7">finish</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, notify, and finish doing flow control.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log action and finish doing flow control.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
 </table>
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="a1f305fd1f3afed18eadbe83cf3f3b119"></a><!-- doxytag: member="topsConcurrentComposite::topsConcurrentComposite" ref="a1f305fd1f3afed18eadbe83cf3f3b119" args="(varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self <a class="el" href="classtops_concurrent_composite.html">topsConcurrentComposite</a> </td>
+          <td>(</td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+</div>
+</div>
 <hr/><h2>Methods</h2>
 <a class="anchor" id="af7be9661eeb0b3ff873194b1b4cc14c2"></a><!-- doxytag: member="topsConcurrentComposite::addChild" ref="af7be9661eeb0b3ff873194b1b4cc14c2" args="(self, child)" -->
 <div class="memitem">
@@ -142,7 +170,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div class="memdoc">
 
 <p>Interleave runBriefly() behavior of child objects. </p>
-<p>Calls <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log, notify, and prepare to do flow control.">start()</a> for each child object, sets each child's caller to this object, then calls runBriefly() repeatedly and sequentially for each child, until at least one child has isRunning equal to false, then calls <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, notify, and finish doing flow control.">finish()</a> for each child and sets each child's caller to be empty.</p>
+<p>Calls <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log action and prepare to do flow control.">start()</a> for each child object, sets each child's caller to this object, then calls runBriefly() repeatedly and sequentially for each child, until at least one child has isRunning equal to false, then calls <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log action and finish doing flow control.">finish()</a> for each child and sets each child's caller to be empty.</p>
 <p>The since all the child objects should runBriefly() the same number of times and in an interleaved fashion, they should all appear to <a class="el" href="classtops_concurrent_composite.html#a08060e0924949738f75a0cdd8b49cef4" title="Interleave runBriefly() behavior of child objects.">run()</a> concurrently. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4">topsRunnable</a>.</p>
@@ -188,7 +216,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div class="memdoc">
 
 <p>Prepare each child object to do flow control. </p>
-<p>Calls <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log, notify, and prepare to do flow control.">start()</a> once, sequentually, for each child object. Sets the caller of each child to this object. </p>
+<p>Calls <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log action and prepare to do flow control.">start()</a> once, sequentually, for each child object. Sets the caller of each child to this object. </p>
 
 </div>
 </div>
@@ -209,7 +237,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div class="memdoc">
 
 <p>Let each child object finish doing flow control. </p>
-<p>Calls <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, notify, and finish doing flow control.">finish()</a> once, sequentually, for each child object. Sets the caller of each child to be empty. </p>
+<p>Calls <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log action and finish doing flow control.">finish()</a> once, sequentually, for each child object. Sets the caller of each child to be empty. </p>
 
 </div>
 </div>
@@ -229,8 +257,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 <div class="memdoc">
 
-<p>Log, notify, and finish doing flow control. </p>
-<p>Extends the <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, notify, and finish doing flow control.">finish()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to also log the count of runBriefly() invocations. </p>
+<p>Log action and finish doing flow control. </p>
+<p>Extends the <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log action and finish doing flow control.">finish()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to also log the count of runBriefly() invocations. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsRunnable</a>.</p>
 
@@ -254,7 +282,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -55,7 +54,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Thus, you must log each piece of data in a "group" of related data. The group might correspond to a recuurring event, such as 'trial start'. You don't have to supply a "mnemonic" for each piece of data because <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> uses timestamps to identify pieces of data in each group.</p>
 <p>In your experiment code, you can add to the log as many times as you like. If you're not sure whether some piece of data will turn out to be important, you can go ahead and log it anyway. You don't have to worry about the log filling up, how to allcate space for more data, or even how the data are ultimately stored. That's the log's job.</p>
 <p>Other topsFoundataion classes will also add data to the log, to help you keep track of details that aren't specific to your experiment. For example, <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> objects make log entries as they start and finish running.</p>
-<p>With your log entries and the entries made automatically by topsFoundataion classes, it should be straightforward to look at the log after an experiment and get a sense of what happened and when. The log's <a class="el" href="classtops_data_log.html#a8e0c7d9085a2a92b7e2bf1ad06c96fb4" title="Launch the graphical interface for topsDataLog.">gui()</a> method should make this even easier. You can use it to launch <a class="el" href="classtops_data_log_g_u_i.html" title="Visualize data sorted by time.">topsDataLogGUI</a>, which plots a raster of all logged data over time, with data groups as rows. </p>
+<p>With your log entries and the entries made automatically by topsFoundataion classes, it should be straightforward to look at the log after an experiment and get a sense of what happened and when. The log's <a class="el" href="classtops_data_log.html#a4b83f0eb0e39660c96d3f8e8ff1726d9" title="Open a GUI to view object details.">gui()</a> method should make this even easier. You can use it to launch topsDataLogGUI, which plots a raster of all logged data over time, with data groups as rows. </p>
 <div class="dynheader">
 Inheritance diagram for topsDataLog:</div>
 <div class="dynsection">
@@ -76,10 +75,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11ae7a55494110f02f037320d01bc800"></a><!-- doxytag: member="topsDataLog::fileWithPath" ref="a11ae7a55494110f02f037320d01bc800" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a> = ''</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string name of a file to read from and write to, which may include the file path <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a787b7d9b5b36f9d4dc0906d6590bcf60"></a><!-- doxytag: member="topsDataLog::FlushedTheDataLog" ref="a787b7d9b5b36f9d4dc0906d6590bcf60" args="" -->
-Event&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a787b7d9b5b36f9d4dc0906d6590bcf60">FlushedTheDataLog</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">notifies any listeners when all data are cleared from the log <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
+<tr><td colspan="2"><h2>Protected Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c29bb8ac334de96049df4b364184f25"></a><!-- doxytag: member="topsDataLog::earliestTime" ref="a2c29bb8ac334de96049df4b364184f25" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a2c29bb8ac334de96049df4b364184f25">earliestTime</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the time of the first logged data, as reported by clockFunction <br/></td></tr>
@@ -101,9 +97,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td colspan="2"><h2>Static Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static log&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ab75bbca125060dca1979b53b0569f41c">theDataLog</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Access the current data log "singleton".  <a href="#ab75bbca125060dca1979b53b0569f41c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e0c7d9085a2a92b7e2bf1ad06c96fb4"></a><!-- doxytag: member="topsDataLog::gui" ref="a8e0c7d9085a2a92b7e2bf1ad06c96fb4" args="(self)" -->
-static g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a8e0c7d9085a2a92b7e2bf1ad06c96fb4">gui</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Launch the graphical interface for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a4b83f0eb0e39660c96d3f8e8ff1726d9">gui</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#a4b83f0eb0e39660c96d3f8e8ff1726d9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a5a32878283e1a42eea3426e4db49d80f">setVerbose</a> (isVerbose)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Toggle verbose printouts for data logging.  <a href="#a5a32878283e1a42eea3426e4db49d80f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a135f55e890219a6437ef74f2867f1c10">flushAllData</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clear out all data from the log.  <a href="#a135f55e890219a6437ef74f2867f1c10"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a148e17810877b9609fde06ce045df331">logDataInGroup</a> (data, group, timestamp)</td></tr>
@@ -174,6 +171,53 @@ dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href
 
 </div>
 </div>
+<a class="anchor" id="a4b83f0eb0e39660c96d3f8e8ff1726d9"></a><!-- doxytag: member="topsDataLog::gui" ref="a4b83f0eb0e39660c96d3f8e8ff1726d9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static fig gui </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a <a class="el" href="classtops_figure.html">topsFigure</a> object which contains the GUI. </p>
+
+</div>
+</div>
+<a class="anchor" id="a5a32878283e1a42eea3426e4db49d80f"></a><!-- doxytag: member="topsDataLog::setVerbose" ref="a5a32878283e1a42eea3426e4db49d80f" args="(isVerbose)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static setVerbose </td>
+          <td>(</td>
+          <td class="paramtype">isVerbose&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Toggle verbose printouts for data logging. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>isVerbose</em>&nbsp;</td><td>whether to print as data are logged</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>isVerbose</em> is true, <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> will print a message to the Command Window whenever data is added to the log. If <em>isVerbose</em> is false or omitted, <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> will print nothing. </p>
+
+</div>
+</div>
 <a class="anchor" id="a135f55e890219a6437ef74f2867f1c10"></a><!-- doxytag: member="topsDataLog::flushAllData" ref="a135f55e890219a6437ef74f2867f1c10" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -191,7 +235,7 @@ dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href
 
 <p>Clear out all data from the log. </p>
 <p>You can't create new instances of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, but you can always clear out the existing instance. You probably should do this before starting an experiment.</p>
-<p>Removes all data from all groups, then removes the groups themselves. Then sets earliestTime and latestTime to nan. Then sends a FlushedTheDataLog notification to any listeners. </p>
+<p>Removes all data from all groups, then removes the groups themselves. Sets earliestTime and latestTime to nan. </p>
 
 </div>
 </div>
@@ -341,7 +385,7 @@ dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Property <a class="el" href="classtops_data_log.html#a222d7e3606701ba93ae8b6e84db36cb3">lastFlushTime</a><code> [private]</code></td>
+          <td class="memname">Property <a class="el" href="classtops_data_log.html#a222d7e3606701ba93ae8b6e84db36cb3">lastFlushTime</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>
@@ -370,7 +414,7 @@ dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

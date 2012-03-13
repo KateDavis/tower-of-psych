@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -61,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_0x67.html#index_g"><span>g</span></a></li>
       <li><a href="functions_0x68.html#index_h"><span>h</span></a></li>
       <li class="current"><a href="functions_0x69.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_0x6a.html#index_j"><span>j</span></a></li>
       <li><a href="functions_0x6c.html#index_l"><span>l</span></a></li>
       <li><a href="functions_0x6d.html#index_m"><span>m</span></a></li>
       <li><a href="functions_0x6e.html#index_n"><span>n</span></a></li>
@@ -103,11 +103,23 @@ Here is a list of all documented class members with links to the class documenta
 <li>indices
 : <a class="el" href="classtops_dimension.html#a4514e3b149da6c8efe0a534843749999">topsDimension</a>
 </li>
+<li>infoContainer
+: <a class="el" href="classtops_info_panel.html#ae38d4cb2c1dae4272dc2a500e2126f8a">topsInfoPanel</a>
+</li>
+<li>infoWidget
+: <a class="el" href="classtops_info_panel.html#aa658d0fc2981e1dce211bede5deb74d0">topsInfoPanel</a>
+</li>
+<li>initialize()
+: <a class="el" href="classtops_table_panel.html#a385392e20465b3db1a947d2cf6a41aba">topsTablePanel</a>
+, <a class="el" href="classtops_tree_panel.html#a385392e20465b3db1a947d2cf6a41aba">topsTreePanel</a>
+, <a class="el" href="classtops_data_log_panel.html#a385392e20465b3db1a947d2cf6a41aba">topsDataLogPanel</a>
+, <a class="el" href="classtops_figure.html#a385392e20465b3db1a947d2cf6a41aba">topsFigure</a>
+, <a class="el" href="classtops_grouped_list_panel.html#a385392e20465b3db1a947d2cf6a41aba">topsGroupedListPanel</a>
+, <a class="el" href="classtops_info_panel.html#a385392e20465b3db1a947d2cf6a41aba">topsInfoPanel</a>
+, <a class="el" href="classtops_panel.html#a385392e20465b3db1a947d2cf6a41aba">topsPanel</a>
+</li>
 <li>initializeUniques()
 : <a class="el" href="class_object_grapher.html#a3064bc5b0e5a524174029a7168a72a18">ObjectGrapher</a>
-</li>
-<li>initPanels()
-: <a class="el" href="class_scrolling_control_grid.html#a70a7cbb77b146e51474700dfc5092dbd">ScrollingControlGrid</a>
 </li>
 <li>inputData
 : <a class="el" href="class_data_grapher.html#a28ec9506dd9fc5e2ecd04760adead5e9">DataGrapher</a>
@@ -115,32 +127,20 @@ Here is a list of all documented class members with links to the class documenta
 <li>inputHints
 : <a class="el" href="class_state_diagram_grapher.html#acba3b5243e07d21071ff923ac0dd5ef3">StateDiagramGrapher</a>
 </li>
-<li>isBusy
-: <a class="el" href="classtops_g_u_i.html#a7dd38bf71fa439890a59ab2c4c8c6699">topsGUI</a>
+<li>isBaseItemTitle
+: <a class="el" href="classtops_panel.html#afeb9ea901db8fe5c82920a32972b015c">topsPanel</a>
 </li>
 <li>isDone
 : <a class="el" href="classtops_conditions.html#a3bdec3bc537a6ba3de5669f3dff28a20">topsConditions</a>
+</li>
+<li>isLocked
+: <a class="el" href="classtops_panel.html#aa130f9373c99c828dcfcfad382e924e1">topsPanel</a>
 </li>
 <li>isRunning
 : <a class="el" href="classtops_runnable.html#a28c21dd77b4d24a38b68a188f2151cf1">topsRunnable</a>
 </li>
 <li>isStateName()
 : <a class="el" href="classtops_state_machine.html#a966e4981280cce4a76731b409a8669a0">topsStateMachine</a>
-</li>
-<li>itemDetailPanel
-: <a class="el" href="classtops_grouped_list_panel.html#aff09dfe633e96238991cd53f8b786bca">topsGroupedListPanel</a>
-</li>
-<li>itemEditableControl
-: <a class="el" href="classtops_grouped_list_panel.html#aaa7aa54b8c3b60e888f86085667f98ca">topsGroupedListPanel</a>
-</li>
-<li>itemLabel
-: <a class="el" href="classtops_grouped_list_panel.html#a52e90d3408fcf693eaa391e0fbe14df0">topsGroupedListPanel</a>
-</li>
-<li>itemString
-: <a class="el" href="classtops_grouped_list_panel.html#aa0ab132eb807e03d53fdf386ee346e6b">topsGroupedListPanel</a>
-</li>
-<li>itemToWorkspaceButton
-: <a class="el" href="classtops_grouped_list_panel.html#a5eab6fee22c61f3246df1364eccea857">topsGroupedListPanel</a>
 </li>
 <li>iterateElements()
 : <a class="el" href="class_object_grapher.html#aae4a0925d7589b3fcb4a8a59966fd959">ObjectGrapher</a>
@@ -170,7 +170,7 @@ Here is a list of all documented class members with links to the class documenta
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:21 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:28 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

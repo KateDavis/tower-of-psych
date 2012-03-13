@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -49,7 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a77da955d08a40f1719a05580ede9eb1f">addAssignment</a>(self, parameter, object, varargin)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a09375821d74e061875b12b6bf4fbd334">addParameter</a>(self, parameter, values)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a0cc9e2f387987baaa80972dee78d2bdb">allParameters</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a4461f1c5056efebc93d7a39d84bd5c06">allSizes</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a4461f1c5056efebc93d7a39d84bd5c06">allSizes</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_runnable.html#a5097dd11b98c2554b10cd8097f89be25">caller</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_foundation.html#ace953bfc5b718388fd853de1803b4f64">cellAdd</a>(c, item, index)</td><td><a class="el" href="classtops_foundation.html">topsFoundation</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f">cellContains</a>(c, item)</td><td><a class="el" href="classtops_foundation.html">topsFoundation</a></td><td><code> [static]</code></td></tr>
@@ -63,7 +62,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="memlist"><td><a class="el" href="classtops_foundation.html#a1db67e09e0d779cafcabc4eed2bf2de5">findStructName</a>(s, name)</td><td><a class="el" href="classtops_foundation.html">topsFoundation</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a398a82043f7493f0ec73b0a57fa4c5b7">finish</a>(self)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_runnable.html#adb7168e0d540c5991f7c51df441c7b1d">finishFevalable</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">gui</a>(self)</td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#ad551bb7553eb98dd515a1d323f3b2021">finishString</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#abf424157a1ca067a83cc8260bc34c17d">gui</a>(self)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_foundation.html#acc772c903527cca8657740197f30c34b">guiPanel</a>(self, varargin)</td><td><a class="el" href="classtops_foundation.html">topsFoundation</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a3bdec3bc537a6ba3de5669f3dff28a20">isDone</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_runnable.html#a28c21dd77b4d24a38b68a188f2151cf1">isRunning</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
@@ -74,21 +74,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#adc181a5752e2962a11727303de5eba48">nConditions</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#ad108cc2675fc734cc520b4c42735f3fa">pickConditionNumber</a>(self)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#aec958388a3a45eeb40d05ef9de6a36df">pickingMethod</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a8e51c655a5f5dc776d4dca68ec87a3d5">pickingMethodDetails</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a8e51c655a5f5dc776d4dca68ec87a3d5">pickingMethodDetails</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a1e506bb2c819a570e8ad2c873c907626">pickSequence</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a6f29991ad3898f91dffe55674f5780ef">previousConditions</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47">reset</a>(self)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4">run</a>(self)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#ae7383fa6f257efa465b35578dfd21d09">RunFinish</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#a814efd8cbc6954142ecea3ceaf3f8598">RunStart</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a4a91a9dccdeb8f23e13de9b389dc9feb">setCondition</a>(self, n)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d">setPickingMethod</a>(self, pickingMethod, varargin)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94">start</a>(self)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_runnable.html#a8cacb6452805c362f15921999f986aec">startFevalable</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#aee7f770bdb8dbb05c3892c08046420ee">subscriptCoefficients</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td><code> [private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a4b76df5f2841b02ec856a82d2894cf55">topsConditions</a>()</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#ae90ae8de05dbfb23f468514cf5cdee9a">startString</a></td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#aee7f770bdb8dbb05c3892c08046420ee">subscriptCoefficients</a></td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_conditions.html#a325c242619134c0efc4768fb66b0e138">topsConditions</a>(varargin)</td><td><a class="el" href="classtops_conditions.html">topsConditions</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classtops_foundation.html#ad0781bb0cad08b538c55c3beaa019609">topsFoundation</a>(name)</td><td><a class="el" href="classtops_foundation.html">topsFoundation</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#aa0708591649e386d0f1082e14b61aa85">topsRunnable</a>()</td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classtops_runnable.html#ac2d99288ac4134628ccd375d4681b764">topsRunnable</a>(varargin)</td><td><a class="el" href="classtops_runnable.html">topsRunnable</a></td><td></td></tr>
 </table></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -104,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

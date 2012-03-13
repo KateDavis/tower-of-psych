@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -89,7 +88,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f9791987868589d8030bf4743d87263"></a><!-- doxytag: member="topsConditions::donePickingFevalable" ref="a3f9791987868589d8030bf4743d87263" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a3f9791987868589d8030bf4743d87263">donePickingFevalable</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">optional fevalable cell array to invoke when isDone <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4461f1c5056efebc93d7a39d84bd5c06"></a><!-- doxytag: member="topsConditions::allSizes" ref="a4461f1c5056efebc93d7a39d84bd5c06" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a4461f1c5056efebc93d7a39d84bd5c06">allSizes</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">array of sizes for each parameter's <b>values</b> <br/></td></tr>
@@ -100,9 +98,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a8e51c655a5f5dc776d4dca68ec87a3d5">pickingMethodDetails</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">vasrargin details from the last call to <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b76df5f2841b02ec856a82d2894cf55"></a><!-- doxytag: member="topsConditions::topsConditions" ref="a4b76df5f2841b02ec856a82d2894cf55" args="()" -->
-self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a4b76df5f2841b02ec856a82d2894cf55">topsConditions</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a325c242619134c0efc4768fb66b0e138">topsConditions</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#a325c242619134c0efc4768fb66b0e138"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a09375821d74e061875b12b6bf4fbd334">addParameter</a> (self, parameter, values)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a parameter and set of values for condition formation.  <a href="#a09375821d74e061875b12b6bf4fbd334"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a77da955d08a40f1719a05580ede9eb1f">addAssignment</a> (self, parameter, object, varargin)</td></tr>
@@ -115,18 +114,69 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d">setPickingMethod</a> (self, <a class="el" href="classtops_conditions.html#aec958388a3a45eeb40d05ef9de6a36df">pickingMethod</a>, varargin)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Choose how to pick new conditions.  <a href="#a244a9e5c5de151700df970825ada232d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94">start</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, notify, and <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> as needed.  <a href="#aeb3b30c60946a22761128cbd397add94"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log action and <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> as needed.  <a href="#aeb3b30c60946a22761128cbd397add94"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47">reset</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clear previous conditions and begin picking from scratch.  <a href="#aecbc052233262275fc20a8ee8dfb8a47"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08060e0924949738f75a0cdd8b49cef4"></a><!-- doxytag: member="topsConditions::run" ref="a08060e0924949738f75a0cdd8b49cef4" args="(self)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4">run</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pick a new condition and assign parameter values to targets. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a398a82043f7493f0ec73b0a57fa4c5b7">finish</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, notify, and call out as needed.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log action and call out as needed.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#ad108cc2675fc734cc520b4c42735f3fa">pickConditionNumber</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pick a condition number using pickingMethod.  <a href="#ad108cc2675fc734cc520b4c42735f3fa"></a><br/></td></tr>
 </table>
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="a325c242619134c0efc4768fb66b0e138"></a><!-- doxytag: member="topsConditions::topsConditions" ref="a325c242619134c0efc4768fb66b0e138" args="(varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self <a class="el" href="classtops_conditions.html">topsConditions</a> </td>
+          <td>(</td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+</div>
+</div>
 <hr/><h2>Methods</h2>
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsConditions::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fig gui </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a <a class="el" href="classtops_figure.html">topsFigure</a> object which contains the GUI. </p>
+
+<p>Reimplemented from <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a09375821d74e061875b12b6bf4fbd334"></a><!-- doxytag: member="topsConditions::addParameter" ref="a09375821d74e061875b12b6bf4fbd334" args="(self, parameter, values)" -->
 <div class="memitem">
 <div class="memproto">
@@ -328,8 +378,8 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 <div class="memdoc">
 
-<p>Log, notify, and <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> as needed. </p>
-<p>Extends the <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94" title="Log, notify, and reset() as needed.">start()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to also <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> condition picking as needed. </p>
+<p>Log action and <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> as needed. </p>
+<p>Extends the <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94" title="Log action and reset() as needed.">start()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to also <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> condition picking as needed. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94">topsRunnable</a>.</p>
 
@@ -353,7 +403,7 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Clear previous conditions and begin picking from scratch. </p>
 <p>Clears out the currentCondition and currentValues, and erases the histor of condition numbers stored in previousConditions. Calls <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> with the current pickingMethod, to generate a fresh pickSequence as necessary. Sets isDone to false.</p>
-<p><a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> and <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94" title="Log, notify, and reset() as needed.">start()</a> automatically call <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> when isDone is true, to prepare for future <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> calls. </p>
+<p><a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> and <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94" title="Log action and reset() as needed.">start()</a> automatically call <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> when isDone is true, to prepare for future <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> calls. </p>
 
 </div>
 </div>
@@ -373,8 +423,8 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 <div class="memdoc">
 
-<p>Log, notify, and call out as needed. </p>
-<p>Extends the <a class="el" href="classtops_conditions.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, notify, and call out as needed.">finish()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to also invoke donePickingFevalable and tell caller to stop running, when condition picking is over. </p>
+<p>Log action and call out as needed. </p>
+<p>Extends the <a class="el" href="classtops_conditions.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log action and call out as needed.">finish()</a> method of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to also invoke donePickingFevalable and tell caller to stop running, when condition picking is over. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsRunnable</a>.</p>
 
@@ -556,7 +606,7 @@ self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

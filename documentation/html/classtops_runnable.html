@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -75,13 +74,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5097dd11b98c2554b10cd8097f89be25"></a><!-- doxytag: member="topsRunnable::caller" ref="a5097dd11b98c2554b10cd8097f89be25" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a5097dd11b98c2554b10cd8097f89be25">caller</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> that invoked <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> on this object, or empty <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a814efd8cbc6954142ecea3ceaf3f8598"></a><!-- doxytag: member="topsRunnable::RunStart" ref="a814efd8cbc6954142ecea3ceaf3f8598" args="" -->
-Event&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a814efd8cbc6954142ecea3ceaf3f8598">RunStart</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">notification just before <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7383fa6f257efa465b35578dfd21d09"></a><!-- doxytag: member="topsRunnable::RunFinish" ref="ae7383fa6f257efa465b35578dfd21d09" args="" -->
-Event&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ae7383fa6f257efa465b35578dfd21d09">RunFinish</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">notification just after <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
-<tr><td colspan="2"><h2>Private Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae90ae8de05dbfb23f468514cf5cdee9a"></a><!-- doxytag: member="topsRunnable::startString" ref="ae90ae8de05dbfb23f468514cf5cdee9a" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ae90ae8de05dbfb23f468514cf5cdee9a">startString</a> = 'start'</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string used for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entry just before <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
@@ -89,30 +81,31 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ad551bb7553eb98dd515a1d323f3b2021">finishString</a> = 'finish'</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string used for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entry just after <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#aa0708591649e386d0f1082e14b61aa85">topsRunnable</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments.  <a href="#aa0708591649e386d0f1082e14b61aa85"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ac2d99288ac4134628ccd375d4681b764">topsRunnable</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#ac2d99288ac4134628ccd375d4681b764"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4">run</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Do flow control.  <a href="#a08060e0924949738f75a0cdd8b49cef4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72e51a8014869030f089a5fb34fdd24f"></a><!-- doxytag: member="topsRunnable::gui" ref="a72e51a8014869030f089a5fb34fdd24f" args="(self)" -->
 g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">gui</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Show heirarchy of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a>[Composite] objects. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94">start</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, notify, and prepare to do flow control.  <a href="#aeb3b30c60946a22761128cbd397add94"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log action and prepare to do flow control.  <a href="#aeb3b30c60946a22761128cbd397add94"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7">finish</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, notify, and finish doing flow control.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, action and finish doing flow control.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#adb11f3757673c2cd1697dd59927d7522">logAction</a> (self, actionName, actionData)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log an event of interest with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#adb11f3757673c2cd1697dd59927d7522"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a8222c86f5536c7596c858d5f8129ed96">logFeval</a> (self, fevalName, fevalable)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log a function call with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#a8222c86f5536c7596c858d5f8129ed96"></a><br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
-<a class="anchor" id="aa0708591649e386d0f1082e14b61aa85"></a><!-- doxytag: member="topsRunnable::topsRunnable" ref="aa0708591649e386d0f1082e14b61aa85" args="()" -->
+<a class="anchor" id="ac2d99288ac4134628ccd375d4681b764"></a><!-- doxytag: member="topsRunnable::topsRunnable" ref="ac2d99288ac4134628ccd375d4681b764" args="(varargin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">self <a class="el" href="classtops_runnable.html">topsRunnable</a> </td>
           <td>(</td>
+          <td class="paramtype">varargin&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
@@ -121,8 +114,14 @@ g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </div>
 <div class="memdoc">
 
-<p>Constructor takes no arguments. </p>
-<p>Uses the class of this <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> as the default name. </p>
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
 
 </div>
 </div>
@@ -167,8 +166,8 @@ g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </div>
 <div class="memdoc">
 
-<p>Log, notify, and prepare to do flow control. </p>
-<p>Subclasses should extend <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log, notify, and prepare to do flow control.">start()</a> to do initialization before running. </p>
+<p>Log action and prepare to do flow control. </p>
+<p>Subclasses should extend <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log action and prepare to do flow control.">start()</a> to do initialization before running. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94">topsConditions</a>, and <a class="el" href="classtops_state_machine.html#aeb3b30c60946a22761128cbd397add94">topsStateMachine</a>.</p>
 
@@ -190,8 +189,8 @@ g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </div>
 <div class="memdoc">
 
-<p>Log, notify, and finish doing flow control. </p>
-<p>Subclasses should extend <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, notify, and finish doing flow control.">finish()</a> to do clean up after running. </p>
+<p>Log, action and finish doing flow control. </p>
+<p>Subclasses should extend <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, action and finish doing flow control.">finish()</a> to do clean up after running. </p>
 
 <p>Reimplemented in <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsConcurrentComposite</a>, <a class="el" href="classtops_conditions.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsConditions</a>, and <a class="el" href="classtops_state_machine.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsStateMachine</a>.</p>
 
@@ -303,7 +302,7 @@ g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

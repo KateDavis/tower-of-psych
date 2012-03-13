@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -58,7 +57,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Many psychophysics experiments use a tree structure implicitly, along with a similar down-then-up flow of behavior. <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> makes the stucture and flow explicit, which offers some advantages:</p>
 <ul>
 <li>You can extend your task structure arbitrarily, without running out of vocabulary words or hard-coded concepts like "task" "block", "subblock", "trial", "intertrial", etc.</li>
-<li>You can visualize the structure of your experiment using the <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f" title="Show heirarchy of topsRunnable[Composite] objects.">topsTreeNode.gui()</a> method. </li>
+<li>You can visualize the structure of your experiment using the <a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d" title="Open a GUI to view object details.">topsTreeNode.gui()</a> method. </li>
 </ul>
 <div class="dynheader">
 Inheritance diagram for topsTreeNode:</div>
@@ -85,20 +84,22 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a04ccc84d591d23471dcd67dbc00207a7">validIterationMethods</a> = {'sequential', 'random'}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of strings for supported iterationMethods <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">child&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#af4ce0cdc3c1a753e61667786a5f3bfc3">newChildNode</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a new <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> child and add it beneath this node.  <a href="#af4ce0cdc3c1a753e61667786a5f3bfc3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#aef59297db3b01fe32b5df5b8463c50fe">topsTreeNode</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#aef59297db3b01fe32b5df5b8463c50fe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">child&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#af996d3a33d71c4a1ce33304572cdc9ba">newChildNode</a> (self, varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a new <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> child and add it beneath this node.  <a href="#af996d3a33d71c4a1ce33304572cdc9ba"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4">run</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Recursively <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a>, starting with this node.  <a href="#a08060e0924949738f75a0cdd8b49cef4"></a><br/></td></tr>
 </table>
-<hr/><h2>Methods</h2>
-<a class="anchor" id="af4ce0cdc3c1a753e61667786a5f3bfc3"></a><!-- doxytag: member="topsTreeNode::newChildNode" ref="af4ce0cdc3c1a753e61667786a5f3bfc3" args="(self)" -->
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="aef59297db3b01fe32b5df5b8463c50fe"></a><!-- doxytag: member="topsTreeNode::topsTreeNode" ref="aef59297db3b01fe32b5df5b8463c50fe" args="(varargin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">child newChildNode </td>
+          <td class="memname">self <a class="el" href="classtops_tree_node.html">topsTreeNode</a> </td>
           <td>(</td>
-          <td class="paramtype">self&nbsp;</td>
+          <td class="paramtype">varargin&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
@@ -107,7 +108,50 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </div>
 <div class="memdoc">
 
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+</div>
+</div>
+<hr/><h2>Methods</h2>
+<a class="anchor" id="af996d3a33d71c4a1ce33304572cdc9ba"></a><!-- doxytag: member="topsTreeNode::newChildNode" ref="af996d3a33d71c4a1ce33304572cdc9ba" args="(self, varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">child newChildNode </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
 <p>Create a new <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> child and add it beneath this node. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for the new child node</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Returns a new <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> which is a child of this node. </p>
 
 </div>
@@ -131,7 +175,6 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Recursively <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a>, starting with this node. </p>
 <p>Begin traversing the tree with this node as the topmost node. The sequence of events should go like this:</p>
 <ul>
-<li>This node sends a 'RunStart' notification to any listeners.</li>
 <li>This node executes its startFevalable</li>
 <li>This node does zero or more "iterations":<ul>
 <li>This node calls <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a> on each of its children, in an order determined by this node's iterationMethod. Each child then performs the same sequence of actions as this node.</li>
@@ -164,7 +207,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:31 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

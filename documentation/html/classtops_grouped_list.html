@@ -20,7 +20,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li><a href="pages.html"><span>Other</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -55,7 +54,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>One way it's more flexible is in the values that a group or mnemonic is allowed to have. Groups and mnemonics can use arbitrary strings, whereas structs cannot use strings that contain dots or spaces. Similarly, groups and mnemonics can have arbitrary numeric values, where as cell arrays must use positive integers.</p>
 <p>There is one important constriant on groups and mnemonics: for each instance of <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, all groups must be identified by <em>either</em> strings <em>or</em> numbers, but not a mixture of the two. Likewise, the mnemonics used in each group must be all strings or all numbers.</p>
 <p>One way in which <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> is better organized than a random collection of structs and cell arrays is that you can always "ask" it what groups, mnemonics, and items it contains, and it knows where to look for them. You can also ask it <em>if</em> it contains a certain group, mnemonic, or item.</p>
-<p>The big idea is that you can neatly list whatever data and objects you need for an experiment. As long as you give the list to your other functions and objects (as an argument, for example), they can access all of your stuff. Moreover, you can always view what's in your list by using its <a class="el" href="classtops_grouped_list.html#a72e51a8014869030f089a5fb34fdd24f" title="Launch a graphical interface for this topsGroupedList.">gui()</a> method. </p>
+<p>The big idea is that you can neatly list whatever data and objects you need for an experiment. As long as you give the list to your other functions and objects (as an argument, for example), they can access all of your stuff. Moreover, you can always view what's in your list by using its <a class="el" href="classtops_grouped_list.html#abf424157a1ca067a83cc8260bc34c17d" title="Open a GUI to view object details.">gui()</a> method. </p>
 <div class="dynheader">
 Inheritance diagram for topsGroupedList:</div>
 <div class="dynsection">
@@ -66,29 +65,26 @@ Inheritance diagram for topsGroupedList:</div>
 
 <p><a href="classtops_grouped_list-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Cell array of strings or numbers identifying all the groups in the list.  <a href="#a38f857c066d69f75bb3fa218d0a66374"></a><br/></td></tr>
+<tr><td colspan="2"><h2>Protected Properties</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38f857c066d69f75bb3fa218d0a66374"></a><!-- doxytag: member="topsGroupedList::groups" ref="a38f857c066d69f75bb3fa218d0a66374" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of strings or numbers for all list groups <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3ed2b667608158bb9833f0e663216a8"></a><!-- doxytag: member="topsGroupedList::length" ref="af3ed2b667608158bb9833f0e663216a8" args="" -->
-Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The number of items contained among all groups. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab763c1dd7b1566f8758e9669f18c336d"></a><!-- doxytag: member="topsGroupedList::NewAddition" ref="ab763c1dd7b1566f8758e9669f18c336d" args="" -->
-Event&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ab763c1dd7b1566f8758e9669f18c336d">NewAddition</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Notifies any listeners when items added to the list, including group and mnemonic. <br/></td></tr>
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a> = 0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">number of items contained among all groups <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc938317d4f9988fe0c818f0afdc4ad5"></a><!-- doxytag: member="topsGroupedList::allGroupsMap" ref="acc938317d4f9988fe0c818f0afdc4ad5" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#acc938317d4f9988fe0c818f0afdc4ad5">allGroupsMap</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">containers.Map of data for each group <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e095589b660ef2c9974b775e2962d56"></a><!-- doxytag: member="topsGroupedList::topsGroupedList" ref="a6e095589b660ef2c9974b775e2962d56" args="()" -->
-self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a6e095589b660ef2c9974b775e2962d56">topsGroupedList</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor takes no arguments. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72e51a8014869030f089a5fb34fdd24f"></a><!-- doxytag: member="topsGroupedList::gui" ref="a72e51a8014869030f089a5fb34fdd24f" args="(self)" -->
-g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a72e51a8014869030f089a5fb34fdd24f">gui</a> (self)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Launch a graphical interface for this <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a04e34d3658776f5e027c7cc96e624cde">topsGroupedList</a> (varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#a04e34d3658776f5e027c7cc96e624cde"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc772c903527cca8657740197f30c34b"></a><!-- doxytag: member="topsGroupedList::guiPanel" ref="acc772c903527cca8657740197f30c34b" args="(self, varargin)" -->
 p&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">guiPanel</a> (self, varargin)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a <a class="el" href="classtops_grouped_list_panel.html" title="Resuable 3-column view for topsGroupedLists in topsGUI interfaces.">topsGroupedListPanel</a> with details about this object. <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a <a class="el" href="classtops_grouped_list_panel.html">topsGroupedListPanel</a> with details about this object. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a635c841549fbf6e402cb76268d7a77ee">addItemToGroupWithMnemonic</a> (self, item, group, mnemonic)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a new item to the list.  <a href="#a635c841549fbf6e402cb76268d7a77ee"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">idea&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a917834c37423c527a6d2362ece6048ad">addIdea</a> (self, idea)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Jot down a value in the "ideas" group.  <a href="#a917834c37423c527a6d2362ece6048ad"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a732f98799efeda7ae52e1e70efce809e">removeItemFromGroup</a> (self, item, group)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove all instances of an item from a group.  <a href="#a732f98799efeda7ae52e1e70efce809e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#acbbda56a3a47b4e16df6c75c947beb39">removeMnemonicFromGroup</a> (self, mnemonic, group)</td></tr>
@@ -116,8 +112,8 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get all items from a group, as a struct array.  <a href="#ae5c5d09a765485a412412c068d1e0f13"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ab4c74d6518a321ed20e76bb8d7dd5890">containsGroup</a> (self, group)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group?  <a href="#ab4c74d6518a321ed20e76bb8d7dd5890"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">matches&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a031cbd4f3a3cc9efd33905903240d944">getGroupNamesMatchingExpression</a> (self, expression)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get string group names that match the given regular expression.  <a href="#a031cbd4f3a3cc9efd33905903240d944"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">matches isMatch&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a2c239079c55b9164137b2b39dc3234e1">getGroupNamesMatchingExpression</a> (self, expression)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get string group names that match the given regular expression.  <a href="#a2c239079c55b9164137b2b39dc3234e1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ab56476325e71ddcce007c32400bada05">containsMnemonicInGroup</a> (self, mnemonic, group)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group and mnemonic?  <a href="#ab56476325e71ddcce007c32400bada05"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a55f26b6b59e31d3698bbbf8072ae9271">containsItemInGroup</a> (self, item, group)</td></tr>
@@ -126,7 +122,58 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <tr><td class="memItemLeft" align="right" valign="top">static isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a4dedfbbb1aa700dc52d38e0808a067c0">mapContainsItem</a> (map, item)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the containers.Map contain the given item?  <a href="#a4dedfbbb1aa700dc52d38e0808a067c0"></a><br/></td></tr>
 </table>
+<hr/><h2>Constructor</h2>
+<a class="anchor" id="a04e34d3658776f5e027c7cc96e624cde"></a><!-- doxytag: member="topsGroupedList::topsGroupedList" ref="a04e34d3658776f5e027c7cc96e624cde" args="(varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self <a class="el" href="classtops_grouped_list.html">topsGroupedList</a> </td>
+          <td>(</td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constuct with name optional. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>optional name for this object</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+</div>
+</div>
 <hr/><h2>Methods</h2>
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsGroupedList::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fig gui </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a <a class="el" href="classtops_figure.html">topsFigure</a> object which contains the GUI. </p>
+
+<p>Reimplemented from <a class="el" href="classtops_foundation.html#abf424157a1ca067a83cc8260bc34c17d">topsFoundation</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a635c841549fbf6e402cb76268d7a77ee"></a><!-- doxytag: member="topsGroupedList::addItemToGroupWithMnemonic" ref="a635c841549fbf6e402cb76268d7a77ee" args="(self, item, group, mnemonic)" -->
 <div class="memitem">
 <div class="memproto">
@@ -169,49 +216,11 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any Matlab value or object </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>a string or number that identifies a group of related items </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>mnemonic</em>&nbsp;</td><td>a string or number to identify this new item</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>mnemonic</em>&nbsp;</td><td>a string or number to identify this new item. If <em>group</em> and <em>mnemonic</em> are already in the list, then <em>item</em> will replace an older item.</td></tr>
   </table>
   </dd>
 </dl>
-<p>If <em>group</em> and <em>mnemonic</em> are already in the list, then <em>item</em> will replace an older item. If <em>group</em> is not already in the list, it may send a NewAddition notification to any listeners after adding <em>item</em>.</p>
 <p>Note: for each <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, group values must be all strings or all numbers. Likewise, for each group, mnemonics must be all strings or all numbers. </p>
-
-</div>
-</div>
-<a class="anchor" id="a917834c37423c527a6d2362ece6048ad"></a><!-- doxytag: member="topsGroupedList::addIdea" ref="a917834c37423c527a6d2362ece6048ad" args="(self, idea)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">idea addIdea </td>
-          <td>(</td>
-          <td class="paramtype">self&nbsp;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">idea&nbsp;</td>
-          <td class="paramname"></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Jot down a value in the "ideas" group. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>idea</em>&nbsp;</td><td>a string or number representing any idea</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Returns the same <em>idea</em> that was passed in. If the list object uses strings as group identifiers, adds <em>idea</em> to the "ideas" group, using <em>idea</em> itself as the mnemonic.</p>
-<p><a class="el" href="classtops_grouped_list.html#a917834c37423c527a6d2362ece6048ad" title="Jot down a value in the &quot;ideas&quot; group.">addIdea()</a> is an easy way to add a string or number to a list object and also store it in a local variable, without having to retype the string or number, or the variable name. </p>
 
 </div>
 </div>
@@ -671,12 +680,12 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 
 </div>
 </div>
-<a class="anchor" id="a031cbd4f3a3cc9efd33905903240d944"></a><!-- doxytag: member="topsGroupedList::getGroupNamesMatchingExpression" ref="a031cbd4f3a3cc9efd33905903240d944" args="(self, expression)" -->
+<a class="anchor" id="a2c239079c55b9164137b2b39dc3234e1"></a><!-- doxytag: member="topsGroupedList::getGroupNamesMatchingExpression" ref="a2c239079c55b9164137b2b39dc3234e1" args="(self, expression)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">matches getGroupNamesMatchingExpression </td>
+          <td class="memname">matches isMatch getGroupNamesMatchingExpression </td>
           <td>(</td>
           <td class="paramtype">self&nbsp;</td>
           <td class="paramname">, </td>
@@ -697,7 +706,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <div class="memdoc">
 
 <p>Get string group names that match the given regular expression. </p>
-<p>% </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>expression</em>&nbsp;</td><td>a regular expression to match agains group names in the list</td></tr>
@@ -705,6 +713,7 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
   </dd>
 </dl>
 <p>Compares <em>expression</em> to the names of groups in the list. Returns a cell array of strings of group names that match <em>expression</em>. If the list uses numeric group names, returns an empty cell array.</p>
+<p>Also returns as a second ouput a logical selector with one element per list group, set to true where a group matches <em>expression</em>.</p>
 <p>Regular expressions are specially formatted strings used for matching patterns in other strings. See Matlab's builtin regexp() and "Regular Expressions" documentation. </p>
 
 </div>
@@ -832,22 +841,6 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 
 </div>
 </div>
-<hr/><h2>Properties and Events</h2>
-<a class="anchor" id="a38f857c066d69f75bb3fa218d0a66374"></a><!-- doxytag: member="topsGroupedList::groups" ref="a38f857c066d69f75bb3fa218d0a66374" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Property <a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Cell array of strings or numbers identifying all the groups in the list. </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>topsGroupedList.m</li>
 </ul>
@@ -866,7 +859,7 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Jan 31 20:10:22 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 16:39:30 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
