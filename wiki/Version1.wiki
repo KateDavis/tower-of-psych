@@ -86,15 +86,17 @@ The issues database has become stale and irrelevant.
 
 _I worked through and closed all the outstanding issues in March 2012._
 
-----
-
-===Docs===
+===_Docs_===
 The role and form of the Doxygen docs should be tweaked.
 
-  * Doc front page as TOC, not as intro
-  * Focus on classes and functions as API/reference
-  * Remove confusing nav tabs
+  * Doc front page just says "Tower of Psych" and revision number
+  * Docs just show class heirarchy and refernce
+  * Removed some confusing navigation tabs
  (small)
+
+_This is done as of 13 March 2012._
+
+----
 
 ===Wiki===
 The wiki should be filled out and brought into agreement with the code and docs.
