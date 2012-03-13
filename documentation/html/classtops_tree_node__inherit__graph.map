@@ -1,6 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node2" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="5,237,192,267"/>
-<area shape="rect" id="node4" href="$classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="41,160,156,189"/>
-<area shape="rect" id="node6" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="36,83,161,112"/>
-<area shape="rect" id="node8" href="$classhandle.html" title="handle" alt="" coords="65,5,132,35"/>
+<area shape="rect" id="node2" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="5,161,157,189"/>
+<area shape="rect" id="node4" href="$classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="34,83,128,111"/>
+<area shape="rect" id="node6" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="29,6,133,34"/>
 </map>

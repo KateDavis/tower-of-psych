@@ -1,8 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node9" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="10,315,96,343"/>
-<area shape="rect" id="node13" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="120,315,236,343"/>
-<area shape="rect" id="node2" href="$classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="69,161,163,189"/>
-<area shape="rect" id="node4" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="64,83,168,111"/>
-<area shape="rect" id="node6" href="$classhandle.html" title="handle" alt="" coords="88,6,144,34"/>
-<area shape="rect" id="node11" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="5,393,101,421"/>
+<area shape="rect" id="node7" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="10,238,96,266"/>
+<area shape="rect" id="node11" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="120,238,236,266"/>
+<area shape="rect" id="node2" href="$classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="69,83,163,111"/>
+<area shape="rect" id="node4" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="64,6,168,34"/>
+<area shape="rect" id="node9" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="5,315,101,343"/>
 </map>

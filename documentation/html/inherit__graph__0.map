@@ -1,29 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classhandle.html" title="handle" alt="" coords="6,161,63,189"/>
-<area shape="rect" id="node3" href="$class_data_grapher.html" title="A Matlab interface for the GraphViz graphing tool." alt="" coords="136,5,226,33"/>
-<area shape="rect" id="node5" href="$class_object_grapher.html" title="Graphs references among objects with the Graphviz tool." alt="" coords="131,57,232,85"/>
-<area shape="rect" id="node7" href="$class_profiler_grapher.html" title="Graphs output from the Matlab profiler with the Graphviz tool." alt="" coords="128,109,234,137"/>
-<area shape="rect" id="node9" href="$class_state_diagram_grapher.html" title="Make topsStateMachine state diagrams with the Graphviz tool." alt="" coords="112,161,250,189"/>
-<area shape="rect" id="node11" href="$classtops_figure.html" title="topsFigure" alt="" coords="142,213,221,241"/>
-<area shape="rect" id="node13" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="129,265,233,293"/>
-<area shape="rect" id="node39" href="$classtops_panel.html" title="topsPanel" alt="" coords="145,421,218,449"/>
-<area shape="rect" id="node15" href="$classtops_classification.html" title="Represents data as points in space, for classification." alt="" coords="311,186,428,214"/>
-<area shape="rect" id="node17" href="$classtops_grouped_list.html" title="A structured container for values and objects." alt="" coords="314,238,425,266"/>
-<area shape="rect" id="node21" href="$classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="322,290,417,318"/>
-<area shape="rect" id="node19" href="$classtops_data_log.html" title="One central place to log data on the fly." alt="" coords="519,213,609,241"/>
-<area shape="rect" id="node23" href="$classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="512,265,616,293"/>
-<area shape="rect" id="node31" href="$classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects." alt="" coords="513,317,615,345"/>
-<area shape="rect" id="node33" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="488,369,640,397"/>
-<area shape="rect" id="node25" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="726,226,813,254"/>
-<area shape="rect" id="node29" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="711,278,828,306"/>
-<area shape="rect" id="node27" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="899,226,995,254"/>
-<area shape="rect" id="node35" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="689,355,850,383"/>
-<area shape="rect" id="node37" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="721,407,818,435"/>
-<area shape="rect" id="node41" href="$classtops_data_log_panel.html" title="topsDataLogPanel" alt="" coords="309,342,429,370"/>
-<area shape="rect" id="node43" href="$classtops_grouped_list_panel.html" title="topsGroupedListPanel" alt="" coords="299,394,440,422"/>
-<area shape="rect" id="node45" href="$classtops_info_panel.html" title="topsInfoPanel" alt="" coords="322,446,417,474"/>
-<area shape="rect" id="node47" href="$classtops_table_panel.html" title="topsTablePanel" alt="" coords="318,498,421,526"/>
-<area shape="rect" id="node49" href="$classtops_tree_panel.html" title="topsTreePanel" alt="" coords="321,550,418,578"/>
-<area shape="rect" id="node51" href="$classtops_drill_down_panel.html" title="topsDrillDownPanel" alt="" coords="499,523,629,551"/>
-<area shape="rect" id="node53" href="$classtops_runnables_panel.html" title="topsRunnablesPanel" alt="" coords="499,575,629,603"/>
+<area shape="rect" id="node1" href="$class_data_grapher.html" title="A Matlab interface for the GraphViz graphing tool." alt="" coords="6,5,96,33"/>
 </map>
