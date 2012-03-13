@@ -17,7 +17,6 @@
 %   thingy(2:2:2*n) = 1:n;
 %   image(thingy);
 %
-%   See also colormap colorcube
 %   @ingroup utilities
 function colors = puebloColors(n)
 

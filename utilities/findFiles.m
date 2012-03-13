@@ -17,6 +17,8 @@
 % Here are some examples:
 % allMatlabFiles = findFiles(matlabroot);
 % myDataFiles = findFiles(myFolder, 'data');
+%
+% @ingroup utilities
 function fileList = findFiles(folder, fileFilter)
 
 if nargin < 2

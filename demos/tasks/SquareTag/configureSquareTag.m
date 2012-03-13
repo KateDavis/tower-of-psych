@@ -16,6 +16,8 @@
 % SquareTag.  Also returns as a second output a topsGroupedList which
 % contains data and objects related to the SquarTag session, including @a
 % logic, @a av, @a getXFunction, and @a getYFunction.
+%
+% @ingroup demos
 function [runnable, list] = configureSquareTag( ...
     logic, av, getXFunction, getYFunction)
 

@@ -7,6 +7,7 @@ classdef StateDiagramGrapher < handle
     % "hints" that specify possible transitions without having to run the
     % state machine.  It configures a DataGrapher to graph which states may
     % transition to which.
+    %
     % @ingroup utilities
     
     properties

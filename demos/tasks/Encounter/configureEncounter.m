@@ -18,6 +18,8 @@ function [runnable, list] = configureEncounter()
 %   To play Encounter, type the following:
 %   [runnable, list] = configureEncounter();
 %   runnable.run();
+%
+% @ingroup demos
 
 % By benjamin.heasly@gmail.com,
 %   2009 Seattle, WA

@@ -37,7 +37,8 @@ classdef topsTreeNode < topsRunnableComposite
     %   "subblock", "trial", "intertrial", etc.
     %   - You can visualize the structure of your experiment using the
     %   topsTreeNode.gui() method.
-    % @ingroup foundation
+    %
+    % @ingroup runnable
     
     properties (SetObservable)
         % number of times to run through this node's children

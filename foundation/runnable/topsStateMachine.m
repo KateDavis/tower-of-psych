@@ -8,7 +8,7 @@ classdef topsStateMachine < topsConcurrent
     % or may be conditional and branching based on classifications or input
     % functions.
     %
-    % @ingroup foundataion
+    % @ingroup runnable
     
     properties
         % struct array of data for each state
