@@ -15,8 +15,6 @@
 % subposition() is similar to the Matlab's built-in subplot(), but it
 % operates on position rectangles (that is, arrays) rather than figures and
 % axes objects.
-%
-% @ingroup utilities
 function subpos = subposition(position, r, c, ii, jj)
 w = position(3)/c;
 h = position(4)/r;

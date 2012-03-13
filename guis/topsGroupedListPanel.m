@@ -5,8 +5,6 @@ classdef topsGroupedListPanel < topsPanel
     % topsGroupedList, and all the mnemonic names for one group at a time.
     % The user can view and select one group and one mnemonic.  Each
     % selection updates the "current item" of a Tower of Psych GUI.
-    %
-    % @ingroup guis
     
     properties (SetAccess = protected)
         % the uitable for group names

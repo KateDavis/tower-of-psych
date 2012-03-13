@@ -23,9 +23,6 @@ classdef topsEnsemble < topsCallList
     % topsEnsemble extends topsCall list.  Where topsCall list is able to
     % call arbitrary functions, topsEnsemble can also call arbitrary
     % methods on its aggrigated objects.
-    %
-    % @ingroup runnable
-    
     properties (SetAccess = protected)
         % array of objects in the ensemble
         objects = {};

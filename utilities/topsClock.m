@@ -8,8 +8,6 @@
 % stopwatch.
 %
 % See also, tic, toc
-%
-% @ingroup utilities
 function t = topsClock
 
 persistent topsTic

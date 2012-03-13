@@ -1,6 +1,4 @@
 % Try graphing state machine states from the SquareTag game
-%
-% @ingroup demos
 clear
 clear classes
 clc

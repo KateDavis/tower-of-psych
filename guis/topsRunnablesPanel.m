@@ -5,8 +5,6 @@ classdef topsRunnablesPanel < topsTreePanel
     % topsRunnable objects that make up an experiment or game.  The user
     % can select each runnable to view more details about it, and set the
     % curent item of the Tower of Psych GUI.
-    %
-    % @ingroup guis
     
     properties
         % filename for icon that represents topsConcurrent objects

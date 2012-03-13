@@ -7,9 +7,7 @@ classdef topsConcurrentComposite < topsRunnableComposite
     % invokes runBriefly() sequentially and repeatedly for each of its
     % component objects.  The topsConcurrentComposite will stop running as
     % soon as one of its children has isRunning equal to false.
-    %
-    % @ingroup runnable
-    
+
     properties
         % logical array reflecting isRunning for each child object
         childIsRunning;

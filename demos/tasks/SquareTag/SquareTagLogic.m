@@ -16,9 +16,7 @@ classdef SquareTagLogic < handle
     % *when* do anything.  It's up to some other function or class to
     % invoke SquareTagLogic behaviors in corrdination with things like
     % graphics and subject inputs.
-    %
-    % @ingroup demos
-    
+
     properties
         % a name to identify a SquareTag session
         name = '';

@@ -16,8 +16,6 @@
 %   thingy = n+1*ones(1, 2*n+1);
 %   thingy(2:2:2*n) = 1:n;
 %   image(thingy);
-%
-%   @ingroup utilities
 function colors = puebloColors(n)
 
 if nargin < 1

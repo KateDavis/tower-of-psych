@@ -13,9 +13,7 @@ classdef topsPanel < handle
     % which was most recently viewed or used through the GUI.  A panel can
     % set the current item in response to user actions, or update itself to
     % reflect a current item that was selected in a different panel.
-    % @details
-    %
-    % @ingroup guis
+
     properties
         % whether to leave the currentItem and contents as static
         isLocked = false;

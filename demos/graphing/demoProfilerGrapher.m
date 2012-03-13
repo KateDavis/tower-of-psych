@@ -1,6 +1,4 @@
 % Try graphing the output of the Matlab profiler.
-%
-% @ingroup demos
 clear
 clear classes
 clc

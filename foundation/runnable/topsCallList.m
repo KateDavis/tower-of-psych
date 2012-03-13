@@ -28,9 +28,7 @@ classdef topsCallList < topsConcurrent
     % controlled with setActiveByName() or with callByName() with the
     % isActive flag.  A call can also be replaced by passing a new call
     % with the same name to addCall().
-    %
-    % @ingroup runnable
-    
+
     properties
         % struct array with fevalable cell arrays to call as a batch
         calls = struct( ...

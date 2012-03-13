@@ -4,8 +4,6 @@ classdef topsTablePanel < topsPanel
     % topsTablePanel summarizes a cell array, struct array, or object
     % array with a 2D table.  The user can view and select a table cell to
     % updatee the "current item" of a Tower of Psych GUI.
-    %
-    % @ingroup guis
     
     properties (SetAccess = protected)
         % the uitable for cell, struct, or object array data

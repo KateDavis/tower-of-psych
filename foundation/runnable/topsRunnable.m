@@ -10,9 +10,7 @@ classdef topsRunnable < topsFoundation
     % Any topsRunnable can be run(), to begin execution.  Sometimes it's
     % caller will be set to another topsRunnable, which invoked run() on
     % it.
-    %
-    % @ingroup runnable
-    
+
     properties
         % optional fevalable cell array to invoke just before running
         startFevalable = {};

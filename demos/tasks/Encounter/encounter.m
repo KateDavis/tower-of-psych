@@ -1,6 +1,4 @@
 % Play the Encounter game to demonstrate Tower of Psych.
-%
-% @ingroup demos
 
 % get objects that can run the game
 [runnable, list] = configureEncounter();

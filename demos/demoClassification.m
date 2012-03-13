@@ -1,7 +1,5 @@
 function demoClassification()
 % How to classify data based on a spatial model.
-%
-% @ingroup demos
 
 % query dimensions of primary display
 monitorRects = get(0, 'MonitorPositions');

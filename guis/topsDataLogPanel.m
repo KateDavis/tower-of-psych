@@ -6,8 +6,6 @@ classdef topsDataLogPanel < topsPanel
     % can select indivitual points in the raster plot to set the "current
     % item" of a Tower of Psych GUI.  The user can also select which groups
     % to plot and the time range of the plot.
-    %
-    % @ingroup guis
     
     properties (SetAccess = protected)
         % logical selector for which groups to plot in the raster

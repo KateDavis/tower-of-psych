@@ -17,8 +17,6 @@ classdef topsFigure < handle
     % by all using the same "current item".  topsFigure provides buttons
     % for sending the current item to the Command Window workspace and for
     % viewing the current item in more detail.
-    %
-    % @ingroup guis
     
     properties (SetAccess = protected)
         % GUI name to display in the figure title bar

@@ -7,9 +7,7 @@ classdef topsStateMachine < topsConcurrent
     % states with specified timing.  State traversal may be deterministic,
     % or may be conditional and branching based on classifications or input
     % functions.
-    %
-    % @ingroup runnable
-    
+
     properties
         % struct array of data for each state
         % @details

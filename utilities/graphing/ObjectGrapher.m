@@ -5,8 +5,6 @@ classdef ObjectGrapher < handle
     % ObjectGrapher follows refrences among objects and keeps track of
     % unique objects and how they refer to one another.  It confugures a
     % DataGrapher to graph which objects refer to which.
-    %
-    % @ingroup utilities
     
     properties
         % containers.Map of objects, where to start looking for object

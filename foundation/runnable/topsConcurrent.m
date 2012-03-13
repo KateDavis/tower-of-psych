@@ -15,9 +15,7 @@ classdef topsConcurrent < topsRunnable
     % Multiple topsConcurrent objects can be aggregated within a single
     % topsConcurrentComposite object.  This makes allows the aggregated
     % objects to be treated like a single topsRunnable object.
-    %
-    % @ingroup runnable
-    
+
     properties
         % string used for topsDataLog entry just before runBriefly()
         runBrieflyString = 'runBriefly';
