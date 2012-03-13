@@ -1,6 +1,8 @@
 classdef EncounterBattleTimer < handle
     % @class EncounterBattleTimer
     % Timer class to help schedule events in the "Encounter" demo game.
+    %
+    % @ingroup demos
     
     properties
         % when the next event should occur in units of clockFunction

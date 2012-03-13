@@ -10,6 +10,8 @@
 % accepting inputs from a user or subject, demoSquareTag() moves the
 % subject's cursor programmatically, over the given @a tagSteps number of
 % animation frames.
+%
+% @ingroup demos
 function demoSquareTag(logic, av, tagSteps)
 
 if nargin < 1 || isempty(logic)

@@ -1,5 +1,7 @@
 function demoRegion()
 % How to define regions in space with topsRegion, and view them.
+%
+% @ingroup demos
 close all
 
 %% define 3 independent dimensions

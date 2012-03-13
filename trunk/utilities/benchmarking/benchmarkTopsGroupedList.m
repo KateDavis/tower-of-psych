@@ -6,7 +6,8 @@ function benchTopsGroupedList(n, useStrings)
 %
 %   For each test, repeats the first iteration so as to ignore Matlab
 %   function loading time.
-
+%
+%   @ingroup utilities
 if ~nargin || isempty(n)
     n = 300;
 end

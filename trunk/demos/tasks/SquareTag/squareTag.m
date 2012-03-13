@@ -1,4 +1,6 @@
 % Play the SquareTag task with built-in Matlab graphics and inputs.
+%
+% @ingroup demos
 clear
 close all
 

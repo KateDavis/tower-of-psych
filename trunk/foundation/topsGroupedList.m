@@ -35,6 +35,7 @@ classdef topsGroupedList < topsFoundation
     % other functions and objects (as an argument, for example), they can
     % access all of your stuff.  Moreover, you can always view what's in
     % your list by using its gui() method.
+    %
     % @ingroup foundation
     
     properties (SetAccess = protected)

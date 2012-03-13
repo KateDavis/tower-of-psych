@@ -7,6 +7,8 @@
 % ...
 % sm.gui
 % @endcode
+%
+% @ingroup demos
 function sm = demoStateMachine
 
 % Create a state machine object and give it a name

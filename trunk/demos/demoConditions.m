@@ -1,4 +1,6 @@
 % Demonstrate some key functions of the topsConditions class.
+%
+% @ingroup demos
 clear
 clear classes
 clc

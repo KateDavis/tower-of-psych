@@ -23,7 +23,8 @@ classdef topsConditions < topsRunnable
     % an object sets isDone to true and invokes donePickingFevalable.  If
     % its caller is set to a topsRunnable object, it also sets isRunning to
     % false for that object.
-    % @ingroup foundation
+    %
+    % @ingroup runnable
     
     properties
         % struct array of parameter names, values and assignment targets

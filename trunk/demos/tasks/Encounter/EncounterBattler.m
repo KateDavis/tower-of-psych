@@ -1,5 +1,7 @@
 classdef EncounterBattler < handle
     % Class to represent character or monster in the "Encounter" demo game.
+    %
+    % @ingroup demos
     
     properties
         % string name to display for this battler

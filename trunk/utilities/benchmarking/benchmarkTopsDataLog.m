@@ -4,6 +4,7 @@
 % Adds @a n pieces of data to @a n different groups in topsDataLog, for
 % n^2 total log additions.  Records how long each addition takes and
 % plots the results.
+%
 % @ingroup utilities
 function benchTopsDataLog(n)
 
