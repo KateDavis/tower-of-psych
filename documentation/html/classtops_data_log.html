@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -53,6 +53,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>In your experiment code, you can add to the log as many times as you like. If you're not sure whether some piece of data will turn out to be important, you can go ahead and log it anyway. You don't have to worry about the log filling up, how to allcate space for more data, or even how the data are ultimately stored. That's the log's job.</p>
 <p>Other topsFoundataion classes will also add data to the log, to help you keep track of details that aren't specific to your experiment. For example, <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> objects make log entries as they start and finish running.</p>
 <p>With your log entries and the entries made automatically by topsFoundataion classes, it should be straightforward to look at the log after an experiment and get a sense of what happened and when. The log's <a class="el" href="classtops_data_log.html#a4b83f0eb0e39660c96d3f8e8ff1726d9" title="Open a GUI to view object details.">gui()</a> method should make this even easier. You can use it to launch topsDataLogGUI, which plots a raster of all logged data over time, with data groups as rows. </p>
+
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00001">1</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
 <div class="dynheader">
 Inheritance diagram for topsDataLog:</div>
 <div class="dynsection">
@@ -64,13 +66,18 @@ Inheritance diagram for topsDataLog:</div>
 <p><a href="classtops_data_log-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__foundation.html#ga18414c54c7ec4b757437956d8e2bfd3f">clockFunction</a> = @topsClock</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18414c54c7ec4b757437956d8e2bfd3f"></a><!-- doxytag: member="topsDataLog::clockFunction" ref="a18414c54c7ec4b757437956d8e2bfd3f" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a18414c54c7ec4b757437956d8e2bfd3f">clockFunction</a> = @topsClock</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">any function that returns the current time as a number <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27a00ac1eff27746f169c68039a6d7ef"></a><!-- doxytag: member="topsDataLog::printLogging" ref="a27a00ac1eff27746f169c68039a6d7ef" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a27a00ac1eff27746f169c68039a6d7ef">printLogging</a> = false</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">true or false, whether to print info as data are logged <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11ae7a55494110f02f037320d01bc800"></a><!-- doxytag: member="topsDataLog::fileWithPath" ref="a11ae7a55494110f02f037320d01bc800" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a> = ''</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string name of a file to read from and write to, which may include the file path <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73d044705182dce0379a1c211dca6ec6"></a><!-- doxytag: member="topsDataLog::name" ref="a73d044705182dce0379a1c211dca6ec6" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a> = ''</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">a string name to indentify the object <br/></td></tr>
 <tr><td colspan="2"><h2>Protected Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c29bb8ac334de96049df4b364184f25"></a><!-- doxytag: member="topsDataLog::earliestTime" ref="a2c29bb8ac334de96049df4b364184f25" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a2c29bb8ac334de96049df4b364184f25">earliestTime</a></td></tr>
@@ -86,10 +93,59 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc552fb9a3447165e0882832cf11dcdb"></a><!-- doxytag: member="topsDataLog::lastWriteTime" ref="acc552fb9a3447165e0882832cf11dcdb" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#acc552fb9a3447165e0882832cf11dcdb">lastWriteTime</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the latest time when data were written to disk <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38f857c066d69f75bb3fa218d0a66374"></a><!-- doxytag: member="topsDataLog::groups" ref="a38f857c066d69f75bb3fa218d0a66374" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of strings or numbers for all list groups <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3ed2b667608158bb9833f0e663216a8"></a><!-- doxytag: member="topsDataLog::length" ref="af3ed2b667608158bb9833f0e663216a8" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">length</a> = 0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">number of items contained among all groups <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc938317d4f9988fe0c818f0afdc4ad5"></a><!-- doxytag: member="topsDataLog::allGroupsMap" ref="acc938317d4f9988fe0c818f0afdc4ad5" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#acc938317d4f9988fe0c818f0afdc4ad5">allGroupsMap</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">containers.Map of data for each group <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5a4900e4be702946331957958443598"></a><!-- doxytag: member="topsDataLog::set_fileWithPath" ref="ac5a4900e4be702946331957958443598" args="(self, fileWithPath)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ac5a4900e4be702946331957958443598">set_fileWithPath</a> (self, <a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Update the <a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> metadata to reflect a new fileWithPath. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc772c903527cca8657740197f30c34b"></a><!-- doxytag: member="topsDataLog::guiPanel" ref="acc772c903527cca8657740197f30c34b" args="(self, varargin)" -->
+p&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">guiPanel</a> (self, varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a topsGroupedListPanel with details about this object. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a635c841549fbf6e402cb76268d7a77ee">addItemToGroupWithMnemonic</a> (self, item, group, mnemonic)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a new item to the list.  <a href="#a635c841549fbf6e402cb76268d7a77ee"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a732f98799efeda7ae52e1e70efce809e">removeItemFromGroup</a> (self, item, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove all instances of an item from a group.  <a href="#a732f98799efeda7ae52e1e70efce809e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#acbbda56a3a47b4e16df6c75c947beb39">removeMnemonicFromGroup</a> (self, mnemonic, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove a mnemonic and its item from a group.  <a href="#acbbda56a3a47b4e16df6c75c947beb39"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#aee8be8312278490ab0e6868fd54d2690">removeGroup</a> (self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove a whole group from the list.  <a href="#aee8be8312278490ab0e6868fd54d2690"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a7887afcb1cee067b8acfc74d19f37e48">removeAllGroups</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove a whole groups from the list.  <a href="#a7887afcb1cee067b8acfc74d19f37e48"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ada3f83d5724a1a10cf2a3d2afb3e738d">mergeGroupsIntoGroup</a> (self, sourceGroups, destinationGroup)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Combine multiple groups into another group.  <a href="#ada3f83d5724a1a10cf2a3d2afb3e738d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">item&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a784c426b2ccd57f3e3b8b17e3d40d4d9">getItemFromGroupWithMnemonic</a> (self, group, mnemonic)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get an item out of the list.  <a href="#a784c426b2ccd57f3e3b8b17e3d40d4d9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">varargout&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ac3e45f0ed766f8abca5d1b0e3aa2c3c4">subsref</a> (self, info)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get list items with {} syntax.  <a href="#ac3e45f0ed766f8abca5d1b0e3aa2c3c4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a9a380722e6aea24b036d87cf631c264e">subsasgn</a> (self, info, value)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add list items with {} syntax.  <a href="#a9a380722e6aea24b036d87cf631c264e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3129092463ce8f56ba6726b4ccf73822"></a><!-- doxytag: member="topsDataLog::numel" ref="a3129092463ce8f56ba6726b4ccf73822" args="(self, varargin)" -->
+n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a3129092463ce8f56ba6726b4ccf73822">numel</a> (self, varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tell Matlab how many items to expect from {} syntax It's always 1. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">mnemonics&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a5e7fd94eee4ffc8abf1b78df8255b002">getAllMnemonicsFromGroup</a> (self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get all mnemonics from a group.  <a href="#a5e7fd94eee4ffc8abf1b78df8255b002"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">items mnemonics&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a6664186ba3ae3754b4024f959364dd83">getAllItemsFromGroup</a> (self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get all items (and optionally all mnemonics) from a group.  <a href="#a6664186ba3ae3754b4024f959364dd83"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">groupStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ae5c5d09a765485a412412c068d1e0f13">getAllItemsFromGroupAsStruct</a> (self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get all items from a group, as a struct array.  <a href="#ae5c5d09a765485a412412c068d1e0f13"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ab4c74d6518a321ed20e76bb8d7dd5890">containsGroup</a> (self, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group?  <a href="#ab4c74d6518a321ed20e76bb8d7dd5890"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">matches isMatch&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a2c239079c55b9164137b2b39dc3234e1">getGroupNamesMatchingExpression</a> (self, expression)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get string group names that match the given regular expression.  <a href="#a2c239079c55b9164137b2b39dc3234e1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#ab56476325e71ddcce007c32400bada05">containsMnemonicInGroup</a> (self, mnemonic, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group and mnemonic?  <a href="#ab56476325e71ddcce007c32400bada05"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a55f26b6b59e31d3698bbbf8072ae9271">containsItemInGroup</a> (self, item, group)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group and item?  <a href="#a55f26b6b59e31d3698bbbf8072ae9271"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Static Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static log&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ab75bbca125060dca1979b53b0569f41c">theDataLog</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Access the current data log "singleton".  <a href="#ab75bbca125060dca1979b53b0569f41c"></a><br/></td></tr>
@@ -107,6 +163,18 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write logged data to a file.  <a href="#afc3c2c32bcb2b5a10ab1afaaa6ebfd47"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ad881016b1ea2efb19c741c0a7f5a54ce">readDataFile</a> (<a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Read previously logged data from a file.  <a href="#ad881016b1ea2efb19c741c0a7f5a54ce"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a4dedfbbb1aa700dc52d38e0808a067c0">mapContainsItem</a> (map, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the containers.Map contain the given item?  <a href="#a4dedfbbb1aa700dc52d38e0808a067c0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#ace953bfc5b718388fd853de1803b4f64">cellAdd</a> (c, item, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an item to a cell array.  <a href="#ace953bfc5b718388fd853de1803b4f64"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static selector&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f">cellContains</a> (c, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does a cell array conatin an item?  <a href="#aaa149dacf5a0f361cda5f1aa0832ac4f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a845c29c2db2f3d7ebe6a80b4dbe4a058">cellRemoveItem</a> (c, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove an item from a cell array.  <a href="#a845c29c2db2f3d7ebe6a80b4dbe4a058"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#af7c2c51ecb1a04fd026c7ad28c87968b">cellRemoveElement</a> (c, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove indexed elements from a cell array.  <a href="#af7c2c51ecb1a04fd026c7ad28c87968b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static index selector&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a1db67e09e0d779cafcabc4eed2bf2de5">findStructName</a> (s, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Where is the given name in the given struct array?  <a href="#a1db67e09e0d779cafcabc4eed2bf2de5"></a><br/></td></tr>
 </table>
 <hr/><h2>Methods</h2>
 <a class="anchor" id="ab75bbca125060dca1979b53b0569f41c"></a><!-- doxytag: member="topsDataLog::theDataLog" ref="ab75bbca125060dca1979b53b0569f41c" args="()" -->
@@ -129,6 +197,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>For most log operations, you don't need this method. You can just use the static methods below and they will access the current data log for you.</p>
 <p>For a few operations it makes sense to get at the log itself, using this method. For example, you might wish to change the log's clockFunction, to use some custom timer. In that case you would get the log using this method, and set the value of log.clockFunction just like you would set the value of any object property. </p>
 
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00212">212</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
+<p>Referenced by <a class="el" href="classtops_data_log.html#a135f55e890219a6437ef74f2867f1c10">flushAllData()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4b83f0eb0e39660c96d3f8e8ff1726d9"></a><!-- doxytag: member="topsDataLog::gui" ref="a4b83f0eb0e39660c96d3f8e8ff1726d9" args="()" -->
@@ -148,6 +220,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 <p>Open a GUI to view object details. </p>
 <p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
+
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00228">228</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
 
 </div>
 </div>
@@ -176,6 +250,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </dl>
 <p>If <em>isVerbose</em> is true, <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> will print a message to the Command Window whenever data is added to the log. If <em>isVerbose</em> is false or omitted, <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> will print nothing. </p>
 
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00246">246</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a135f55e890219a6437ef74f2867f1c10"></a><!-- doxytag: member="topsDataLog::flushAllData" ref="a135f55e890219a6437ef74f2867f1c10" args="()" -->
@@ -196,6 +272,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Clear out all data from the log. </p>
 <p>You can't create new instances of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, but you can always clear out the existing instance. You probably should do this before starting an experiment.</p>
 <p>Removes all data from all groups, then removes the groups themselves. Sets earliestTime and latestTime to nan. </p>
+
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00266">266</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
+<p>References <a class="el" href="classtops_data_log.html#ab75bbca125060dca1979b53b0569f41c">theDataLog()</a>.</p>
 
 </div>
 </div>
@@ -244,6 +324,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Updates earliestTime and latestTime to account for the the time of this log entry.</p>
 <p>Since <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> is a subclass of <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, logging data is a lot like adding items to a list. <em>group</em> is treated just like the groups in <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>. The data log uses a <em>timestamp</em> as the mnemonic for each data item. </p>
 
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00305">305</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a0575af6cb9923638ea5385550f501257"></a><!-- doxytag: member="topsDataLog::getSortedDataStruct" ref="a0575af6cb9923638ea5385550f501257" args="(timeRange)" -->
@@ -270,6 +352,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </dd>
 </dl>
 <p>Gets all data items from the current instance of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, as a struct array, using <a class="el" href="classtops_grouped_list.html#ae5c5d09a765485a412412c068d1e0f13" title="Get all items from a group, as a struct array.">getAllItemsFromGroupAsStruct()</a>. Sorts the struct array by the time values stored in its mnemonics field. </p>
+
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00338">338</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
 
 </div>
 </div>
@@ -304,6 +388,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <li>If <em>fileWithPath</em> is omitted, and the current <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> instance has an empty fileWithPath property, opens a dialog for chosing a a file. If a file is chosen, writes data to the chosen file and saves the chosen file to the fileWithPath property.</li>
 </ul>
 
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00392">392</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ad881016b1ea2efb19c741c0a7f5a54ce"></a><!-- doxytag: member="topsDataLog::readDataFile" ref="ad881016b1ea2efb19c741c0a7f5a54ce" args="(fileWithPath)" -->
@@ -337,6 +423,964 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <li>If <em>fileWithPath</em> is omitted, and the current <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> instance has an empty fileWithPath property, opens a dialog for chosing a a file. If a file is chosen, reads data from the chosen file and saves the chosen file to the fileWithPath property.</li>
 </ul>
 
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00443">443</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsDataLog::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fig gui </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
+
+<p>Reimplemented from <a class="el" href="classtops_foundation.html#abf424157a1ca067a83cc8260bc34c17d">topsFoundation</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00068">68</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a635c841549fbf6e402cb76268d7a77ee"></a><!-- doxytag: member="topsDataLog::addItemToGroupWithMnemonic" ref="a635c841549fbf6e402cb76268d7a77ee" args="(self, item, group, mnemonic)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">addItemToGroupWithMnemonic </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mnemonic&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add a new item to the list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any Matlab value or object </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>a string or number that identifies a group of related items </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>mnemonic</em>&nbsp;</td><td>a string or number to identify this new item. If <em>group</em> and <em>mnemonic</em> are already in the list, then <em>item</em> will replace an older item.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Note: for each <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a>, group values must be all strings or all numbers. Likewise, for each group, mnemonics must be all strings or all numbers. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00101">101</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#acc938317d4f9988fe0c818f0afdc4ad5">topsGroupedList::allGroupsMap</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a732f98799efeda7ae52e1e70efce809e"></a><!-- doxytag: member="topsDataLog::removeItemFromGroup" ref="a732f98799efeda7ae52e1e70efce809e" args="(self, item, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">removeItemFromGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove all instances of an item from a group. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>the item to remove </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the group from which <em>item</em> should be removed</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Searches <em>group</em> for items that isequal() to <em>item</em>. Removes all such items, along with their mnemonics.</p>
+<p>This method is likely to be very slow. Use removeMnemonicFromGroup for better performance. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00141">141</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">topsGroupedList::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acbbda56a3a47b4e16df6c75c947beb39"></a><!-- doxytag: member="topsDataLog::removeMnemonicFromGroup" ref="acbbda56a3a47b4e16df6c75c947beb39" args="(self, mnemonic, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">removeMnemonicFromGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mnemonic&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove a mnemonic and its item from a group. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>mnemonic</em>&nbsp;</td><td>the string or number identifying an item </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the group from which <em>mnemonic</em>, and its item, should be removed</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes <em>mnemonic</em> and its item from <em>group</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00162">162</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aee8be8312278490ab0e6868fd54d2690"></a><!-- doxytag: member="topsDataLog::removeGroup" ref="aee8be8312278490ab0e6868fd54d2690" args="(self, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">removeGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove a whole group from the list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the string or number identifying the group to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes all mnemonics and items from <em>group</em>, then removes <em>group</em> itself from the list. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00177">177</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">topsGroupedList::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7887afcb1cee067b8acfc74d19f37e48"></a><!-- doxytag: member="topsDataLog::removeAllGroups" ref="a7887afcb1cee067b8acfc74d19f37e48" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">removeAllGroups </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove a whole groups from the list. </p>
+<p>Removes each item from each group, and each group itself, one at a time. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00192">192</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ada3f83d5724a1a10cf2a3d2afb3e738d"></a><!-- doxytag: member="topsDataLog::mergeGroupsIntoGroup" ref="ada3f83d5724a1a10cf2a3d2afb3e738d" args="(self, sourceGroups, destinationGroup)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mergeGroupsIntoGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sourceGroups&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">destinationGroup&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Combine multiple groups into another group. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>sourceGroups</em>&nbsp;</td><td>cell array of strings or numbers identifying groups to be merged. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>destinationGroup</em>&nbsp;</td><td>string or number identifying a group that will receive all the mnemonics and items from all of the source groups. <em>destinationGroup</em> may exist already, or not.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Merging groups will probably result in redundant items being stored in the list. For example, imagine merging source groups A and B into a new destination group C. All of the original items in A and B will then be held redundantly in C. The length of the list will increase, even though no new items were added. So you might wish to remove A and B after the merge.</p>
+<p>An exception is when the destination group already exists and uses some of the same mnemonics as the source groups. In that case, an item from a source group will overwrite any item in the destination group that has the same mnemonic. Thus, meging group A into group A (itself) should have no effect.</p>
+<p>Another exception is when the source groups share some mnemonics among them. In that case, groups listed later in <em>soureGroups</em> will win out, and their items will overwrite items from other groups that share the same mnemonics. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00226">226</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">topsGroupedList::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a784c426b2ccd57f3e3b8b17e3d40d4d9"></a><!-- doxytag: member="topsDataLog::getItemFromGroupWithMnemonic" ref="a784c426b2ccd57f3e3b8b17e3d40d4d9" args="(self, group, mnemonic)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">item getItemFromGroupWithMnemonic </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mnemonic&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get an item out of the list. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the group containing the desired item </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>mnemonic</em>&nbsp;</td><td>the menemonic identifying the desired item</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns the item listed under <em>group</em> and <em>mnemonic</em>. If <em>group</em> isn't in the list, or doesn't contain <em>mnemonic</em>, returns []. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00253">253</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac3e45f0ed766f8abca5d1b0e3aa2c3c4"></a><!-- doxytag: member="topsDataLog::subsref" ref="ac3e45f0ed766f8abca5d1b0e3aa2c3c4" args="(self, info)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">varargout subsref </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">info&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get list items with {} syntax. </p>
+<p>For <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> l,</p>
+<ul>
+<li>item = l{g}{m} is the same as item = l.getItemFromGroupWithMnemonic(g,m)</li>
+<li>allItems = l{g} is the same as allItems = l.getAllItemsFromGroup(g) Beware: [allItems, allMnemonics] = l{g} makes Matlab crash. But [allItems, allMnemonics] = l.getAllItemsFromGroup(g) works. </li>
+</ul>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00273">273</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">topsGroupedList::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9a380722e6aea24b036d87cf631c264e"></a><!-- doxytag: member="topsDataLog::subsasgn" ref="a9a380722e6aea24b036d87cf631c264e" args="(self, info, value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">self subsasgn </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">info&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">value&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add list items with {} syntax. </p>
+<p>For <a class="el" href="classtops_grouped_list.html" title="A structured container for values and objects.">topsGroupedList</a> l,</p>
+<ul>
+<li>l{g}{m} = item is the same as l.addItemToGroupWithMnemonic(item, g, m) </li>
+</ul>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00303">303</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">topsGroupedList::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5e7fd94eee4ffc8abf1b78df8255b002"></a><!-- doxytag: member="topsDataLog::getAllMnemonicsFromGroup" ref="a5e7fd94eee4ffc8abf1b78df8255b002" args="(self, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mnemonics getAllMnemonicsFromGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get all mnemonics from a group. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the group to get mnemonics for</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns a cell array containing all mnemonics from <em>group</em>, or {} if <em>group</em> isn't in the list. The mnemonics will be sorted alphabetically or numerically. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00345">345</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6664186ba3ae3754b4024f959364dd83"></a><!-- doxytag: member="topsDataLog::getAllItemsFromGroup" ref="a6664186ba3ae3754b4024f959364dd83" args="(self, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">items mnemonics getAllItemsFromGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get all items (and optionally all mnemonics) from a group. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the group to get items for</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns a cell array of all items from <em>group</em>. If <em>group</em> isn't in the list, returns {}. Items will be sorted alphabetically or numerically, by mnemonic.</p>
+<p>Optionally returns all mnemonics from <em>group</em>, as well. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00362">362</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae5c5d09a765485a412412c068d1e0f13"></a><!-- doxytag: member="topsDataLog::getAllItemsFromGroupAsStruct" ref="ae5c5d09a765485a412412c068d1e0f13" args="(self, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">groupStruct getAllItemsFromGroupAsStruct </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get all items from a group, as a struct array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>the group to get items for</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns a struct array with one element per item in <em>group</em>. Each struct element has three fields:</p>
+<ul>
+<li>item -- the item itself</li>
+<li>mnemonic -- the mnemonic for the item</li>
+<li>group -- the string or number equal to <em>group</em> </li>
+</ul>
+<p>If <em>group</em> isn't in the list, the struct array will have zero length. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00385">385</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab4c74d6518a321ed20e76bb8d7dd5890"></a><!-- doxytag: member="topsDataLog::containsGroup" ref="ab4c74d6518a321ed20e76bb8d7dd5890" args="(self, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">isContained containsGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does the list contain the given group? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>a string or number for a group that might be in the list</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns true if the list contains <em>group</em>. Otherwise returns false. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00410">410</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">topsGroupedList::groups</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2c239079c55b9164137b2b39dc3234e1"></a><!-- doxytag: member="topsDataLog::getGroupNamesMatchingExpression" ref="a2c239079c55b9164137b2b39dc3234e1" args="(self, expression)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">matches isMatch getGroupNamesMatchingExpression </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">expression&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get string group names that match the given regular expression. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>expression</em>&nbsp;</td><td>a regular expression to match agains group names in the list</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Compares <em>expression</em> to the names of groups in the list. Returns a cell array of strings of group names that match <em>expression</em>. If the list uses numeric group names, returns an empty cell array.</p>
+<p>Also returns as a second ouput a logical selector with one element per list group, set to true where a group matches <em>expression</em>.</p>
+<p>Regular expressions are specially formatted strings used for matching patterns in other strings. See Matlab's builtin regexp() and "Regular Expressions" documentation. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00438">438</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">topsGroupedList::groups</a>, and <a class="el" href="classtops_grouped_list.html#a3129092463ce8f56ba6726b4ccf73822">topsGroupedList::numel()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab56476325e71ddcce007c32400bada05"></a><!-- doxytag: member="topsDataLog::containsMnemonicInGroup" ref="ab56476325e71ddcce007c32400bada05" args="(self, mnemonic, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">isContained containsMnemonicInGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mnemonic&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does the list contain the given group and mnemonic? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>mnemonic</em>&nbsp;</td><td>a string or number for a menemonic that might be in <em>group</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>a string or number for a group that might be in the list</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns true if the list contains <em>group</em> and <em>group</em> contains <em>mnemonic</em>. Otherwise returns false. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00463">463</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a55f26b6b59e31d3698bbbf8072ae9271"></a><!-- doxytag: member="topsDataLog::containsItemInGroup" ref="a55f26b6b59e31d3698bbbf8072ae9271" args="(self, item, group)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">isContained containsItemInGroup </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">group&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does the list contain the given group and item? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>a value or object that might be in <em>group</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>group</em>&nbsp;</td><td>a string or number for a group that might be in the list</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Searches <em>group</em> for any occurence of <em>item</em>. Returns true if the list contains <em>group</em> and <em>group</em> contains at least on item that isequal() to <em>item</em>. Otherwise returns false. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00485">485</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#acc938317d4f9988fe0c818f0afdc4ad5">topsGroupedList::allGroupsMap</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4dedfbbb1aa700dc52d38e0808a067c0"></a><!-- doxytag: member="topsDataLog::mapContainsItem" ref="a4dedfbbb1aa700dc52d38e0808a067c0" args="(map, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static isContained mapContainsItem </td>
+          <td>(</td>
+          <td class="paramtype">map&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does the containers.Map contain the given item? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>map</em>&nbsp;</td><td>an instance of containers.Map </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>a value or object that might be in the map</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Searches the map for the <em>item</em>. Returns true if any value in <em>map</em> isequal() to <em>item</em>. Otherwise returns false. </p>
+
+<p>Definition at line <a class="el" href="tops_grouped_list_8m_source.html#l00515">515</a> of file <a class="el" href="tops_grouped_list_8m_source.html">topsGroupedList.m</a>.</p>
+
+<p>References <a class="el" href="classtops_grouped_list.html#af3ed2b667608158bb9833f0e663216a8">topsGroupedList::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace953bfc5b718388fd853de1803b4f64"></a><!-- doxytag: member="topsDataLog::cellAdd" ref="ace953bfc5b718388fd853de1803b4f64" args="(c, item, index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c index cellAdd </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">index&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add an item to a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any item to add to the cell array <em>c</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>optional index where to insert <em>item</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>add() inserts <em>item</em> into <em>c</em> at the given <em>index</em>. If no <em>index</em> is given, add() appends <em>item</em> to the end of <em>c</em>.</p>
+<p>Returns the modified cell array <em>c</em>. May also return the index into <em>c</em> where <em>item</em> was inserted. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00071">71</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaa149dacf5a0f361cda5f1aa0832ac4f"></a><!-- doxytag: member="topsDataLog::cellContains" ref="aaa149dacf5a0f361cda5f1aa0832ac4f" args="(c, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static selector cellContains </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does a cell array conatin an item? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any item that might be in <em>c</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns a logical array the same size as c, which is true where elements of <em>c</em> are equal to <em>item</em>.</p>
+<p><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f" title="Does a cell array conatin an item?">cellContains()</a> compares items for equality using Matlab's built-in eq() when it can, or else isequal(). </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00099">99</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a845c29c2db2f3d7ebe6a80b4dbe4a058"></a><!-- doxytag: member="topsDataLog::cellRemoveItem" ref="a845c29c2db2f3d7ebe6a80b4dbe4a058" args="(c, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c cellRemoveItem </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove an item from a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>an item to remove from <em>c</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes all elements of <em>c</em> that are equal to the given <em>item</em>.</p>
+<p>Returns the modified cell array, <em>c</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00123">123</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7c2c51ecb1a04fd026c7ad28c87968b"></a><!-- doxytag: member="topsDataLog::cellRemoveElement" ref="af7c2c51ecb1a04fd026c7ad28c87968b" args="(c, index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c cellRemoveElement </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">index&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove indexed elements from a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>index of the element or elements to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes the indexed element or elements of <em>c</em>.</p>
+<p>Returns the modified cell array, <em>c</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00139">139</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1db67e09e0d779cafcabc4eed2bf2de5"></a><!-- doxytag: member="topsDataLog::findStructName" ref="a1db67e09e0d779cafcabc4eed2bf2de5" args="(s, name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static index selector findStructName </td>
+          <td>(</td>
+          <td class="paramtype">s&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Where is the given name in the given struct array? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>s</em>&nbsp;</td><td>a struct array with a "name" field </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>a</em>&nbsp;</td><td>"name" value that might be in the struct array</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Assumes that <em>s</em> is a struct array with a "name" field. Searches the elements of <em>s</em> for the given <em>name</em>. Returns the index of the first occurence of <em>name</em>. If <em>name</em> was not found, returns numel(<em>s</em>) plus 1. Returns as a second output a logical selector for the elements of <em>s</em>, set to true where <em>name</em> was found. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00159">159</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
 </div>
 </div>
 <hr/><h2>Properties and Events</h2>
@@ -354,10 +1398,12 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>the most recent time when the log was flushed </p>
 <p><a class="el" href="classtops_data_log.html#a135f55e890219a6437ef74f2867f1c10" title="Clear out all data from the log.">flushAllData()</a> sets lastFlushTime to the current time, as reported by clockFunction. </p>
 
+<p>Definition at line <a class="el" href="tops_data_log_8m_source.html#l00061">61</a> of file <a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>topsDataLog.m</li>
+<li><a class="el" href="tops_data_log_8m_source.html">topsDataLog.m</a></li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -374,7 +1420,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

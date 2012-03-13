@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -50,6 +50,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p><a class="el" href="classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects.">topsConditions</a> organizes sets of values for various parameters and computes all the combinations of parameter values. It can traverse conditions by number, and apply parameter values to various objects automatically. Since <a class="el" href="classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects.">topsConditions</a> is a <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> subclass, it can control the flow of an experiment based on the traversal of conditions.</p>
 <p>Each time a <a class="el" href="classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects.">topsConditions</a> object <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a>s, it will pick a new condition, which is a unique combination of parameter values. Each parameter may have some associated "assignments" which allow parameter values to be applied automatically to properties of other objects. The object may call its startFevalable and finishFevalable just before and after applying property assignments.</p>
 <p>A <a class="el" href="classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects.">topsConditions</a> object has a state (i.e. the condition number) that trancends multiple calls to <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a>. Thus, it must be <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> to begin picking conditions from scratch. When pickingMethod runs out of conditions to pick, or when maxPicks is reached (whichever is first), an object sets isDone to true and invokes donePickingFevalable. If its caller is set to a <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object, it also sets isRunning to false for that object. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00001">1</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
 <div class="dynheader">
 Inheritance diagram for topsConditions:</div>
 <div class="dynsection">
@@ -61,8 +63,8 @@ Inheritance diagram for topsConditions:</div>
 <p><a href="classtops_conditions-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__runnable.html#ga0cc9e2f387987baaa80972dee78d2bdb">allParameters</a> = struct([])</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of parameter names, values and assignment targets  <a href="group__runnable.html#ga0cc9e2f387987baaa80972dee78d2bdb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a0cc9e2f387987baaa80972dee78d2bdb">allParameters</a> = struct([])</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of parameter names, values and assignment targets  <a href="#a0cc9e2f387987baaa80972dee78d2bdb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc181a5752e2962a11727303de5eba48"></a><!-- doxytag: member="topsConditions::nConditions" ref="adc181a5752e2962a11727303de5eba48" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#adc181a5752e2962a11727303de5eba48">nConditions</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">possible number of values combinations from allParameters <br/></td></tr>
@@ -95,6 +97,27 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e51c655a5f5dc776d4dca68ec87a3d5"></a><!-- doxytag: member="topsConditions::pickingMethodDetails" ref="a8e51c655a5f5dc776d4dca68ec87a3d5" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a8e51c655a5f5dc776d4dca68ec87a3d5">pickingMethodDetails</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">vasrargin details from the last call to <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8cacb6452805c362f15921999f986aec"></a><!-- doxytag: member="topsConditions::startFevalable" ref="a8cacb6452805c362f15921999f986aec" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a8cacb6452805c362f15921999f986aec">startFevalable</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">optional fevalable cell array to invoke just before running <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb7168e0d540c5991f7c51df441c7b1d"></a><!-- doxytag: member="topsConditions::finishFevalable" ref="adb7168e0d540c5991f7c51df441c7b1d" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#adb7168e0d540c5991f7c51df441c7b1d">finishFevalable</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">optional fevalable cell array to invoke just after running <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28c21dd77b4d24a38b68a188f2151cf1"></a><!-- doxytag: member="topsConditions::isRunning" ref="a28c21dd77b4d24a38b68a188f2151cf1" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a28c21dd77b4d24a38b68a188f2151cf1">isRunning</a> = false</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">true or false, whether this object is currently busy running <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5097dd11b98c2554b10cd8097f89be25"></a><!-- doxytag: member="topsConditions::caller" ref="a5097dd11b98c2554b10cd8097f89be25" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a5097dd11b98c2554b10cd8097f89be25">caller</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> that invoked <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> on this object, or empty <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae90ae8de05dbfb23f468514cf5cdee9a"></a><!-- doxytag: member="topsConditions::startString" ref="ae90ae8de05dbfb23f468514cf5cdee9a" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ae90ae8de05dbfb23f468514cf5cdee9a">startString</a> = 'start'</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string used for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entry just before <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad551bb7553eb98dd515a1d323f3b2021"></a><!-- doxytag: member="topsConditions::finishString" ref="ad551bb7553eb98dd515a1d323f3b2021" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ad551bb7553eb98dd515a1d323f3b2021">finishString</a> = 'finish'</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string used for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entry just after <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73d044705182dce0379a1c211dca6ec6"></a><!-- doxytag: member="topsConditions::name" ref="a73d044705182dce0379a1c211dca6ec6" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a> = ''</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">a string name to indentify the object <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#a325c242619134c0efc4768fb66b0e138">topsConditions</a> (varargin)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#a325c242619134c0efc4768fb66b0e138"></a><br/></td></tr>
@@ -122,6 +145,23 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log action and call out as needed.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_conditions.html#ad108cc2675fc734cc520b4c42735f3fa">pickConditionNumber</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pick a condition number using pickingMethod.  <a href="#ad108cc2675fc734cc520b4c42735f3fa"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#adb11f3757673c2cd1697dd59927d7522">logAction</a> (self, actionName, actionData)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log an event of interest with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#adb11f3757673c2cd1697dd59927d7522"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a8222c86f5536c7596c858d5f8129ed96">logFeval</a> (self, fevalName, fevalable)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log a function call with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#a8222c86f5536c7596c858d5f8129ed96"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">p&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#acc772c903527cca8657740197f30c34b">guiPanel</a> (self, varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a topsDetailPanel with details about this object.  <a href="#acc772c903527cca8657740197f30c34b"></a><br/></td></tr>
+<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#ace953bfc5b718388fd853de1803b4f64">cellAdd</a> (c, item, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an item to a cell array.  <a href="#ace953bfc5b718388fd853de1803b4f64"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static selector&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f">cellContains</a> (c, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does a cell array conatin an item?  <a href="#aaa149dacf5a0f361cda5f1aa0832ac4f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a845c29c2db2f3d7ebe6a80b4dbe4a058">cellRemoveItem</a> (c, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove an item from a cell array.  <a href="#a845c29c2db2f3d7ebe6a80b4dbe4a058"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#af7c2c51ecb1a04fd026c7ad28c87968b">cellRemoveElement</a> (c, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove indexed elements from a cell array.  <a href="#af7c2c51ecb1a04fd026c7ad28c87968b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static index selector&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a1db67e09e0d779cafcabc4eed2bf2de5">findStructName</a> (s, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Where is the given name in the given struct array?  <a href="#a1db67e09e0d779cafcabc4eed2bf2de5"></a><br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
 <a class="anchor" id="a325c242619134c0efc4768fb66b0e138"></a><!-- doxytag: member="topsConditions::topsConditions" ref="a325c242619134c0efc4768fb66b0e138" args="(varargin)" -->
@@ -149,6 +189,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </dl>
 <p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00124">124</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable.html#ac2d99288ac4134628ccd375d4681b764">topsRunnable::topsRunnable()</a>.</p>
+
 </div>
 </div>
 <hr/><h2>Methods</h2>
@@ -172,6 +216,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00136">136</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+<p>References <a class="el" href="classtops_conditions.html#a0cc9e2f387987baaa80972dee78d2bdb">allParameters</a>, <a class="el" href="classtops_conditions.html#a6ea3f39ecbf9b02c6a1373b0a57aff27">currentCondition</a>, <a class="el" href="classtops_conditions.html#a1f606e3399909d1e4149404a4c41ec7a">currentValues</a>, and <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
 
 </div>
 </div>
@@ -217,6 +265,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Adds the named <em>parameter</em> and its <em>values</em> call array to allParameters. If allParameters already contains a field named <em>parameter</em>, its values will be replaced but any assignments will remain in place.</p>
 <p>The parameter-value combinations in allConditions will be updated immediately to reflect <em>parameter</em> and its set of <em>values</em>.</p>
 <p>After a parameter is added with <a class="el" href="classtops_conditions.html#a09375821d74e061875b12b6bf4fbd334" title="Add a parameter and set of values for condition formation.">addParameter()</a>, parameter assignments may be added with <a class="el" href="classtops_conditions.html#a77da955d08a40f1719a05580ede9eb1f" title="Add an assignment target for a parameter value.">addAssignment()</a>. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00176">176</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+<p>References <a class="el" href="classtops_conditions.html#a0cc9e2f387987baaa80972dee78d2bdb">allParameters</a>.</p>
 
 </div>
 </div>
@@ -272,6 +324,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div class="fragment"><pre class="fragment"> <a class="code" href="classtops_conditions.html#a77da955d08a40f1719a05580ede9eb1f" title="Add an assignment target for a parameter value.">addAssignment</a>( ..., <span class="charliteral">&apos;.&apos;</span>, <span class="stringliteral">&apos;data&apos;</span>);
 </pre></div><p>If <em>parameter</em> is not one of fields of allParameters, does nothing. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00218">218</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+<p>References <a class="el" href="classtops_conditions.html#a0cc9e2f387987baaa80972dee78d2bdb">allParameters</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4a91a9dccdeb8f23e13de9b389dc9feb"></a><!-- doxytag: member="topsConditions::setCondition" ref="a4a91a9dccdeb8f23e13de9b389dc9feb" args="(self, n)" -->
@@ -307,6 +363,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </dd>
 </dl>
 <p>Sets currentCondition to the given <em>n</em>, appends <em>n</em> to the history in previousConditions, and assigns appropriate values to the fields of currentValues. Adds the new currentCondition and currentValues to <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00259">259</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
 
 </div>
 </div>
@@ -358,6 +416,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </ul>
 <p>If <em>pickingMethod</em> is not one of the valid values above, defaults to 'coin-toss'. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00320">320</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aeb3b30c60946a22761128cbd397add94"></a><!-- doxytag: member="topsConditions::start" ref="aeb3b30c60946a22761128cbd397add94" args="(self)" -->
@@ -381,6 +441,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94">topsRunnable</a>.</p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00374">374</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aecbc052233262275fc20a8ee8dfb8a47"></a><!-- doxytag: member="topsConditions::reset" ref="aecbc052233262275fc20a8ee8dfb8a47" args="(self)" -->
@@ -402,6 +464,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Clear previous conditions and begin picking from scratch. </p>
 <p>Clears out the currentCondition and currentValues, and erases the histor of condition numbers stored in previousConditions. Calls <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> with the current pickingMethod, to generate a fresh pickSequence as necessary. Sets isDone to false.</p>
 <p><a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> and <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94" title="Log action and reset() as needed.">start()</a> automatically call <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> when isDone is true, to prepare for future <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> calls. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00394">394</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
 
 </div>
 </div>
@@ -426,6 +490,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsRunnable</a>.</p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00425">425</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ad108cc2675fc734cc520b4c42735f3fa"></a><!-- doxytag: member="topsConditions::pickConditionNumber" ref="ad108cc2675fc734cc520b4c42735f3fa" args="(self)" -->
@@ -447,9 +513,381 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>Pick a condition number using pickingMethod. </p>
 <p>Returns a new condition number picked using the pickingMethod and other details specified with <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a>. If the picking method has reached its natural conclusion, or the total number of picks is greated than maxPicks, sets isDone to true. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00446">446</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adb11f3757673c2cd1697dd59927d7522"></a><!-- doxytag: member="topsConditions::logAction" ref="adb11f3757673c2cd1697dd59927d7522" args="(self, actionName, actionData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">logAction </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">actionName&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">actionData&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log an event of interest with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>actionName</em>&nbsp;</td><td>string name for any event of interest </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>actionData</em>&nbsp;</td><td>optional data to log along with <em>actionName</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>logAction is a convenient way to note in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> that some event of interest has occurred. The log entry will contain the name of this <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object, concatenated with <em>actionName</em>. It will store <em>actionData</em>, if given. </p>
+
+<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00106">106</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8222c86f5536c7596c858d5f8129ed96"></a><!-- doxytag: member="topsConditions::logFeval" ref="a8222c86f5536c7596c858d5f8129ed96" args="(self, fevalName, fevalable)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">logFeval </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fevalName&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fevalable&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log a function call with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>fevalName</em>&nbsp;</td><td>string name to give to a function call </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>fevalable</em>&nbsp;</td><td>fevalable cell array specifying a function call</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>logFeval is a convenient way to note in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> that some funciton call of interest has occurred, and then call the function. The log entry will contain the name of this <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object, concatenated with <em>fevalName</em>. It will convert the function handle from the first element of <em>fevalable</em> to a string and store the string.</p>
+<p>The log entry will not store any of the arguments from the second or later elements of <em>fevalable</em>. This is because the arguments may be handle objects, and Matlab does a bad job of storing large collections of handle objects--both in memory and in .mat files.</p>
+<p>After making a new entry in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, logFeval also invokes <em>fevalable</em> with the feval() function. </p>
+
+<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00141">141</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acc772c903527cca8657740197f30c34b"></a><!-- doxytag: member="topsConditions::guiPanel" ref="acc772c903527cca8657740197f30c34b" args="(self, varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">p guiPanel </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Make a topsDetailPanel with details about this object. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>parentGUI</em>&nbsp;</td><td>a topsGUI to contain the new panel </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>position</em>&nbsp;</td><td>optional normalized [x y w h] where to locate the new panel within <em>parentGUI</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Subclasses may overrride to return a specific topsDetailPanel subclass, or let topsFoundataion generate a generic topsValuePanel. </p>
+
+<p>Reimplemented in <a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">topsGroupedList</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00050">50</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace953bfc5b718388fd853de1803b4f64"></a><!-- doxytag: member="topsConditions::cellAdd" ref="ace953bfc5b718388fd853de1803b4f64" args="(c, item, index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c index cellAdd </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">index&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add an item to a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any item to add to the cell array <em>c</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>optional index where to insert <em>item</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>add() inserts <em>item</em> into <em>c</em> at the given <em>index</em>. If no <em>index</em> is given, add() appends <em>item</em> to the end of <em>c</em>.</p>
+<p>Returns the modified cell array <em>c</em>. May also return the index into <em>c</em> where <em>item</em> was inserted. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00071">71</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaa149dacf5a0f361cda5f1aa0832ac4f"></a><!-- doxytag: member="topsConditions::cellContains" ref="aaa149dacf5a0f361cda5f1aa0832ac4f" args="(c, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static selector cellContains </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does a cell array conatin an item? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any item that might be in <em>c</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns a logical array the same size as c, which is true where elements of <em>c</em> are equal to <em>item</em>.</p>
+<p><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f" title="Does a cell array conatin an item?">cellContains()</a> compares items for equality using Matlab's built-in eq() when it can, or else isequal(). </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00099">99</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a845c29c2db2f3d7ebe6a80b4dbe4a058"></a><!-- doxytag: member="topsConditions::cellRemoveItem" ref="a845c29c2db2f3d7ebe6a80b4dbe4a058" args="(c, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c cellRemoveItem </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove an item from a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>an item to remove from <em>c</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes all elements of <em>c</em> that are equal to the given <em>item</em>.</p>
+<p>Returns the modified cell array, <em>c</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00123">123</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7c2c51ecb1a04fd026c7ad28c87968b"></a><!-- doxytag: member="topsConditions::cellRemoveElement" ref="af7c2c51ecb1a04fd026c7ad28c87968b" args="(c, index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c cellRemoveElement </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">index&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove indexed elements from a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>index of the element or elements to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes the indexed element or elements of <em>c</em>.</p>
+<p>Returns the modified cell array, <em>c</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00139">139</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1db67e09e0d779cafcabc4eed2bf2de5"></a><!-- doxytag: member="topsConditions::findStructName" ref="a1db67e09e0d779cafcabc4eed2bf2de5" args="(s, name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static index selector findStructName </td>
+          <td>(</td>
+          <td class="paramtype">s&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Where is the given name in the given struct array? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>s</em>&nbsp;</td><td>a struct array with a "name" field </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>a</em>&nbsp;</td><td>"name" value that might be in the struct array</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Assumes that <em>s</em> is a struct array with a "name" field. Searches the elements of <em>s</em> for the given <em>name</em>. Returns the index of the first occurence of <em>name</em>. If <em>name</em> was not found, returns numel(<em>s</em>) plus 1. Returns as a second output a logical selector for the elements of <em>s</em>, set to true where <em>name</em> was found. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00159">159</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
 </div>
 </div>
 <hr/><h2>Properties and Events</h2>
+<a class="anchor" id="a0cc9e2f387987baaa80972dee78d2bdb"></a><!-- doxytag: member="topsConditions::allParameters" ref="a0cc9e2f387987baaa80972dee78d2bdb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Property <a class="el" href="classtops_conditions.html#a0cc9e2f387987baaa80972dee78d2bdb">allParameters</a> = struct([])</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>struct array of parameter names, values and assignment targets </p>
+<p>Each field name of allParameters is the name of an arbitrary parameter. Each field contains another struct with the fields:</p>
+<ul>
+<li><b>values</b> cell array of possible values for the parameter</li>
+<li><b>assignments</b> struct array of objects and substruct()-style references used to assign parameter values to each object.</li>
+</ul>
+<p>Users should call <a class="el" href="classtops_conditions.html#a09375821d74e061875b12b6bf4fbd334" title="Add a parameter and set of values for condition formation.">addParameter()</a> and <a class="el" href="classtops_conditions.html#a77da955d08a40f1719a05580ede9eb1f" title="Add an assignment target for a parameter value.">addAssignment()</a> instead of manipulating allParameters directly. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00040">40</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+<p>Referenced by <a class="el" href="classtops_conditions.html#a77da955d08a40f1719a05580ede9eb1f">addAssignment()</a>, <a class="el" href="classtops_conditions.html#a09375821d74e061875b12b6bf4fbd334">addParameter()</a>, <a class="el" href="classtops_conditions.html#ab5b42bf213bcb838e04b58c4a658bad0">countConditions()</a>, and <a class="el" href="classtops_conditions.html#abf424157a1ca067a83cc8260bc34c17d">gui()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a6f29991ad3898f91dffe55674f5780ef"></a><!-- doxytag: member="topsConditions::previousConditions" ref="a6f29991ad3898f91dffe55674f5780ef" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -463,6 +901,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 <p>array of previously picked condition numbers </p>
 <p>Keeps track of the history of conditions that were picked, including currentCondition. <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> empties out previousConditions. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00053">53</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
 
 </div>
 </div>
@@ -480,6 +920,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>struct of all parameters and their current values </p>
 <p>Each field name of currentValues is one of the parameter names from allParameters. Each field contains the value of that parameter that corresponds to the condition number in currentCOndition. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00061">61</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
+<p>Referenced by <a class="el" href="classtops_conditions.html#abf424157a1ca067a83cc8260bc34c17d">gui()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a8568f20f9ef2a4352aa97e19197f02a6"></a><!-- doxytag: member="topsConditions::maxPicks" ref="a8568f20f9ef2a4352aa97e19197f02a6" args="" -->
@@ -494,6 +938,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div class="memdoc">
 
 <p>maximum number of conditions to pick, regardless of pickingMethod. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00065">65</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
 
 </div>
 </div>
@@ -512,6 +958,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>pickingMethod is the string name of a method for picking the next condition. See <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> for a description of valid pickingMethods.</p>
 <p>Users should call <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> instead of accessing the pickingMethod property directly. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00075">75</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ad4c3e4d3793c9683c9056f2061e9b25e"></a><!-- doxytag: member="topsConditions::customPickFevalable" ref="ad4c3e4d3793c9683c9056f2061e9b25e" args="" -->
@@ -528,6 +976,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>fevalable cell array for custom picking of condition numbers </p>
 <p>When pickingMethod is 'custom', <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> invokes customPickFevalable to pick the next condition number. See <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> for a description of customPickFevalable.</p>
 <p>Users should call <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> instead of accessing customPickFevalable directly. </p>
+
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00085">85</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
 
 </div>
 </div>
@@ -546,6 +996,8 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>When pickingMethod is 'shuffled' or 'sequential', <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> precomputes pickSequence with complete sets of condition numbers.</p>
 <p>Users should call <a class="el" href="classtops_conditions.html#a244a9e5c5de151700df970825ada232d" title="Choose how to pick new conditions.">setPickingMethod()</a> instead of accessing pickSequence directly. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00095">95</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a3bdec3bc537a6ba3de5669f3dff28a20"></a><!-- doxytag: member="topsConditions::isDone" ref="a3bdec3bc537a6ba3de5669f3dff28a20" args="" -->
@@ -563,10 +1015,12 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <p>When pickingMethond runs out of conditions to pick, or when maxPicks is reached (whichever is first) sets isDone to true.</p>
 <p>If isDone is true when <a class="el" href="classtops_conditions.html#a08060e0924949738f75a0cdd8b49cef4" title="Pick a new condition and assign parameter values to targets.">run()</a> is called, first calls <a class="el" href="classtops_conditions.html#aecbc052233262275fc20a8ee8dfb8a47" title="Clear previous conditions and begin picking from scratch.">reset()</a> to prepare for future running. </p>
 
+<p>Definition at line <a class="el" href="tops_conditions_8m_source.html#l00104">104</a> of file <a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>topsConditions.m</li>
+<li><a class="el" href="tops_conditions_8m_source.html">topsConditions.m</a></li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -583,7 +1037,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

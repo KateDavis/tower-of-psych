@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -57,6 +57,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>You can extend your task structure arbitrarily, without running out of vocabulary words or hard-coded concepts like "task" "block", "subblock", "trial", "intertrial", etc.</li>
 <li>You can visualize the structure of your experiment using the <a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d" title="Open a GUI to view object details.">topsTreeNode.gui()</a> method. </li>
 </ul>
+
+<p>Definition at line <a class="el" href="tops_tree_node_8m_source.html#l00001">1</a> of file <a class="el" href="tops_tree_node_8m_source.html">topsTreeNode.m</a>.</p>
 <div class="dynheader">
 Inheritance diagram for topsTreeNode:</div>
 <div class="dynsection">
@@ -68,13 +70,39 @@ Inheritance diagram for topsTreeNode:</div>
 <p><a href="classtops_tree_node-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__runnable.html#ga177faeeb707c32e20ea096951eb63e3b">iterations</a> = 1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a177faeeb707c32e20ea096951eb63e3b"></a><!-- doxytag: member="topsTreeNode::iterations" ref="a177faeeb707c32e20ea096951eb63e3b" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a177faeeb707c32e20ea096951eb63e3b">iterations</a> = 1</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">number of times to run through this node's children <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13d92241cc55b3da9e48867f0fd660ba"></a><!-- doxytag: member="topsTreeNode::iterationCount" ref="a13d92241cc55b3da9e48867f0fd660ba" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a13d92241cc55b3da9e48867f0fd660ba">iterationCount</a> = 0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">count of iterations while running <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63f0bdb029cd7a013463701adde48070"></a><!-- doxytag: member="topsTreeNode::iterationMethod" ref="a63f0bdb029cd7a013463701adde48070" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a63f0bdb029cd7a013463701adde48070">iterationMethod</a> = 'sequential'</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">how to run through this node's children--'sequential' or 'random' order <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03647d9534fdfd33d574792c76fbf67a"></a><!-- doxytag: member="topsTreeNode::children" ref="a03647d9534fdfd33d574792c76fbf67a" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#a03647d9534fdfd33d574792c76fbf67a">children</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> (or subclass) objects <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8cacb6452805c362f15921999f986aec"></a><!-- doxytag: member="topsTreeNode::startFevalable" ref="a8cacb6452805c362f15921999f986aec" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a8cacb6452805c362f15921999f986aec">startFevalable</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">optional fevalable cell array to invoke just before running <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb7168e0d540c5991f7c51df441c7b1d"></a><!-- doxytag: member="topsTreeNode::finishFevalable" ref="adb7168e0d540c5991f7c51df441c7b1d" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#adb7168e0d540c5991f7c51df441c7b1d">finishFevalable</a> = {}</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">optional fevalable cell array to invoke just after running <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28c21dd77b4d24a38b68a188f2151cf1"></a><!-- doxytag: member="topsTreeNode::isRunning" ref="a28c21dd77b4d24a38b68a188f2151cf1" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a28c21dd77b4d24a38b68a188f2151cf1">isRunning</a> = false</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">true or false, whether this object is currently busy running <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5097dd11b98c2554b10cd8097f89be25"></a><!-- doxytag: member="topsTreeNode::caller" ref="a5097dd11b98c2554b10cd8097f89be25" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a5097dd11b98c2554b10cd8097f89be25">caller</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> that invoked <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> on this object, or empty <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae90ae8de05dbfb23f468514cf5cdee9a"></a><!-- doxytag: member="topsTreeNode::startString" ref="ae90ae8de05dbfb23f468514cf5cdee9a" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ae90ae8de05dbfb23f468514cf5cdee9a">startString</a> = 'start'</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string used for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entry just before <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad551bb7553eb98dd515a1d323f3b2021"></a><!-- doxytag: member="topsTreeNode::finishString" ref="ad551bb7553eb98dd515a1d323f3b2021" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#ad551bb7553eb98dd515a1d323f3b2021">finishString</a> = 'finish'</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string used for <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> entry just after <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4" title="Do flow control.">run()</a> <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73d044705182dce0379a1c211dca6ec6"></a><!-- doxytag: member="topsTreeNode::name" ref="a73d044705182dce0379a1c211dca6ec6" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a> = ''</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">a string name to indentify the object <br/></td></tr>
 <tr><td colspan="2"><h2>Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">self&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#aef59297db3b01fe32b5df5b8463c50fe">topsTreeNode</a> (varargin)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constuct with name optional.  <a href="#aef59297db3b01fe32b5df5b8463c50fe"></a><br/></td></tr>
@@ -82,6 +110,33 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a new <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> child and add it beneath this node.  <a href="#af996d3a33d71c4a1ce33304572cdc9ba"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4">run</a> (self)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Recursively <a class="el" href="classtops_tree_node.html#a08060e0924949738f75a0cdd8b49cef4" title="Recursively run(), starting with this node.">run()</a>, starting with this node.  <a href="#a08060e0924949738f75a0cdd8b49cef4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">fig&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#abf424157a1ca067a83cc8260bc34c17d">gui</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open a GUI to view object details.  <a href="#abf424157a1ca067a83cc8260bc34c17d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#af7be9661eeb0b3ff873194b1b4cc14c2">addChild</a> (self, child)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a child beneath this object.  <a href="#af7be9661eeb0b3ff873194b1b4cc14c2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable_composite.html#aab0e60943c386873ea22ce84926dcbf6">removeChild</a> (self, child)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove a child beneath this object.  <a href="#aab0e60943c386873ea22ce84926dcbf6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94">start</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log action and prepare to do flow control.  <a href="#aeb3b30c60946a22761128cbd397add94"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7">finish</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log, action and finish doing flow control.  <a href="#a398a82043f7493f0ec73b0a57fa4c5b7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#adb11f3757673c2cd1697dd59927d7522">logAction</a> (self, actionName, actionData)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log an event of interest with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#adb11f3757673c2cd1697dd59927d7522"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_runnable.html#a8222c86f5536c7596c858d5f8129ed96">logFeval</a> (self, fevalName, fevalable)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log a function call with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>.  <a href="#a8222c86f5536c7596c858d5f8129ed96"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">p&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#acc772c903527cca8657740197f30c34b">guiPanel</a> (self, varargin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Make a topsDetailPanel with details about this object.  <a href="#acc772c903527cca8657740197f30c34b"></a><br/></td></tr>
+<tr><td colspan="2"><h2>Static Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#ace953bfc5b718388fd853de1803b4f64">cellAdd</a> (c, item, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an item to a cell array.  <a href="#ace953bfc5b718388fd853de1803b4f64"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static selector&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f">cellContains</a> (c, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does a cell array conatin an item?  <a href="#aaa149dacf5a0f361cda5f1aa0832ac4f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a845c29c2db2f3d7ebe6a80b4dbe4a058">cellRemoveItem</a> (c, item)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove an item from a cell array.  <a href="#a845c29c2db2f3d7ebe6a80b4dbe4a058"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static c&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#af7c2c51ecb1a04fd026c7ad28c87968b">cellRemoveElement</a> (c, index)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove indexed elements from a cell array.  <a href="#af7c2c51ecb1a04fd026c7ad28c87968b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static index selector&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_foundation.html#a1db67e09e0d779cafcabc4eed2bf2de5">findStructName</a> (s, <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Where is the given name in the given struct array?  <a href="#a1db67e09e0d779cafcabc4eed2bf2de5"></a><br/></td></tr>
 </table>
 <hr/><h2>Constructor</h2>
 <a class="anchor" id="aef59297db3b01fe32b5df5b8463c50fe"></a><!-- doxytag: member="topsTreeNode::topsTreeNode" ref="aef59297db3b01fe32b5df5b8463c50fe" args="(varargin)" -->
@@ -108,6 +163,12 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </dd>
 </dl>
 <p>If <em>name</em> is provided, assigns <em>name</em> to this object. </p>
+
+<p>Definition at line <a class="el" href="tops_tree_node_8m_source.html#l00064">64</a> of file <a class="el" href="tops_tree_node_8m_source.html">topsTreeNode.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable_composite.html#ae6540d75fa2136026a8cc23100bb1840">topsRunnableComposite::topsRunnableComposite()</a>.</p>
+
+<p>Referenced by <a class="el" href="classtops_tree_node.html#af996d3a33d71c4a1ce33304572cdc9ba">newChildNode()</a>.</p>
 
 </div>
 </div>
@@ -146,6 +207,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </dl>
 <p>Returns a new <a class="el" href="classtops_tree_node.html" title="A tree-like way to organize an experiment.">topsTreeNode</a> which is a child of this node. </p>
 
+<p>Definition at line <a class="el" href="tops_tree_node_8m_source.html#l00076">76</a> of file <a class="el" href="tops_tree_node_8m_source.html">topsTreeNode.m</a>.</p>
+
+<p>References <a class="el" href="classtops_tree_node.html#aef59297db3b01fe32b5df5b8463c50fe">topsTreeNode()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a08060e0924949738f75a0cdd8b49cef4"></a><!-- doxytag: member="topsTreeNode::run" ref="a08060e0924949738f75a0cdd8b49cef4" args="(self)" -->
@@ -179,10 +244,522 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 <p>Reimplemented from <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4">topsRunnable</a>.</p>
 
+<p>Definition at line <a class="el" href="tops_tree_node_8m_source.html#l00106">106</a> of file <a class="el" href="tops_tree_node_8m_source.html">topsTreeNode.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable_composite.html#a03647d9534fdfd33d574792c76fbf67a">topsRunnableComposite::children</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf424157a1ca067a83cc8260bc34c17d"></a><!-- doxytag: member="topsTreeNode::gui" ref="abf424157a1ca067a83cc8260bc34c17d" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fig gui </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Open a GUI to view object details. </p>
+<p>Opens a new GUI with components suitable for viewing objects of this class. Returns a topsFigure object which contains the GUI. </p>
+
+<p>Reimplemented from <a class="el" href="classtops_runnable.html#a72e51a8014869030f089a5fb34fdd24f">topsRunnable</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_runnable_composite_8m_source.html#l00034">34</a> of file <a class="el" href="tops_runnable_composite_8m_source.html">topsRunnableComposite.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>, and <a class="el" href="classtops_runnable.html#a08060e0924949738f75a0cdd8b49cef4">topsRunnable::run()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7be9661eeb0b3ff873194b1b4cc14c2"></a><!-- doxytag: member="topsTreeNode::addChild" ref="af7be9661eeb0b3ff873194b1b4cc14c2" args="(self, child)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">addChild </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">child&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add a child beneath this object. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>child</em>&nbsp;</td><td>a <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to add beneath this object.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Appends <em>child</em> to the children array of this object. </p>
+
+<p>Reimplemented in <a class="el" href="classtops_concurrent_composite.html#af7be9661eeb0b3ff873194b1b4cc14c2">topsConcurrentComposite</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_runnable_composite_8m_source.html#l00054">54</a> of file <a class="el" href="tops_runnable_composite_8m_source.html">topsRunnableComposite.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable_composite.html#a03647d9534fdfd33d574792c76fbf67a">topsRunnableComposite::children</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab0e60943c386873ea22ce84926dcbf6"></a><!-- doxytag: member="topsTreeNode::removeChild" ref="aab0e60943c386873ea22ce84926dcbf6" args="(self, child)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">removeChild </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">child&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove a child beneath this object. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>child</em>&nbsp;</td><td>a <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> to remove fmor beneath this object.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes all instances of <em>child</em> from the children array of this object. </p>
+
+<p>Definition at line <a class="el" href="tops_runnable_composite_8m_source.html#l00067">67</a> of file <a class="el" href="tops_runnable_composite_8m_source.html">topsRunnableComposite.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable_composite.html#a03647d9534fdfd33d574792c76fbf67a">topsRunnableComposite::children</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeb3b30c60946a22761128cbd397add94"></a><!-- doxytag: member="topsTreeNode::start" ref="aeb3b30c60946a22761128cbd397add94" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">start </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log action and prepare to do flow control. </p>
+<p>Subclasses should extend <a class="el" href="classtops_runnable.html#aeb3b30c60946a22761128cbd397add94" title="Log action and prepare to do flow control.">start()</a> to do initialization before running. </p>
+
+<p>Reimplemented in <a class="el" href="classtops_conditions.html#aeb3b30c60946a22761128cbd397add94">topsConditions</a>, and <a class="el" href="classtops_state_machine.html#aeb3b30c60946a22761128cbd397add94">topsStateMachine</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00075">75</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable.html#a8cacb6452805c362f15921999f986aec">topsRunnable::startFevalable</a>, and <a class="el" href="classtops_runnable.html#ae90ae8de05dbfb23f468514cf5cdee9a">topsRunnable::startString</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a398a82043f7493f0ec73b0a57fa4c5b7"></a><!-- doxytag: member="topsTreeNode::finish" ref="a398a82043f7493f0ec73b0a57fa4c5b7" args="(self)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">finish </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log, action and finish doing flow control. </p>
+<p>Subclasses should extend <a class="el" href="classtops_runnable.html#a398a82043f7493f0ec73b0a57fa4c5b7" title="Log, action and finish doing flow control.">finish()</a> to do clean up after running. </p>
+
+<p>Reimplemented in <a class="el" href="classtops_concurrent_composite.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsConcurrentComposite</a>, <a class="el" href="classtops_conditions.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsConditions</a>, and <a class="el" href="classtops_state_machine.html#a398a82043f7493f0ec73b0a57fa4c5b7">topsStateMachine</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00088">88</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
+
+<p>References <a class="el" href="classtops_runnable.html#adb7168e0d540c5991f7c51df441c7b1d">topsRunnable::finishFevalable</a>, and <a class="el" href="classtops_runnable.html#ad551bb7553eb98dd515a1d323f3b2021">topsRunnable::finishString</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adb11f3757673c2cd1697dd59927d7522"></a><!-- doxytag: member="topsTreeNode::logAction" ref="adb11f3757673c2cd1697dd59927d7522" args="(self, actionName, actionData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">logAction </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">actionName&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">actionData&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log an event of interest with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>actionName</em>&nbsp;</td><td>string name for any event of interest </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>actionData</em>&nbsp;</td><td>optional data to log along with <em>actionName</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>logAction is a convenient way to note in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> that some event of interest has occurred. The log entry will contain the name of this <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object, concatenated with <em>actionName</em>. It will store <em>actionData</em>, if given. </p>
+
+<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00106">106</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8222c86f5536c7596c858d5f8129ed96"></a><!-- doxytag: member="topsTreeNode::logFeval" ref="a8222c86f5536c7596c858d5f8129ed96" args="(self, fevalName, fevalable)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">logFeval </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fevalName&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fevalable&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log a function call with <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>fevalName</em>&nbsp;</td><td>string name to give to a function call </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>fevalable</em>&nbsp;</td><td>fevalable cell array specifying a function call</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>logFeval is a convenient way to note in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a> that some funciton call of interest has occurred, and then call the function. The log entry will contain the name of this <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object, concatenated with <em>fevalName</em>. It will convert the function handle from the first element of <em>fevalable</em> to a string and store the string.</p>
+<p>The log entry will not store any of the arguments from the second or later elements of <em>fevalable</em>. This is because the arguments may be handle objects, and Matlab does a bad job of storing large collections of handle objects--both in memory and in .mat files.</p>
+<p>After making a new entry in <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, logFeval also invokes <em>fevalable</em> with the feval() function. </p>
+
+<p>Definition at line <a class="el" href="tops_runnable_8m_source.html#l00141">141</a> of file <a class="el" href="tops_runnable_8m_source.html">topsRunnable.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acc772c903527cca8657740197f30c34b"></a><!-- doxytag: member="topsTreeNode::guiPanel" ref="acc772c903527cca8657740197f30c34b" args="(self, varargin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">p guiPanel </td>
+          <td>(</td>
+          <td class="paramtype">self&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">varargin&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Make a topsDetailPanel with details about this object. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>parentGUI</em>&nbsp;</td><td>a topsGUI to contain the new panel </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>position</em>&nbsp;</td><td>optional normalized [x y w h] where to locate the new panel within <em>parentGUI</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Subclasses may overrride to return a specific topsDetailPanel subclass, or let topsFoundataion generate a generic topsValuePanel. </p>
+
+<p>Reimplemented in <a class="el" href="classtops_grouped_list.html#acc772c903527cca8657740197f30c34b">topsGroupedList</a>.</p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00050">50</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace953bfc5b718388fd853de1803b4f64"></a><!-- doxytag: member="topsTreeNode::cellAdd" ref="ace953bfc5b718388fd853de1803b4f64" args="(c, item, index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c index cellAdd </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">index&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Add an item to a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any item to add to the cell array <em>c</em> </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>optional index where to insert <em>item</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>add() inserts <em>item</em> into <em>c</em> at the given <em>index</em>. If no <em>index</em> is given, add() appends <em>item</em> to the end of <em>c</em>.</p>
+<p>Returns the modified cell array <em>c</em>. May also return the index into <em>c</em> where <em>item</em> was inserted. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00071">71</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaa149dacf5a0f361cda5f1aa0832ac4f"></a><!-- doxytag: member="topsTreeNode::cellContains" ref="aaa149dacf5a0f361cda5f1aa0832ac4f" args="(c, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static selector cellContains </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Does a cell array conatin an item? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>any item that might be in <em>c</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Returns a logical array the same size as c, which is true where elements of <em>c</em> are equal to <em>item</em>.</p>
+<p><a class="el" href="classtops_foundation.html#aaa149dacf5a0f361cda5f1aa0832ac4f" title="Does a cell array conatin an item?">cellContains()</a> compares items for equality using Matlab's built-in eq() when it can, or else isequal(). </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00099">99</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a845c29c2db2f3d7ebe6a80b4dbe4a058"></a><!-- doxytag: member="topsTreeNode::cellRemoveItem" ref="a845c29c2db2f3d7ebe6a80b4dbe4a058" args="(c, item)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c cellRemoveItem </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">item&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove an item from a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>an item to remove from <em>c</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes all elements of <em>c</em> that are equal to the given <em>item</em>.</p>
+<p>Returns the modified cell array, <em>c</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00123">123</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7c2c51ecb1a04fd026c7ad28c87968b"></a><!-- doxytag: member="topsTreeNode::cellRemoveElement" ref="af7c2c51ecb1a04fd026c7ad28c87968b" args="(c, index)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static c cellRemoveElement </td>
+          <td>(</td>
+          <td class="paramtype">c&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">index&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove indexed elements from a cell array. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td>a cell array </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>index of the element or elements to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Removes the indexed element or elements of <em>c</em>.</p>
+<p>Returns the modified cell array, <em>c</em>. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00139">139</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1db67e09e0d779cafcabc4eed2bf2de5"></a><!-- doxytag: member="topsTreeNode::findStructName" ref="a1db67e09e0d779cafcabc4eed2bf2de5" args="(s, name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static index selector findStructName </td>
+          <td>(</td>
+          <td class="paramtype">s&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">name</a>&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, inherited]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Where is the given name in the given struct array? </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>s</em>&nbsp;</td><td>a struct array with a "name" field </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>a</em>&nbsp;</td><td>"name" value that might be in the struct array</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Assumes that <em>s</em> is a struct array with a "name" field. Searches the elements of <em>s</em> for the given <em>name</em>. Returns the index of the first occurence of <em>name</em>. If <em>name</em> was not found, returns numel(<em>s</em>) plus 1. Returns as a second output a logical selector for the elements of <em>s</em>, set to true where <em>name</em> was found. </p>
+
+<p>Definition at line <a class="el" href="tops_foundation_8m_source.html#l00159">159</a> of file <a class="el" href="tops_foundation_8m_source.html">topsFoundation.m</a>.</p>
+
+<p>References <a class="el" href="classtops_foundation.html#a73d044705182dce0379a1c211dca6ec6">topsFoundation::name</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>topsTreeNode.m</li>
+<li><a class="el" href="tops_tree_node_8m_source.html">topsTreeNode.m</a></li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -199,7 +776,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:15:33 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:38:27 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
