@@ -49,13 +49,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>The <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> superclass provides a common interface for Tower of Psych classes that manage flow control, and may work concurrently with one another.</p>
 <p>In addition to being able to <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a>, <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> objects can also <a class="el" href="classtops_concurrent.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control and return as soon as possible.">runBriefly()</a>, which means to carry out a small part of their normal <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a> behavior, and then return as soon as possible. <a class="el" href="classtops_concurrent.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Do a little flow control and return as soon as possible.">runBriefly()</a> behaviors can be interleaved to acheive concurrent operation of multiple <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> objects within a single Matlab instance.</p>
 <p>Multiple <a class="el" href="classtops_concurrent.html" title="Superclass for flow-control classes that may operate concurrently.">topsConcurrent</a> objects can be aggregated within a single <a class="el" href="classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently.">topsConcurrentComposite</a> object. This makes allows the aggregated objects to be treated like a single <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> object. </p>
-<div class="dynheader">
-Inheritance diagram for topsConcurrent:</div>
-<div class="dynsection">
-<div class="center"><img src="classtops_concurrent__inherit__graph.png" border="0" usemap="#tops_concurrent_inherit__map" alt="Inheritance graph"/></div>
-<map name="tops_concurrent_inherit__map" id="tops_concurrent_inherit__map">
-<area shape="rect" id="node7" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="10,238,96,266"/><area shape="rect" id="node11" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="120,238,236,266"/><area shape="rect" id="node2" href="classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="69,83,163,111"/><area shape="rect" id="node4" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="64,6,168,34"/><area shape="rect" id="node9" href="classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="5,315,101,343"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>Inherits <a class="el" href="classtops_runnable.html">topsRunnable</a>.</p>
+
+<p>Inherited by <a class="el" href="classtops_call_list.html">topsCallList</a>, and <a class="el" href="classtops_state_machine.html">topsStateMachine</a>.</p>
 
 <p><a href="classtops_concurrent-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
@@ -617,7 +614,7 @@ g&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:46:36 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:52:31 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
