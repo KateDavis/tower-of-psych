@@ -1,7 +1,7 @@
-% Try graphing state machine states from the SquareTag game
-clear
-clear classes
-clc
+% Try graphing state machine states from the SquareTag game.
+%
+% @ingroup demos
+function demoStateGrapher()
 
 % configure the full dotris game
 [runnable, list] = configureSquareTag();

@@ -1,7 +1,7 @@
 % Try graphing the output of the Matlab profiler.
-clear
-clear classes
-clc
+%
+% @ingroup demos
+function demoProfilerGrapher()
 
 % Create the grapher object.
 %   tell it to generate profiler data with the "encounter" demo game

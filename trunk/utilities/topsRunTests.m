@@ -1,4 +1,4 @@
-%Invoke Tower of Psych unit tests at or below the current folder.
+% Invoke Tower of Psych unit tests at or below the current folder.
 % @param fileFilter optional regular expression to filter test files
 % @details
 % Runs unit tests for Tower of Psych.  Searches the current folder and
@@ -13,8 +13,10 @@
 % aborts and returns false.
 % @details
 % Here are some examples:
-% everythingPassed = topsRunTests();
-% foundationPassed = topsRunTests('foundation');
+%   isOK = topsRunTests();
+%   isFoundationOK = topsRunTests('foundation');
+%
+% @ingroup utilities
 function didPass = topsRunTests(fileFilter)
 initialFolder = pwd();
 tic();

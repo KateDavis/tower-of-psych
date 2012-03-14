@@ -1,6 +1,7 @@
 % Play the SquareTag task with built-in Matlab graphics and inputs.
-clear
-close all
+%
+% @ingroup demos
+function squareTag()
 
 % make a new "back end" for SquareTag
 logic = SquareTagLogic('SquareTag demo');

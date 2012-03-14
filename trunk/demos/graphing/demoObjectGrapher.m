@@ -1,10 +1,10 @@
 % Try graphing the references among objects in a workspace.
-clear
-clear classes
-clc
+%
+% @ingroup demos
+function demoObjectGrapher()
 
 % Create some objects that refer to each other, from the "spots" demo task.
-[tree, list] = configureSpotsTask;
+[tree, list] = configureSpotsTask();
 
 % Create the grapher object and configure it to look nice.
 og = ObjectGrapher;
