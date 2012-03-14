@@ -1,11 +1,11 @@
 <map id="G" name="G">
-<area shape="rect" id="node5" href="$classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="98,161,200,189"/>
-<area shape="rect" id="node13" href="$classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects." alt="" coords="225,161,327,189"/>
-<area shape="rect" id="node15" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="350,161,503,189"/>
-<area shape="rect" id="node2" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="224,6,328,34"/>
-<area shape="rect" id="node7" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="10,238,96,266"/>
-<area shape="rect" id="node11" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="120,238,236,266"/>
-<area shape="rect" id="node9" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="5,315,101,343"/>
-<area shape="rect" id="node17" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="289,238,449,266"/>
-<area shape="rect" id="node19" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="474,238,571,266"/>
+<area shape="rect" id="node5" href="$classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="104,161,216,189"/>
+<area shape="rect" id="node13" href="$classtops_conditions.html" title="Traverses combinations of conditions and assigns them to objects." alt="" coords="240,161,349,189"/>
+<area shape="rect" id="node15" href="$classtops_runnable_composite.html" title="Superclass for objects that run just by running other objects." alt="" coords="374,161,540,189"/>
+<area shape="rect" id="node2" href="$classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="238,6,351,34"/>
+<area shape="rect" id="node7" href="$classtops_call_list.html" title="A list of functions to call sequentially, as a batch." alt="" coords="12,238,101,266"/>
+<area shape="rect" id="node11" href="$classtops_state_machine.html" title="A state machine for controlling flow through predefined states." alt="" coords="127,238,255,266"/>
+<area shape="rect" id="node9" href="$classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="4,315,109,343"/>
+<area shape="rect" id="node17" href="$classtops_concurrent_composite.html" title="Composes topsConcurrent objects and runs them concurrently." alt="" coords="309,238,485,266"/>
+<area shape="rect" id="node19" href="$classtops_tree_node.html" title="A tree&#45;like way to organize an experiment." alt="" coords="510,238,615,266"/>
 </map>
