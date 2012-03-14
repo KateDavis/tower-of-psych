@@ -19,6 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -52,12 +53,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>In your experiment code, you can add to the log as many times as you like. If you're not sure whether some piece of data will turn out to be important, you can go ahead and log it anyway. You don't have to worry about the log filling up, how to allcate space for more data, or even how the data are ultimately stored. That's the log's job.</p>
 <p>Other topsFoundataion classes will also add data to the log, to help you keep track of details that aren't specific to your experiment. For example, <a class="el" href="classtops_runnable.html" title="Superclass for flow-control classes.">topsRunnable</a> objects make log entries as they start and finish running.</p>
 <p>With your log entries and the entries made automatically by topsFoundataion classes, it should be straightforward to look at the log after an experiment and get a sense of what happened and when. The log's <a class="el" href="classtops_data_log.html#a4b83f0eb0e39660c96d3f8e8ff1726d9" title="Open a GUI to view object details.">gui()</a> method should make this even easier. You can use it to launch topsDataLogGUI, which plots a raster of all logged data over time, with data groups as rows. </p>
-
-<p>Inherits <a class="el" href="classtops_grouped_list.html">topsGroupedList</a>.</p>
+<div class="dynheader">
+Inheritance diagram for topsDataLog:</div>
+<div class="dynsection">
+<div class="center"><img src="classtops_data_log__inherit__graph.png" border="0" usemap="#tops_data_log_inherit__map" alt="Inheritance graph"/></div>
+<map name="tops_data_log_inherit__map" id="tops_data_log_inherit__map">
+<area shape="rect" id="node2" href="classtops_grouped_list.html" title="A structured container for values and objects." alt="" coords="5,83,115,111"/><area shape="rect" id="node4" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="8,6,112,34"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classtops_data_log-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
+<tr><td colspan="2"><h2>Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18414c54c7ec4b757437956d8e2bfd3f"></a><!-- doxytag: member="topsDataLog::clockFunction" ref="a18414c54c7ec4b757437956d8e2bfd3f" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a18414c54c7ec4b757437956d8e2bfd3f">clockFunction</a> = @topsClock</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">any function that returns the current time as a number <br/></td></tr>
@@ -1285,7 +1291,7 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 
 </div>
 </div>
-<hr/><h2>Properties and Events</h2>
+<hr/><h2>Properties</h2>
 <a class="anchor" id="a222d7e3606701ba93ae8b6e84db36cb3"></a><!-- doxytag: member="topsDataLog::lastFlushTime" ref="a222d7e3606701ba93ae8b6e84db36cb3" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1320,7 +1326,7 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:56:44 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 14 15:07:52 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

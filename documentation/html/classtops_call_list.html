@@ -19,6 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -52,14 +53,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p><a class="el" href="classtops_call_list.html" title="A list of functions to call sequentially, as a batch.">topsCallList</a> expects functions of a particular form, which it calls "fevalable". Fevalables are cell arrays that have a function handle as the first element. Additional elements are treated as arguments to the function.</p>
 <p>The fevalables convention makes it easy to make arbitrary function calls with Matlab's built-in feval() function--hence the name--so the cell array "foo" would be an fevalable if it could be executed with feval(foo{:}).</p>
 <p>By default, all of the fevalables in the call list will be called during each <a class="el" href="classtops_call_list.html#ad39f1b8814f26d4d247d7da89dcd1173" title="Invoke active calls in a batch.">runBriefly()</a>. The activity of each call can be controlled with <a class="el" href="classtops_call_list.html#a30972320684a68673d9ff8595acbc999" title="Toggle whether a call is active.">setActiveByName()</a> or with <a class="el" href="classtops_call_list.html#ab1eb32032f81fcb1c88dd795a976580d" title="Invoke a call now, whether or not it&#39;s active.">callByName()</a> with the isActive flag. A call can also be replaced by passing a new call with the same name to <a class="el" href="classtops_call_list.html#a5ffbc9f2b4079043a66289e71bc19a38" title="Add an &quot;fevalable&quot; to the call list.">addCall()</a>. </p>
-
-<p>Inherits <a class="el" href="classtops_concurrent.html">topsConcurrent</a>.</p>
-
-<p>Inherited by <a class="el" href="classtops_ensemble.html">topsEnsemble</a>.</p>
+<div class="dynheader">
+Inheritance diagram for topsCallList:</div>
+<div class="dynsection">
+<div class="center"><img src="classtops_call_list__inherit__graph.png" border="0" usemap="#tops_call_list_inherit__map" alt="Inheritance graph"/></div>
+<map name="tops_call_list_inherit__map" id="tops_call_list_inherit__map">
+<area shape="rect" id="node9" href="classtops_ensemble.html" title="Aggregate objects into an ensemble for batch opertaions." alt="" coords="9,315,105,343"/><area shape="rect" id="node2" href="classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="6,161,108,189"/><area shape="rect" id="node4" href="classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="10,83,104,111"/><area shape="rect" id="node6" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="5,6,109,34"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classtops_call_list-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
+<tr><td colspan="2"><h2>Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1e8e71657cd2edd77c16dc4978b5690"></a><!-- doxytag: member="topsCallList::calls" ref="af1e8e71657cd2edd77c16dc4978b5690" args="" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_call_list.html#af1e8e71657cd2edd77c16dc4978b5690">calls</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array with fevalable cell arrays to call as a batch <br/></td></tr>
@@ -762,7 +766,7 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:56:44 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 14 15:07:52 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

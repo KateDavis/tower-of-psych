@@ -19,6 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -47,12 +48,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>topsStateMachine Class Reference</h1><!-- doxytag: class="topsStateMachine" --><!-- doxytag: inherits="topsConcurrent" --><hr/><a name="_details"></a><h2>Overview</h2>
 <p>A state machine for controlling flow through predefined states. </p>
 <p><a class="el" href="classtops_state_machine.html" title="A state machine for controlling flow through predefined states.">topsStateMachine</a> may contain arbitrary states to be traversed when it <a class="el" href="classtops_concurrent.html#ad20a9881e7c71cb5296f0e694f70c773" title="Do flow control.">run()</a>s. Each state may invoke functions and transition to other states with specified timing. State traversal may be deterministic, or may be conditional and branching based on classifications or input functions. </p>
-
-<p>Inherits <a class="el" href="classtops_concurrent.html">topsConcurrent</a>.</p>
+<div class="dynheader">
+Inheritance diagram for topsStateMachine:</div>
+<div class="dynsection">
+<div class="center"><img src="classtops_state_machine__inherit__graph.png" border="0" usemap="#tops_state_machine_inherit__map" alt="Inheritance graph"/></div>
+<map name="tops_state_machine_inherit__map" id="tops_state_machine_inherit__map">
+<area shape="rect" id="node2" href="classtops_concurrent.html" title="Superclass for flow&#45;control classes that may operate concurrently." alt="" coords="11,161,113,189"/><area shape="rect" id="node4" href="classtops_runnable.html" title="Superclass for flow&#45;control classes." alt="" coords="15,83,109,111"/><area shape="rect" id="node6" href="classtops_foundation.html" title="Superclass for all of the funtamental Tower of Psych classes." alt="" coords="11,6,115,34"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classtops_state_machine-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td colspan="2"><h2>Properties and Events</h2></td></tr>
+<tr><td colspan="2"><h2>Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a7861e769bf7518302516cfabc3f611a6">allStates</a> = struct([])</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">struct array of data for each state  <a href="#a7861e769bf7518302516cfabc3f611a6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_state_machine.html#a24701c49c20d912138a10311f57be1e2">transitionFevalable</a> = {}</td></tr>
@@ -882,7 +888,7 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 </div>
 </div>
-<hr/><h2>Properties and Events</h2>
+<hr/><h2>Properties</h2>
 <a class="anchor" id="a7861e769bf7518302516cfabc3f611a6"></a><!-- doxytag: member="topsStateMachine::allStates" ref="a7861e769bf7518302516cfabc3f611a6" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -949,7 +955,7 @@ stateInfo index&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el"
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Mar 13 17:56:45 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 14 15:07:52 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
