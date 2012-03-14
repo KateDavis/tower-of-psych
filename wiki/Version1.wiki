@@ -89,12 +89,12 @@ _I worked through and closed all the outstanding issues in March 2012._
 ===_Docs_===
 The role and form of the Doxygen docs should be tweaked.
 
-  * Doc front page just says "Tower of Psych" and revision number
-  * Docs just show class heirarchy and refernce
-  * Removed some confusing navigation tabs
+  * Docs have header that links back to project site
+  * Doc front page has simple table of contents for classes and functions.
+  * Docs just show class and function reference, not other content
  (small)
 
-_This is done as of 13 March 2012._
+_This is done as of 14 March 2012._
 
 ----
 
