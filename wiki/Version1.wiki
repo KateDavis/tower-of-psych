@@ -92,10 +92,10 @@ The role and form of the Doxygen docs should be tweaked.
   * Docs have header that links back to project site
   * Doc front page has simple table of contents for classes and functions.
   * Docs just show class and function reference, not other content
- (small)
   * source code comments all use doxygen style
   * source code comments only define demos and utilities groups
   * doxygen builder script adds newly generated doxygen content
+ (small)
 
 _This is done as of 14 March 2012._
 
