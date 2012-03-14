@@ -1,46 +1,42 @@
+% Configure the "Spots" task, using only built-in Matlab functionality.
+% @param figurePosition optional [x y w h] where to show the task
+% @details
+% The "Spots" task is a demo for the Tower of Psych.  It uses some tops
+% foundataion classes to implement a task similar to a real psychophysics
+% task.  The task uses only built-in Matlab functionality, so it can run
+% without special installations or configuration.
+% @details
+% There are two trial types: reaction time (RT) and fixed viewing time
+% (FVT).  In both, the subject (you) uses the mouse to click on one of
+% several spots that appear.
+% @details
+% RT trials go like this:
+%	-several blue spots and one red spot appear in the figure.
+%	-at any time, the subject may click on one of the spots.  The red
+%	spot is "correct" and the rest "incorrect".
+%	-the spots disappear and the figure is blank for an interval
+%	-the next trial begins...
+%   .
+% @details
+% FVT trials go like this:
+%	-several blue and one red spot appear in the figure, then quickly
+%	all turn black
+%	-after the spots are black, the subject may click on one of the
+%	spots.  The spot that was red is "correct", the rest "incorrect".
+%	-the spots disappear and the figure is blank for an interval.
+%	-the next trial begins.
+%   .
+% @details
+% Returns a topsTreeNode object which organizes tasks and trials.
+% the object's run() method will start the "Spots" demo task.  Also returns
+% as a second argument a topsGroupedList object which holds all the data
+% needed for the tasl.
+% @details
+% Several task parameters may be controlled by editing values near the top
+% of configureSpotsTask.m.
+%
+% @ingroup demos
 function [tree, list] = configureSpotsTask(figurePosition)
-%Configure the "Spots" demo task, using only built-in Matlab functionality.
-%
-%   [tree, list] = configureSpotsTask(figurePosition)
-%
-%   tree is a topsTreeNode object which organizes tasks and trials.
-%   tree.run(); will start the "Spots" demo task.
-%
-%   list is a topsGroupedList object which holds all the data needed
-%   to run the "Spots" task.
-%
-%   figurePosition is optional.  It should contain a postion rectangle of
-%   the form [x, y, w, h]--where to put the expermient figure window.
-%
-%   The "Spots" task is a demo for the Tower of Psych.  It uses some
-%   tops foundataion classes to implement a task similar to a real
-%   psychophysics task.  The task uses only built-in Matlab functionality,
-%   so it can run without special installations or configuration.
-%
-%   There are two trial types: reaction time (RT) and fixed viewing time
-%   (FVT).  In both, the subject (you) uses the mouse to click on one
-%   of several spots that appear.
-%
-%   RT trials go like this:
-%       -several blue spots and one red spot appear in the figure.
-%       -at any time, the subject may click on one of the spots.  The red
-%       spot is "correct" and the rest "incorrect".
-%       -the spots disappear and the figure is blank for an interval
-%       -the next trial begins...
-%
-%   FVT trials go like this:
-%       -several blue and one red spot appear in the figure, then quickly
-%       all turn black
-%       -after the spots are black, the subject may click on one of the
-%       spots.  The spot that was red is "correct", the rest "incorrect".
-%       -the spots disappear and the figure is blank for an interval.
-%       -the next trial begins.
-%
-%   Several task parameters may be controlled by editing values near
-%   the top of configureSpotsTask.m.
-%
-% See also, demoSpotsTask, topsGroupedList, topsTreeNode
-
 % 2009 benjamin.heasly@gmail.com
 %   Seattle, WA
 

@@ -1,7 +1,7 @@
 % Try graphing some arbitrary Matlab data with Graphviz.
-clear
-clear classes
-clc
+%
+% @ingroup demos
+function demoDataGrapher()
 
 % Create the grapher object.
 %   configure it to make a nice-looking graph.

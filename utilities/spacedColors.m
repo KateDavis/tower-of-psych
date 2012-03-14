@@ -1,21 +1,30 @@
-% Colormap with evenly-spaced colors that show up against white
+% Get a colormap with evenly-spaced colors that show up against white.
+% @param n the length of colormap to build
+% @details
+% Returns an nX3 colormap with rows of the form [R G B], and components in
+% the range 0-1.
+% @details
+% Here's how spacedColors() picks evenly-spaced colors that show up against
+% white: it uses a cube with sides in the interval [0 1].  It treats each
+% cube dimension as a color component.  Thus, any point in the cube can be
+% interpreted as an RGB color.
+% @details
+% Colors near the [1 1 1] corner will be close to white, so they won't show
+% up against a white background.  spacedColors() truncates the cube by
+% cutting off points near [1 1 1].  It picks @a n colors from the rest of
+% the cube, by taking evenly-spaced strides.  The smaller @a n, the greater
+% the spacing between colors.
+% @details
+% Here's a demo:
+% @code
+% n = 12;
+% colormap([spacedColors(n); 1 1 1]);
+% thingy = n+1*ones(1, 2*n+1);
+% thingy(2:2:2*n) = 1:n;
+% image(thingy);
+% @endcode
 %
-%   colors = spacedColors(n)
-%
-%   @param n the length of colormap to build
-%
-%   @details
-%   Returns an nX3 colormap whose rows are RGB colors.
-%
-%   Imagine a cube with sides in the interval [0 1]--any point in the cube
-%   can be interpreted as an RGB color.  Colors near the [1 1 1] corner
-%   will be bright and won't show up against a white background.
-%
-%   spacedColors truncates the cube by cutting off points near [1 1 1] and
-%   picks @a n colors from the rest of the cube.  The smaller @a n, the
-%   greater the spacing.
-%
-%   See also colormap colorcube
+% @ingroup utilities
 function colors = spacedColors(n)
 
 if nargin < 1

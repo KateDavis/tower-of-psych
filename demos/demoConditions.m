@@ -1,10 +1,10 @@
-% Demonstrate some key functions of the topsConditions class.
-clear
-clear classes
-clc
+% Demonstrate some key behaviors of the topsConditions class.
+%
+% @ingroup demos
+function demoConditions()
 
 % Create the conditions object
-c = topsConditions;
+c = topsConditions('demo');
 
 % add a several parameters, each of which may take different values
 %   the conditions object can traverse all combinations of parameter values
@@ -41,7 +41,7 @@ c.maxPicks = 10;
 %   each call to run() sets one new condition
 keepGoing = true;
 while keepGoing
-    c.run;
+    c.run();
     disp(likesTextures.name);
     disp(likesShapesAndNumbers.name);
     keepGoing = ~c.isDone;

@@ -1,4 +1,5 @@
 classdef EncounterBattler < handle
+    % @class EncounterBattler
     % Class to represent character or monster in the "Encounter" demo game.
 
     properties

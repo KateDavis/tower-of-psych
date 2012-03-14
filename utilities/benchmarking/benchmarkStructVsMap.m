@@ -1,13 +1,11 @@
 % Check performance of different Matlab data structures.
+% @param n the number of items to try adding to each data structure
+% @ details
+% Adds @a n values to a struct, and to a containers.Map object.  Measures
+% how long it takes to add the values, and how long it takes to access
+% them.  Plots a summary in the gcf() figure.
 %
-%   benchStructVsMap(n)
-%
-%   @param n the number of items to try adding to each data structure
-%
-%   @ details
-%   Adds @a n values to a struct, and to a containers.Map object.  Times
-%   how long it takes to add the values, and how long it takes to access
-%   them.  Plots a summary in the gcf() figure.
+% @ingroup utilities
 function benchmarkStructVsMap(n)
 
 if nargin < 1

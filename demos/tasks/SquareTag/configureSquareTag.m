@@ -4,6 +4,12 @@
 % @param getXFunction function that returns x-position, as from a mouse
 % @param getYFunction function that returns y-position, as from a mouse
 % @details
+% SquareTag is a demo game for Tower of Psych.  In it the user moves a
+% cursor in order to tag several squares, in order of increasing size.  If
+% the user tags squares in the wrong trial, the trial starts over.  Square
+% Tag can use default inputs and graphics that use only build-in Matlab
+% functionality.  It can also be extended to use advanced functionality.
+% @details
 % Set up to play SquareTag interactively.  Uses @a logic and @a av as the
 % "back end" and "front end" of the task, respectively.  If either is
 % omitted, configureSquareTag makes defaults. @a getXFunction and @a
@@ -16,6 +22,8 @@
 % SquareTag.  Also returns as a second output a topsGroupedList which
 % contains data and objects related to the SquarTag session, including @a
 % logic, @a av, @a getXFunction, and @a getYFunction.
+%
+% @ingroup demos
 function [runnable, list] = configureSquareTag( ...
     logic, av, getXFunction, getYFunction)
 

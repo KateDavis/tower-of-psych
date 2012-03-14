@@ -1,24 +1,18 @@
-function [runnable, list] = configureEncounter()
 % Demonstrate the Tower of Psych (tops) foundation classes with a game.
+% @details
+% "Encounter" is a game which demonstrates Tower of Psych.  It's a
+% simplified homage to the battle seqences in the "Final Fantasy" Nintendo
+% games.  In the game, you control several characters with different speeds
+% and attack powers. Your job is to attack monsters (by clicking on them)
+% and defeat them before they defeat you (by attacking you periodically).
+% @details
+% Returns a topsRunnable object for organizing the structure and flow
+% of the game.  The objects run() method will start the game.  Also returns
+% as a second output a topsGroupedList object which contains data and
+% objects that make up the game.
 %
-%   [runnable, list] = configureEncounter()
-%
-%   "Encounter" is a game.  It's a simplified homage to the battle seqences
-%   in the "Final Fantasy" Nintendo games.  In the game, you control
-%   several characters with different speeds and attack powers. Your job is
-%   to defeat monsters (by clicking on them) before they defeat you (by
-%   attacking periodically).
-%
-%   runnable is a topsRunnable object for organizing the structure and flow
-%   of the game.
-%
-%   list is an instance of topsGroupedList.  It contains data and objects
-%   that make up the game.
-%
-%   To play Encounter, type the following:
-%   [runnable, list] = configureEncounter();
-%   runnable.run();
-
+% @ingroup demos
+function [runnable, list] = configureEncounter()
 % By benjamin.heasly@gmail.com,
 %   2009 Seattle, WA
 %   2012 Portland, Me.

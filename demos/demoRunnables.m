@@ -1,10 +1,11 @@
-% Demonstrate some key behaviors of topsRunnable and topsConcurrent objects
+% Demonstrate key behaviors of various topsRunnable objects.
+%
+% @ingroup demos
+function demoRunnables()
 
 %% First, define some arbitrary behaviors in "fevalable" cell arrays
 % Using feval() for each of these cell arrays will print a message to the
 % command window.
-clear
-clc
 
 hello = {@disp, 'Hello.'};
 goodbye = {@disp, 'Goodbye.'};
@@ -13,22 +14,25 @@ pardon = {@disp, 'Pardon me?'};
 howdy = {@disp, '  How do you do?'};
 fine = {@disp, '  Fine, thanks.'};
 
+rest = {@pause, 0.1};
+
 %% topsCallList
 % A "call list" can call a bunch of functions as a batch.  For example:
-calls = topsCallList;
-calls.name = 'call functions';
-calls.addCall(hello);
-calls.addCall(pardon);
-calls.addCall(goodbye);
+calls = topsCallList('call functions');
+calls.addCall(hello, 'say hello');
+calls.addCall(pardon, 'say pardon');
+calls.addCall(goodbye, 'say goodbye');
 
-clc
-calls.run;
+% The calls could continue forever.  Let's just go through them once.
+calls.alwaysRunning = false;
+
+clc();
+calls.run();
 
 %% topsStateMachine
 % A "state machine" can combine behaviors in more complex ways, for example
 % by adding timing.
-machine = topsStateMachine;
-machine.name = 'traverse states';
+machine = topsStateMachine('traverse states');
 stateList = { ...
     'name',     'entry',	'timeout',  'next'; ...
     'first',    hello,      0.1,        'second'; ...
@@ -37,8 +41,8 @@ stateList = { ...
     };
 machine.addMultipleStates(stateList);
 
-clc
-machine.run;
+clc();
+machine.run();
 
 %% topsConcurrentComposite
 % A topsConcurrentComposite can compose other objects and make them run()
@@ -47,13 +51,12 @@ machine.run;
 % topsConcurrentComposite only works with objects of the topsConcurrent
 % class and its subclasses, which include topsCallList and
 % topsStateMachine.
-replies = topsCallList;
-replies.name = 'call other functions';
-replies.addCall(howdy);
-replies.addCall(fine);
+replies = topsCallList('call other functions');
+replies.addCall(howdy, 'say howdy');
+replies.addCall(fine, 'say fine');
+replies.addCall(rest, 'rest a bit');
 
-concurrents = topsConcurrentComposite;
-concurrents.name = 'run() concurrently:'
+concurrents = topsConcurrentComposite('run() concurrently:');
 concurrents.addChild(replies);
 concurrents.addChild(machine);
 
@@ -62,8 +65,8 @@ concurrents.addChild(machine);
 % done, so we tell the "replies" call list to keep running forever.
 replies.alwaysRunning = true;
 
-clc
-concurrents.run;
+clc();
+concurrents.run();
 
 %% topsTreeNode
 % A "tree node" is a building block.  You can put many nodes together to
@@ -72,8 +75,7 @@ concurrents.run;
 % objects, including other tree nodes.  Each node will tell its children to
 % run(), allowing them to do interesting behaviors, or just delegating to
 % other tree nodes for the sake of organizaion.
-topNode = topsTreeNode;
-topNode.name = 'things to run():'
+topNode = topsTreeNode('things to run():');
 
 % Add the "calls", "concurrents", and state machine above to the tree
 topNode.addChild(calls);
@@ -81,8 +83,8 @@ topNode.addChild(machine);
 topNode.addChild(concurrents);
 
 % Run the tree, which will run all of the examples above.
-clc
-topNode.run
+clc();
+topNode.run()
 
 %% startFevalable and finishFevalable
 % Any of the objects demonstrated above can call a function just before or
@@ -90,18 +92,18 @@ topNode.run
 % you go.   Or, for this example, we can make the command line output
 % easier to read.
 
-space = {@disp, ' '};
-callsNode.finishFevalable = space;
-machineNode.finishFevalable = space;
-concurrentsNode.finishFevalable = space;
+printASpace = {@disp, ' '};
+calls.finishFevalable = printASpace;
+machine.finishFevalable = printASpace;
+concurrents.finishFevalable = printASpace;
 
 calls.startFevalable = {@disp, 'Calling some functions:'};
 machine.startFevalable = {@disp, 'Running some states:'};
-concurrents.startFevalable = {@disp, 'Mixing call list and state machine:'};
+concurrents.startFevalable = {@disp, 'Mixing functions and states:'};
 
-clc
-topNode.run
+clc();
+topNode.run()
 
 %% graphical user interface
 % You can also visualize the tree structure in a figure.
-topNode.gui;
+topNode.gui();

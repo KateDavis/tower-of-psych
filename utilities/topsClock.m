@@ -1,18 +1,17 @@
-% A clock function based on Matlab's built in tic() and toc().
-%
-% t = topsClock
-%
+% Get the current time as a number.
 % @details
 % Returns the time in seconds since topsClock() was first called.
 % topsClock() uses a private instance of Matlab's builtin tic()-toc()
 % stopwatch.
 %
-% See also, tic, toc
-function t = topsClock
+% @ingroup utilities
+function t = topsClock()
 
+% Create a private timer
 persistent topsTic
 if isempty(topsTic)
     topsTic = tic;
 end
 
+% Return the current timer time
 t = toc(topsTic);
