@@ -104,18 +104,19 @@ _This is done as of 14 March 2012._
 ===Wiki===
 The wiki should be filled out and brought into agreement with the code and docs.
 
-  * Replace aboutTowerOfPsych with ComponentsAndConcepts page
-    * component descriptions
-    * checkout links for component folders
-    * sweet diagram
+  * Replace aboutTowerOfPsych with ComponentsAndConcepts page.  For each one, include
+    * basic description
+    * checkout links
+  * Installation instructions
+
  (big - 1 day)
 
 ===Main Page===
 The project main page should be updated.
 
-  * Short intro, components
-  * Short status
-  * Link to aboutTowerOfPsych wiki page
+  * Short intro, list components and concepts
+    * link to wiki page
+  * Short history and status
+    * link to installer wiki page
   * Shouts out to related projects
-  * Check out link for Version 1
  (small)
