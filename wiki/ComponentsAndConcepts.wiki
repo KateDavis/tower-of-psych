@@ -53,6 +53,8 @@ Tree-like flow
 
 Concurrency
 
+Ensembles
+
 ===GUIs===
 "what did I just do?"
 
