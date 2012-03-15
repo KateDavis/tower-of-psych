@@ -6,16 +6,34 @@ Here are the major components and concepts that Tower of Psych uses to support p
 
 =Concepts=
 
-===Object-Oriented===
-"handle" since Matlab 2008a
+===Object-Oriented Design===
+Tower of Psych is designed around [http://en.wikipedia.org/wiki/Object-oriented_design classes and objects].  Classes make it easier to reuse code between jobs that are similar-but-different.  Objects make it easier to break a job into intuitive pieces.
+
+Matlab has supported classes and _handle_ objects since [http://www.mathworks.com/help/techdoc/matlab_oop/brqzfth-1.html#brqzfth-3 version 7.6/2008a].  Tower of Psych requires this version or later.
 
 ===High-Level Integration===
-Not myopic, specific behaviors
-Experiments run on built-in Matlab only (though tests, docs, and graphs use externals, and GUIs use undocumented Swing stuff)
+Tower of Psych deals with the high-level organization of psychophysics tasks.  It doesn't deal with low-level problems like hardware input devices, model fitting, or advanced graphics.  It expects that users and other tool kits will solve these problems narrowly, then let Tower of Psych integrate the solutions.
 
-===Fevalable functions===
-vs anonymous: viewable, mutable, seem to perform better with Matlab's handle reference scheme
+Since it leaves out the low-level details, Tower of Psych requires only built-in Matlab functionality.  It runs on Matlab "out of the box".  Tower of Psych can make use of a few other tool kits, but these are optional.
 
+===Tests===
+Tower of Psych is developed with unit testing in mind.  Unit tests are a way to execute code automatically and check for errors.  Many "test/" folders through out the project contain test definitions.  They are not necessary for running tasks.
+
+Thanks to the [http://www.mathworks.com/matlabcentral/fileexchange/22846-matlab-xunit-test-framework MATLAB xUnit Test Framework].
+
+===Documentation===
+Tower of Psych uses [http://tower-of-psych.googlecode.com/svn/documentation/html/index.html online HTML documentation].  This type of documentation is rich, cross-linked, and integrated with the base code.  It "knows about" the project's object-oriented design.  Matlab's "help" and "doc" documentation just aren't as good.
+
+Thanks to [http://www.stack.nl/~dimitri/doxygen/ Doxygen].
+
+===_Fevalable_ Function Calls===
+Tower of Psych defines some jargon for calling functions: an _fevalable_ is a cell array that contains a function_handle as the first element and function arguments as subsequent elements.  For example, `foo = {@disp, 'abracadabra'}` defines an _fevalable_ called `foo`.
+
+_Fevalables_ can be stored as variables and invoked later with Matlab's `feval()` function.  For example, `feval(foo{:})` would display `abracadabra` in the Command Window.
+
+Thesse packaged-up function call are handy and you can use them in any Matlab code.  Since Tower of Psych uses them a lot, it's useful to have a name for them.  So, many variables and object properties in Tower of Psych contain the word "_fevalable_".
+
+Matlab also has _anonymous functions_ which are similar to _fevalables_.  They look very similar:
 {{{
 % fevalable
 foo = {@disp, 'abracadabra'};
@@ -26,16 +44,18 @@ foo = @() disp('abracadabra');
 feval(foo);
 }}}
 
-===Testing===
-http://www.mathworks.com/matlabcentral/fileexchange/22846-matlab-xunit-test-framework
+Tower of Psych favors _fevalables_ because they can be visualized and edited like any cell array.  There have also been a few strange usage patters involving _handle_ objects and _anonymous functions_, which cause Matlab to behave strangely.  _Fevalables_ seem to avoid these patterns.
 
 =Components=
 
 ===Runnables===
 Tree-like flow
+
 Concurrency
 
 ===GUIs===
+"what did I just do?"
+
 Some undocumented stuff
 http://code.google.com/p/tower-of-psych/wiki/GUIsVersion1
 
