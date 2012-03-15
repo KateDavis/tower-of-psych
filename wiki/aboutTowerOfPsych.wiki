@@ -1,4 +1,5 @@
 #summary Motivation and overview of the Tower of Psych project
+#labels Deprecated
 
 = Tower of Psych =
 
