@@ -1,0 +1,50 @@
+#summary Intro to Components and Concepts of Tower of Psych
+
+Here are the major components and concepts that Tower of Psych uses to support psychophysics tasks.
+
+<wiki:toc max_depth="4" />
+
+=Concepts=
+
+===Object-Oriented===
+"handle" since Matlab 2008a
+
+===High-Level Integration===
+Not myopic, specific behaviors
+Experiments run on built-in Matlab only (though tests, docs, and graphs use externals, and GUIs use undocumented Swing stuff)
+
+===Fevalable functions===
+vs anonymous: viewable, mutable, seem to perform better with Matlab's handle reference scheme
+
+{{{
+% fevalable
+foo = {@disp, 'abracadabra'};
+feval(foo{:});
+
+% anonymous function
+foo = @() disp('abracadabra');
+feval(foo);
+}}}
+
+===Testing===
+http://www.mathworks.com/matlabcentral/fileexchange/22846-matlab-xunit-test-framework
+
+=Components=
+
+===Runnables===
+Tree-like flow
+Concurrency
+
+===GUIs===
+Some undocumented stuff
+http://code.google.com/p/tower-of-psych/wiki/GUIsVersion1
+
+===Graphing===
+Uses GraphViz
+http://www.graphviz.org/
+
+===Spatial Classification===
+Indexes big matrices
+
+===Logging===
+Uses singleton and static methods
