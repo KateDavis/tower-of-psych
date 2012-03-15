@@ -108,6 +108,7 @@ The wiki should be filled out and brought into agreement with the code and docs.
     * basic description
     * checkout links
   * Installation instructions
+  * Simple task tutorial, to pair with configureSimpleTask.m
 
  (big - 1 day)
 
