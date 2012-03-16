@@ -4,10 +4,9 @@
 function demoProfilerGrapher()
 
 % Create the grapher object.
-%   tell it to generate profiler data with the "encounter" demo game
-%   configuraiton.
+%   generate profiler data for built-in polnomial fitting
 pg = ProfilerGrapher();
-pg.toDo = 'encounter();';
+pg.toDo = '[p,S,mu] = polyfit(rand(1,10),rand(1,10),3);';
 
 % Generate the profiler data and graph it!
 pg.run();
