@@ -115,8 +115,8 @@ _This is done as of 16 March 2012._
 The project main page should be updated.
 
   * Short intro, Short history, and status
-  * link to ComponentsAndConcepts
-  * link to Installation
+  * link to [ComponentsAndConcepts]
+  * link to [Installation]
  (small)
 
 _This is done as of 16 March 2012!_
