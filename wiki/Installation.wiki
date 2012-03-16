@@ -1,4 +1,5 @@
 #summary How to download and install Tower of Psych
+#labels Featured
 
 Installing Tower of Psych is easy, because it's pure Matlab.  You just
   * Get the files.
