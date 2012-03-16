@@ -111,12 +111,12 @@ The wiki should be filled out and brought into agreement with the code and docs.
 
 _This is done as of 16 March 2012._
 
-----
-
-===Main Page===
+===_Main Page_===
 The project main page should be updated.
 
   * Short intro, Short history, and status
   * link to ComponentsAndConcepts
   * link to Installer wiki page
  (small)
+
+_This is done as of 16 March 2012!_
