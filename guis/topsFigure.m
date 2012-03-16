@@ -156,7 +156,7 @@ classdef topsFigure < handle
                 'SelectionHighlight', 'off', ...
                 'Visible', 'off');
         end
-
+        
         % Make a Matlab axes with a certain look and feel.
         % @param parent figure or uipanel to hold the new uipanel
         % @details
@@ -208,7 +208,7 @@ classdef topsFigure < handle
             if nargin < 3 || isempty(selectFunction)
                 selectFunction = [];
             end
-
+            
             if nargin < 4 || isempty(editFunction)
                 editFunction = [];
             end
@@ -314,7 +314,7 @@ classdef topsFigure < handle
             jContainer.setForeground(jColor);
             
         end
-
+        
         % Make a uicontrol text edit field with a certain look and feel.
         % @param parent figure or uipanel to hold the text field.
         % @param editFunction callback to handle edited text
@@ -584,11 +584,11 @@ classdef topsFigure < handle
             mName = '';
             if isa(item, 'function_handle')
                 % open a funciton's m-file
-                mName = [func2str(item), '.m'];
+                mName = func2str(item);
                 
             elseif ischar(item)
-                % open up an m-file
-                mName = [item, '.m'];
+                % open up any file
+                mName = item;
             end
             
             % does the file exist?
@@ -596,6 +596,7 @@ classdef topsFigure < handle
                 message = sprintf('Opening file "%s"', mName);
                 disp(message);
                 open(mName);
+                
             else
                 message = sprintf('Cannot open file "%s"', mName);
                 disp(message);
