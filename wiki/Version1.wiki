@@ -99,25 +99,24 @@ The role and form of the Doxygen docs should be tweaked.
 
 _This is done as of 14 March 2012._
 
-----
-
-===Wiki===
+===_Wiki_===
 The wiki should be filled out and brought into agreement with the code and docs.
 
   * Replace aboutTowerOfPsych with ComponentsAndConcepts page.  For each one, include
     * basic description
     * checkout links
   * Installation instructions
-  * Simple task tutorial, to pair with configureSimpleTask.m
 
  (big - 1 day)
+
+_This is done as of 16 March 2012._
+
+----
 
 ===Main Page===
 The project main page should be updated.
 
-  * Short intro, list components and concepts
-    * link to wiki page
-  * Short history and status
-    * link to installer wiki page
-  * Shouts out to related projects
+  * Short intro, Short history, and status
+  * link to ComponentsAndConcepts
+  * link to Installer wiki page
  (small)
