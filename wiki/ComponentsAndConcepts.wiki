@@ -1,8 +1,8 @@
 #summary Intro to Components and Concepts of Tower of Psych
 
-Here are the major components and concepts that Tower of Psych uses to support psychophysics tasks.
+Here is an introduction to the major design concepts and software components used in Tower of Psych.
 
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="3" />
 
 =Concepts=
 
@@ -48,18 +48,42 @@ Tower of Psych favors _fevalables_ because they can be visualized and edited lik
 
 =Components=
 
-===Runnables===
-Tree-like flow
+===_Runnable_ Objects===
+Tower of Psych uses _runnable_ objects to organize the flow of events during a task.  These let you specify what should happen in a flexible way.  They let you visualize the structure of a task before running it.  They automatically record what happened and when during an experiment.
 
-Concurrency
+There are several flavors of _runnables_, each offering a different kind of flow.  These can be repeated and combined differently for each task.
 
-Ensembles
+====Tree Nodes====
+Tree nodes emphasize a hierarchical flow of control.  Nodes combine to form a tree structure in which each node may have several children.  This structure resembles folders and sub-folders in a file system.
+
+Parent nodes get executed first, then child nodes, and so on, until reaching a node without children.  Then parents get executed in reverse order.  This is useful for doing setup and cleanup at nested levels of detail.
+
+====Concurrency====
+Concurrent objects are able to run together, at the same time.  This can be a challenge for Matlab, since Matlab is a single-threaded environment.  Concurrent objects define behaviors that they can _run briefly_, and these brief behaviors can be interleaved.
+
+====Ensembles====
+Ensembles provide a way to group similar objects together.  For example, a task may use multiple objects that all need to _draw_.  When all of these objects are added to to an ensemble, they can all _draw_ with a single command.  They can also be configured to _draw_ repeatedly and automatically.
+
+The Tower of Psych documentation shows the entire [http://tower-of-psych.googlecode.com/svn/documentation/html/classtops_runnable.html family of _runnables_].
 
 ===GUIs===
-"what did I just do?"
+Tower of Psych provides Graphical User Interfaces (GUIs) for most of its classes.  These allow you to inspect the details of individual objects or to view collections of objects as a whole.  They aim to make it easier to write code without being a coding expert.
 
-Some undocumented stuff
-http://code.google.com/p/tower-of-psych/wiki/GUIsVersion1
+The GUIs take advantage of some [http://undocumentedmatlab.com/ Undocumented Matlab] and Java features.  These add richness and functionality that are unavailable in regular Matlab GUIs.  They should still work in Matlab "out of the box".
+
+Some of the GUI code might be useful to other Matlab projects.  In particular, the "drill down" GUI allows you to browse the fields, properties, and elements of struct arrays, object arrays, and cell arrays.  These can be nested to arbitrary depth.
+
+On the command line, you can checkout the GUI code like this:
+{{{
+svn checkout http://tower-of-psych.googlecode.com/svn/trunk/guis gui-stuff
+}}}
+
+In Matlab, you can create a "drill down" for any item GUI like this:
+{{{
+cd gui-stuff
+myItem = dir();
+topsGUIUtilities.openBasicGUI(myItem, 'my directory');
+}}}
 
 ===Graphing===
 Uses GraphViz
