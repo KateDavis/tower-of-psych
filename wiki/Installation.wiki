@@ -4,7 +4,9 @@ Installing Tower of Psych is easy, because it's pure Matlab.  You just
   * Get the files.
   * Add them all to your Matlab path.
 
-<wiki:toc max_depth="3" />
+Here's how.
+
+<wiki:toc max_depth="4" />
 
 ==Get the Files==
 
@@ -19,12 +21,16 @@ svn checkout http://tower-of-psych.googlecode.com/svn/trunk/ tower-of-psych
 ====Download====
 If you can't use Subversion, you can download a [http://tower-of-psych.googlecode.com/files/tower-of-psych-r398.zip static copy of Tower of Psych].
 
-==Get Started==
-You can get started with Tower of Psych by reading about [ComponentsAndConcepts] or by trying demos which are included with the code.
-  * `tower-of-psych/demos/` contains simple demos for project components
-  * `tower-of-psych/demos/tasks/` contains a few complex demos that integrate componentes into working tasks
+There are [http://code.google.com/p/tower-of-psych/downloads/list more downloads] here at the project site.
 
-==Optional Installs==
+==Get Started==
+Once you have all the files, add them to your Matlab path.  From the Matlab desktop, click on `File -> Set Path... -> Add with Subfolders` and choose the folder where you saved Tower of Psych.
+
+You can get started with Tower of Psych by reading about [ComponentsAndConcepts] or by trying demos which are included with the code.
+  * `tower-of-psych/demos/` contains simple demos for Tower of Psych components
+  * `tower-of-psych/demos/tasks/` contains a few complex demos that integrate components into working tasks
+
+==Optional==
 Tower of Psych can work with a couple of external projects for advanced functionality.  These are not required for running demos and making tasks.
 
 ====Graphing====
