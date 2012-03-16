@@ -26,7 +26,7 @@ Tower of Psych uses [http://tower-of-psych.googlecode.com/svn/documentation/html
 
 Thanks to [http://www.stack.nl/~dimitri/doxygen/ Doxygen].
 
-In order for Doxygen to understand Matlab code, Tower of Psych uses a filter for converting m-code to something resembling C++.  This filter might be useful to other projects, and can be downloaded [http://tower-of-psych.googlecode.com/files/oom2cpp.zip here].
+In order for Doxygen to understand Matlab code, Tower of Psych uses a filter for converting m-code to something resembling C++.  This filter might be useful to other projects, and can be downloaded [http://code.google.com/p/tower-of-psych/downloads/detail?name=oom2cpp.zip#makechanges here].
 
 ===_Fevalable_ Function Calls===
 Tower of Psych defines some jargon for calling functions: an _fevalable_ is a cell array that contains a function_handle as the first element and function arguments as subsequent elements.  For example, `foo = {@disp, 'abracadabra'}` defines an _fevalable_ called `foo`.
