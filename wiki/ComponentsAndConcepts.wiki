@@ -78,7 +78,7 @@ On the command line, you can checkout the GUI code like this:
 svn checkout http://tower-of-psych.googlecode.com/svn/trunk/guis gui-stuff
 }}}
 
-In Matlab, you can create a "drill down" for any item GUI like this:
+In Matlab, you can create a "drill down" GUI for any item like this:
 {{{
 cd gui-stuff
 myItem = dir();
@@ -86,11 +86,38 @@ topsGUIUtilities.openBasicGUI(myItem, 'my directory');
 }}}
 
 ===Graphing===
-Uses GraphViz
-http://www.graphviz.org/
+Tower of Psych provides some utilities for making diagrams and flow charts with the free [http://www.graphviz.org/GraphViz] program.
+
+On the command line, you can checkout the graphing code like this:
+{{{
+svn checkout http://tower-of-psych.googlecode.com/svn/utilities/graphing graphing-stuff
+}}}
+
+In Matlab, you can try a graphing demo.  This one diagrams the function calls recorded by the Matlab profiler, during a polynomial fit:
+{{{
+cd graphing-stuff/demos
+demoProfilerGrapher();
+}}}
 
 ===Spatial Classification===
-Indexes big matrices
+Tower of Psych implements a spatial model for classifying data.  It maps data from n data sources onto independent dimensions in an n-dimensional space.  It assigns regions in the space to arbitrary outputs.
+
+The spatial model supports complex data classification tasks.  For example, a constellation of data like "the mouse cursor is in the upper-left part of the screen and the primary mouse button is down, and the keyboard shift key is down" could be represented as a region in space.  The region could map to an output like "chose wrong target".
+
+Taking one sample from each data source amounts to indexing a single point in the n-dimensional space.  The spatial model attempts to do this efficiently by using Matlab's great matrix functionality and flexible indexing scheme.
 
 ===Logging===
-Uses singleton and static methods
+Tower of Psych provides a facility for logging data during a task, called `topsDataLog`.  `topsDataLog` is a _singleton_ class, which means only one log exists at a time.  The class provides _static_ methods, which means that any m-code can access the log.
+
+`topsDataLog` accepts arbitrary _data_, along with a _name_ used to group together similar _data_.  It records a _timestamp_ for each _data_ item.
+
+Here's an example of clearing the data log, logging several data items, and viewing the contents of the log:
+{{{
+topsDataLog.flushAllData();
+topsDataLog.logDataInGroup('this is my data', 'demo group');
+topsDataLog.logDataInGroup('this is more data', 'demo group');
+topsDataLog.logDataInGroup('this is silly data', 'demo group');
+topsDataLog.logDataInGroup(42, 'different group');
+topsDataLog.logDataInGroup(-inf, 'different group');
+topsDataLog.gui();
+}}}
