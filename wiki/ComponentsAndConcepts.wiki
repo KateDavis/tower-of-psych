@@ -1,4 +1,5 @@
 #summary Intro to Components and Concepts of Tower of Psych
+#labels Featured
 
 Here is an introduction to the major design concepts and software components used in Tower of Psych.
 
