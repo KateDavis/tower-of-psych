@@ -116,7 +116,7 @@ The project main page should be updated.
 
   * Short intro, Short history, and status
   * link to ComponentsAndConcepts
-  * link to Installer wiki page
+  * link to Installation
  (small)
 
 _This is done as of 16 March 2012!_
