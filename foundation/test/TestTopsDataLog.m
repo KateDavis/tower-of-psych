@@ -90,7 +90,7 @@ classdef TestTopsDataLog < TestTopsFoundation
             % add data to log in memory
             self.logSomeData();
             expectedLength = theLog.length;
-
+            
             % write data to disk and clear data in memory
             topsDataLog.writeDataFile(self.filename);
             topsDataLog.flushAllData();
@@ -103,6 +103,34 @@ classdef TestTopsDataLog < TestTopsFoundation
                 'read wrong number of data from file')
             
             delete(self.filename);
+        end
+        
+        function testGetNewData(self)
+            log = topsDataLog.theDataLog();
+            
+            newData = topsDataLog.getNewData();
+            assertTrue(isempty(newData), ...
+                'new log should not have any new data')
+            
+            self.logSomeData();
+            newData = topsDataLog.getNewData();
+            assertFalse(isempty(newData), ...
+                'log should have some new data')
+            
+            newData = topsDataLog.getNewData();
+            assertTrue(isempty(newData), ...
+                'log should not report new data twice')
+            
+            self.logSomeData();
+            newData = topsDataLog.getNewData();
+            assertFalse(isempty(newData), ...
+                'log should have some more new data')
+            
+            self.logSomeData();
+            topsDataLog.flushAllData();
+            newData = topsDataLog.getNewData();
+            assertTrue(isempty(newData), ...
+                'flushed log should have no new data')
         end
     end
 end

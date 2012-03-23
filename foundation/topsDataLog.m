@@ -33,7 +33,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
     % The log's gui() method should make this even easier.  You can use it
     % to launch topsDataLogGUI, which plots a raster of all logged data
     % over time, with data groups as rows.
-
+    
     properties
         % any function that returns the current time as a number
         clockFunction = @topsClock;
@@ -62,13 +62,16 @@ classdef (Sealed) topsDataLog < topsGroupedList
         % topsDataFile metadata struct for writing to disk incrementally
         fHeader;
         
-        % the latest time when data were written to disk
+        % time of the most recent writeIncrementToFile()
         lastWriteTime;
+        
+        % time of the most recent getNewData()
+        lastNewDataTime;
     end
     
     methods (Access = private)
         % Constructor is private.
-        % @details 
+        % @details
         % Use topsDataLog.theDataLog to access the current instance of
         % topsDataLog.
         function self = topsDataLog()
@@ -76,6 +79,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             self.latestTime = nan;
             self.lastFlushTime = nan;
             self.lastWriteTime = -inf;
+            self.lastNewDataTime = -inf;
             self.name = 'The Data Log';
         end
         
@@ -86,9 +90,16 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 return;
             end
             
+            % no new data to write
+            if self.lastWriteTime >= self.latestTime;
+                return;
+            end
+            
+            % get new data
             newRange = [self.lastWriteTime, inf];
             newData = topsDataLog.getSortedDataStruct(newRange);
             
+            % do header accounting for new data
             if isfinite(self.latestTime)
                 self.lastWriteTime = self.latestTime;
             end
@@ -98,6 +109,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             self.fHeader.userData.lastFlushTime = self.lastFlushTime;
             self.fHeader.userData.lastWriteTime = self.lastWriteTime;
             
+            % write new data to disk
             if isempty(newData)
                 self.fHeader = topsDataFile.write(self.fHeader);
             else
@@ -139,7 +151,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 self.clockFunction = data.clockFunction;
                 self.earliestTime = data.earliestTime;
                 self.latestTime = data.latestTime;
-
+                
                 disp(sprintf('%s: read %s', mfilename, self.fileWithPath))
             end
         end
@@ -203,13 +215,13 @@ classdef (Sealed) topsDataLog < topsGroupedList
             infoPan = topsInfoPanel(fig);
             fig.usePanels({infoPan; logPan}, [2 8]);
         end
-
+        
         % Toggle verbose printouts for data logging.
         % @param isVerbose whether to print as data are logged
         % @details
         % If @a isVerbose is true, topsDataLog will print a message to the
         % Command Window whenever data is added to the log.  If @a
-        % isVerbose is false or omitted, topsDataLog will print nothing. 
+        % isVerbose is false or omitted, topsDataLog will print nothing.
         function setVerbose(isVerbose)
             if nargin < 1
                 isVerbose = false;
@@ -234,6 +246,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
             self.earliestTime = nan;
             self.latestTime = nan;
             self.lastFlushTime = feval(self.clockFunction);
+            self.lastNewDataTime = -inf;
         end
         
         % Add some data to the log.
@@ -305,7 +318,8 @@ classdef (Sealed) topsDataLog < topsGroupedList
                     isInRange = groupTimes > timeRange(1) ...
                         & groupTimes <= timeRange(2);
                     if any(isInRange)
-                        logStruct = cat(2, logStruct, groupStruct(isInRange));
+                        logStruct = ...
+                            cat(2, logStruct, groupStruct(isInRange));
                     end
                 end
             end
@@ -315,6 +329,28 @@ classdef (Sealed) topsDataLog < topsGroupedList
             %   from each group should be already sorted--merge k lists
             [a, order] = sort([logStruct.mnemonic]);
             logStruct = logStruct(order);
+        end
+        
+        % Get new data, recently added to the log.
+        % @details
+        % Gets recent data items from the current instance of topsDataLog,
+        % as a struct array.  "Recent" means data added to the log since
+        % the last time getNewData() was called.  Updates lastNewDataTime
+        % with the current time.
+        function logStruct = getNewData()
+            self = topsDataLog.theDataLog();
+            
+            if self.lastNewDataTime < self.latestTime;
+                % get new data
+                newRange = [self.lastNewDataTime, inf];
+                logStruct = topsDataLog.getSortedDataStruct(newRange);
+                self.lastNewDataTime = self.latestTime;
+                
+            else
+                % no new data to get
+                logStruct = [];
+                return;
+            end
         end
         
         % Write logged data to a file.
@@ -356,7 +392,7 @@ classdef (Sealed) topsDataLog < topsGroupedList
                     self.fileWithPath = fullfile(p, f);
                 end
             end
-
+            
             if ~isempty(self.fileWithPath)
                 self.writeIncrementToFile();
             end

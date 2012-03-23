@@ -115,7 +115,7 @@ classdef topsTreeNode < topsRunnableComposite
                     
                     for jj = childSequence
                         self.children{jj}.caller = self;
-                        self.children{jj}.run;
+                        self.children{jj}.run();
                         self.children{jj}.caller = [];
                     end
                 end
