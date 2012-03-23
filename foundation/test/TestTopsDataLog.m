@@ -117,6 +117,10 @@ classdef TestTopsDataLog < TestTopsFoundation
             assertFalse(isempty(newData), ...
                 'log should have some new data')
             
+            isNew = topsDataLog.logNewData(newData);
+            assertFalse(any(isNew), ...
+                'log should not re-add data it already has')
+            
             newData = topsDataLog.getNewData();
             assertTrue(isempty(newData), ...
                 'log should not report new data twice')
