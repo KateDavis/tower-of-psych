@@ -81,8 +81,13 @@ classdef (Sealed) topsDataLog < topsGroupedList
             self.lastWriteTime = -inf;
             self.lastNewDataTime = -inf;
             self.name = 'The Data Log';
+            
+            % choose data file name, trigger the set.fileWithPath method
+            self.fileWithPath = 'topsDataLog.mat';
         end
-        
+    end
+    
+    methods (Access = protected)
         % Write a data increment and other data to file and do accounting.
         function writeIncrementToFile(self)
             if isempty(self.fHeader)
@@ -351,6 +356,23 @@ classdef (Sealed) topsDataLog < topsGroupedList
                 logStruct = [];
                 return;
             end
+        end
+        
+        % Log data from a data struct, if it's new.
+        % @param dataStruct struct data, as from getSortedDataStruct()
+        % @details
+        % Adds adds data from the given @a dataStruct to the data log, but
+        % only if the new data are newer than lastNewDataTime.  Returns a
+        % logical selector with the same size as @a dataStruct, which is
+        % true where items were found to be new and added to the log.
+        function isNew = logNewData(logStruct)
+            self = topsDataLog.theDataLog();
+            
+            % which items are new?
+            isNew = [logStruct.mnemonic] > self.lastNewDataTime;
+            
+            % log the new items, if any
+            self.populateWithDataStruct(logStruct(isNew));
         end
         
         % Write logged data to a file.
