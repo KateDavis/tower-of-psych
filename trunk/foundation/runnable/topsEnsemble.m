@@ -36,7 +36,7 @@ classdef topsEnsemble < topsCallList
         function self = topsEnsemble(varargin)
             self = self@topsCallList(varargin{:});
         end
-
+        
         % Open a GUI to view object details.
         % @details
         % Opens a new GUI with components suitable for viewing objects of
@@ -171,6 +171,61 @@ classdef topsEnsemble < topsCallList
             subsasgn(outerObject, subs, innerObject);
         end
         
+        % Pass one object to a method of another object.
+        % @param innerIndex ensemble index of the object to pass
+        % @param outerIndex ensemble index of the receiving object
+        % @param method function_handle of a receiving object method
+        % @param args optional cell array of arguments to pass to @a method
+        % @param argIndex optional index into @a args of the object to pass
+        % @details
+        % Passes one ensemble object to a method of another ensmble object.
+        % @a innerIndex specifies the inner object which will be passed as
+        % an argument.  @a outerObject specifies the outer object which
+        % will have its @a method invoked, and the inner object passed to
+        % it.  Both objects must belong to this ensemble.
+        % @details
+        % By default, the inner object is passed as the first and only
+        % argument to the outer object's @a method.  This case would be
+        % equivalent to
+        % @code
+        % outerObject.method(innerObject);
+        % @endcode
+        % @details
+        % @a args may contain additional arguments to pass to @a method. @a
+        % argIndex may specify where in the @a args to place the inner
+        % object.  This case would be equivalent to
+        % @code
+        % args{argIndex} = innerObject;
+        % outerObject.method(args{:});
+        % @endcode
+        % Any value at @a args{@a argIndex} will be replaced with the inner
+        % object.  If @a argIndex is omitted, it defaults to 1.
+        function passObject( ...
+                self, innerIndex, outerIndex, method, args, argIndex)
+            
+            if nargin < 5 || isempty(args)
+                args = {};
+            end
+            
+            if nargin < 6 || isempty(argIndex)
+                argIndex = 1;
+            end
+            
+            % resolve ensemble objects
+            innerObject = self.getObject(innerIndex);
+            outerObject = self.getObject(outerIndex);
+            
+            if isempty(args)
+                % inner object is the first and only argument
+                feval(method, outerObject, innerObject);
+                
+            else
+                % additional arguments to pass along with inner object
+                args{argIndex} = innerObject;
+                feval(method, outerObject, args{:});
+            end
+        end
+        
         % Set a property for one or more objects.
         % @param property string name of an ensemble object property
         % @param value one value to assign to @a property
@@ -292,7 +347,7 @@ classdef topsEnsemble < topsCallList
         % during runBriefly().
         % @details
         % By default, automated method calls will be invoked during
-        % runBriefly().  If @a isActive is provided and 
+        % runBriefly().  If @a isActive is provided and
         % false, runBriefly() will ignore the named call.  Calls may be
         % activated or deactivated later with setActiveByName() or
         % callByName() with the isActive flag.

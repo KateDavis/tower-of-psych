@@ -1,5 +1,5 @@
 classdef TestTopsEnsemble < TestTopsFoundation
-    % ensemble tests should always access objects through ensemble methods.
+    % Ensemble tests should always access objects through ensemble methods.
     % Otherwise it's unfair to expect consistency.
     
     methods
@@ -158,18 +158,54 @@ classdef TestTopsEnsemble < TestTopsFoundation
             assertEqual(inner.name, innerName, ...
                 'should dig out name of assigned object in a cell')
         end
+        
+        function testPasObject(self)
+            % ensemble of two objects
+            outer = topsFoundation();
+            inner = topsFoundation('inner');
+            ensemble = self.getEnsemble('test');
+            outerIndex = ensemble.addObject(outer);
+            innerIndex = ensemble.addObject(inner);
+            
+            % use static copyName() as a phoney object method
+            ensemble.passObject(innerIndex, outerIndex, ...
+                @TestTopsEnsemble.copyName);
+            outerName = ensemble.getObjectProperty('name', outerIndex);
+            assertEqual(outerName, 'inner', ...
+                'outer object should copied inner object name');
+            
+            % use static mimicName() as a phoney object method
+            args = {'before', [], 'after'};
+            argIndex = 2;
+            ensemble.passObject(innerIndex, outerIndex, ...
+                @TestTopsEnsemble.mimicName, args, argIndex);
+            outerName = ensemble.getObjectProperty('name', outerIndex);
+            expectedName = [args{1} 'inner' args{3}];
+            assertEqual(outerName, expectedName, ...
+                'outer object should mimiced inner object name');
+        end
     end
     
     methods (Static)
-        % set the name of the given object, like a method
+        % Set the name of the given object, like a method.
         function setName(object, name)
             object.name = name;
         end
         
-        % drill down into an object property, like a method
+        % Drill down into an object property, like a method.
         function value = getDeepValue(object, subsInfo)
             subs = substruct(subsInfo{:});
             value = subsref(object, subs);
+        end
+        
+        % Copy the name of another object, like a method.
+        function copyName(object, otherObject)
+            object.name = otherObject.name;
+        end
+        
+        % Copy and modify the name of another object, like a method.
+        function mimicName(object, prefix, otherObject, suffix)
+            object.name = [prefix otherObject.name suffix];
         end
     end
 end
