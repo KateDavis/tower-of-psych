@@ -73,7 +73,7 @@ classdef topsEnsemble < topsCallList
         % @details
         % topsEnsemble assumes that objects are packed without gaps into
         % its objects array.  This will always be the case if @a index is
-        % omitted.  If @a index is provided, care must be take to pack
+        % omitted.  If @a index is provided, care must be taken to pack
         % objects into the ensemble.
         % @details
         % Returns the index where @a object was appended or inserted into
