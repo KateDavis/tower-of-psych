@@ -37,7 +37,7 @@ classdef topsConcurrentComposite < topsRunnableComposite
             if isa(child, 'topsConcurrent')
                 self.addChild@topsRunnableComposite(child);
             else
-                warning('% cannot add child of class %s', ...
+                warning('%s cannot add child of class %s', ...
                     class(self), class(child));
             end
         end

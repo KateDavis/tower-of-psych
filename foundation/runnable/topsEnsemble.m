@@ -287,6 +287,7 @@ classdef topsEnsemble < topsCallList
         % @param method function_handle of an ensemble object method
         % @param args optional cell array of arguments to pass to @a method
         % @param index optional ensemble object index or indexes
+        % @param isCell optional whether to pass objects in one cell array
         % @details
         % Calls the given @a method, which ensemble objects have in
         % common.  If @a args is provided, passes the elements of @a args
@@ -295,10 +296,18 @@ classdef topsEnsemble < topsCallList
         % object.  If there is only one object, returns the result without
         % enclosing it in a cell array.
         % @details
-        % By default, gets a @a method result from each each ensemble
-        % object.  If @a index is provided, it may specify a subset of
-        % ensemble objects.
-        function result = callObjectMethod(self, method, args, index)
+        % By default, calls @a method once per object in the ensemble.
+        % If @a index is provided, it may specify particular ensemble
+        % objects.  For example, @a index may specify a subset of objects,
+        % or the order in which objects should have @a method invoked.
+        % @details
+        % By default, iterates through objects, invoking @a method once per
+        % object.  If isCell is true, invokes @a method only once, passing
+        % a cell array of objects as the first argument.  This assumes that
+        % @a method is a static class method that operates on multiple
+        % objects at once.  @a method could also be a regular function.
+        function result = callObjectMethod( ...
+                self, method, args, index, isCell)
             % pass arguments to method?
             if nargin < 3 || isempty(args)
                 args = {};
@@ -312,23 +321,40 @@ classdef topsEnsemble < topsCallList
             end
             nObjects = numel(objs);
             
-            if nargout
-                % must collect results
-                result = cell(1, nObjects);
-                
-                for ii = 1:nObjects
-                    result{ii} = feval(method, objs{ii}, args{:});
-                end
-                
-                % cell array or scalar value?
-                if nObjects == 1
-                    result = result{1};
+            % invoke as one batch
+            if nargin < 5 || isempty(isCell)
+                isCell = false;
+            end
+            
+            % need to collect a result?
+            %   pass objects as a cell array?
+            if nargout == 0
+                if isCell
+                    % invoke once for the cell array
+                    feval(method, objs, args{:});
+                    
+                else
+                    % invoke for each object
+                    for ii = 1:nObjects
+                        feval(method, objs{ii}, args{:});
+                    end
                 end
                 
             else
-                % didn't ask for results
-                for ii = 1:nObjects
-                    feval(method, objs{ii}, args{:});
+                if isCell
+                    % collect one result for the cell array
+                    result = feval(method, objs, args{:});
+                    
+                else
+                    % collect a result for each object
+                    result = cell(1, nObjects);
+                    for ii = 1:nObjects
+                        result{ii} = feval(method, objs{ii}, args{:});
+                    end
+                    % return cell array or scalar value?
+                    if nObjects == 1
+                        result = result{1};
+                    end
                 end
             end
         end
@@ -338,6 +364,7 @@ classdef topsEnsemble < topsCallList
         % @param method function_handle of an ensemble object method
         % @param args optional cell array of arguments to pass to @a method
         % @param index optional ensemble object index or indexes
+        % @param isCell optional whether to pass objects in one cell array
         % @param isActive whether the named method call should be active
         % @details
         % Defines an automated method call, with the given @a name.
@@ -356,15 +383,23 @@ classdef topsEnsemble < topsCallList
         % common.  If @a args is provided, the elements of @a args will be
         % passed as arguments to @a method.
         % @details
-        % By default, calls @a method on each ensemble object.  If @a index
-        % is provided, it may specify a subset of ensemble objects.
+        % By default, calls @a method once per object in the ensemble.
+        % If @a index is provided, it may specify particular ensemble
+        % objects.  For example, @a index may specify a subset of objects,
+        % or the order in which objects should have @a method invoked.
+        % @details
+        % By default, iterates through objects, invoking @a method once per
+        % object.  If isCell is true, invokes @a method only once, passing
+        % a cell array of objects as the first argument.  This assumes that
+        % @a method is a static class method that operates on multiple
+        % objects at once.  @a method could also be a regular function.
         % @details
         % Returns the index into the calls struct array where the automated
         % method call was appended or inserted.
         function index = automateObjectMethod( ...
-                self, name, method, args, index, isActive)
+                self, name, method, args, index, isCell, isActive)
             
-            if nargin < 6
+            if nargin < 7 || isempty(isActive)
                 isActive = true;
             end
             
@@ -379,6 +414,11 @@ classdef topsEnsemble < topsCallList
             % subset of ensemble objecs?
             if nargin >= 5
                 fevalable{5} = index;
+            end
+            
+            % pass objects as one cell array?
+            if nargin >= 6
+                fevalable{6} = isCell;
             end
             
             % append or insert in call list
