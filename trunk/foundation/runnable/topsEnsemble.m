@@ -314,10 +314,10 @@ classdef topsEnsemble < topsCallList
             end
             
             % all or indexed objects?
-            if nargin >= 4
-                objs = self.objects(index);
-            else
+            if nargin < 4 || isempty(index)
                 objs = self.objects;
+            else
+                objs = self.objects(index);
             end
             nObjects = numel(objs);
             
