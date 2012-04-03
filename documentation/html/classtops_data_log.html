@@ -90,7 +90,10 @@ Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classtops_data_file.html" title="Utility to organize incremental reading and writing of data.">topsDataFile</a> metadata struct for writing to disk incrementally <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc552fb9a3447165e0882832cf11dcdb"></a><!-- doxytag: member="topsDataLog::lastWriteTime" ref="acc552fb9a3447165e0882832cf11dcdb" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#acc552fb9a3447165e0882832cf11dcdb">lastWriteTime</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the latest time when data were written to disk <br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">time of the most recent <a class="el" href="classtops_data_log.html#ab1a3369af694583146c1bbb180df58e7" title="Write a data increment and other data to file and do accounting.">writeIncrementToFile()</a> <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee06552576440481eee0fdb9999d6e4c"></a><!-- doxytag: member="topsDataLog::lastNewDataTime" ref="aee06552576440481eee0fdb9999d6e4c" args="" -->
+Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#aee06552576440481eee0fdb9999d6e4c">lastNewDataTime</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">time of the most recent <a class="el" href="classtops_data_log.html#ad911cd00b40f5c9103681183e9197dbc" title="Get new data, recently added to the log.">getNewData()</a> <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38f857c066d69f75bb3fa218d0a66374"></a><!-- doxytag: member="topsDataLog::groups" ref="a38f857c066d69f75bb3fa218d0a66374" args="" -->
 Property&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a38f857c066d69f75bb3fa218d0a66374">groups</a> = {}</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cell array of strings or numbers for all list groups <br/></td></tr>
@@ -144,6 +147,19 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group and mnemonic?  <a href="#ab56476325e71ddcce007c32400bada05"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">isContained&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_grouped_list.html#a55f26b6b59e31d3698bbbf8072ae9271">containsItemInGroup</a> (self, item, group)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Does the list contain the given group and item?  <a href="#a55f26b6b59e31d3698bbbf8072ae9271"></a><br/></td></tr>
+<tr><td colspan="2"><h2>Protected Methods</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1a3369af694583146c1bbb180df58e7"></a><!-- doxytag: member="topsDataLog::writeIncrementToFile" ref="ab1a3369af694583146c1bbb180df58e7" args="(self)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ab1a3369af694583146c1bbb180df58e7">writeIncrementToFile</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write a data increment and other data to file and do accounting. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac75b997aa6ef250dd23bde961314fc1b"></a><!-- doxytag: member="topsDataLog::readIncrementFromFile" ref="ac75b997aa6ef250dd23bde961314fc1b" args="(self)" -->
+dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ac75b997aa6ef250dd23bde961314fc1b">readIncrementFromFile</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Read a data increment and other data from file. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab047df13e7e170c4152d89ea50593d1"></a><!-- doxytag: member="topsDataLog::readOldLogStructFromFile" ref="aab047df13e7e170c4152d89ea50593d1" args="(self)" -->
+dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#aab047df13e7e170c4152d89ea50593d1">readOldLogStructFromFile</a> (self)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Read an old-style data from file. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af587432a4e3faed866ad7d52326f9208"></a><!-- doxytag: member="topsDataLog::populateWithDataStruct" ref="af587432a4e3faed866ad7d52326f9208" args="(self, dataStruct)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#af587432a4e3faed866ad7d52326f9208">populateWithDataStruct</a> (self, dataStruct)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Populate the log groupedList with struct data. <br/></td></tr>
 <tr><td colspan="2"><h2>Static Methods</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static log&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ab75bbca125060dca1979b53b0569f41c">theDataLog</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Access the current data log "singleton".  <a href="#ab75bbca125060dca1979b53b0569f41c"></a><br/></td></tr>
@@ -157,6 +173,10 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add some data to the log.  <a href="#a148e17810877b9609fde06ce045df331"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static logStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#a0575af6cb9923638ea5385550f501257">getSortedDataStruct</a> (timeRange)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get all data from the log.  <a href="#a0575af6cb9923638ea5385550f501257"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static logStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ad911cd00b40f5c9103681183e9197dbc">getNewData</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get new data, recently added to the log.  <a href="#ad911cd00b40f5c9103681183e9197dbc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static isNew&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#add31ebdacd3bb1d56d5d3b286963cdb7">logNewData</a> (logStruct)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log data from a data struct, if it's new.  <a href="#add31ebdacd3bb1d56d5d3b286963cdb7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#afc3c2c32bcb2b5a10ab1afaaa6ebfd47">writeDataFile</a> (<a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a>)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write logged data to a file.  <a href="#afc3c2c32bcb2b5a10ab1afaaa6ebfd47"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static dataStruct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtops_data_log.html#ad881016b1ea2efb19c741c0a7f5a54ce">readDataFile</a> (<a class="el" href="classtops_data_log.html#a11ae7a55494110f02f037320d01bc800">fileWithPath</a>)</td></tr>
@@ -336,6 +356,53 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
   </dd>
 </dl>
 <p>Gets all data items from the current instance of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, as a struct array, using <a class="el" href="classtops_grouped_list.html#ae5c5d09a765485a412412c068d1e0f13" title="Get all items from a group, as a struct array.">getAllItemsFromGroupAsStruct()</a>. Sorts the struct array by the time values stored in its mnemonics field. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad911cd00b40f5c9103681183e9197dbc"></a><!-- doxytag: member="topsDataLog::getNewData" ref="ad911cd00b40f5c9103681183e9197dbc" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static logStruct getNewData </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get new data, recently added to the log. </p>
+<p>Gets recent data items from the current instance of <a class="el" href="classtops_data_log.html" title="One central place to log data on the fly.">topsDataLog</a>, as a struct array. "Recent" means data added to the log since the last time <a class="el" href="classtops_data_log.html#ad911cd00b40f5c9103681183e9197dbc" title="Get new data, recently added to the log.">getNewData()</a> was called. Updates lastNewDataTime with the current time. </p>
+
+</div>
+</div>
+<a class="anchor" id="add31ebdacd3bb1d56d5d3b286963cdb7"></a><!-- doxytag: member="topsDataLog::logNewData" ref="add31ebdacd3bb1d56d5d3b286963cdb7" args="(logStruct)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static isNew logNewData </td>
+          <td>(</td>
+          <td class="paramtype">logStruct&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Log data from a data struct, if it's new. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>dataStruct</em>&nbsp;</td><td>struct data, as from <a class="el" href="classtops_data_log.html#a0575af6cb9923638ea5385550f501257" title="Get all data from the log.">getSortedDataStruct()</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Adds adds data from the given <em>dataStruct</em> to the data log, but only if the new data are newer than lastNewDataTime. Returns a logical selector with the same size as <em>dataStruct</em>, which is true where items were found to be new and added to the log. </p>
 
 </div>
 </div>
@@ -1326,7 +1393,7 @@ n&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classto
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 14 16:35:24 2012 for Tower of Psych by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Tue Apr 3 16:21:42 2012 for Tower of Psych by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
