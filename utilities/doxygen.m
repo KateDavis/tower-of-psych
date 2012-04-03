@@ -1,4 +1,4 @@
-%%% Hints to Doxygen, the program that builds Snow Dots documentation.
+%%% Hints to Doxygen, the program that builds Tower of Psych documentation.
 %
 % @defgroup utilities
 % @defgroup demos
