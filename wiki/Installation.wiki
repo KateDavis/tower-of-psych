@@ -20,7 +20,7 @@ svn checkout http://tower-of-psych.googlecode.com/svn/trunk/ tower-of-psych
 }}}
 
 ====Download====
-If you can't use Subversion, you can download a [http://tower-of-psych.googlecode.com/files/tower-of-psych-r398.zip static copy of Tower of Psych].
+If you can't use Subversion, you can download a [http://tower-of-psych.googlecode.com/files/tower-of-psych-r418.zip static copy of Tower of Psych].
 
 There are [http://code.google.com/p/tower-of-psych/downloads/list more downloads] here at the project site.
 
