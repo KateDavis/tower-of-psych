@@ -1,6 +1,6 @@
 % Play the Encounter game to demonstrate Tower of Psych.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function encounter()
 
 % get objects that can run the game

@@ -1,6 +1,6 @@
 % How to define regions in space with topsRegion, and view them.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoRegion()
 close all
 

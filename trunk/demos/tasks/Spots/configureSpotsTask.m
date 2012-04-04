@@ -35,7 +35,7 @@
 % Several task parameters may be controlled by editing values near the top
 % of configureSpotsTask.m.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function [tree, list] = configureSpotsTask(figurePosition)
 % 2009 benjamin.heasly@gmail.com
 %   Seattle, WA

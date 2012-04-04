@@ -1,6 +1,6 @@
 % Demonstrate some key behaviors of the topsConditions class.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoConditions()
 
 % Create the conditions object

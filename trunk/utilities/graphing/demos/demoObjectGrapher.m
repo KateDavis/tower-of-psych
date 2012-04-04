@@ -1,6 +1,6 @@
 % Try graphing the references among objects in a workspace.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoObjectGrapher()
 
 % Create some objects that refer to each other, from the "spots" demo task.

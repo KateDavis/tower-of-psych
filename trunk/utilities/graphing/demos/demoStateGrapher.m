@@ -1,6 +1,6 @@
 % Try graphing state machine states from the SquareTag game.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoStateGrapher()
 
 % configure the full dotris game

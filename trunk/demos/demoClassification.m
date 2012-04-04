@@ -1,6 +1,6 @@
 % How to classify data based on a spatial model.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoClassification()
 
 % query dimensions of primary display

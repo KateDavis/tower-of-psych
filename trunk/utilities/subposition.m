@@ -12,7 +12,7 @@
 % operates on position rectangles (that is, arrays) rather than Matlab
 % graphics objects.
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function subpos = subposition(position, r, c, ii, jj)
 w = position(3)/c;
 h = position(4)/r;
