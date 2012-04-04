@@ -1,6 +1,6 @@
 %Run the "Spots Task" demo for Tower of Psych.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function spotsTask()
 
 % manage screen real estate for the task and two tops GUIs

@@ -1,7 +1,7 @@
 %%% Hints to Doxygen, the program that builds Tower of Psych documentation.
 %
-% @defgroup utilities
-% @defgroup demos
+% @defgroup topsUtilities
+% @defgroup topsDemos
 %
 % @mainpage Tower of Psych Reference
 % @par
@@ -12,7 +12,7 @@
 %   .
 % @par
 % Functions:
-%   - <a href="group__utilities.html">Utilities</a>
-%   - <a href="group__demos.html">Demos</a>
+%   - <a href="group__tops_utilities.html">Utilities</a>
+%   - <a href="group__tops_demos.html">Demos</a>
 %   .
 %

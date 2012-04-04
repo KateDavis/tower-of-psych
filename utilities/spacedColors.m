@@ -24,7 +24,7 @@
 % image(thingy);
 % @endcode
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function colors = spacedColors(n)
 
 if nargin < 1

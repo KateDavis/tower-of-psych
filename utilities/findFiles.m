@@ -18,7 +18,7 @@
 % allMatlabFiles = findFiles(matlabroot);
 % myDataFiles = findFiles(myFolder, 'data');
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function fileList = findFiles(folder, fileFilter)
 
 if nargin < 2

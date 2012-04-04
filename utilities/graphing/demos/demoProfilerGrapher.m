@@ -1,6 +1,6 @@
 % Try graphing the output of the Matlab profiler.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoProfilerGrapher()
 
 % Create the grapher object.

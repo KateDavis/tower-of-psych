@@ -11,7 +11,7 @@
 % as a second output a topsGroupedList object which contains data and
 % objects that make up the game.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function [runnable, list] = configureEncounter()
 % By benjamin.heasly@gmail.com,
 %   2009 Seattle, WA

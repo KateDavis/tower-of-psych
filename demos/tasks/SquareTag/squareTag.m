@@ -1,6 +1,6 @@
 % Play the SquareTag task with built-in Matlab graphics and inputs.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function squareTag()
 
 % make a new "back end" for SquareTag

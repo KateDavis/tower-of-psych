@@ -21,7 +21,7 @@
 % image(thingy);
 % @endcode
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function colors = puebloColors(n)
 
 if nargin < 1

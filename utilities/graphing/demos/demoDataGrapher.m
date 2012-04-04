@@ -1,6 +1,6 @@
 % Try graphing some arbitrary Matlab data with Graphviz.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoDataGrapher()
 
 % Create the grapher object.

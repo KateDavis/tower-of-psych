@@ -5,7 +5,7 @@
 % how long it takes to add the values, and how long it takes to access
 % them.  Plots a summary in the gcf() figure.
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function benchmarkStructVsMap(n)
 
 if nargin < 1

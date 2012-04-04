@@ -16,7 +16,7 @@
 %   isOK = topsRunTests();
 %   isFoundationOK = topsRunTests('foundation');
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function didPass = topsRunTests(fileFilter)
 initialFolder = pwd();
 tic();

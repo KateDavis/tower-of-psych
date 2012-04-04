@@ -11,7 +11,7 @@
 % subject's cursor programmatically, over the given @a tagSteps number of
 % animation frames.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoSquareTag(logic, av, tagSteps)
 
 if nargin < 1 || isempty(logic)

@@ -9,7 +9,7 @@
 % sm.gui();
 % @endcode
 %
-% @ingroup demos
+% @ingroup topsDemos
 function sm = demoStateMachine()
 
 % Create a state machine object and give it a name

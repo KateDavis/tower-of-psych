@@ -4,7 +4,7 @@
 % topsClock() uses a private instance of Matlab's builtin tic()-toc()
 % stopwatch.
 %
-% @ingroup utilities
+% @ingroup topsUtilities
 function t = topsClock()
 
 % Create a private timer

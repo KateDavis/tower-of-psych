@@ -1,6 +1,6 @@
 % Demonstrate key behaviors of various topsRunnable objects.
 %
-% @ingroup demos
+% @ingroup topsDemos
 function demoRunnables()
 
 %% First, define some arbitrary behaviors in "fevalable" cell arrays
