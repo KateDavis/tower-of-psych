@@ -14,13 +14,13 @@ Here's how.
 ====Subversion====
 The easiest way to get Tower of Psych and keep the files up to date is with the [http://svnbook.red-bean.com/en/1.7/svn.intro.whatis.html Subversion] tool.  Subversion is free.
 
-Here's the Subversion "checkout" command for Tower of Psych:
+Here's the Subversion "checkout" command for Tower of Psych Version 1:
 {{{
-svn checkout http://tower-of-psych.googlecode.com/svn/trunk/ tower-of-psych
+svn checkout http://tower-of-psych.googlecode.com/svn/tags/Version_1 tower-of-psych
 }}}
 
 ====Download====
-If you can't use Subversion, you can download a [http://tower-of-psych.googlecode.com/files/tower-of-psych-r418.zip static copy of Tower of Psych].
+If you can't use Subversion, you can download a [http://tower-of-psych.googlecode.com/files/tower-of-psych-r421.zip static copy of Tower of Psych].
 
 There are [http://code.google.com/p/tower-of-psych/downloads/list more downloads] here at the project site.
 
